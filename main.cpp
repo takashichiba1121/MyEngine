@@ -83,9 +83,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//DirectX初期化処理　ここから
 #ifdef _DEBUG
    //デバッグレイヤーをオンに
-	ID3D12Debug* debugController;
+	ID3D12Debug1* debugController;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		debugController->EnableDebugLayer();
+		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
 #endif
 	HRESULT result;
@@ -145,6 +146,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			featureLevel = levels[i];
 		}
 	}
+
+#ifdef _DEBUG
+
+	ID3D12InfoQueue* infoQueue;
+	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);//やばいエラーの時に止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);//エラー時に止まる
+		infoQueue->Release();
+	}
+#endif
+
+	//抑制するエラー
+	D3D12_MESSAGE_ID denyIds[] = {
+
+		/*
+		*Windows11でのDXGIデバックレイヤーとDX12デバックレイヤーの相互作用バグによるエラーメッセージ
+		* https://stackoverflow.com/questions/69805245/directx-12-application-is-crashing-in-windows-11
+		*/
+		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE
+	};
+
+	//抑制する表示レベル
+	D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+	D3D12_INFO_QUEUE_FILTER filter{};
+	filter.DenyList.NumIDs = _countof(denyIds);
+	filter.DenyList.pIDList = denyIds;
+	filter.DenyList.NumSeverities = _countof(severities);
+	filter.DenyList.pSeverityList = severities;
+	//指定したエラーの表示を抑制する
+	infoQueue->PushStorageFilter(&filter);
+
 	//コマンドアロケータを生成
 	result = device->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
