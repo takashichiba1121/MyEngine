@@ -18,7 +18,25 @@ public://メンバ関数
 	//更新
 	void Update();
 
+	/// <summary>
+	/// キーの押下をチェック
+	/// </summary>
+	///<param name="keynumber">キー番号(DIK_0等)</param>
+	/// <returns>押されているか</returns>
+	bool PushKey(BYTE keyNumber);
+	/// <summary>
+	/// キーのトリガーをチェック
+	/// </summary>
+	///<param name="keynumber">キー番号(DIK_0等)</param>
+	/// <returns>トリガーか</returns>
+	bool TriggerKeyKey(BYTE keyNumber);
 private://メイン変数
 	//キーボードデバイス
 	ComPtr<IDirectInputDevice8> keyboard = nullptr;
+
+	ComPtr<IDirectInput8> directInput = nullptr;
+
+	BYTE key[256] = {};
+
+	BYTE keyPre[256] = {};
 };

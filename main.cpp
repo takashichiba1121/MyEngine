@@ -683,7 +683,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//3Dオブジェクトの数
-	const size_t kObjectConst = 50;
+	const size_t kObjectConst = 2;
 	//3Dオブジェクトの配列
 	Object3D object3ds[kObjectConst];
 
@@ -695,8 +695,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//ここからは親子構造のサンプル
 		//先頭以外なら
 		if (i > 0) {
-			//一つ前のオブジェクトを親オブジェクトとする
-			object3ds[i].parent = &object3ds[i - 1];
+			////一つ前のオブジェクトを親オブジェクトとする
+			//object3ds[i].parent = &object3ds[i - 1];
 			//親オブジェクトの9割の大きさ
 			object3ds[i].scale = { 0.9f,0.9f,0.9f };
 			//親オブジェクトに対してZ軸まわりに30度回転
@@ -1049,26 +1049,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 		//更新処理ここから
-		//if (key[DIK_Z] || key[DIK_X])
-		//{
-		//	if (key[DIK_Z]) { angle += XMConvertToRadians(1.0f); }
-		//	else if (key[DIK_X]) { angle -= XMConvertToRadians(1.0f); }
+		if (input->PushKey(DIK_Z) || input->PushKey(DIK_X))
+		{
+			if (input->PushKey(DIK_Z)) { angle += XMConvertToRadians(1.0f); }
+			else if (input->PushKey(DIK_X)) { angle -= XMConvertToRadians(1.0f); }
 
-		//	//angleラジアンだけY軸まわりに回転。半径は-100
-		//	eye.x = -100 * sinf(angle);
-		//	eye.z = -100 * cosf(angle);
-		//	matView = XMMatrixIdentity();
-		//	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		//}
+			//angleラジアンだけY軸まわりに回転。半径は-100
+			eye.x = -100 * sinf(angle);
+			eye.z = -100 * cosf(angle);
+			matView = XMMatrixIdentity();
+			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		}
 
-		////いずれかのキーを押していたら
-		//if (key[DIK_UP]) { object3ds[0].position.y += 1.0f; }
-		//else if (key[DIK_DOWN]) { object3ds[0].position.y -= 1.0f; }
-		//if (key[DIK_RIGHT]) { object3ds[0].position.x += 1.0f; }
-		//else if (key[DIK_LEFT]) { object3ds[0].position.x -= 1.0f; }
+		//いずれかのキーを押していたら
+		if (input->TriggerKeyKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
+		else if (input->PushKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
+		if (input->PushKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
+		else if (input->PushKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
 
-		//if (key[DIK_Q]) { object3ds[0].rotation.z += 0.1f; }
-		//else if (key[DIK_E]) { object3ds[0].rotation.z -= 0.1f; }
+		if (input->PushKey(DIK_Q)) { object3ds[0].rotation.z += 0.1f; }
+		else if (input->PushKey(DIK_E)) { object3ds[0].rotation.z -= 0.1f; }
 
 
 		////ワールド変換行列
@@ -1137,7 +1137,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 		//2枚目を指し示すようにしたSRVのハンドルをルトパラメーター1番に設定
-		srvGpuHandle.ptr += incrementSize;
+		/*srvGpuHandle.ptr += incrementSize;*/
 		//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 		////インデックスバッファビューの設定コマンド
