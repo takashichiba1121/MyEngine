@@ -292,7 +292,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
 	Input* input=nullptr;
-	input == new Input;
+	input = new Input;
 	input->Initialize(w.hInstance, hwnd);
 
 	////DirectInputの初期化
@@ -1016,11 +1016,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 		//DirectX毎フレーム処理　ここから
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-		//全キーの入力状態を取得する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
+		
+		//入力の更新
+		input->Update();
+		
+		////キーボード情報の取得開始
+		//keyboard->Acquire();
+		////全キーの入力状態を取得する
+		//BYTE key[256] = {};
+		//keyboard->GetDeviceState(sizeof(key), key);
 		//バックバッファの番号を取得（２つなので０番か１番）
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
 
@@ -1045,26 +1049,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 		//更新処理ここから
-		if (key[DIK_Z] || key[DIK_X])
-		{
-			if (key[DIK_Z]) { angle += XMConvertToRadians(1.0f); }
-			else if (key[DIK_X]) { angle -= XMConvertToRadians(1.0f); }
+		//if (key[DIK_Z] || key[DIK_X])
+		//{
+		//	if (key[DIK_Z]) { angle += XMConvertToRadians(1.0f); }
+		//	else if (key[DIK_X]) { angle -= XMConvertToRadians(1.0f); }
 
-			//angleラジアンだけY軸まわりに回転。半径は-100
-			eye.x = -100 * sinf(angle);
-			eye.z = -100 * cosf(angle);
-			matView = XMMatrixIdentity();
-			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-		}
+		//	//angleラジアンだけY軸まわりに回転。半径は-100
+		//	eye.x = -100 * sinf(angle);
+		//	eye.z = -100 * cosf(angle);
+		//	matView = XMMatrixIdentity();
+		//	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		//}
 
-		//いずれかのキーを押していたら
-		if (key[DIK_UP]) { object3ds[0].position.y += 1.0f; }
-		else if (key[DIK_DOWN]) { object3ds[0].position.y -= 1.0f; }
-		if (key[DIK_RIGHT]) { object3ds[0].position.x += 1.0f; }
-		else if (key[DIK_LEFT]) { object3ds[0].position.x -= 1.0f; }
+		////いずれかのキーを押していたら
+		//if (key[DIK_UP]) { object3ds[0].position.y += 1.0f; }
+		//else if (key[DIK_DOWN]) { object3ds[0].position.y -= 1.0f; }
+		//if (key[DIK_RIGHT]) { object3ds[0].position.x += 1.0f; }
+		//else if (key[DIK_LEFT]) { object3ds[0].position.x -= 1.0f; }
 
-		if (key[DIK_Q]) { object3ds[0].rotation.z += 0.1f; }
-		else if (key[DIK_E]) { object3ds[0].rotation.z -= 0.1f; }
+		//if (key[DIK_Q]) { object3ds[0].rotation.z += 0.1f; }
+		//else if (key[DIK_E]) { object3ds[0].rotation.z -= 0.1f; }
 
 
 		////ワールド変換行列
