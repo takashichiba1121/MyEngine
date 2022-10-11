@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="シェーダーファイル">
+      <UniqueIdentifier>{35476cfb-1e5e-44d2-9f74-11489c86306b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,6 +27,9 @@
     <ClCompile Include="object3d.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Triangle.h">
@@ -32,18 +38,21 @@
     <ClInclude Include="object3d.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\BasicVS.hlsl">
-      <Filter>リソース ファイル</Filter>
+      <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
-      <Filter>リソース ファイル</Filter>
+      <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
 </Project>
