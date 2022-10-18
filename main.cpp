@@ -40,8 +40,6 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wapram, LPARAM lparam) {
 }
 //windowsアプリのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	//コンソールへの文字出力
-	OutputDebugStringA("Hello,DirectX!!!\n");
 	const int window_width = 1280;//横
 	const int window_heigit = 720;//縦
 
@@ -291,27 +289,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
+	//DirectInputの初期化
 	Input* input=nullptr;
 	input = new Input;
 	input->Initialize(w.hInstance, hwnd);
 
-	////DirectInputの初期化
-	//IDirectInput8* directInput = nullptr;
-	//result = DirectInput8Create(
-	//	w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
-	//	(void**)&directInput, nullptr);
-	//assert(SUCCEEDED(result));
-	////キーボードデバイスの生成
-	//IDirectInputDevice8* keyboard = nullptr;
-	//result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	//assert(SUCCEEDED(result));
-	////入力データ形式のセット
-	//result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
-	//assert(SUCCEEDED(result));
-	////排他制御レベルのセット
-	//result = keyboard->SetCooperativeLevel(
-	//	hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	//assert(SUCCEEDED(result));
 	//DirectX初期化処理
 	//描画初期化処理
 	//頂点データ構造体
@@ -1020,11 +1002,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//入力の更新
 		input->Update();
 		
-		////キーボード情報の取得開始
-		//keyboard->Acquire();
-		////全キーの入力状態を取得する
-		//BYTE key[256] = {};
-		//keyboard->GetDeviceState(sizeof(key), key);
 		//バックバッファの番号を取得（２つなので０番か１番）
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
 
