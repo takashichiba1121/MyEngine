@@ -46,10 +46,10 @@ bool Input::PushKey(BYTE keyNumber)
 	return false;
 }
 
-bool Input::TriggerKeyKey(BYTE keyNumber)
+bool Input::TriggerKey(BYTE keyNumber)
 {
 	//w’èƒL[‚ğ‰Ÿ‚µ‚Ä‚¢‚ê‚Îtrue‚ğ•Ô‚·
-	if (key[keyNumber]&&keyPre[keyNumber]==false) {
+	if (key[keyNumber]&&keyPre[keyNumber]==0) {
 		return true;
 	}
 	//‚»‚¤‚Å‚È‚¯‚ê‚Îfalse•Ô‚·

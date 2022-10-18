@@ -29,7 +29,7 @@ public://メンバ関数
 	/// </summary>
 	///<param name="keynumber">キー番号(DIK_0等)</param>
 	/// <returns>トリガーか</returns>
-	bool TriggerKeyKey(BYTE keyNumber);
+	bool TriggerKey(BYTE keyNumber);
 private://メイン変数
 	//キーボードデバイス
 	ComPtr<IDirectInputDevice8> keyboard = nullptr;
