@@ -992,14 +992,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//ゲームループ
 	while (true) {
-		//メッセージがある？
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);//キー入力メッセージの処理
-			DispatchMessage(&msg);//プロシージャにメッセージが残る
-		}
 
 		//×ボタンで終了メッセージがきたらゲームループを抜ける
-		if (msg.message == WM_QUIT) {
+		if (winApp->ProcessMessage()) {
 			break;
 		}
 		//DirectX毎フレーム処理　ここから
