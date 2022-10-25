@@ -15,6 +15,7 @@
 #include"Triangle.h"
 #include"object3d.h"
 #include"input.h"
+#include"WinApp.h"
 
 using namespace DirectX;
 using namespace std;
@@ -43,35 +44,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	const int window_width = 1280;//横
 	const int window_heigit = 720;//縦
 
-	//ウインドウクラスの設定
-	WNDCLASSEX w{};
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc;//ウインドウプロ―ジャーの設定
-	w.lpszClassName = L"DirectXGame";//ウインドウクラス名
-	w.hInstance = GetModuleHandle(nullptr);//ウインドウハンドル
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);//カーソル指定
+	////ウインドウクラスの設定
+	//WNDCLASSEX w{};
+	//w.cbSize = sizeof(WNDCLASSEX);
+	//w.lpfnWndProc = (WNDPROC)WindowProc;//ウインドウプロ―ジャーの設定
+	//w.lpszClassName = L"DirectXGame";//ウインドウクラス名
+	//w.hInstance = GetModuleHandle(nullptr);//ウインドウハンドル
+	//w.hCursor = LoadCursor(NULL, IDC_ARROW);//カーソル指定
 
-	//ウインドウクラスをOSに登録する
-	RegisterClassEx(&w);
-	//ウインドウサイズ｛X座標　Y座標　横幅　縦幅｝
-	RECT wrc = { 0,0,window_width,window_heigit };
-	//自動サイズを補正する
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-	//ウインドウオブジェクトの生成
-	HWND hwnd = CreateWindow(w.lpszClassName,//クラス名
-		L"DirectXGame",//タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,//標準的なウインドウスタイル
-		CW_USEDEFAULT,//表示X座標（OSに任せる）
-		CW_USEDEFAULT,//表示Y座標（OSに任せる）
-		wrc.right - wrc.left,//ウインドウ横幅
-		wrc.bottom - wrc.top,//ウインドウ縦幅
-		nullptr,//親ウインドウハンドル
-		nullptr,//メニューハンドル
-		w.hInstance,//呼び出しアプリケーションハンドル
-		nullptr);//オプション
+	////ウインドウクラスをOSに登録する
+	//RegisterClassEx(&w);
+	////ウインドウサイズ｛X座標　Y座標　横幅　縦幅｝
+	//RECT wrc = { 0,0,window_width,window_heigit };
+	////自動サイズを補正する
+	//AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
+	////ウインドウオブジェクトの生成
+	//HWND hwnd = CreateWindow(w.lpszClassName,//クラス名
+	//	L"DirectXGame",//タイトルバーの文字
+	//	WS_OVERLAPPEDWINDOW,//標準的なウインドウスタイル
+	//	CW_USEDEFAULT,//表示X座標（OSに任せる）
+	//	CW_USEDEFAULT,//表示Y座標（OSに任せる）
+	//	wrc.right - wrc.left,//ウインドウ横幅
+	//	wrc.bottom - wrc.top,//ウインドウ縦幅
+	//	nullptr,//親ウインドウハンドル
+	//	nullptr,//メニューハンドル
+	//	w.hInstance,//呼び出しアプリケーションハンドル
+	//	nullptr);//オプション
 
-	//ウインドウを表示状態にする
-	ShowWindow(hwnd, SW_SHOW);
+	////ウインドウを表示状態にする
+	//ShowWindow(hwnd, SW_SHOW);
+
+	WinApp* winApp = nullptr;
+	winApp = new WinApp;
+	winApp->Initialize();
 
 	MSG msg{};
 
@@ -1039,7 +1044,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 
 		//いずれかのキーを押していたら
-		if (input->TriggerKeyKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
+		if (input->TriggerKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
 		else if (input->PushKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
 		if (input->PushKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
 		else if (input->PushKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
@@ -1171,6 +1176,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 	delete input;
+	delete winApp;
 
 	//ウインドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
