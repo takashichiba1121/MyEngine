@@ -10,6 +10,8 @@ public://ƒƒ“ƒoŠÖ”
 	//XV
 	void Update();
 
+	void Finalize();
+
 	//getter
 	HWND GetHwnd() const { return hwnd; }
 

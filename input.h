@@ -3,6 +3,7 @@
 #include<dinput.h>
 #include<windows.h>
 #include<wrl.h>
+#include"WinApp.h"
 
 //入力
 class Input
@@ -14,7 +15,7 @@ public:
 public://メンバ関数
 
 	//初期化
-	void Initialize(HINSTANCE hInstance,HWND hwnd);
+	void Initialize(WinApp* winApp);
 	//更新
 	void Update();
 
@@ -39,4 +40,7 @@ private://メイン変数
 	BYTE key[256] = {};
 
 	BYTE keyPre[256] = {};
+
+	//WindowAPI
+	WinApp* winApp_ = nullptr;
 };

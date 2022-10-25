@@ -297,7 +297,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//DirectInput‚Ì‰Šú‰»
 	Input* input=nullptr;
 	input = new Input;
-	input->Initialize(winApp->GetInstance(), winApp->GetHwnd());
+	input->Initialize(winApp);
 
 	//DirectX‰Šú‰»ˆ—
 	//•`‰æ‰Šú‰»ˆ—
@@ -1176,10 +1176,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 	delete input;
-	delete winApp;
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ð“o˜^‰ðœ
-	UnregisterClass(w.lpszClassName, w.hInstance);
+	winApp->Finalize();
+
+	delete winApp;
 
 	return 0;
 }
