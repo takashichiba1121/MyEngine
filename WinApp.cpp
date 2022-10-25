@@ -16,11 +16,8 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wapram, LPARAM lparam) {
 
 void WinApp::Initialize()
 {
-	const int window_width = 1280;//横
-	const int window_heigit = 720;//縦
 
 	//ウインドウクラスの設定
-	WNDCLASSEX w{};
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;//ウインドウプロ―ジャーの設定
 	w.lpszClassName = L"DirectXGame";//ウインドウクラス名
@@ -35,7 +32,7 @@ void WinApp::Initialize()
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	//ウインドウオブジェクトの生成
-	HWND hwnd = CreateWindow(w.lpszClassName,//クラス名
+	hwnd = CreateWindow(w.lpszClassName,//クラス名
 		L"DirectXGame",//タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,//標準的なウインドウスタイル
 		CW_USEDEFAULT,//表示X座標（OSに任せる）

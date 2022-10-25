@@ -9,5 +9,21 @@ public://メンバ関数
 	void Initialize();
 	//更新
 	void Update();
+
+	//getter
+	HWND GetHwnd() const { return hwnd; }
+
+	HINSTANCE GetInstance() const { return w.hInstance; }
+public://定数
+//ウィンドウ横幅
+	static const int window_width = 1280;
+	//ウィンドウ縦幅
+	static const int window_heigit = 720;
+private:
+	//ウィンドウハンドル
+	HWND hwnd = nullptr;
+	//ウィンドウクラスの設定
+	WNDCLASSEX w{};
+
 };
 
