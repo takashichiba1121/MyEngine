@@ -4,6 +4,7 @@
 #include<wrl.h>
 #include<vector>
 #include"WinApp.h"
+#include<chrono>
 
 class DirectXCommon
 {
@@ -32,6 +33,13 @@ public://メンバ関数
 
 	//コマンドリスト取得
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
+private://メンバ関数
+	//FPS固定初期化
+	void InitializeFixFPS();
+
+	//FPS固定更新
+	void UpdateFixFPS();
+
 private:
 
 	HRESULT result;
@@ -51,6 +59,9 @@ private:
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	D3D12_RESOURCE_BARRIER barrierDesc{};
+
+	//記録時間(FPS固定用)
+	std::chrono::steady_clock::time_point reference_;
 
 	//WindowsAPI
 	WinApp* winApp_ = nullptr;
