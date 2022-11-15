@@ -58,3 +58,47 @@ bool Input::TriggerKey(BYTE keyNumber)
 	//そうでなければfalse返す
 	return false;
 }
+
+//ゲームパッド
+
+DWORD Input::Updatekeypad(DWORD dwUserIndex)
+{
+	return XInputGetState(
+		dwUserIndex,//複数つながれてるときの選択
+		&gamePad);//この変数に入力状況が格納される
+}
+
+float Input::PadAnalogStickLX()
+{
+	return (float)gamePad.Gamepad.sThumbLX / SHRT_MAX;
+}
+
+float Input::PadAnalogStickLY()
+{
+	return (float)gamePad.Gamepad.sThumbLY / SHRT_MAX;
+}
+
+float Input::PadAnalogStickRX()
+{
+	return (float)gamePad.Gamepad.sThumbRX / SHRT_MAX;
+}
+
+float Input::PadAnalogStickRY()
+{
+	return (float)gamePad.Gamepad.sThumbRY / SHRT_MAX;
+}
+
+float Input::PadLTrigger()
+{
+	return (float)gamePad.Gamepad.bLeftTrigger / 255;
+}
+
+float Input::PadRTrigger()
+{
+	return (float)gamePad.Gamepad.bRightTrigger / 255;
+}
+
+bool Input::PadKey(int button)
+{
+	return gamePad.Gamepad.wButtons & button;
+}
