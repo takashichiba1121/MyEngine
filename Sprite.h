@@ -1,6 +1,12 @@
 #pragma once
 #include"SpriteCommon.h"
 
+struct Vertex
+	{
+	DirectX::XMFLOAT3 pos;    //xyz座標
+	DirectX::XMFLOAT2 uv;     //uv座標
+	};
+
 //定数バッファ用データ構造体（マテリアル）
 struct ConstBufferDataMaterial {
 	DirectX::XMFLOAT4 color;//色（RGBA）
@@ -15,7 +21,7 @@ public:
 
 	void Draw();
 private:
-	DirectX::XMFLOAT3 vertices[3] = {};
+	Vertex vertices[4] = {};
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;	//頂点バッファ
 

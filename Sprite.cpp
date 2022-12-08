@@ -12,12 +12,13 @@ void Sprite::Initialize(SpriteCommon* SpriteCommon)
 
 	HRESULT result;
 
-	XMFLOAT3 vertices_[] = {
-		{-0.5f,-0.5f,0.0f},
-		{-0.5f,+0.5f,0.0f},
-		{+0.5f,-0.5f,0.0f},
+	Vertex vertices_[4] = {
+		{{-0.4f,-0.7f,0.0f},{0.0f,1.0f}},
+		{{-0.4f,+0.7f,0.0f},{0.0f,0.0f}},
+		{{+0.4f,-0.7f,0.0f},{1.0f,1.0f}},
+		{{+0.4f,+0.7f,0.0f},{1.0f,0.0f}},
 	};
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		vertices[i] = vertices_[i];
 	}
@@ -47,7 +48,7 @@ void Sprite::Initialize(SpriteCommon* SpriteCommon)
 	assert(SUCCEEDED(result));
 
 	//GPU上のバッファに対応した仮想メモリ（メインメモリ上）を取得
-	XMFLOAT3* vertMap = nullptr;
+	Vertex* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	//前頂点に対して
@@ -103,7 +104,7 @@ void Sprite::Draw()
 	dxCommon->GetCommandList()->SetPipelineState(spriteCommon->GetPipelineState());
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(spriteCommon->GetRootSignature());
 	//プリミティブ形状の設定コマンド
-	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//頂点バッファビューの設定コマンド
 	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 	//定数バッファビュー（CBV）の設定コマンド
