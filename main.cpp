@@ -19,6 +19,7 @@
 #include"DirectXCommon.h"
 #include"SpriteCommon.h"
 #include"Sprite.h"
+#include"Texture.h"
 
 using namespace DirectX;
 using namespace std;
@@ -98,9 +99,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxCommon);
 
+	Texture::Initialize(dxCommon->GetDevice());
+
+	Sprite::StaticInitialize(spriteCommon);
+
+	uint32_t tex2 = Texture::LoadTexture(L"Resources/Number.png");
+
+	uint32_t tex = Texture::LoadTexture(L"Resources/reimu.png");
+
 	Sprite* sprite = nullptr;
 	sprite = new Sprite;
-	sprite->Initialize(spriteCommon);
+
+	sprite->Initialize(tex);
+	//sprite->SetTexture(tex2);
+
+	sprite->SetPosition({ WinApp::window_width / 2,WinApp::window_heigit / 2 });
+
+	sprite->SetAnchorPoint({ 0.0f,0.0f });
+
+	//sprite->SetLeftTop_({128.0f,0.0f});
+
+	//sprite->SetSize({64.0f,64.0f});
+
+	Sprite* sprite2 = nullptr;
+	sprite2 = new Sprite;
+
+	sprite2->Initialize(tex);
+	//sprite2->SetTexture(tex2);
+
+	sprite2->SetPosition({WinApp::window_width/2,WinApp::window_heigit / 2 });
+
+	sprite2->SetAnchorPoint({1.0f,1.0f});
+
+	//sprite2->SetLeftTop_({ 128.0f,0.0f });
+
+	//sprite2->SetSize({ 64.0f,64.0f });
+
+	//sprite->SetInvisible(true);
 
 	HRESULT result;
 
@@ -807,6 +842,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//入力の更新
 		input->Update();
 
+		sprite->Update();
+
+		sprite2->Update();
+
 		////更新処理ここから
 		//if (input->PushKey(DIK_Z) || input->PushKey(DIK_X))
 		//{
@@ -863,7 +902,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//描画コマンドここから
 		dxCommon->PreDraw();
 
+		spriteCommon->PreDraw();
+
 		sprite->Draw();
+
+		sprite2->Draw();
 
 		////パイプラインステートとルートシグネチャの設定コマンド
 		//dxCommon->GetCommandList()->SetPipelineState(pipelineState.Get());
@@ -900,6 +943,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//	object3ds[i].Draw(dxCommon->GetCommandList(), vbView, ibView, _countof(indices));
 		//}
 
+		spriteCommon->PostDrow();
+
 		//描画コマンドここまで
 
 		dxCommon->PostDrow();
@@ -912,6 +957,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete spriteCommon;
 
 	delete sprite;
+
+	delete sprite2;
 
 	delete dxCommon;
 

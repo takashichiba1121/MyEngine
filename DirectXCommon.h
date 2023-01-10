@@ -33,6 +33,8 @@ public://メンバ関数
 
 	//コマンドリスト取得
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
+
+	WinApp* getWinApp() const { return winApp_; }
 private://メンバ関数
 	//FPS固定初期化
 	void InitializeFixFPS();
