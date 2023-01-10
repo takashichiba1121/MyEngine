@@ -1,19 +1,24 @@
 #pragma once
 #include"SpriteCommon.h"
+#include"Vector2.h"
+#include"Vector3.h"
+#include"Vector4.h"
+#include"Matrix4.h"
+
 
 struct Vertex
 {
-	DirectX::XMFLOAT3 pos;    //xyz座標
-	DirectX::XMFLOAT2 uv;     //uv座標
+	Vector3 pos;    //xyz座標
+	Vector2 uv;     //uv座標
 };
 
 //定数バッファ用データ構造体（マテリアル）
 struct ConstBufferDataMaterial {
-	DirectX::XMFLOAT4 color;//色（RGBA）
+	Vector4 color;//色（RGBA）
 };
 //定数バッファ用データ構造体（行列）
 struct ConstBufferDateTransform {
-	DirectX::XMMATRIX mat;
+	Matrix4 mat;
 };
 
 enum VertexNumber {
@@ -40,25 +45,25 @@ public:
 
 	uint32_t GetTexture() {return textureIndex ; }
 
-	void SetPosition(const DirectX::XMFLOAT2& position) { this->position_ = position; }
+	void SetPosition(const Vector2& position) { this->position_ = position; }
 
-	DirectX::XMFLOAT2 GetPosition() const { return position_; }
+	Vector2 GetPosition() const { return position_; }
 
 	void SetRotation(const float& rotation) { this->rotation_ = rotation; }
 
 	float GetRotation() const { return rotation_; }
 
-	void SetColor(DirectX::XMFLOAT4 color) { constMapMaterial->color = color; }
+	void SetColor(Vector4 color) { constMapMaterial->color = color; }
 
-	DirectX::XMFLOAT4 GetColor() { return constMapMaterial->color; }
+	Vector4 GetColor() { return constMapMaterial->color; }
 
-	DirectX::XMFLOAT2 GetScale() const { return scale_; }
+	Vector2 GetScale() const { return scale_; }
 
-	void SetScale(const DirectX::XMFLOAT2& scale) { this->scale_ = scale; }
+	void SetScale(const Vector2& scale) { this->scale_ = scale; }
 
-	DirectX::XMFLOAT2 GetAnchorPoint() const { return anchorPoint_; }
+	Vector2 GetAnchorPoint() const { return anchorPoint_; }
 
-	void SetAnchorPoint(const DirectX::XMFLOAT2& anchorPoint) { this->anchorPoint_ = anchorPoint; }
+	void SetAnchorPoint(const Vector2& anchorPoint) { this->anchorPoint_ = anchorPoint; }
 
 	void SetFlipX(bool FlipX) { isFlipX_ = FlipX; }
 
@@ -72,13 +77,13 @@ public:
 
 	bool GetTnvisible() { return isInvisible_; }
 
-	void SetSize(const DirectX::XMFLOAT2& Size) { this->textureSize_ = Size; }
+	void SetSize(const Vector2& Size) { this->textureSize_ = Size; }
 
-	DirectX::XMFLOAT2 GetSize() const { return textureSize_; }
+	Vector2 GetSize() const { return textureSize_; }
 
-	void SetLeftTop_(const DirectX::XMFLOAT2& textureLeftTop_) { this->textureLeftTop_ = textureLeftTop_; }
+	void SetLeftTop_(const Vector2& textureLeftTop_) { this->textureLeftTop_ = textureLeftTop_; }
 
-	DirectX::XMFLOAT2 GetLeftTop_() const { return anchorPoint_; }
+	Vector2 GetLeftTop_() const { return anchorPoint_; }
 
 private:
 	//テクスチャサイズをイメージに合わせる
@@ -110,11 +115,11 @@ private:
 
 	float rotation_ = 0.0f;
 
-	DirectX::XMFLOAT2 position_ = { 100.0f,100.0f };
+	Vector2 position_ = { 100.0f,100.0f };
 
-	DirectX::XMFLOAT2 scale_ = { 100.0f,100.0f };
+	Vector2 scale_ = { 100.0f,100.0f };
 
-	DirectX::XMFLOAT2 anchorPoint_ = { 0.0f,0.0f };
+	Vector2 anchorPoint_ = { 0.0f,0.0f };
 
 	//左右フリップ
 	bool isFlipX_ = false;
@@ -124,9 +129,9 @@ private:
 	bool isInvisible_ = false;
 
 	//テクスチャ左上座標
-	DirectX::XMFLOAT2 textureLeftTop_ = {0.0f,0.0f};
+	Vector2 textureLeftTop_ = {0.0f,0.0f};
 	//テクスチャ切り出しサイズ
-	DirectX::XMFLOAT2 textureSize_ = {0.0f,0.0f};
+	Vector2 textureSize_ = {0.0f,0.0f};
 
 private:
 	static SpriteCommon* spriteCommon;

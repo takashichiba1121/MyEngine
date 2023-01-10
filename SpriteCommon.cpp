@@ -186,12 +186,12 @@ void SpriteCommon::Initialize(DirectXCommon* dxCommon)
 	assert(SUCCEEDED(result));
 
 	//’l‚ð‘‚«ž‚Þ‚ÆŽ©“®“I‚É“]‘—‚³‚ê‚é
-	matProjection = DirectX::XMMatrixIdentity();
+	matProjection=identity();
 
-	matProjection.r[0].m128_f32[0] = 2.0f / dxCommon->getWinApp()->window_width;
-	matProjection.r[1].m128_f32[1] = -2.0f / dxCommon->getWinApp()->window_heigit;
-	matProjection.r[3].m128_f32[0] = -1.0f;
-	matProjection.r[3].m128_f32[1] = 1.0f;
+	matProjection.m[0][0] = 2.0f / dxCommon->getWinApp()->window_width;
+	matProjection.m[1][1] = -2.0f / dxCommon->getWinApp()->window_heigit;
+	matProjection.m[3][0] = -1.0f;
+	matProjection.m[3][1] = 1.0f;
 }
 
 void SpriteCommon::PreDraw()

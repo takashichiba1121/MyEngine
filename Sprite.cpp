@@ -97,7 +97,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 	//定数バッファのマッピング
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
 	//値を書き込むと自動的に転送される
-	constMapMaterial->color = XMFLOAT4(1, 1, 1, 1);
+	constMapMaterial->color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	assert(SUCCEEDED(result));
 
 	{
@@ -126,13 +126,13 @@ void Sprite::Initialize(uint32_t textureIndex)
 	//定数バッファのマッピング
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
 	//値を書き込むと自動的に転送される
-	constMapTransform->mat = DirectX::XMMatrixIdentity();
+	constMapTransform->mat = identity();
 
 	constMapTransform->mat = spriteCommon->GetMatProjection();
 
 	assert(SUCCEEDED(result));
 
-	if (textureIndex!=UINT_MAX)
+	if (textureIndex != UINT_MAX)
 	{
 		SetTexture(textureIndex);
 		AdjustTextureSize();
@@ -210,16 +210,15 @@ void Sprite::Update()
 	}
 
 	//ワールド変換行列
-	XMMATRIX matWorld = XMMatrixIdentity();
+	Matrix4 matWorld = identity();
 
-	XMMATRIX matRot = XMMatrixIdentity();//回転行列
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation_));//Z軸回りに0度回転
+	Matrix4 matRot;//回転行列
+	matRot =rotateZ(XMConvertToRadians(rotation_));//Z軸回りに0度回転
 
-	XMMATRIX matTrans = XMMatrixIdentity();//平行移動行列
-	matTrans *= XMMatrixTranslation(position_.x, position_.y, 0.0f);//(-50,0,0)平行移動
+	Matrix4 matTrans; //平行移動行列
+	matTrans =  translate({ position_.x, position_.y, 0.0f });//(-50,0,0)平行移動
 
-	matWorld *= matRot;//ワールド行列に回転を反映
-	matWorld *= matTrans;//ワールド行列に平行移動を反映
+	matWorld = matRot* matTrans;//ワールド行列に回転を反映
 	//行列の計算
 	constMapTransform->mat = matWorld * spriteCommon->GetMatProjection();
 }

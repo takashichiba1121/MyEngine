@@ -10,6 +10,7 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #include"DirectXCommon.h"
+#include"Matrix4.h"
 
 class SpriteCommon
 {
@@ -21,7 +22,7 @@ public:
 
 	ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
 	ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
-	DirectX::XMMATRIX GetMatProjection() { return matProjection; }
+	Matrix4 GetMatProjection() { return matProjection; }
 
 	void PreDraw();
 
@@ -32,6 +33,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature=nullptr;
 
-	DirectX::XMMATRIX matProjection;
+	Matrix4 matProjection;
 };
 
