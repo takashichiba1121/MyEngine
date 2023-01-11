@@ -9,6 +9,10 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <DirectXTex.h>
+#include"Vector2.h"
+#include"Vector3.h"
+#include"Vector4.h"
+#include"Matrix4.h"
 
 using namespace std;
 
@@ -24,26 +28,26 @@ public:
 	// 定数バッファ用データ構造体B1
 	struct ConstBufferDataB1
 	{
-		XMFLOAT3 ambient;	//アンビエント係数
+		Vector3 ambient;	//アンビエント係数
 		float pad1;			//パディング
-		XMFLOAT3 diffuse;	//ディフューズ係数
+		Vector3 diffuse;	//ディフューズ係数
 		float pad2;			//パディング
-		XMFLOAT3 specular;	//スペキュラー係数
+		Vector3 specular;	//スペキュラー係数
 		float alpha;		//アルファ
 	};
 	// 頂点データ構造体
 	struct VertexPosNormalUv
 	{
-		XMFLOAT3 pos; // xyz座標
-		XMFLOAT3 normal; // 法線ベクトル
-		XMFLOAT2 uv;  // uv座標
+		Vector3 pos; // xyz座標
+		Vector3 normal; // 法線ベクトル
+		Vector2 uv;  // uv座標
 	};
 	//マテリアル
 	struct Material {
 		std::string name;	//マテリアル名
-		XMFLOAT3 ambient;	//アンビエント影響度
-		XMFLOAT3 diffuse;	//ディフューズ影響度
-		XMFLOAT3 specular;	//スペキュラー影響度
+		Vector3 ambient;	//アンビエント影響度
+		Vector3 diffuse;	//ディフューズ影響度
+		Vector3 specular;	//スペキュラー影響度
 		float alpha;		//アルファ
 		std::string textureFilename;	//テクスチャファイル名
 		//コンストラクタ
