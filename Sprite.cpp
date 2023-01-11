@@ -126,7 +126,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 	//定数バッファのマッピング
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
 	//値を書き込むと自動的に転送される
-	constMapTransform->mat = identity();
+	constMapTransform->mat = Matrix4Math::identity();
 
 	constMapTransform->mat = spriteCommon->GetMatProjection();
 
@@ -210,13 +210,13 @@ void Sprite::Update()
 	}
 
 	//ワールド変換行列
-	Matrix4 matWorld = identity();
+	Matrix4 matWorld = Matrix4Math::identity();
 
 	Matrix4 matRot;//回転行列
-	matRot =rotateZ(XMConvertToRadians(rotation_));//Z軸回りに0度回転
+	matRot = Matrix4Math::rotateZ(XMConvertToRadians(rotation_));//Z軸回りに0度回転
 
 	Matrix4 matTrans; //平行移動行列
-	matTrans =  translate({ position_.x, position_.y, 0.0f });//(-50,0,0)平行移動
+	matTrans = Matrix4Math::translate({ position_.x, position_.y, 0.0f });//(-50,0,0)平行移動
 
 	matWorld = matRot* matTrans;//ワールド行列に回転を反映
 	//行列の計算

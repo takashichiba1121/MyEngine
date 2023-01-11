@@ -1,7 +1,7 @@
 #include "Matrix4.h"
 #include <cmath>
 
-Matrix4 identity()
+Matrix4 Matrix4Math::identity()
 {
 	static const Matrix4 result
 	{
@@ -14,7 +14,7 @@ Matrix4 identity()
 	return result;
 }
 
-Matrix4 scale(const Vector3& s)
+Matrix4 Matrix4Math::scale(const Vector3& s)
 {
 	Matrix4 result
 	{
@@ -27,7 +27,7 @@ Matrix4 scale(const Vector3& s)
 	return result;
 }
 
-Matrix4 rotateX(float angle)
+Matrix4 Matrix4Math::rotateX(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -43,7 +43,7 @@ Matrix4 rotateX(float angle)
 	return result;
 }
 
-Matrix4 rotateY(float angle)
+Matrix4 Matrix4Math::rotateY(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -59,7 +59,7 @@ Matrix4 rotateY(float angle)
 	return result;
 }
 
-Matrix4 rotateZ(float angle)
+Matrix4 Matrix4Math::rotateZ(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -75,7 +75,7 @@ Matrix4 rotateZ(float angle)
 	return result;
 }
 
-Matrix4 translate(const Vector3& t)
+Matrix4 Matrix4Math::translate(const Vector3& t)
 {
 	Matrix4 result
 	{
@@ -88,7 +88,7 @@ Matrix4 translate(const Vector3& t)
 	return result;
 }
 
-Vector3 transform(const Vector3& v, const Matrix4& m)
+Vector3 Matrix4Math::transform(const Vector3& v, const Matrix4& m)
 {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 

@@ -6,19 +6,23 @@ struct Matrix4
 	float m[4][4];
 };
 
-Matrix4 identity();
+namespace Matrix4Math
+{
 
-Matrix4 scale(const Vector3& s);
+	Matrix4 identity();
 
-Matrix4 rotateX(float angle);
-Matrix4 rotateY(float angle);
-Matrix4 rotateZ(float angle);
+	Matrix4 scale(const Vector3& s);
 
-Matrix4 translate(const Vector3& t);
+	Matrix4 rotateX(float angle);
+	Matrix4 rotateY(float angle);
+	Matrix4 rotateZ(float angle);
 
-Vector3 transform(const Vector3& v, const Matrix4& m);
+	Matrix4 translate(const Vector3& t);
 
-Matrix4& operator*=(Matrix4& m1, Matrix4& m2);
+	Vector3 transform(const Vector3& v, const Matrix4& m);
+}
 
-const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
-const Vector3 operator*(const Vector3& v, const Matrix4& m);
+	Matrix4& operator*=(Matrix4& m1, Matrix4& m2);
+
+	const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
+	const Vector3 operator*(const Vector3& v, const Matrix4& m);

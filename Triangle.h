@@ -12,8 +12,8 @@ class Triangle
 public:
 	struct Vertex
 	{
-		XMFLOAT3 pos; //xyz座標
-		XMFLOAT2 uv;  //uv座標
+		Vector3 pos; //xyz座標
+		Vector2 uv;  //uv座標
 	};
 	ComPtr<ID3D12PipelineState> pipelineState=nullptr;
 	ComPtr<ID3D12RootSignature> rootSignature=nullptr;

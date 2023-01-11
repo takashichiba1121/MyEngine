@@ -137,6 +137,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//sprite->SetInvisible(true);
 
+	Model::SetDevice(dxCommon->GetDevice());
+
+	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_heigit);
+
+	Model* model;
+
+	model=Model::LoadFormOBJ("cube");
+
+	Object3d* obj=new Object3d;
+
+	obj->SetModel(model);
+
+	obj->Initialize();
+
 	HRESULT result;
 
 	////DirectX初期化処理
@@ -846,6 +860,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		sprite2->Update();
 
+		obj->Update();
+
 		////更新処理ここから
 		//if (input->PushKey(DIK_Z) || input->PushKey(DIK_X))
 		//{
@@ -901,6 +917,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//描画コマンドここから
 		dxCommon->PreDraw();
+
+		Object3d::PreDraw(dxCommon->GetCommandList());
+
+		obj->Draw();
+
+		Object3d::PostDraw();
+
 
 		spriteCommon->PreDraw();
 
@@ -959,6 +982,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete sprite;
 
 	delete sprite2;
+
+	delete model;
+
+	delete obj;
 
 	delete dxCommon;
 

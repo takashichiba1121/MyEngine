@@ -186,7 +186,7 @@ void SpriteCommon::Initialize(DirectXCommon* dxCommon)
 	assert(SUCCEEDED(result));
 
 	//’l‚ð‘‚«ž‚Þ‚ÆŽ©“®“I‚É“]‘—‚³‚ê‚é
-	matProjection=identity();
+	matProjection= Matrix4Math::identity();
 
 	matProjection.m[0][0] = 2.0f / dxCommon->getWinApp()->window_width;
 	matProjection.m[1][1] = -2.0f / dxCommon->getWinApp()->window_heigit;
