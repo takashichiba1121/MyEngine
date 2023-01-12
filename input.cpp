@@ -3,16 +3,26 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-void Input::Initialize(WinApp* winApp)
+Microsoft::WRL::ComPtr<IDirectInputDevice8> Input::keyboard;
+
+Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;
+
+ BYTE Input::key[256];
+
+ BYTE Input::keyPre[256];
+
+ WinApp* Input::winApp_;
+
+void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
-	this->winApp_ = winApp;
+	winApp_ = WinApp;
 
 	HRESULT result;
 
 	//DirectInputの初期化
 	result = DirectInput8Create(
-		winApp->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,
+		WinApp->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 	//キーボードデバイスの生成
@@ -24,7 +34,7 @@ void Input::Initialize(WinApp* winApp)
 	assert(SUCCEEDED(result));
 	//排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
-		winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		WinApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result)); 
 }
 

@@ -1,14 +1,21 @@
 #include "SpriteCommon.h"
 #include"Texture.h"
 
-void SpriteCommon::Initialize(DirectXCommon* dxCommon)
+DirectXCommon* SpriteCommon::dxCommon;
+
+Microsoft::WRL::ComPtr<ID3D12PipelineState> SpriteCommon::pipelineState = nullptr;
+Microsoft::WRL::ComPtr<ID3D12RootSignature> SpriteCommon::rootSignature = nullptr;
+
+Matrix4 SpriteCommon::matProjection;
+
+void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 {
 	HRESULT result;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob = nullptr;//頂点シェーダーオブジェクト
 	Microsoft::WRL::ComPtr<ID3DBlob> psBlob = nullptr;//ピクセルシェーダーオブジェクト
 
-	this->dxCommon = dxCommon;
+	dxCommon = DxCommon;
 	ID3DBlob* errorBlob = nullptr;//エラーオブジェクト
 
 	//頂点シェーダーの読み込みとコンパイル

@@ -20,6 +20,14 @@ namespace Matrix4Math
 	Matrix4 translate(const Vector3& t);
 
 	Vector3 transform(const Vector3& v, const Matrix4& m);
+
+	Matrix4 MakeInverse(Matrix4 matrix);
+
+	Matrix4 ViewMat(Vector3 eye, Vector3 target, Vector3 up);
+
+	Matrix4 ProjectionMat(float fovAngleY, float aspectRatio, float nearZ, float farZ);
+
+	float ConvertToRadians(float rot);
 }
 
 	Matrix4& operator*=(Matrix4& m1, Matrix4& m2);

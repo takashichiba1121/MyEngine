@@ -18,9 +18,9 @@ public:
 public://メンバ関数
 
 	//初期化
-	void Initialize(WinApp* winApp);
+	static void Initialize(WinApp* winApp);
 	//更新
-	void Update();
+	static void Update();
 
 	/// <summary>
 	/// キーの押下をチェック
@@ -36,16 +36,16 @@ public://メンバ関数
 	bool TriggerKey(BYTE keyNumber);
 private://メイン変数
 	//キーボードデバイス
-	ComPtr<IDirectInputDevice8> keyboard = nullptr;
+	static ComPtr<IDirectInputDevice8> keyboard;
 
-	ComPtr<IDirectInput8> directInput = nullptr;
+	static ComPtr<IDirectInput8> directInput;
 
-	BYTE key[256] = {};
+	static BYTE key[256];
 
-	BYTE keyPre[256] = {};
+	static BYTE keyPre[256];
 
 	//WindowAPI
-	WinApp* winApp_ = nullptr;
+	static WinApp* winApp_;
 
 public://メンバ関数(ゲームパッド)
 	/// <summary>

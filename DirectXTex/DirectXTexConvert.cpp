@@ -791,7 +791,7 @@ _Use_decl_annotations_ bool DirectX::Internal::LoadScanline(
         LOAD_SCANLINE(XMINT4, XMLoadSInt4)
 
     case DXGI_FORMAT_R32G32B32_FLOAT:
-        LOAD_SCANLINE3(Vector3, XMLoadFloat3, g_XMIdentityR3)
+        LOAD_SCANLINE3(XMFLOAT3, XMLoadFloat3, g_XMIdentityR3)
 
     case DXGI_FORMAT_R32G32B32_UINT:
         LOAD_SCANLINE3(XMUINT3, XMLoadUInt3, g_XMIdentityR3)
@@ -815,7 +815,7 @@ _Use_decl_annotations_ bool DirectX::Internal::LoadScanline(
         LOAD_SCANLINE(XMSHORT4, XMLoadShort4)
 
     case DXGI_FORMAT_R32G32_FLOAT:
-        LOAD_SCANLINE2(Vector2, XMLoadFloat2, g_XMIdentityR3)
+        LOAD_SCANLINE2(XMFLOAT2, XMLoadFloat2, g_XMIdentityR3)
 
     case DXGI_FORMAT_R32G32_UINT:
         LOAD_SCANLINE2(XMUINT2, XMLoadUInt2, g_XMIdentityR3)
@@ -1644,7 +1644,7 @@ bool DirectX::Internal::StoreScanline(
         STORE_SCANLINE(XMINT4, XMStoreSInt4)
 
     case DXGI_FORMAT_R32G32B32_FLOAT:
-        STORE_SCANLINE(Vector3, XMStoreFloat3)
+        STORE_SCANLINE(XMFLOAT3, XMStoreFloat3)
 
     case DXGI_FORMAT_R32G32B32_UINT:
         STORE_SCANLINE(XMUINT3, XMStoreUInt3)
@@ -1680,7 +1680,7 @@ bool DirectX::Internal::StoreScanline(
         STORE_SCANLINE(XMSHORT4, XMStoreShort4)
 
     case DXGI_FORMAT_R32G32_FLOAT:
-        STORE_SCANLINE(Vector2, XMStoreFloat2)
+        STORE_SCANLINE(XMFLOAT2, XMStoreFloat2)
 
     case DXGI_FORMAT_R32G32_UINT:
         STORE_SCANLINE(XMUINT2, XMStoreUInt2)

@@ -13,13 +13,16 @@
 /// </summary>
 class Object3d
 {
+private: // エイリアス
+	// Microsoft::WRL::を省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public: // サブクラス
 	// 頂点データ構造体
 	struct VertexPosNormalUv
 	{
-		Vector3 pos; // xyz座標
-		Vector3 normal; // 法線ベクトル
+		XMFLOAT3 pos; // xyz座標
+		XMFLOAT3 normal; // 法線ベクトル
 		Vector2 uv;  // uv座標
 	};
 
@@ -27,15 +30,15 @@ public: // サブクラス
 	struct ConstBufferDataB0
 	{
 		//XMFLOAT4 color;	// 色 (RGBA)
-		Matrix4 mat;	// ３Ｄ変換行列
+		XMMATRIX mat;	// ３Ｄ変換行列
 	};
 
 	//マテリアル
 	struct Material {
 		std::string name;	//マテリアル名
-		Vector3 ambient;	//アンビエント影響度
-		Vector3 diffuse;	//ディフューズ影響度
-		Vector3 specular;	//スペキュラー影響度
+		XMFLOAT3 ambient;	//アンビエント影響度
+		XMFLOAT3 diffuse;	//ディフューズ影響度
+		XMFLOAT3 specular;	//スペキュラー影響度
 		float alpha;		//アルファ
 		std::string textureFilename;	//テクスチャファイル名
 		//コンストラクタ
@@ -77,31 +80,31 @@ public: // 静的メンバ関数
 	/// 視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	static const Vector3& GetEye() { return eye; }
+	static const XMFLOAT3& GetEye() { return eye; }
 
 	/// <summary>
 	/// 視点座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	static void SetEye(Vector3 eye);
+	static void SetEye(XMFLOAT3 eye);
 
 	/// <summary>
 	/// 注視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	static const Vector3& GetTarget() { return target; }
+	static const XMFLOAT3& GetTarget() { return target; }
 
 	/// <summary>
 	/// 注視点座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	static void SetTarget(Vector3 target);
+	static void SetTarget(XMFLOAT3 target);
 
 	/// <summary>
 	/// ベクトルによる移動
 	/// </summary>
 	/// <param name="move">移動量</param>
-	static void CameraMoveVector(Vector3 move);
+	static void CameraMoveVector(XMFLOAT3 move);
 
 private: // 静的メンバ変数
 	// デバイス
@@ -113,15 +116,15 @@ private: // 静的メンバ変数
 	// パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 	// ビュー行列
-	static Matrix4 matView;
+	static XMMATRIX matView;
 	// 射影行列
-	static Matrix4 matProjection;
+	static XMMATRIX matProjection;
 	// 視点座標
-	static Vector3 eye;
+	static XMFLOAT3 eye;
 	// 注視点座標
-	static Vector3 target;
+	static XMFLOAT3 target;
 	// 上方向ベクトル
-	static Vector3 up;
+	static XMFLOAT3 up;
 
 private:// 静的メンバ関数
 	/// <summary>
@@ -163,13 +166,13 @@ public: // メンバ関数
 	/// 座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetPosition() const { return position; }
+	const XMFLOAT3& GetPosition() const { return position; }
 
 	/// <summary>
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	void SetPosition(const Vector3& position) { this->position = position; }
+	void SetPosition(const XMFLOAT3& position) { this->position = position; }
 
 	//setter
 	void SetModel(Model* model) { this->model = model; }
@@ -180,13 +183,13 @@ private: // メンバ変数
 	// 色
 	XMFLOAT4 color = { 1,1,1,1 };
 	// ローカルスケール
-	Vector3 scale = { 20,20,20 };
+	XMFLOAT3 scale = { 20,20,20 };
 	// X,Y,Z軸回りのローカル回転角
-	Vector3 rotation = { 0,0,0 };
+	XMFLOAT3 rotation = { 0,0,0 };
 	// ローカル座標
-	Vector3 position = { 0,0,20 };
+	XMFLOAT3 position = { 0,0,20 };
 	// ローカルワールド変換行列
-	Matrix4 matWorld;
+	XMMATRIX matWorld;
 	// 親オブジェクト
 	Object3d* parent = nullptr;
 
