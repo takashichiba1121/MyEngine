@@ -44,8 +44,8 @@ private:
 
 	Object3d* obj = new Object3d;
 
-	Sprite* sprite = nullptr;
+	Model* model2;
 
-	Sprite* sprite2 = nullptr;
+	Object3d* obj2 = new Object3d;
 };
 
