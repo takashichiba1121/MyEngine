@@ -100,7 +100,6 @@ void DirectXCommon::InitializeDevice()
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);//エラー時に止まる
 		infoQueue->Release();
 	}
-#endif
 
 	//抑制するエラー
 	D3D12_MESSAGE_ID denyIds[] = {
@@ -121,6 +120,7 @@ void DirectXCommon::InitializeDevice()
 	filter.DenyList.pSeverityList = severities;
 	//指定したエラーの表示を抑制する
 	infoQueue->PushStorageFilter(&filter);
+#endif
 }
 
 void DirectXCommon::InitializeCommand()

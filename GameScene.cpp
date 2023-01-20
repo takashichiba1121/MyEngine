@@ -35,7 +35,7 @@ void GameScene::Initialize(GameScene* gameScene)
 	sprite2->SetAnchorPoint({ 1.0f,1.0f });
 
 
-	model = Model::LoadFormOBJ("cube");
+	model = Model::LoadFormOBJ("playerbullet");
 
 	obj->SetModel(model);
 

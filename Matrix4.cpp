@@ -92,7 +92,7 @@ Vector3 Matrix4Math::transform(const Vector3& v, const Matrix4& m)
 
 Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix)
 {
-	Matrix4 temp;
+	Matrix4 temp=identity();
 	float mat[4][8] = { 0 };
 
 	for (int i = 0; i < 4; i++) {

@@ -1,13 +1,6 @@
 #include "SpriteCommon.h"
 #include"Texture.h"
 
-DirectXCommon* SpriteCommon::dxCommon;
-
-Microsoft::WRL::ComPtr<ID3D12PipelineState> SpriteCommon::pipelineState = nullptr;
-Microsoft::WRL::ComPtr<ID3D12RootSignature> SpriteCommon::rootSignature = nullptr;
-
-Matrix4 SpriteCommon::matProjection;
-
 void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 {
 	HRESULT result;
@@ -184,7 +177,7 @@ void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 	result = dxCommon->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
-	rootSigBlob->Release();
+	//rootSigBlob->Release();
 	//パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
