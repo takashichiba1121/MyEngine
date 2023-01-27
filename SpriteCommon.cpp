@@ -197,8 +197,8 @@ void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 void SpriteCommon::PreDraw()
 {
 	//パイプラインステートとルートシグネチャの設定コマンド
-	dxCommon->GetCommandList()->SetPipelineState(GetPipelineState());
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(GetRootSignature());
+	dxCommon->GetCommandList()->SetPipelineState(pipelineState.Get());
+	dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
 
 	//SRVヒープの設定コマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::descHeap.Get() };

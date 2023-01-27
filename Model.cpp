@@ -115,7 +115,7 @@ void Model::CreateBuffers()
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		/*memcpy(vertMap, vertices, sizeof(vertices));*/
-		std::copy(vertices.begin(), vertices.end(), vertMap);
+		std::copy(vertices.begin(),vertices.end(), vertMap);
 		vertBuff->Unmap(0, nullptr);
 	}
 

@@ -14,15 +14,6 @@ GameScene::~GameScene()
 
 void GameScene::Initialize(GameScene* gameScene)
 {
-	model = Model::LoadFormOBJ("tire");
-
-	obj->SetModel(model);
-
-	obj->Initialize();
-
-	obj->SetScale({20.0f, 20.0f, 20.0f});
-
-	obj->SetPosition({ -30.0f, 0.0f, 0.0f });
 
 	model2 = Model::LoadFormOBJ("cube");
 
@@ -37,15 +28,11 @@ void GameScene::Initialize(GameScene* gameScene)
 
 void GameScene::Update()
 {
-	obj->Update();
-
 	obj2->Update();
 }
 
 void GameScene::ObjectDraw()
 {
-	obj->Draw();
-
 	obj2->Draw();
 }
 
