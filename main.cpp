@@ -20,6 +20,7 @@
 #include"Sprite.h"
 #include"Texture.h"
 #include"GameScene.h"
+#include"Audio.h"
 
 using namespace DirectX;
 using namespace std;
@@ -52,6 +53,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Model::SetDevice(dxCommon->GetDevice());
 
 	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_heigit);
+
+	Sound::StaticInitialize();
 
 	
 	GameScene* gameScene=new GameScene;
