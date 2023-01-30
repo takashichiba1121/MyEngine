@@ -3,7 +3,7 @@
 class WinApp
 {
 public://Ã“Iƒƒ“ƒoŠÖ”
-	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wapram, LPARAM lparam);
+	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 public://ƒƒ“ƒoŠÖ”
 	//‰Šú‰»
 	void Initialize();

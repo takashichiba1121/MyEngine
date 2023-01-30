@@ -27,11 +27,11 @@ ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
 //ComPtr<ID3D12Resource> Object3d::texbuff;
 //CD3DX12_CPU_DESCRIPTOR_HANDLE Object3d::cpuDescHandleSRV;
 //CD3DX12_GPU_DESCRIPTOR_HANDLE Object3d::gpuDescHandleSRV;
-XMMATRIX Object3d::matView{};
-XMMATRIX Object3d::matProjection{};
-XMFLOAT3 Object3d::eye = { 0, 0, -50.0f };
-XMFLOAT3 Object3d::target = { 0, 0, 0 };
-XMFLOAT3 Object3d::up = { 0, 1, 0 };
+Matrix4 Object3d::matView{};
+Matrix4 Object3d::matProjection{};
+Vector3 Object3d::eye = { 0, 0, -5.0f };
+Vector3 Object3d::target = { 0, 0, 0 };
+Vector3 Object3d::up = { 0, 1, 0 };
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
 //unsigned short Object3d::indices[planeCount * 3];
 
@@ -44,17 +44,11 @@ void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int wind
 
 	Model::SetDevice(device);
 
-	// デスクリプタヒープの初期化
-	InitializeDescriptorHeap();
-
 	// カメラ初期化
 	InitializeCamera(window_width, window_height);
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
-
-	//// テクスチャ読み込み
-	//LoadTexture("Resources/triangle_tex","");
 
 }
 
@@ -101,71 +95,35 @@ Object3d* Object3d::Create()
 	return object3d;
 }
 
-void Object3d::SetEye(XMFLOAT3 eye)
+void Object3d::SetEye(Vector3 eye)
 {
 	Object3d::eye = eye;
 
 	UpdateViewMatrix();
 }
 
-void Object3d::SetTarget(XMFLOAT3 target)
+void Object3d::SetTarget(Vector3 target)
 {
 	Object3d::target = target;
 
 	UpdateViewMatrix();
 }
 
-void Object3d::CameraMoveVector(XMFLOAT3 move)
-{
-	XMFLOAT3 eye_moved = GetEye();
-	XMFLOAT3 target_moved = GetTarget();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	target_moved.x += move.x;
-	target_moved.y += move.y;
-	target_moved.z += move.z;
-
-	SetEye(eye_moved);
-	SetTarget(target_moved);
-}
-
-void Object3d::InitializeDescriptorHeap()
-{
-	//HRESULT result = S_FALSE;
-
-	//// デスクリプタヒープを生成	
-	//D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	//descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	//descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
-	//descHeapDesc.NumDescriptors = 1; // シェーダーリソースビュー1つ
-	//result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
-	//if (FAILED(result)) {
-	//	assert(0);
-	//}
-
-	//// デスクリプタサイズを取得
-	//descriptorHandleIncrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-}
-
 void Object3d::InitializeCamera(int window_width, int window_height)
 {
 	// ビュー行列の生成
-	matView = XMMatrixLookAtLH(
-		XMLoadFloat3(&eye),
-		XMLoadFloat3(&target),
-		XMLoadFloat3(&up));
+	matView = Matrix4Math::ViewMat(
+		eye,
+		target,
+		up);
 
 	// 平行投影による射影行列の生成
-	//constMap->mat = XMMATRIXOrthographicOffCenterLH(
+	//constMap->mat = Matrix4OrthographicOffCenterLH(
 	//	0, window_width,
 	//	window_height, 0,
 	//	0, 1);
 	// 透視投影による射影行列の生成
-	matProjection = XMMatrixPerspectiveFovLH(
+	matProjection = Matrix4Math::ProjectionMat(
 		XMConvertToRadians(60.0f),
 		(float)window_width / window_height,
 		0.1f, 1000.0f
@@ -413,10 +371,10 @@ void Object3d::InitializeGraphicsPipeline()
 void Object3d::UpdateViewMatrix()
 {
 	// ビュー行列の生成
-	matView = XMMatrixLookAtLH(
-		XMLoadFloat3(&eye),
-		XMLoadFloat3(&target),
-		XMLoadFloat3(&up));
+	matView = Matrix4Math::ViewMat(
+		eye,
+		target,
+		up);
 }
 
 bool Object3d::Initialize()
@@ -454,21 +412,21 @@ bool Object3d::Initialize()
 void Object3d::Update()
 {
 	HRESULT result;
-	XMMATRIX matScale, matRot, matTrans;
+	Matrix4 matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+	matScale = Matrix4Math::scale(scale);
+	matRot = Matrix4Math::identity();
+	matRot = matRot * Matrix4Math::rotateZ(XMConvertToRadians(rotation.z));
+	matRot = matRot * Matrix4Math::rotateX(XMConvertToRadians(rotation.x));
+	matRot = matRot * Matrix4Math::rotateY(XMConvertToRadians(rotation.y));
+	matTrans = Matrix4Math::translate(position);
 
 	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
+	matWorld = Matrix4Math::identity(); // 変形をリセット
+	//matWorld = matWorld * matScale; // ワールド行列にスケーリングを反映
+	//matWorld = matWorld * matRot; // ワールド行列に回転を反映
+	//matWorld = matWorld * matTrans; // ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
 	if (parent != nullptr) {

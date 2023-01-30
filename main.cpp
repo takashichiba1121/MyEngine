@@ -1,17 +1,3 @@
-#include<d3dcompiler.h>
-#include<Windows.h>
-#include <tchar.h>
-#include<iostream>
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<cassert>
-#include<vector>
-#include<string>
-#include<DirectXMath.h>
-#include<DirectXTex.h>
-#pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
 #include"object3d.h"
 #include"input.h"
 #include"WinApp.h"
@@ -19,8 +5,9 @@
 #include"SpriteCommon.h"
 #include"Sprite.h"
 #include"Texture.h"
-#include"GameScene.h"
 #include"Audio.h"
+#include"imguiManager.h"
+#include<imgui.h>
 
 using namespace DirectX;
 using namespace std;
@@ -42,7 +29,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Input::Initialize(winApp);
 
-	SpriteCommon* spriteCommon=nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxCommon);
 
@@ -56,9 +43,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Sound::StaticInitialize();
 
-	
-	GameScene* gameScene=new GameScene;
-	gameScene->Initialize(gameScene);
+	imguiManager* imgui = new imguiManager;
+	imgui->Initialize(winApp, dxCommon);
+
+	Model* model2;
+
+	Object3d* obj2 = new Object3d;
+
+	model2 = Model::LoadFormOBJ("Enemy");
+
+	obj2->SetModel(model2);
+
+	obj2->Initialize();
+
+	//obj2->SetScale({ 10.0f, 10.0f, 10.0f });
+
+	obj2->SetPosition({ 0.0f, 0.0f, -45.0f });
+
+	float objX = 0;
+
+	float objY = 0;
 
 	//ゲームループ
 	while (true) {
@@ -68,29 +72,77 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 		//DirectX毎フレーム処理　ここから
-		
+
 		//入力の更新
 		Input::Update();
 
-		gameScene->Update();
+		/*Vector3 eye=Object3d::GetEye();
+
+		if (Input::PushKey(DIK_A))
+		{
+			eye.x++;
+		}
+
+		if (Input::PushKey(DIK_D))
+		{
+			eye.x--;
+		}
+
+		Object3d::SetEye(eye);*/
+
+		Vector3 pos = obj2->GetPosition();
+
+		if (Input::PushKey(DIK_Q))
+		{
+			pos.x--;
+		}
+		if (Input::PushKey(DIK_E))
+		{
+			pos.x++;
+		}
+
+		obj2->SetPosition(pos);
+
+		obj2->Update();
+
+		//imgui->Begin();
+
+		////ImGui::ShowDemoWindow();
+
+		//ImGui::Text("Hello, world %d", 123);
+
+
+		//ImGui::SliderFloat("X", &objX,-50.0f, 50.0f);
+
+		//ImGui::SliderFloat("Y", &objY, -50.0f, 50.0f);
+
+		//Vector3 move = obj2->GetPosition();
+
+		//move.x = objX;
+
+		//move.y = objY;
+
+		//obj2->SetPosition(move);
+
+		//imgui->End();
 
 		//描画コマンドここから
 		dxCommon->PreDraw();
 
 		Object3d::PreDraw(dxCommon->GetCommandList());
 
-		gameScene->ObjectDraw();
+		obj2->Draw();
 
 		Object3d::PostDraw();
 
 
 		spriteCommon->PreDraw();
 
-		gameScene->SpriteDraw();
-
 		spriteCommon->PostDrow();
 
 		//描画コマンドここまで
+
+		//imgui->Draw();
 
 		dxCommon->PostDrow();
 
@@ -98,9 +150,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 
+	delete model2;
+	delete obj2;
+
 	delete spriteCommon;
 
-	delete gameScene;
+	imgui->Finalize();
+
+	delete imgui;
 
 	delete dxCommon;
 

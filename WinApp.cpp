@@ -1,8 +1,18 @@
 #include "WinApp.h"
 #pragma comment(lib,"winmm.lib")
+#include<imgui_impl_win32.h>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd,UINT msg,WPARAM waram,LPARAM lparam);
 
 //ウィンドウプロージャー
-LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wapram, LPARAM lparam) {
+LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+
+	//iimGui用ウィンドウプロシージャ呼び出し
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+	{
+		return true;
+	}
+
 	//メッセージに応じてゲーム固有の処理を行う
 	switch (msg)
 	{
@@ -12,7 +22,7 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wapram, LPARAM lparam) {
 		PostQuitMessage(0);
 		return 0;
 	}
-	return DefWindowProc(hwnd, msg, wapram, lparam);
+	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
 void WinApp::Initialize()

@@ -27,13 +27,13 @@ public://メンバ関数
 	/// </summary>
 	///<param name="keynumber">キー番号(DIK_0等)</param>
 	/// <returns>押されているか</returns>
-	bool PushKey(BYTE keyNumber);
+	static bool PushKey(BYTE keyNumber);
 	/// <summary>
 	/// キーのトリガーをチェック
 	/// </summary>
 	///<param name="keynumber">キー番号(DIK_0等)</param>
 	/// <returns>トリガーか</returns>
-	bool TriggerKey(BYTE keyNumber);
+	static bool TriggerKey(BYTE keyNumber);
 private://メイン変数
 	//キーボードデバイス
 	static ComPtr<IDirectInputDevice8> keyboard;

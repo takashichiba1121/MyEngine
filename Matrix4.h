@@ -21,7 +21,7 @@ namespace Matrix4Math
 
 	Vector3 transform(const Vector3& v, const Matrix4& m);
 
-	Matrix4 MakeInverse(Matrix4 matrix);
+	Matrix4 MakeInverse(Matrix4 matrix4);
 
 	Matrix4 ViewMat(Vector3 eye, Vector3 target, Vector3 up);
 
@@ -30,7 +30,7 @@ namespace Matrix4Math
 	float ConvertToRadians(float rot);
 }
 
-	Matrix4& operator*=(Matrix4& m1, Matrix4& m2);
+	Matrix4& operator*=(const Matrix4& m1, const Matrix4& m2);
 
 	const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 	const Vector3 operator*(const Vector3& v, const Matrix4& m);

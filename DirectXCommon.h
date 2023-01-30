@@ -35,6 +35,9 @@ public://メンバ関数
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
 
 	WinApp* getWinApp() const { return winApp_; }
+
+	//バックバッファの数を取得
+	size_t GetBackBufferCount() const {return backBuffers.size(); }
 private://メンバ関数
 	//FPS固定初期化
 	void InitializeFixFPS();

@@ -90,14 +90,14 @@ Vector3 Matrix4Math::transform(const Vector3& v, const Matrix4& m)
 	return result;
 }
 
-Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix)
+Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix4)
 {
-	Matrix4 temp=identity();
+	Matrix4 temp;
 	float mat[4][8] = { 0 };
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			mat[i][j] = matrix.m[i][j];
+			mat[i][j] = matrix4.m[i][j];
 		}
 	}
 
@@ -119,7 +119,7 @@ Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix)
 		}
 
 		//最大の絶対値が0だったら逆行列は求められない
-		if (abs(mat[maxIndex][n]) <= 0) {
+		if (abs(mat[maxIndex][n]) <= 0.0005) {
 			return temp; //とりあえず単位行列返しちゃう
 		}
 
@@ -161,7 +161,9 @@ Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix)
 		}
 	}
 
-	return temp;
+	Matrix4 result = temp;
+
+	return result;
 }
 
 Matrix4 Matrix4Math::ViewMat(Vector3 eye, Vector3 target, Vector3 up)
@@ -180,7 +182,7 @@ Matrix4 Matrix4Math::ViewMat(Vector3 eye, Vector3 target, Vector3 up)
 		eye.x,		eye.y,		eye.z,		1
 	};
 
-	MakeInverse(LookAt);
+	LookAt=MakeInverse(LookAt);
 
 	return LookAt;
 }
@@ -209,7 +211,7 @@ float Matrix4Math::ConvertToRadians(float rot)
 	return rot * Radians;
 }
 
-Matrix4& operator*=(Matrix4& m1, const Matrix4& m2)
+Matrix4& operator*=(const Matrix4& m1, const Matrix4& m2)
 {
 	Matrix4 result{ 0 };
 
@@ -220,9 +222,8 @@ Matrix4& operator*=(Matrix4& m1, const Matrix4& m2)
 			}
 		}
 	}
-	m1 = result;
 
-	return m1;
+	return result;
 }
 
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2)
