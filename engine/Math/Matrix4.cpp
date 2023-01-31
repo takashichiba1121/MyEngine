@@ -119,7 +119,7 @@ Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix4)
 		}
 
 		//最大の絶対値が0だったら逆行列は求められない
-		if (abs(mat[maxIndex][n]) <= 0.0005) {
+		if (abs(mat[maxIndex][n]) <= 0.000001f) {
 			return temp; //とりあえず単位行列返しちゃう
 		}
 

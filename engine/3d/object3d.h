@@ -71,12 +71,6 @@ public: // 静的メンバ関数
 	static void PostDraw();
 
 	/// <summary>
-	/// 3Dオブジェクト生成
-	/// </summary>
-	/// <returns></returns>
-	static Object3d* Create();
-
-	/// <summary>
 	/// 視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
@@ -176,16 +170,28 @@ public: // メンバ関数
 	/// <param name="position">座標</param>
 	void SetScale(const Vector3& scale) { this->scale = scale; }
 
+	/// <summary>
+	/// 座標の取得
+	/// </summary>
+	/// <returns>座標</returns>
+	const Vector3& GetRot() const { return rotation; }
+
+	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	void SetRot(const Vector3& rot) { this->rotation = rot; }
+
 	//setter
 	void SetModel(Model* model) { this->model = model; }
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ
-	// 色
-	XMFLOAT4 color = { 1,1,1,1 };
+	//// 色
+	//Vector4 color = { 1,1,1,1 };
 	// ローカルスケール
-	Vector3 scale = { 1,1,1 };
+	Vector3 scale = { 3,3,3 };
 	// X,Y,Z軸回りのローカル回転角
 	Vector3 rotation = { 0,90,0 };
 	// ローカル座標
@@ -198,4 +204,6 @@ private: // メンバ変数
 	//モデル
 	Model* model = nullptr;
 };
+
+float ToRadian(float angle);
 

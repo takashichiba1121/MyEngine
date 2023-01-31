@@ -13,6 +13,10 @@ Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;
 
  WinApp* Input::winApp_;
 
+ XINPUT_STATE Input::gamePad;
+
+ XINPUT_STATE Input::oldGamePad;
+
 void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
@@ -47,6 +51,8 @@ void Input::Update()
 	keyboard->Acquire();
 	//全キーの入力状態を取得する
 	keyboard->GetDeviceState(sizeof(key), key);
+
+	Updatekeypad();
 }
 
 bool Input::PushKey(BYTE keyNumber)
@@ -71,44 +77,11 @@ bool Input::TriggerKey(BYTE keyNumber)
 
 //ゲームパッド
 
-DWORD Input::Updatekeypad(DWORD dwUserIndex)
+DWORD Input::Updatekeypad()
 {
+	oldGamePad = gamePad;
+
 	return XInputGetState(
-		dwUserIndex,//複数つながれてるときの選択
+		0,//複数つながれてるときの選択
 		&gamePad);//この変数に入力状況が格納される
-}
-
-float Input::PadAnalogStickLX()
-{
-	return (float)gamePad.Gamepad.sThumbLX / SHRT_MAX;
-}
-
-float Input::PadAnalogStickLY()
-{
-	return (float)gamePad.Gamepad.sThumbLY / SHRT_MAX;
-}
-
-float Input::PadAnalogStickRX()
-{
-	return (float)gamePad.Gamepad.sThumbRX / SHRT_MAX;
-}
-
-float Input::PadAnalogStickRY()
-{
-	return (float)gamePad.Gamepad.sThumbRY / SHRT_MAX;
-}
-
-float Input::PadLTrigger()
-{
-	return (float)gamePad.Gamepad.bLeftTrigger / 255;
-}
-
-float Input::PadRTrigger()
-{
-	return (float)gamePad.Gamepad.bRightTrigger / 255;
-}
-
-bool Input::PadKey(int button)
-{
-	return gamePad.Gamepad.wButtons & button;
 }

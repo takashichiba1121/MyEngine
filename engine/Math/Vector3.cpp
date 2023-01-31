@@ -32,9 +32,9 @@ float Vector3::dot(const Vector3& v) const
 Vector3 Vector3::cross(const Vector3& v) const
 {
 	Vector3 c;
-	c.x = v.y * z - v.z * y;
-	c.y = v.z * x - v.x * z;
-	c.z = v.x * y - v.y * x;
+	c.x = y * v.z - z * v.y;
+	c.y = z * v.x - x * v.z;
+	c.z = x * v.y - y * v.x;
 	return c;
 }
 

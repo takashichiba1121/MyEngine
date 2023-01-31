@@ -29,7 +29,7 @@ ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
 //CD3DX12_GPU_DESCRIPTOR_HANDLE Object3d::gpuDescHandleSRV;
 Matrix4 Object3d::matView{};
 Matrix4 Object3d::matProjection{};
-Vector3 Object3d::eye = { 0, 0, -5.0f };
+Vector3 Object3d::eye = { 0, 0, -15.0f };
 Vector3 Object3d::target = { 0, 0, 0 };
 Vector3 Object3d::up = { 0, 1, 0 };
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
@@ -74,27 +74,6 @@ void Object3d::PostDraw()
 	Object3d::cmdList = nullptr;
 }
 
-Object3d* Object3d::Create()
-{
-	// 3Dオブジェクトのインスタンスを生成
-	Object3d* object3d = new Object3d();
-	if (object3d == nullptr) {
-		return nullptr;
-	}
-
-	// 初期化
-	if (!object3d->Initialize()) {
-		delete object3d;
-		assert(0);
-		return nullptr;
-	}
-	//スケールをセット
-	float scale_val = 20;
-	object3d->scale = { scale_val,scale_val ,scale_val };
-
-	return object3d;
-}
-
 void Object3d::SetEye(Vector3 eye)
 {
 	Object3d::eye = eye;
@@ -117,14 +96,9 @@ void Object3d::InitializeCamera(int window_width, int window_height)
 		target,
 		up);
 
-	// 平行投影による射影行列の生成
-	//constMap->mat = Matrix4OrthographicOffCenterLH(
-	//	0, window_width,
-	//	window_height, 0,
-	//	0, 1);
 	// 透視投影による射影行列の生成
 	matProjection = Matrix4Math::ProjectionMat(
-		XMConvertToRadians(60.0f),
+		ToRadian(45.0f),
 		(float)window_width / window_height,
 		0.1f, 1000.0f
 	);
@@ -417,16 +391,16 @@ void Object3d::Update()
 	// スケール、回転、平行移動行列の計算
 	matScale = Matrix4Math::scale(scale);
 	matRot = Matrix4Math::identity();
-	matRot = matRot * Matrix4Math::rotateZ(XMConvertToRadians(rotation.z));
-	matRot = matRot * Matrix4Math::rotateX(XMConvertToRadians(rotation.x));
-	matRot = matRot * Matrix4Math::rotateY(XMConvertToRadians(rotation.y));
+	matRot = matRot * Matrix4Math::rotateZ(ToRadian(rotation.z));
+	matRot = matRot * Matrix4Math::rotateX(ToRadian(rotation.x));
+	matRot = matRot * Matrix4Math::rotateY(ToRadian(rotation.y));
 	matTrans = Matrix4Math::translate(position);
 
 	// ワールド行列の合成
 	matWorld = Matrix4Math::identity(); // 変形をリセット
-	//matWorld = matWorld * matScale; // ワールド行列にスケーリングを反映
-	//matWorld = matWorld * matRot; // ワールド行列に回転を反映
-	//matWorld = matWorld * matTrans; // ワールド行列に平行移動を反映
+	matWorld = matWorld * matScale; // ワールド行列にスケーリングを反映
+	matWorld = matWorld * matRot; // ワールド行列に回転を反映
+	matWorld = matWorld * matTrans; // ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
 	if (parent != nullptr) {
@@ -440,14 +414,6 @@ void Object3d::Update()
 	/*constMap->color = color;*/
 	constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
-	//// 定数バッファへデータ転送
-	//ConstBufferDataB1* constMap1 = nullptr;
-	//result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	//constMap1->ambient = material.ambient;
-	//constMap1->diffuse = material.diffuse;
-	//constMap1->specular = material.specular;
-	//constMap1->alpha = material.alpha;
-	//constBuffB1->Unmap(0, nullptr);
 }
 
 void Object3d::Draw()
@@ -466,6 +432,13 @@ void Object3d::Draw()
 
 	//モデルを描画
 	model->Draw(cmdList, 1);
+}
+
+float ToRadian(float angle)
+{
+	float PI = 3.141592;
+
+	return angle * (PI / 180);
 }
 
 //void Object3d::LoadMaterial(const std::string& directoryPath, const std::string& filename)
