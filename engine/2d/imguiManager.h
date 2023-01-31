@@ -5,16 +5,12 @@ class imguiManager
 {
 public:
 
-
-	///<summary>
-	///初期化
-	///</summary>
-	void Initialize(WinApp* winApp, DirectXCommon* dxCommon);
+	static void StaticInitialize(WinApp* winApp, DirectXCommon* dxCommon);
 
 	/// <summary>
 	/// 終了
 	/// </summary>
-	void Finalize();
+	static void Finalize();
 
 	/// <summary>
 	/// ImGui受付開始
@@ -29,14 +25,14 @@ public:
 	/// <summary>
 	/// 画面への描画
 	/// </summary>
-	void Draw();
+	static void Draw();
 
 private:
 	//SRV用デスクリプタヒープ
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
-	DirectXCommon* dxCommon_;
+	static DirectXCommon* dxCommon_;
 
-	WinApp* winApp_;
+	static WinApp* winApp_;
 };
 

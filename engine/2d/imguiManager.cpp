@@ -3,10 +3,13 @@
 #include"imgui_impl_win32.h"
 #include"imgui_impl_dx12.h"
 
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> imguiManager::srvHeap_;
 
+DirectXCommon* imguiManager::dxCommon_;
 
+WinApp* imguiManager::winApp_;
 
-void imguiManager::Initialize(WinApp* winApp,DirectXCommon* dxCommon)
+void imguiManager::StaticInitialize(WinApp* winApp, DirectXCommon* dxCommon)
 {
 	HRESULT result;
 
@@ -27,13 +30,13 @@ void imguiManager::Initialize(WinApp* winApp,DirectXCommon* dxCommon)
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	//デスクリプタヒープ生成
-	result = dxCommon_->GetDevice()->CreateDescriptorHeap(&desc,IID_PPV_ARGS(&srvHeap_));
+	result = dxCommon_->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
 	ImGui_ImplDX12_Init(
 		dxCommon_->GetDevice(),
 		static_cast<int>(dxCommon_->GetBackBufferCount()),
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,srvHeap_.Get(),
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, srvHeap_.Get(),
 		srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 		srvHeap_->GetGPUDescriptorHandleForHeapStart());
 }
