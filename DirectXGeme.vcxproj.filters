@@ -64,6 +64,12 @@
     <Filter Include="ヘッダー ファイル\application">
       <UniqueIdentifier>{5347de1d-9fa4-4878-9267-2884cb6c4309}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\application\Scene">
+      <UniqueIdentifier>{0c7eb7c9-b288-4ddd-8193-5219334dda92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\Scene">
+      <UniqueIdentifier>{787046c3-0b39-4a7e-b36b-4cefbe95fa3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,8 +117,8 @@
     <ClCompile Include="engine\io\input.cpp">
       <Filter>ソース ファイル\engine\io</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="engine\Scene\GameScene.cpp">
+      <Filter>ソース ファイル\application\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,8 +164,8 @@
     <ClInclude Include="engine\io\input.h">
       <Filter>ヘッダー ファイル\engine\io</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="engine\Scene\GameScene.h">
+      <Filter>ヘッダー ファイル\application\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

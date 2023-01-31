@@ -29,7 +29,7 @@ ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
 //CD3DX12_GPU_DESCRIPTOR_HANDLE Object3d::gpuDescHandleSRV;
 Matrix4 Object3d::matView{};
 Matrix4 Object3d::matProjection{};
-Vector3 Object3d::eye = { 0, 0, -15.0f };
+Vector3 Object3d::eye = { 0, 0, 0.0f };
 Vector3 Object3d::target = { 0, 0, 0 };
 Vector3 Object3d::up = { 0, 1, 0 };
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];

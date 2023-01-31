@@ -53,6 +53,23 @@ void Input::Update()
 	keyboard->GetDeviceState(sizeof(key), key);
 
 	Updatekeypad();
+
+	if (abs(gamePad.Gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		gamePad.Gamepad.sThumbLX = 0;
+	}
+	if (abs(gamePad.Gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		gamePad.Gamepad.sThumbLY = 0;
+	}
+	if (abs(gamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		gamePad.Gamepad.sThumbRX = 0;
+	}
+	if (abs(gamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		gamePad.Gamepad.sThumbRY = 0;
+	}
 }
 
 bool Input::PushKey(BYTE keyNumber)

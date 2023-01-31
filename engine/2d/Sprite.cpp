@@ -134,17 +134,12 @@ void Sprite::Initialize(uint32_t textureIndex)
 
 	if (textureIndex != UINT_MAX)
 	{
-		SetTexture(textureIndex);
+		this->textureIndex = textureIndex;
 		AdjustTextureSize();
 		scale_ = textureSize_;
 	}
 
 
-}
-
-void Sprite::SetTexture(uint32_t textureIndex)
-{
-	this->textureIndex = textureIndex;
 }
 
 void Sprite::AdjustTextureSize()

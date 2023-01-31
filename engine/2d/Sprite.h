@@ -41,8 +41,6 @@ public:
 
 	void Draw();
 
-	void SetTexture(uint32_t textureIndex);
-
 	uint32_t GetTexture() {return textureIndex ; }
 
 	void SetPosition(const Vector2& position) { this->position_ = position; }
@@ -131,7 +129,7 @@ private:
 	//テクスチャ左上座標
 	Vector2 textureLeftTop_ = {0.0f,0.0f};
 	//テクスチャ切り出しサイズ
-	Vector2 textureSize_ = {0.0f,0.0f};
+	Vector2 textureSize_ = {100.0f,100.0f};
 
 private:
 	static SpriteCommon* spriteCommon;
