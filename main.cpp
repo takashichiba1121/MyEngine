@@ -9,6 +9,7 @@
 #include"imguiManager.h"
 #include<imgui.h>
 #include"GameScene.h"
+#include"polygon.h"
 
 using namespace DirectX;
 using namespace std;
@@ -45,6 +46,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Sound::StaticInitialize();
 
 	imguiManager::StaticInitialize(winApp, dxCommon);
+
+	PolygonMana::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_heigit);
 
 	GameScene* gameScene = new GameScene;
 	gameScene->Initialize();

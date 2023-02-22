@@ -29,6 +29,8 @@ void GameScene::Initialize()
 	sound->SoundLoadWave("Resources/GameClear.wav");
 
 	sound->SoundPlayWave(true,0.1f);
+
+	polygonMana.Initialize();
 }
 
 void GameScene::Update()

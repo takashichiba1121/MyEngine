@@ -94,6 +94,8 @@ public: // 静的メンバ関数
 	/// <param name="position">座標</param>
 	static void SetTarget(Vector3 target);
 
+	static Matrix4 GetMatViewPro();
+
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* device;

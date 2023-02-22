@@ -9,6 +9,7 @@
 #include"Audio.h"
 #include"imguiManager.h"
 #include<imgui.h>
+#include"polygon.h"
 class GameScene
 {
 public: // ƒƒ“ƒoŠÖ”
@@ -47,5 +48,7 @@ private:
 	bool operation = false;
 
 	std::unique_ptr<Sound> sound;
+
+	PolygonMana polygonMana;
 };
 

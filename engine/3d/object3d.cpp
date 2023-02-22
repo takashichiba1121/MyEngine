@@ -434,6 +434,12 @@ void Object3d::Draw()
 	model->Draw(cmdList, 1);
 }
 
+Matrix4 Object3d::GetMatViewPro()
+{
+
+	return matView*matProjection;
+}
+
 float ToRadian(float angle)
 {
 	float PI = 3.141592;
