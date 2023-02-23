@@ -103,8 +103,10 @@ class PolygonMana
 	///<param name="life">生存時間</param>
 	///<param name="position">初期座標</param>
 	/// <param name="velocity">	速度</param>
-	/// <param name="life">加速度</param>
-		void Add(int life, Object3d::VertexPosNormalUv position, Object3d::VertexPosNormalUv position2, Object3d::VertexPosNormalUv position3, Vector3 velocity, Vector3 accel, Vector4 start_color, Vector4 end_color,Matrix4 matworld);
+	/// <param name="accel">加速度</param>
+		void Add(int life, Vector3 position, Vector3 position2, Vector3 position3, Vector3 velocity, Vector3 accel, Vector4 startColor, Vector4 endColor,Matrix4 matworld);
+
+		void Addobj(Object3d* obj,Vector4 startColor,Vector4 endColor);
 
 	private: // メンバ変数
 		ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ

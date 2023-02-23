@@ -79,6 +79,8 @@ public:
 	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
+	std::vector<VertexPosNormalUv> GetVertices() {return vertices; }
+
 private://非公開のメンバ関数
 	//OBJファイルから3Dモデルを読み込む(非公開)
 	void LoadFromOBJInternal(const std::string& modelname);

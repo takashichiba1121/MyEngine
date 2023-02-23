@@ -49,6 +49,6 @@ private:
 
 	std::unique_ptr<Sound> sound;
 
-	PolygonMana polygonMana;
+	std::unique_ptr<PolygonMana> polygonMana;
 };
 
