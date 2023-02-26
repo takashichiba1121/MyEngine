@@ -22,7 +22,7 @@ VSOutput main(float4 pos : POSITION ,float3 normal : NORMAL ,float2 uv : TEXCOOR
 	float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 
 	VSOutput output;//ピクセルシェーダを渡す値
-	output.svpos = mul(mat,pos);
+	output.svpos = pos;
 	output.normal = normal;
 	output.color.rgb = (ambient + diffuse + specular) * lightColor;
 	output.color.a = m_alpha;

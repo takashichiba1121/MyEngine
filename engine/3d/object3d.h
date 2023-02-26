@@ -187,8 +187,6 @@ public: // メンバ関数
 	//setter
 	void SetModel(Model* model) { this->model = model; }
 
-	const Model GetModel() { return *model; }
-
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ

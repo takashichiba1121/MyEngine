@@ -14,7 +14,7 @@ void GameScene::Initialize()
 
 	sprite->Initialize(Texture::LoadTexture(L"Resources/mario.jpg"));
 
-	model.reset(Model::LoadFormOBJ("cube"));
+	model.reset(Model::LoadFormOBJ("Medama"));
 
 	obj = std::make_unique<Object3d>();
 
@@ -22,17 +22,13 @@ void GameScene::Initialize()
 
 	obj->Initialize();
 
-	Object3d::SetEye({ 0.0f,0.0f,-15.0f });
+	Object3d::SetEye({ 0.0f,0.0f,-5.0f });
 
 	sound = std::make_unique<Sound>();
 
 	sound->SoundLoadWave("Resources/GameClear.wav");
 
 	sound->SoundPlayWave(true,0.1f);
-
-	polygonMana = std::make_unique<PolygonMana>();
-
-	polygonMana->Initialize();
 }
 
 void GameScene::Update()
@@ -45,8 +41,6 @@ void GameScene::Update()
 	obj->Update();
 
 	sprite->Update();
-
-	polygonMana->Update();
 }
 
 void GameScene::Draw()
