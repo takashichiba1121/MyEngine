@@ -4,9 +4,6 @@ float rand(float3 co)
     return frac(sin(dot(co.xyz, float3(12.9898, 78.233, 53.539))) * 43758.5453);
 }
 
-//回転行列
-        //https://wgld.org/d/glsl/g017.html
-        //https://github.com/hecomi/HoloLensPlayground
 float3 rotate(float3 p, float3 rotation)
 {
     //rotationがゼロ行列だと、Geometry shaderが表示されないので注意
@@ -38,9 +35,9 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
 {
     float _Destruction=1.0f;
     float _ScaleFactor=1.0f;
-    float _RotationFactor=1.0f;
-    float _PositionFactor=1.0f;
-    float _AlphaFactor=0.5f;
+    float _RotationFactor=0.0f;
+    float _PositionFactor=0.0f;
+    float _AlphaFactor=1.0f;
 
     GSOutput o;
 
@@ -58,23 +55,20 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
     {
         VSOutput v = IN[i];
 
-        if (_Destruction)
-        {
             // centerを起点に三角メッシュの大きさが変化
-            v.svpos.xyz = center + (v.svpos.xyz - center) *  _ScaleFactor;
+            v.svpos.xyz = center + (v.svpos.xyz - center) *  (_Destruction*_ScaleFactor);
 
             // centerを起点に、頂点が回転
-            v.svpos.xyz = center + rotate(v.svpos.xyz - center, r3 * _RotationFactor);
+            v.svpos.xyz = center + rotate(v.svpos.xyz - center, r3 * (_Destruction *_RotationFactor));
 
             // 法線方向に弾け飛ぶ
-            v.svpos.xyz += normal * _PositionFactor * r3;
-        }
+            v.svpos.xyz += normal *(_Destruction * _PositionFactor) * r3;
 
         o.svpos = mul(mat, v.svpos);
         o.uv = v.uv;
         o.normal = v.normal;
         o.color = v.color;
-        o.color.a*= 1.0 - _Destruction * _AlphaFactor;
+        o.color.a*= _Destruction * _AlphaFactor;
         triStream.Append(o);
     }
 
