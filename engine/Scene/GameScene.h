@@ -9,6 +9,7 @@
 #include"Audio.h"
 #include"imguiManager.h"
 #include<imgui.h>
+#include"PostEffect.h"
 class GameScene
 {
 public: // メンバ関数
@@ -31,6 +32,8 @@ public: // メンバ関数
 	/// スプライト描画
 	/// </summary>
 	void SpriteDraw();
+
+	void PostEffectDraw();
 private:
 	std::unique_ptr<Sprite> sprite;
 
@@ -47,5 +50,7 @@ private:
 	bool operation = false;
 
 	std::unique_ptr<Sound> sound;
+
+	PostEffect* postEffect = nullptr;
 };
 

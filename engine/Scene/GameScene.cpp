@@ -6,6 +6,7 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+	delete postEffect;
 }
 
 void GameScene::Initialize()
@@ -14,7 +15,7 @@ void GameScene::Initialize()
 
 	sprite->Initialize(Texture::LoadTexture(L"Resources/mario.jpg"));
 
-	model.reset(Model::LoadFormOBJ("Medama"));
+	model.reset(Model::LoadFormOBJ("cube"));
 
 	obj = std::make_unique<Object3d>();
 
@@ -29,6 +30,10 @@ void GameScene::Initialize()
 	sound->SoundLoadWave("Resources/GameClear.wav");
 
 	sound->SoundPlayWave(true,0.1f);
+
+	postEffect = new PostEffect;
+
+	postEffect->Initialize();
 }
 
 void GameScene::Update()
@@ -41,6 +46,8 @@ void GameScene::Update()
 	obj->Update();
 
 	sprite->Update();
+
+	postEffect->Update();
 }
 
 void GameScene::Draw()
@@ -51,4 +58,9 @@ void GameScene::Draw()
 void GameScene::SpriteDraw()
 {
 	sprite->Draw();
+}
+
+void GameScene::PostEffectDraw()
+{
+	postEffect->Draw();
 }

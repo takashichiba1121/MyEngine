@@ -87,7 +87,7 @@ private:
 	//テクスチャサイズをイメージに合わせる
 	void AdjustTextureSize();
 
-private:
+protected:
 	Vertex vertices[4] = {};
 
 	Vertex* vertMap = nullptr;
@@ -131,7 +131,7 @@ private:
 	//テクスチャ切り出しサイズ
 	Vector2 textureSize_ = {100.0f,100.0f};
 
-private:
+protected:
 	static SpriteCommon* spriteCommon;
 
 	static DirectXCommon* dxCommon;

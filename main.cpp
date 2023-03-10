@@ -9,6 +9,7 @@
 #include"imguiManager.h"
 #include<imgui.h>
 #include"GameScene.h"
+#include"PostEffect.h"
 
 using namespace DirectX;
 using namespace std;
@@ -68,16 +69,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		Object3d::PreDraw(dxCommon->GetCommandList());
 
-		gameScene->Draw();
+		//gameScene->Draw();
 
 		Object3d::PostDraw();
 
 
 		spriteCommon->PreDraw();
 
-		gameScene->SpriteDraw();
+		//gameScene->SpriteDraw();
 
 		spriteCommon->PostDrow();
+
+		gameScene->PostEffectDraw();
 
 		//•`‰æƒRƒ}ƒ“ƒh‚±‚±‚Ü‚Å
 

@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{35476cfb-1e5e-44d2-9f74-11489c86306b}</UniqueIdentifier>
     </Filter>
@@ -70,6 +66,10 @@
     <Filter Include="ヘッダー ファイル\application\Scene">
       <UniqueIdentifier>{787046c3-0b39-4a7e-b36b-4cefbe95fa3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -120,6 +120,9 @@
     <ClCompile Include="engine\Scene\GameScene.cpp">
       <Filter>ソース ファイル\application\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="engine\2d\PostEffect.cpp">
+      <Filter>ソース ファイル\engine\2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="engine\Scene\GameScene.h">
       <Filter>ヘッダー ファイル\application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\2d\PostEffect.h">
+      <Filter>ヘッダー ファイル\engine\2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
