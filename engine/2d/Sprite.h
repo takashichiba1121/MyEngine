@@ -32,7 +32,7 @@ class Sprite
 {
 public:
 
-	void static StaticInitialize(SpriteCommon* SpriteCommon);
+	void static StaticInitialize();
 
 	//èâä˙âª
 	void Initialize(uint32_t textureIndex = UINT32_MAX);
@@ -132,7 +132,6 @@ protected:
 	Vector2 textureSize_ = {100.0f,100.0f};
 
 protected:
-	static SpriteCommon* spriteCommon;
 
 	static DirectXCommon* dxCommon;
 

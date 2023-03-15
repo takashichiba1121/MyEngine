@@ -6,15 +6,12 @@
 using namespace DirectX;
 using namespace std;
 
-SpriteCommon* Sprite::spriteCommon;
-
 DirectXCommon* Sprite::dxCommon;
 
-void Sprite::StaticInitialize(SpriteCommon* SpriteCommon)
+void Sprite::StaticInitialize()
 {
-	spriteCommon = SpriteCommon;
 
-	dxCommon = spriteCommon->GetDxCommon();
+	dxCommon = SpriteCommon::GetDxCommon();
 }
 
 void Sprite::Initialize(uint32_t textureIndex)
@@ -128,7 +125,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 	//’l‚ð‘‚«ž‚Þ‚ÆŽ©“®“I‚É“]‘—‚³‚ê‚é
 	constMapTransform->mat = Matrix4Math::identity();
 
-	constMapTransform->mat = spriteCommon->GetMatProjection();
+	constMapTransform->mat = SpriteCommon::GetMatProjection();
 
 	assert(SUCCEEDED(result));
 
@@ -215,7 +212,7 @@ void Sprite::Update()
 
 	matWorld = matRot* matTrans;//ƒ[ƒ‹ƒhs—ñ‚É‰ñ“]‚ð”½‰f
 	//s—ñ‚ÌŒvŽZ
-	constMapTransform->mat = matWorld * spriteCommon->GetMatProjection();
+	constMapTransform->mat = matWorld * SpriteCommon::GetMatProjection();
 }
 
 void Sprite::Draw()

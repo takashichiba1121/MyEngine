@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include"DirectXCommon.h"
 
 GameScene::GameScene()
 {
@@ -6,12 +7,13 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	delete postEffect;
 }
 
 void GameScene::Initialize()
 {
 	sprite = std::make_unique<Sprite>();
+
+	sprite->SetPosition({0,0});
 
 	sprite->Initialize(Texture::LoadTexture(L"Resources/mario.jpg"));
 
@@ -30,10 +32,6 @@ void GameScene::Initialize()
 	sound->SoundLoadWave("Resources/GameClear.wav");
 
 	sound->SoundPlayWave(true,0.1f);
-
-	postEffect = new PostEffect;
-
-	postEffect->Initialize();
 }
 
 void GameScene::Update()
@@ -46,21 +44,19 @@ void GameScene::Update()
 	obj->Update();
 
 	sprite->Update();
-
-	postEffect->Update();
 }
 
-void GameScene::Draw()
+void GameScene::Draw(DirectXCommon* dxCommon)
 {
-	obj->Draw();
-}
+	Object3d::PreDraw(dxCommon->GetCommandList());
 
-void GameScene::SpriteDraw()
-{
+	//obj->Draw();
+
+	Object3d::PostDraw();
+
+	SpriteCommon::PreDraw();
+
 	sprite->Draw();
-}
 
-void GameScene::PostEffectDraw()
-{
-	postEffect->Draw();
+	SpriteCommon::PostDraw();
 }

@@ -26,14 +26,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
-
-	/// <summary>
-	/// スプライト描画
-	/// </summary>
-	void SpriteDraw();
-
-	void PostEffectDraw();
+	void Draw(DirectXCommon* dxCommon);
 private:
 	std::unique_ptr<Sprite> sprite;
 
@@ -50,7 +43,5 @@ private:
 	bool operation = false;
 
 	std::unique_ptr<Sound> sound;
-
-	PostEffect* postEffect = nullptr;
 };
 

@@ -203,7 +203,7 @@ void DirectXCommon::InitializeDepthBuffer()
 	D3D12_RESOURCE_DESC depthResourceDesc{};
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	depthResourceDesc.Width = WinApp::window_width;//レンダーターゲットに合わせる
-	depthResourceDesc.Height = WinApp::window_heigit;//レンダーターゲットに合わせる
+	depthResourceDesc.Height = WinApp::window_height;//レンダーターゲットに合わせる
 	depthResourceDesc.DepthOrArraySize = 1;
 	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT;//深度フォーマット
 	depthResourceDesc.SampleDesc.Count = 1;
@@ -275,7 +275,7 @@ void DirectXCommon::PreDraw()
 	//ビューポート設定コマンド
 	D3D12_VIEWPORT viewport{};
 	viewport.Width = WinApp::window_width;
-	viewport.Height = WinApp::window_heigit;
+	viewport.Height = WinApp::window_height;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -288,7 +288,7 @@ void DirectXCommon::PreDraw()
 	scissorRect.left = 0;
 	scissorRect.right = scissorRect.left + WinApp::window_width;
 	scissorRect.top = 0;
-	scissorRect.bottom = scissorRect.top + WinApp::window_heigit;
+	scissorRect.bottom = scissorRect.top + WinApp::window_height;
 
 	//シザ―短径設定コマンドを、コマンドリストに積む
 	commandList->RSSetScissorRects(1, &scissorRect);
