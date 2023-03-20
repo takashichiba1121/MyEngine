@@ -45,9 +45,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	imguiManager::StaticInitialize(winApp, dxCommon);
 
+	ParticleManager::StaticInitialize(dxCommon->GetDevice());
+
 	PostEffect* postEffect = new PostEffect;
 
-	postEffect->Initialize();
+	postEffect->Initialize(dxCommon);
 
 	GameScene* gameScene = new GameScene;
 	gameScene->Initialize();
@@ -66,15 +68,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		gameScene->Update();
 
-		postEffect->Update();
+		//postEffect->Update();
 
 		//描画コマンドここから
 
 		postEffect->PreDrawScene(dxCommon->GetCommandList());
 
-		gameScene->Draw(dxCommon);
+		gameScene->PostEffectDraw(dxCommon);
 
-		postEffect->PostDrawScene(dxCommon->GetCommandList());
+		postEffect->PostDrawScene();
 
 		//描画コマンドここまで
 
@@ -82,6 +84,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		dxCommon->PreDraw();
 
 		postEffect->Draw();
+
+		gameScene->Draw(dxCommon);
 		
 		dxCommon->PostDrow();
 
@@ -90,6 +94,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//DirectX毎フレーム処理　ここまで
 
 	}
+	delete postEffect;
 
 	delete gameScene;
 

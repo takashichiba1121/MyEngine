@@ -10,6 +10,7 @@
 #include"imguiManager.h"
 #include<imgui.h>
 #include"PostEffect.h"
+#include"ParticleManager.h"
 class GameScene
 {
 public: // ƒƒ“ƒoŠÖ”
@@ -27,6 +28,11 @@ public: // ƒƒ“ƒoŠÖ”
 	/// •`‰æ
 	/// </summary>
 	void Draw(DirectXCommon* dxCommon);
+
+	/// <summary>
+/// •`‰æ
+/// </summary>
+	void PostEffectDraw(DirectXCommon* dxCommon);
 private:
 	std::unique_ptr<Sprite> sprite;
 
@@ -43,5 +49,13 @@ private:
 	bool operation = false;
 
 	std::unique_ptr<Sound> sound;
+
+	Vector2 pos = { 0,0 };
+
+	std::unique_ptr<ParticleManager> pMan;
+
+	float flame=0;
+
+	bool isP=false;
 };
 
