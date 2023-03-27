@@ -42,6 +42,7 @@ private://メンバ変数
 
     //頂点バッファビューの作成
     D3D12_VERTEX_BUFFER_VIEW vbView{};
+
     Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
 
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapSRV;

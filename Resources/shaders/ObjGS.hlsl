@@ -33,11 +33,6 @@ float3 rotate(float3 p, float3 rotation)
 [maxvertexcount(3)]
 void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
 {
-    float _Destruction=1.0f;
-    float _ScaleFactor=1.0f;
-    float _RotationFactor=0.0f;
-    float _PositionFactor=0.0f;
-    float _AlphaFactor=1.0f;
 
     GSOutput o;
 
@@ -56,7 +51,7 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
         VSOutput v = IN[i];
 
             // centerを起点に三角メッシュの大きさが変化
-            v.svpos.xyz = center + (v.svpos.xyz - center) *  (_Destruction*_ScaleFactor);
+            v.svpos.xyz = center + (v.svpos.xyz - center) * _ScaleFactor;
 
             // centerを起点に、頂点が回転
             v.svpos.xyz = center + rotate(v.svpos.xyz - center, r3 * (_Destruction *_RotationFactor));
@@ -68,7 +63,7 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
         o.uv = v.uv;
         o.normal = v.normal;
         o.color = v.color;
-        o.color.a*= _Destruction * _AlphaFactor;
+        o.color.a*= _AlphaFactor;
         triStream.Append(o);
     }
 

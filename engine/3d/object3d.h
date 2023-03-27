@@ -49,6 +49,15 @@ public: // サブクラス
 			alpha = 1.0f;
 		}
 	};
+	// 定数バッファ用データ構造体
+	struct ConstBufferPolygonExplosion
+	{
+		float _Destruction = 0.0f;
+		float _ScaleFactor = 1.0f;
+		float _RotationFactor = 0.0f;
+		float _PositionFactor = 0.0f;
+		float _AlphaFactor = 1.0f;
+	};
 
 public: // 静的メンバ関数
 	/// <summary>
@@ -187,9 +196,14 @@ public: // メンバ関数
 	//setter
 	void SetModel(Model* model) { this->model = model; }
 
+	const ConstBufferPolygonExplosion GetPolygonExplosion() { return *ConstMapPolygon; }
+
+	const void SetPolygonExplosion(ConstBufferPolygonExplosion polygonExplosion) { *ConstMapPolygon = polygonExplosion; }
+
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ
+	ComPtr<ID3D12Resource> constBuffB2; // 定数バッファ
 	//// 色
 	//Vector4 color = { 1,1,1,1 };
 	// ローカルスケール
@@ -202,6 +216,8 @@ private: // メンバ変数
 	Matrix4 matWorld;
 	// 親オブジェクト
 	Object3d* parent = nullptr;
+
+	ConstBufferPolygonExplosion* ConstMapPolygon;
 
 	//モデル
 	Model* model = nullptr;

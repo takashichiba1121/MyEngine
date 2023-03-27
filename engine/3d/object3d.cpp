@@ -254,10 +254,11 @@ void Object3d::InitializeGraphicsPipeline()
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);*/
 
-	CD3DX12_ROOT_PARAMETER rootparams[3];
+	CD3DX12_ROOT_PARAMETER rootparams[4];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -382,30 +383,52 @@ bool Object3d::Initialize()
 	// nullptrチェック
 	assert(device);
 
-	// ヒーププロパティ
-	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// リソース設定
-	CD3DX12_RESOURCE_DESC resourceDesc =
-		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
-
-
 	HRESULT result;
 
-	// 定数バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProps, // アップロード可能
-		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&constBuffB0));
-	//// 定数バッファの生成
-	//result = device->CreateCommittedResource(
-	//	&heapPropsB1,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&resourceDescB1,
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffB1));
-	assert(SUCCEEDED(result));
+	// ヒーププロパティ
+	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	{
+		// リソース設定
+		CD3DX12_RESOURCE_DESC resourceDesc =
+			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
 
+		// 定数バッファの生成
+		result = device->CreateCommittedResource(
+			&heapProps, // アップロード可能
+			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+			IID_PPV_ARGS(&constBuffB0));
+		//// 定数バッファの生成
+		//result = device->CreateCommittedResource(
+		//	&heapPropsB1,
+		//	D3D12_HEAP_FLAG_NONE,
+		//	&resourceDescB1,
+		//	D3D12_RESOURCE_STATE_GENERIC_READ,
+		//	nullptr,
+		//	IID_PPV_ARGS(&constBuffB1));
+		assert(SUCCEEDED(result));
+	}
+
+	{
+		// リソース設定
+		CD3DX12_RESOURCE_DESC resourceDesc =
+			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferPolygonExplosion) + 0xff) & ~0xff);
+
+		// 定数バッファの生成
+		result = device->CreateCommittedResource(
+			&heapProps, // アップロード可能
+			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+			IID_PPV_ARGS(&constBuffB2));
+		//// 定数バッファの生成
+		//result = device->CreateCommittedResource(
+		//	&heapPropsB1,
+		//	D3D12_HEAP_FLAG_NONE,
+		//	&resourceDescB1,
+		//	D3D12_RESOURCE_STATE_GENERIC_READ,
+		//	nullptr,
+		//	IID_PPV_ARGS(&constBuffB1));
+		assert(SUCCEEDED(result));
+	}
+	result = constBuffB2->Map(0, nullptr, (void**)&ConstMapPolygon);
 	return true;
 }
 
@@ -440,6 +463,7 @@ void Object3d::Update()
 	/*constMap->color = color;*/
 	constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
+
 }
 
 void Object3d::Draw()
@@ -455,6 +479,9 @@ void Object3d::Draw()
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(2, constBuffB2->GetGPUVirtualAddress());
 
 	//モデルを描画
 	model->Draw(cmdList, 1);
