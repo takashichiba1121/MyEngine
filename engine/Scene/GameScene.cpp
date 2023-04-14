@@ -28,17 +28,29 @@ void GameScene::Initialize()
 
 	obj->SetPosition({0,0,5});
 
-	obj->SetRot({90.0f,0.0f,-45.0f});
+	obj->SetRot({0.0f,270.0f,0.0f});
 
-	obj->SetScale({5,5,5});
+	obj->SetScale({1,1,1});
 
 	obj->SetPolygonExplosion({0.0f,1.0f,6.28,10.0f,0.0f});
 
-	Object3d::SetEye({ 0.0f,-10.0f,-20.0f });
+	Object3d::SetEye({ 0.0f,0.0f,-1.0f });
 
 	pMan = std::make_unique<ParticleManager>();
 
 	pMan->Initialize();
+
+	model2.reset(Model::LoadFormOBJ("skydome"));
+
+	obj2 = std::make_unique<Object3d>();
+
+	obj2->SetModel(model2.get());
+
+	obj2->Initialize();
+
+	obj2->SetScale({ 50,50,50 });
+
+	obj2->SetPolygonExplosion({ 0.0f,1.0f,6.28,10.0f,1.0f });
 
 	//sound = std::make_unique<Sound>();
 
@@ -54,7 +66,8 @@ void GameScene::Update()
 	if (Input::TriggerKey(DIK_SPACE))
 	{
 		isP = true;
-		obj->SetPolygonExplosion({ 1.0f,1.0f,6.28,10.0f,0.0f });
+		obj->SetPolygonExplosion({ 1.0f,1.0f,6.28,50.0f,0.0f });
+		flame = 0;
 	}
 	if (isP)
 	{
@@ -67,7 +80,7 @@ void GameScene::Update()
 		float a = (1.0f-0.0f) * (flame / endflame);
 
    		Object3d::ConstBufferPolygonExplosion polygon=obj->GetPolygonExplosion();
-		obj->SetPolygonExplosion({ Destruction,polygon._ScaleFactor,polygon._RotationFactor,polygon._PositionFactor,a });
+		obj->SetPolygonExplosion({ Destruction,polygon._ScaleFactor,polygon._RotationFactor,polygon._PositionFactor,0 });
 		//スペースキーを押していたら
 		for (int i = 0; i < 50; i++)
 		{
@@ -86,7 +99,7 @@ void GameScene::Update()
 			pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 			pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 			//追加
-			pMan->InAdd(life, pos, { 0,0,0 }, 0.1, 0.1, { 1,1,1,0 }, { 1,1,0,1 });
+			pMan->InAdd(life, pos, { 0,0,0 }, 0.1, 0.1, { 1,1,1,0.5f }, { 1,1,0,0.1f });
 		}
 		if (flame>=endflame)
 		{
@@ -95,6 +108,8 @@ void GameScene::Update()
 			
 		}
 	}
+
+	obj2->Update();
 
 	obj->Update();
 
@@ -107,12 +122,12 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 { 
 	Object3d::PreDraw(dxCommon->GetCommandList());
 
-	//obj->Draw();
+	obj->Draw();
 
 	Object3d::PostDraw();
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
-	//pMan->Draw();
+	pMan->Draw();
 	ParticleManager::PostDraw();
 
 	SpriteCommon::PreDraw();
@@ -129,15 +144,11 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 
 	obj->Draw();
 
+	obj2->Draw();
+
 	Object3d::PostDraw();
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
 	pMan->Draw();
 	ParticleManager::PostDraw();
-
-	SpriteCommon::PreDraw();
-
-	//sprite->Draw();
-
-	SpriteCommon::PostDraw();
 }

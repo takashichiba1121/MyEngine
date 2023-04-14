@@ -9,7 +9,6 @@
 #include"Audio.h"
 #include"imguiManager.h"
 #include<imgui.h>
-#include"PostEffect.h"
 #include"ParticleManager.h"
 class GameScene
 {
@@ -39,6 +38,10 @@ private:
 	std::unique_ptr<Model> model;
 
 	std::unique_ptr<Object3d> obj;
+
+	std::unique_ptr<Model> model2;
+
+	std::unique_ptr<Object3d> obj2;
 
 	std::unique_ptr<imguiManager> imgui;
 

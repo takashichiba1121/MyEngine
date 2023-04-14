@@ -1,4 +1,3 @@
-
 //頂点シェーダーの出力構造体
 //（頂点シェーダーからピクセルシェーダーへのやり取りに使用する）
 struct VSOutput
@@ -8,8 +7,3 @@ struct VSOutput
 	// uv値
 	float2 uv :TEXCOORD;
 };
-//3D変換行列
-cbuffer ConstBufferDataTransform:register(b0)
-{
-	//matrix mat;//3D変換行列
-}

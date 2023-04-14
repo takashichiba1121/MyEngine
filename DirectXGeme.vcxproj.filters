@@ -70,6 +70,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ヘッダー ファイル\engine\PostEffect">
+      <UniqueIdentifier>{7ccb8708-aac5-4827-be64-cc83eb93673b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\posteffect">
+      <UniqueIdentifier>{cba7563c-0d24-4b0b-bf7f-b8d4ba1df9b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -120,11 +126,23 @@
     <ClCompile Include="engine\Scene\GameScene.cpp">
       <Filter>ソース ファイル\application\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="engine\2d\PostEffect.cpp">
-      <Filter>ソース ファイル\engine\2d</Filter>
-    </ClCompile>
     <ClCompile Include="engine\3d\ParticleManager.cpp">
       <Filter>ソース ファイル\engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectCommon.cpp">
+      <Filter>ソース ファイル\engine\posteffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectLuminance.cpp">
+      <Filter>ソース ファイル\engine\posteffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectMixed.cpp">
+      <Filter>ソース ファイル\engine\posteffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectBlurH.cpp">
+      <Filter>ソース ファイル\engine\posteffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectBlurW.cpp">
+      <Filter>ソース ファイル\engine\posteffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,11 +191,23 @@
     <ClInclude Include="engine\Scene\GameScene.h">
       <Filter>ヘッダー ファイル\application\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="engine\2d\PostEffect.h">
-      <Filter>ヘッダー ファイル\engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="engine\3d\ParticleManager.h">
       <Filter>ヘッダー ファイル\engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectCommon.h">
+      <Filter>ヘッダー ファイル\engine\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectLuminance.h">
+      <Filter>ヘッダー ファイル\engine\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectMixed.h">
+      <Filter>ヘッダー ファイル\engine\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectBlurH.h">
+      <Filter>ヘッダー ファイル\engine\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectBlurW.h">
+      <Filter>ヘッダー ファイル\engine\PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -202,12 +232,6 @@
     <FxCompile Include="Resources\shaders\ObjGS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectTestPS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectTestVS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
@@ -215,6 +239,27 @@
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectBlurPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectBlurWVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectLuminancePS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectLuminanceVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectMixedPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectMixedVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectBlurHVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>
@@ -228,10 +273,16 @@
     <None Include="Resources\shaders\Obj.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Resources\shaders\PostEffectTest.hlsli">
+    <None Include="Resources\shaders\Particle.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Resources\shaders\Particle.hlsli">
+    <None Include="Resources\shaders\PostEffectBlur.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\PostEffectLuminance.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\PostEffectMixed.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>

@@ -9,7 +9,11 @@
 #include"imguiManager.h"
 #include<imgui.h>
 #include"GameScene.h"
-#include"PostEffect.h"
+#include"PostEffectCommon.h"
+#include"PostEffectBlurW.h"
+#include"PostEffectBlurH.h"
+#include"PostEffectLuminance.h"
+#include"PostEffectMixed.h"
 
 using namespace DirectX;
 using namespace std;
@@ -47,9 +51,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	ParticleManager::StaticInitialize(dxCommon->GetDevice());
 
-	PostEffect* postEffect = new PostEffect;
+	PostEffectCommon* postEffectCommon=new PostEffectCommon;
 
-	postEffect->Initialize(dxCommon);
+	postEffectCommon->StaticInitialize(dxCommon);
+
+	PostEffectLuminance* postEffectLuminance = new PostEffectLuminance;
+
+	postEffectLuminance->Initialize(postEffectCommon);
+
+	PostEffectBlurW* postEffectBlurW = new PostEffectBlurW;
+
+	postEffectBlurW->Initialize(postEffectCommon);
+
+	PostEffectBlurH* postEffectBlurH = new PostEffectBlurH;
+
+	postEffectBlurH->Initialize(postEffectCommon);
+
+	PostEffectMixed* postEffectMixed = new PostEffectMixed;
+
+	postEffectMixed->Initialize(postEffectCommon);
 
 	GameScene* gameScene = new GameScene;
 	gameScene->Initialize();
@@ -72,20 +92,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//描画コマンドここから
 
-		postEffect->PreDrawScene(dxCommon->GetCommandList());
+		postEffectLuminance->PreDrawScene(dxCommon->GetCommandList());
 
 		gameScene->PostEffectDraw(dxCommon);
 
-		postEffect->PostDrawScene();
+		postEffectLuminance->PostDrawScene();
+
+		postEffectBlurW->PreDrawScene(dxCommon->GetCommandList());
+
+		postEffectLuminance->Draw();
+
+		postEffectBlurW->PostDrawScene();
+
+		postEffectBlurH->PreDrawScene(dxCommon->GetCommandList());
+
+		postEffectBlurW->Draw();
+
+		postEffectBlurH->PostDrawScene();
+
+		postEffectMixed->PreDrawScene(dxCommon->GetCommandList());
+
+		postEffectBlurH->Draw();
+
+		postEffectMixed->PostDrawScene();
 
 		//描画コマンドここまで
 
 		//imguiManager::Draw();
 		dxCommon->PreDraw();
+		
+		postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
 
-		postEffect->Draw();
-
-		gameScene->Draw(dxCommon);
+		//gameScene->Draw(dxCommon);
 		
 		dxCommon->PostDrow();
 
@@ -94,7 +132,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//DirectX毎フレーム処理　ここまで
 
 	}
-	delete postEffect;
+	delete postEffectCommon;
+
+	delete postEffectBlurW;
+
+	delete postEffectBlurH;
+
+	delete postEffectLuminance;
+
+	delete postEffectMixed;
 
 	delete gameScene;
 

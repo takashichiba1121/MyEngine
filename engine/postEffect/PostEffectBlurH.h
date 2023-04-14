@@ -1,10 +1,11 @@
 #pragma once
 #include "Sprite.h"
-class PostEffect
+#include"PostEffectCommon.h"
+class PostEffectBlurH
 {
 public:
 
-    void Initialize(DirectXCommon* dxCommon);
+    void Initialize(PostEffectCommon* PECommon);
     
     /// <summary>
     /// パイプライン生成
@@ -28,9 +29,7 @@ public:
 private://静的メンバ変数
     static const float clearColor[4];
 
-private://メンバ変数
-
-    ID3D12Device* device=nullptr;
+private:
 
     ID3D12GraphicsCommandList* commandList=nullptr;
 
@@ -44,10 +43,10 @@ private://メンバ変数
     D3D12_VERTEX_BUFFER_VIEW vbView{};
 
     Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
-
-    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapSRV;
     //深度バッファ
     Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff;
+    //定数バッファ
+    Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
     //RTV用のデスクリプタヒープ
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapRTV;
     //DSV用のデスクリプタヒープ
@@ -56,12 +55,10 @@ private://メンバ変数
     Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
     Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-    Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+    uint32_t textureHandle;
+    
+    PostEffectCommon* PECommon;
 
-    Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
-
-    ConstBufferDataMaterial* constMapMaterial = nullptr;
-
-    ConstBufferDateTransform* constMapTransform = nullptr;
+    float weights[8];
 };
 
