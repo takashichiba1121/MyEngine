@@ -124,6 +124,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	obj->Draw();
 
+	obj2->Draw();
+
 	Object3d::PostDraw();
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());

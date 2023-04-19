@@ -53,7 +53,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	PostEffectCommon* postEffectCommon=new PostEffectCommon;
 
-	postEffectCommon->StaticInitialize(dxCommon);
+	/*postEffectCommon->StaticInitialize(dxCommon);
 
 	PostEffectLuminance* postEffectLuminance = new PostEffectLuminance;
 
@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	PostEffectMixed* postEffectMixed = new PostEffectMixed;
 
-	postEffectMixed->Initialize(postEffectCommon);
+	postEffectMixed->Initialize(postEffectCommon);*/
 
 	GameScene* gameScene = new GameScene;
 	gameScene->Initialize();
@@ -92,7 +92,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//描画コマンドここから
 
-		postEffectLuminance->PreDrawScene(dxCommon->GetCommandList());
+		/*postEffectLuminance->PreDrawScene(dxCommon->GetCommandList());
 
 		gameScene->PostEffectDraw(dxCommon);
 
@@ -114,16 +114,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		postEffectBlurH->Draw();
 
-		postEffectMixed->PostDrawScene();
+		postEffectMixed->PostDrawScene();*/
 
 		//描画コマンドここまで
 
 		//imguiManager::Draw();
 		dxCommon->PreDraw();
 		
-		postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
+		//postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
 
-		//gameScene->Draw(dxCommon);
+		gameScene->Draw(dxCommon);
 		
 		dxCommon->PostDrow();
 
@@ -134,13 +134,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 	delete postEffectCommon;
 
-	delete postEffectBlurW;
+	//delete postEffectBlurW;
 
-	delete postEffectBlurH;
+	//delete postEffectBlurH;
 
-	delete postEffectLuminance;
+	//delete postEffectLuminance;
 
-	delete postEffectMixed;
+	//delete postEffectMixed;
 
 	delete gameScene;
 
