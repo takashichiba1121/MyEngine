@@ -15,7 +15,7 @@ void PostEffectLuminance::Initialize(PostEffectCommon* PECommon)
 	HRESULT result;
 
 	D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+		DXGI_FORMAT_R16G16B16A16_FLOAT,
 		WinApp::window_width,
 		(UINT)WinApp::window_height,
 		1,0,1,0,D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -25,7 +25,7 @@ void PostEffectLuminance::Initialize(PostEffectCommon* PECommon)
 		CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
 			D3D12_MEMORY_POOL_L0);
 
-		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
+		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R16G16B16A16_FLOAT, clearColor);
 
 
 		result = this->PECommon->device->CreateCommittedResource(
@@ -38,23 +38,23 @@ void PostEffectLuminance::Initialize(PostEffectCommon* PECommon)
 		assert(SUCCEEDED(result));
 		//texBuff->SetName(L"Luminance");
 
-		{//テクスチャを赤クリア
-			//画素数(1280*720=921600ピクセル)
-			const UINT pixelCount = WinApp::window_width * WinApp::window_height;
-			//画像1行分のデータサイズ
-			const UINT rowPitch = sizeof(UINT) * WinApp::window_width;
-			//画像全体のデータサイズ
-			const UINT depthPitch = rowPitch * WinApp::window_height;
-			//画像イメージ
-			UINT* img = new UINT[pixelCount];
-			for (int i = 0; i < pixelCount; i++) { img[i] = 0xff0000ff; }
+		//{//テクスチャを赤クリア
+		//	//画素数(1280*720=921600ピクセル)
+		//	const UINT pixelCount = WinApp::window_width * WinApp::window_height;
+		//	//画像1行分のデータサイズ
+		//	const UINT rowPitch = sizeof(UINT) * WinApp::window_width;
+		//	//画像全体のデータサイズ
+		//	const UINT depthPitch = rowPitch * WinApp::window_height;
+		//	//画像イメージ
+		//	UINT* img = new UINT[pixelCount];
+		//	for (int i = 0; i < pixelCount; i++) { img[i] = 0xff0000ff; }
 
 
-			result = texBuff->WriteToSubresource(0, nullptr,
-				img, rowPitch, depthPitch);
-			assert(SUCCEEDED(result));
-			delete[] img;
-		}
+		//	result = texBuff->WriteToSubresource(0, nullptr,
+		//		img, rowPitch, depthPitch);
+		//	assert(SUCCEEDED(result));
+		//	delete[] img;
+		//}
 	}
 	textureHandle = this->PECommon->CreateDescHeapSRV(texBuff.Get());
 
@@ -70,7 +70,7 @@ void PostEffectLuminance::Initialize(PostEffectCommon* PECommon)
 	//レンダーターゲットビューも設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	//シェーダーの計算結果をSRGBに変換して書き込む
-	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	//デスクリプタヒープにRTVを作成
 	this->PECommon->device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
@@ -290,7 +290,7 @@ void PostEffectLuminance::CreatGraphicsPipelineState()
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	//その他の設定
 	pipelineDesc.NumRenderTargets = 1;//描画対象は一つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;//0～255指定のRGBA
+	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;//0～255指定のRGBA
 	pipelineDesc.SampleDesc.Count = 1; //1ピクセルにつき一回サンプリング
 
 	//デスクリプタレンジの設定

@@ -99,7 +99,7 @@ void GameScene::Update()
 			pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 			pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 			//’Ç‰Á
-			pMan->InAdd(life, pos, { 0,0,0 }, 0.1, 0.1, { 1,1,1,0.5f }, { 1,1,0,0.1f });
+			pMan->InAdd(life, pos, { 0,0,0 }, 0.1, 0.1, { 2,2,2,1 }, { 2,2,2,1 });
 		}
 		if (flame>=endflame)
 		{

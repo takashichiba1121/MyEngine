@@ -21,11 +21,12 @@ for (float py = -_Sigma * 2; py <= _Sigma * 2; py += _StepWidth)
 	{
 		float2 pickUV = input.uv + float2(px,py);
 		float weight = Gaussian(input.uv,pickUV,_Sigma);
-		col += tex.Sample(smp, pickUV) * weight;
+		col.rgb += tex.Sample(smp, pickUV).rgb * weight;
 		totalWeight += weight;
 	}
 }
 col.rgb = col.rgb / totalWeight;
+col.a = 1;
 return col;
 }
 
