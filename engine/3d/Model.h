@@ -67,7 +67,7 @@ public:
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 	//setter
-	static void SetDevice(ID3D12Device* device) { Model::device = device; }
+	static void SetDevice(ID3D12Device* device) { Model::sDevice = device; }
 
 	//各種バッファの生成
 	void CreateBuffers();
@@ -89,7 +89,7 @@ private://非公開のメンバ関数
 
 private:
 	//デバイス
-	static ID3D12Device* device;
+	static ID3D12Device* sDevice;
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
 	// 頂点バッファビュー

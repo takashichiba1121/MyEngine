@@ -14,6 +14,8 @@
 #include"PostEffectBlurH.h"
 #include"PostEffectLuminance.h"
 #include"PostEffectMixed.h"
+#include"assimpModel.h"
+#include"assimpObject3d.h"
 
 using namespace DirectX;
 using namespace std;
@@ -44,6 +46,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Model::SetDevice(dxCommon->GetDevice());
 
 	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+
+	AssimpModel::SetDevice(dxCommon->GetDevice());
+
+	assimpObject3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
 	Sound::StaticInitialize();
 

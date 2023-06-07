@@ -2,7 +2,7 @@
 #include"Texture.h"
 
 //静的メンバ変数の実体
-ID3D12Device* Model::device = nullptr;
+ID3D12Device* Model::sDevice = nullptr;
 
 Model* Model::LoadFormOBJ(const std::string& modelname)
 {
@@ -95,8 +95,6 @@ void Model::CreateBuffers()
 {
 	HRESULT result = S_FALSE;
 
-	std::vector<VertexPosNormalUv> realVertices;
-
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * vertices.size());
 
 	// ヒーププロパティ
@@ -105,7 +103,7 @@ void Model::CreateBuffers()
 	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
 
 	// 頂点バッファ生成
-	result = device->CreateCommittedResource(
+	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&vertBuff));
 	assert(SUCCEEDED(result));
@@ -131,7 +129,7 @@ void Model::CreateBuffers()
 	resourceDesc.Width = sizeIB;
 
 	// インデックスバッファ生成
-	result = device->CreateCommittedResource(
+	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&indexBuff));
 
@@ -162,7 +160,7 @@ void Model::CreateBuffers()
 	CD3DX12_RESOURCE_DESC resourceDescB1 =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB1) + 0xff) & ~0xff);
 	// 定数バッファの生成
-	result = device->CreateCommittedResource(
+	result = sDevice->CreateCommittedResource(
 		&heapPropsB1,
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDescB1,
@@ -196,7 +194,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::descHeap->GetGPUDescriptorHandleForHeapStart();
-	UINT incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += incrementSize * textureIndex;
 	cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);
 	// 描画コマンド

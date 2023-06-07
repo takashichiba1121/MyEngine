@@ -10,6 +10,9 @@
 #include"imguiManager.h"
 #include<imgui.h>
 #include"ParticleManager.h"
+#include"assimpModel.h"
+#include"assimpModel.h"
+#include"assimpObject3d.h"
 class GameScene
 {
 public: // ƒƒ“ƒoŠÖ”
@@ -44,6 +47,10 @@ private:
 	std::unique_ptr<Object3d> obj2;
 
 	std::unique_ptr<imguiManager> imgui;
+
+	std::unique_ptr<AssimpModel> fbxModel;
+
+	std::unique_ptr<assimpObject3d> fbxObjct3d;
 
 	float objX = 0;
 

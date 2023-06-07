@@ -35,6 +35,13 @@ Vector3 Object3d::up = { 0, 1, 0 };
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
 //unsigned short Object3d::indices[planeCount * 3];
 
+float ToRadian(float angle)
+{
+	float PI = 3.141592;
+
+	return angle * (PI / 180);
+}
+
 void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
 {
 	// nullptrチェック
@@ -491,13 +498,6 @@ Matrix4 Object3d::GetMatViewPro()
 {
 
 	return matView * matProjection;
-}
-
-float ToRadian(float angle)
-{
-	float PI = 3.141592;
-
-	return angle * (PI / 180);
 }
 
 //void Object3d::LoadMaterial(const std::string& directoryPath, const std::string& filename)

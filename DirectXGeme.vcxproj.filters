@@ -144,6 +144,15 @@
     <ClCompile Include="engine\postEffect\PostEffectBlurW.cpp">
       <Filter>ソース ファイル\engine\posteffect</Filter>
     </ClCompile>
+    <ClCompile Include="engine\3d\assimpLoader.cpp">
+      <Filter>ソース ファイル\engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\3d\assimpModel.cpp">
+      <Filter>ソース ファイル\engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\3d\assimpObject3d.cpp">
+      <Filter>ソース ファイル\engine\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -209,6 +218,15 @@
     <ClInclude Include="engine\postEffect\PostEffectBlurW.h">
       <Filter>ヘッダー ファイル\engine\PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="engine\3d\assimpLoader.h">
+      <Filter>ヘッダー ファイル\engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\3d\assimpModel.h">
+      <Filter>ヘッダー ファイル\engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\3d\assimpObject3d.h">
+      <Filter>ヘッダー ファイル\engine\3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">
@@ -262,6 +280,15 @@
     <FxCompile Include="Resources\shaders\PostEffectBlurHVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\FbxGS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FbxPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FbxVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -283,6 +310,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\PostEffectMixed.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\Fbx.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
