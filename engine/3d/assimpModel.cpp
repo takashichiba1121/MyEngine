@@ -9,7 +9,7 @@ void AssimpModel::CreateBuffers()
 {
 	HRESULT result = S_FALSE;
 
-	for (Mesh* mesh:meshs)
+	for (Mesh* mesh:meshs_)
 	{
 
 		UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * mesh->vertexs.size());
@@ -101,7 +101,7 @@ AssimpModel* AssimpModel::LoadFormFBX(const std::string& modelname)
 {
 	AssimpModel* assimpModel = new AssimpModel;
 
-	assimpModel->meshs = AssimpLoader::Load(modelname);
+	assimpModel = AssimpLoader::Load(modelname);
 
 	assimpModel->CreateBuffers();
 
@@ -110,7 +110,7 @@ AssimpModel* AssimpModel::LoadFormFBX(const std::string& modelname)
 
 void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
 {
-	for (Mesh* mesh : meshs)
+	for (Mesh* mesh : meshs_)
 	{
 		// 頂点バッファの設定
 		cmdList->IASetVertexBuffers(0, 1, &mesh->vbView);

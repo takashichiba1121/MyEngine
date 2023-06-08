@@ -30,7 +30,7 @@ namespace Matrix4Math
 	float ConvertToRadians(float rot);
 }
 
-	Matrix4& operator*=(const Matrix4& m1, const Matrix4& m2);
+	Matrix4 operator*=(const Matrix4& m1, const Matrix4& m2);
 
 	const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 	const Vector3 operator*(const Vector3& v, const Matrix4& m);

@@ -37,7 +37,7 @@ Vector3 Object3d::up = { 0, 1, 0 };
 
 float ToRadian(float angle)
 {
-	float PI = 3.141592;
+	float PI = 3.141592f;
 
 	return angle * (PI / 180);
 }

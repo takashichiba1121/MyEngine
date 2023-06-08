@@ -21,11 +21,11 @@ void GameScene::Initialize()
 
 	fbxObjct3d->SetPosition({ 0,0,0 });
 
-	fbxObjct3d->SetRot({ 0.0f,-90.0f,0.0f });
+	fbxObjct3d->SetRot({ 45.0f,45.0f,45.0f });
 
-	fbxObjct3d->SetScale({ 0.03,0.03,0.03 });
+	fbxObjct3d->SetScale({1,1,1 });
 
-	fbxObjct3d->SetPolygonExplosion({ 0.0f,1.0f,6.28,10.0f,0.0f });
+	fbxObjct3d->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,0.0f });
 
 	assimpObject3d::SetEye({ 0.0f,0.0f,-10.0f });
 

@@ -26,7 +26,7 @@ D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
 
 float easeOutQuint(float x)
 {
-	float PI = 3.141592;
+	float PI = 3.141592f;
 	return sin((x * PI) / 2);
 }
 float easeInQuint(float x)
@@ -300,7 +300,6 @@ void ParticleManager::Initialize()
 void ParticleManager::Update()
 {
 	HRESULT result;
-	Matrix4 matScale, matRot, matTrans;
 
 	//// スケール、回転、平行移動行列の計算
 	//matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
@@ -440,7 +439,7 @@ void ParticleManager::Draw()
 
 	// 描画コマンド
 	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-	cmdList->DrawInstanced(inParticles.size()+outParticles.size(), 1, 0, 0);
+	cmdList->DrawInstanced(static_cast<UINT>(inParticles.size()+outParticles.size()), 1, 0, 0);
 }
 
 void ParticleManager::InAdd(int life, Vector3 startPosition, Vector3 endPosition,float startScale, float endScale, Vector4 startColor, Vector4 endColor)

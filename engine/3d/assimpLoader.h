@@ -12,7 +12,7 @@
 class AssimpLoader
 {
 public:
-	static std::vector<AssimpModel::Mesh*> Load(const std::string& modelname);
+	static AssimpModel* Load(const std::string& modelname);
 
 private:
 

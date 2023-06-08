@@ -211,7 +211,7 @@ float Matrix4Math::ConvertToRadians(float rot)
 	return rot * Radians;
 }
 
-Matrix4& operator*=(const Matrix4& m1, const Matrix4& m2)
+Matrix4 operator*=(const Matrix4& m1, const Matrix4& m2)
 {
 	Matrix4 result{ 0 };
 

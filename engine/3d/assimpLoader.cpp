@@ -1,13 +1,14 @@
 #include "assimpLoader.h"
 #include<assimp/Importer.hpp>
 #include<assimp/postprocess.h>
+#include<assimp/cimport.h>
 #include<d3d12.h>
 #include<filesystem>
 #include<assert.h>
 #include"Texture.h"
 #include"assimpModel.h"
 
-std::vector<AssimpModel::Mesh*> AssimpLoader::Load(const std::string& modelname)
+AssimpModel* AssimpLoader::Load(const std::string& modelname)
 {
 	// モデルと同じ名前のフォルダから読み込む
 	const string directoryPath = "Resources/" + modelname + "/";
@@ -34,13 +35,22 @@ std::vector<AssimpModel::Mesh*> AssimpLoader::Load(const std::string& modelname)
 	const aiScene* scene = importer.ReadFile(fullpath.c_str(), flag);
 
 	// ファイル名を指定してFBXファイルを読み込む
-	assert(scene);
+	if (!scene) {
+		assert(0);
+	}
 
 	std::vector<AssimpModel::Mesh*>* meshs=new std::vector<AssimpModel::Mesh*>;
 
+	AssimpModel* model = new AssimpModel;
+
 	LodeNode(scene->mRootNode,scene, directoryPath,meshs);
 
-	return *meshs;
+	model->SetMeshs(*meshs);
+
+	// FBXシーン解放
+	//aiReleaseImport(scene);
+
+	return model;
 }
 
 AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scene, const string directoryPath)
@@ -52,7 +62,7 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 	AssimpModel::Mesh* result=new AssimpModel::Mesh;
 
 	result->vertexs.resize(src->mNumVertices);
-	for (int i = 0; i < src->mNumVertices; ++i)
+	for (unsigned int i = 0; i < src->mNumVertices; ++i)
 	{
 		aiVector3D* position = &(src->mVertices[i]);
 		aiVector3D* normal=&(src->mNormals[i]);
@@ -70,7 +80,7 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 	 }
 	result->indices.resize(src->mNumFaces*3);
 
-	for(int i=0;i<src->mNumFaces;++i)
+	for(unsigned int i=0;i<src->mNumFaces;++i)
 	{
 		const aiFace& face = src->mFaces[i];
 

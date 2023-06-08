@@ -86,8 +86,10 @@ public:
 
 	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
+	void SetMeshs(std::vector<Mesh*> Meshs) { meshs_ = Meshs; }
+
 private:
-	std::vector<Mesh*> meshs;
+	std::vector<Mesh*> meshs_;
 
 	//デバイス
 	static ID3D12Device* sDevice;
