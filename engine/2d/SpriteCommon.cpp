@@ -1,12 +1,12 @@
 #include "SpriteCommon.h"
 #include"Texture.h"
 
-DirectXCommon* SpriteCommon::dxCommon;
+DirectXCommon* SpriteCommon::sDxCommon;
 
-Microsoft::WRL::ComPtr<ID3D12PipelineState> SpriteCommon::pipelineState;
-Microsoft::WRL::ComPtr<ID3D12RootSignature> SpriteCommon::rootSignature;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> SpriteCommon::sPipelineState;
+Microsoft::WRL::ComPtr<ID3D12RootSignature> SpriteCommon::sRootSignature;
 
-Matrix4 SpriteCommon::matProjection;
+Matrix4 SpriteCommon::sMatProjection;
 
 void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 {
@@ -15,7 +15,7 @@ void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob = nullptr;//頂点シェーダーオブジェクト
 	Microsoft::WRL::ComPtr<ID3DBlob> psBlob = nullptr;//ピクセルシェーダーオブジェクト
 
-	dxCommon = DxCommon;
+	sDxCommon = DxCommon;
 	ID3DBlob* errorBlob = nullptr;//エラーオブジェクト
 
 	//頂点シェーダーの読み込みとコンパイル
@@ -181,35 +181,35 @@ void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
-	result = dxCommon->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
+	result = sDxCommon->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+		IID_PPV_ARGS(&sRootSignature));
 	assert(SUCCEEDED(result));
 	//rootSigBlob->Release();
 	//パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
+	pipelineDesc.pRootSignature = sRootSignature.Get();
 
 	//パイプランスステートの生成
-	result = dxCommon->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = sDxCommon->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&sPipelineState));
 	assert(SUCCEEDED(result));
 
 	//値を書き込むと自動的に転送される
-	matProjection= Matrix4Math::identity();
+	sMatProjection= Matrix4Math::identity();
 
-	matProjection.m[0][0] = 2.0f / dxCommon->getWinApp()->window_width;
-	matProjection.m[1][1] = -2.0f / dxCommon->getWinApp()->window_height;
-	matProjection.m[3][0] = -1.0f;
-	matProjection.m[3][1] = 1.0f;
+	sMatProjection.m[0][0] = 2.0f / sDxCommon->getWinApp()->window_width;
+	sMatProjection.m[1][1] = -2.0f / sDxCommon->getWinApp()->window_height;
+	sMatProjection.m[3][0] = -1.0f;
+	sMatProjection.m[3][1] = 1.0f;
 }
 
 void SpriteCommon::PreDraw()
 {
 	//パイプラインステートとルートシグネチャの設定コマンド
-	dxCommon->GetCommandList()->SetPipelineState(pipelineState.Get());
-	dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+	sDxCommon->GetCommandList()->SetPipelineState(sPipelineState.Get());
+	sDxCommon->GetCommandList()->SetGraphicsRootSignature(sRootSignature.Get());
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::descHeap.Get() };
-	dxCommon->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::sDescHeap.Get() };
+	sDxCommon->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
 void SpriteCommon::PostDraw()

@@ -76,6 +76,8 @@ public:
 		ComPtr<ID3D12Resource> constBuffB1;
 	};
 public:
+
+	~AssimpModel();
 	void CreateBuffers();
 
 	//OBJファイルから3Dモデルを読み込む

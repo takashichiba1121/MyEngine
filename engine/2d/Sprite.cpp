@@ -6,12 +6,12 @@
 using namespace DirectX;
 using namespace std;
 
-DirectXCommon* Sprite::dxCommon;
+DirectXCommon* Sprite::sDxCommon;
 
 void Sprite::StaticInitialize()
 {
 
-	dxCommon = SpriteCommon::GetDxCommon();
+	sDxCommon = SpriteCommon::GetDxCommon();
 }
 
 void Sprite::Initialize(uint32_t textureIndex)
@@ -27,11 +27,11 @@ void Sprite::Initialize(uint32_t textureIndex)
 	};
 	for (int i = 0; i < 4; i++)
 	{
-		vertices[i] = vertices_[i];
+		vertices_[i] = vertices_[i];
 	}
 
 	//頂点データ全体のサイズ=頂点データ一つ分のサイズ*頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * _countof(vertices_));
 	//頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{};  //ヒープ設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; //GPUへの転送用
@@ -45,29 +45,29 @@ void Sprite::Initialize(uint32_t textureIndex)
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//頂点バッファの生成
-	result = dxCommon->GetDevice()->CreateCommittedResource(
+	result = sDxCommon->GetDevice()->CreateCommittedResource(
 		&heapProp, //ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, //リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
 
 	//GPU上のバッファに対応した仮想メモリ（メインメモリ上）を取得
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = vertBuff_->Map(0, nullptr, (void**)&vertMap_);
 	assert(SUCCEEDED(result));
 	//前頂点に対して
-	for (int i = 0; i < _countof(vertices); i++) {
-		vertMap[i] = vertices[i]; //座標コピー
+	for (int i = 0; i < _countof(vertices_); i++) {
+		vertMap_[i] = vertices_[i]; //座標コピー
 	}
 
 	//GPU仮想アドレス
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	//頂点バッファのサイズ
-	vbView.SizeInBytes = sizeVB;
+	vbView_.SizeInBytes = sizeVB;
 	//頂点一つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
 	{
 		//ヒープ設定
 		D3D12_HEAP_PROPERTIES cbHeapProp{};
@@ -82,19 +82,19 @@ void Sprite::Initialize(uint32_t textureIndex)
 		cbResourceDesc.SampleDesc.Count = 1;
 		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 		//定数バッファの生成
-		result = dxCommon->GetDevice()->CreateCommittedResource(
+		result = sDxCommon->GetDevice()->CreateCommittedResource(
 			&cbHeapProp,//ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&cbResourceDesc,//リソース設定
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffMaterial));
+			IID_PPV_ARGS(&constBuffMaterial_));
 		assert(SUCCEEDED(result));
 	}
 	//定数バッファのマッピング
-	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
+	result = constBuffMaterial_->Map(0, nullptr, (void**)&constMapMaterial_);//マッピング
 	//値を書き込むと自動的に転送される
-	constMapMaterial->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	constMapMaterial_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	assert(SUCCEEDED(result));
 
 	{
@@ -111,27 +111,27 @@ void Sprite::Initialize(uint32_t textureIndex)
 		cbResourceDesc.SampleDesc.Count = 1;
 		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 		//定数バッファの生成
-		result = dxCommon->GetDevice()->CreateCommittedResource(
+		result = sDxCommon->GetDevice()->CreateCommittedResource(
 			&cbHeapProp,//ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&cbResourceDesc,//リソース設定
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffTransform));
+			IID_PPV_ARGS(&constBuffTransform_));
 		assert(SUCCEEDED(result));
 	}
 	//定数バッファのマッピング
-	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
+	result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
 	//値を書き込むと自動的に転送される
-	constMapTransform->mat = Matrix4Math::identity();
+	constMapTransform_->mat = Matrix4Math::identity();
 
-	constMapTransform->mat = SpriteCommon::GetMatProjection();
+	constMapTransform_->mat = SpriteCommon::GetMatProjection();
 
 	assert(SUCCEEDED(result));
 
 	if (textureIndex != UINT_MAX)
 	{
-		this->textureIndex = textureIndex;
+		this->textureIndex_ = textureIndex;
 		AdjustTextureSize();
 		scale_ = textureSize_;
 	}
@@ -142,7 +142,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 void Sprite::AdjustTextureSize()
 {
 
-	ID3D12Resource* textureBuffer = Texture::texBuffuers[textureIndex].Get();
+	ID3D12Resource* textureBuffer = Texture::texBuffuers[textureIndex_].Get();
 	//指定番号の画像が読み込み済みなら
 	assert(textureBuffer);
 
@@ -155,7 +155,7 @@ void Sprite::AdjustTextureSize()
 
 void Sprite::Update()
 {
-	ID3D12Resource* textureBuffer = Texture::texBuffuers[textureIndex].Get();
+	ID3D12Resource* textureBuffer = Texture::texBuffuers[textureIndex_].Get();
 	//指定番号の画像が読み込み済みなら
 	if (textureBuffer)
 	{
@@ -167,10 +167,10 @@ void Sprite::Update()
 		float tex_top = textureLeftTop_.y / resDesc.Height;
 		float tex_bottom = (textureLeftTop_.y + textureSize_.y) / resDesc.Height;
 		//頂点のUVに反映する
-		vertices[LB].uv = { tex_left,tex_bottom };//左下
-		vertices[LT].uv = { tex_left,tex_top };//左下
-		vertices[RB].uv = { tex_right,tex_bottom };//左下
-		vertices[RT].uv = { tex_right,tex_top };//左下
+		vertices_[LB].uv = { tex_left,tex_bottom };//左下
+		vertices_[LT].uv = { tex_left,tex_top };//左下
+		vertices_[RB].uv = { tex_right,tex_bottom };//左下
+		vertices_[RT].uv = { tex_right,tex_top };//左下
 	}
 
 
@@ -191,14 +191,14 @@ void Sprite::Update()
 		bottom = -bottom;
 	}
 
-	vertices[LB].pos = { left,bottom,0.0f };
-	vertices[LT].pos = { left,top,0.0f };
-	vertices[RB].pos = { right,bottom,0.0f };
-	vertices[RT].pos = { right,top ,0.0f };
+	vertices_[LB].pos = { left,bottom,0.0f };
+	vertices_[LT].pos = { left,top,0.0f };
+	vertices_[RB].pos = { right,bottom,0.0f };
+	vertices_[RT].pos = { right,top ,0.0f };
 
 	//前頂点に対して
-	for (int i = 0; i < _countof(vertices); i++) {
-		vertMap[i] = vertices[i]; //座標コピー
+	for (int i = 0; i < _countof(vertices_); i++) {
+		vertMap_[i] = vertices_[i]; //座標コピー
 	}
 
 	//ワールド変換行列
@@ -212,7 +212,7 @@ void Sprite::Update()
 
 	matWorld = matRot* matTrans;//ワールド行列に回転を反映
 	//行列の計算
-	constMapTransform->mat = matWorld * SpriteCommon::GetMatProjection();
+	constMapTransform_->mat = matWorld * SpriteCommon::GetMatProjection();
 }
 
 void Sprite::Draw()
@@ -222,21 +222,21 @@ void Sprite::Draw()
 		return;
 	}
 	//プリミティブ形状の設定コマンド
-	dxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	sDxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	//頂点バッファビューの設定コマンド
-	dxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	sDxCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vbView_);
 	//定数バッファビュー（CBV）の設定コマンド
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+	sDxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());
 	//定数バッファビュー（CBV）の設定コマンド
-	dxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+	sDxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform_->GetGPUVirtualAddress());
 
 	//画像描画
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::descHeap->GetGPUDescriptorHandleForHeapStart();
-	UINT incrementSize = dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	srvGpuHandle.ptr += incrementSize * textureIndex;
-	dxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
+	UINT incrementSize = sDxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	srvGpuHandle.ptr += incrementSize * textureIndex_;
+	sDxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	//描画コマンド
-	dxCommon->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);//すべての頂点を使って描画
+	sDxCommon->GetCommandList()->DrawInstanced(_countof(vertices_), 1, 0, 0);//すべての頂点を使って描画
 }

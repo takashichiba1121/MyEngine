@@ -41,7 +41,7 @@ public:
 
 	void Draw();
 
-	uint32_t GetTexture() {return textureIndex ; }
+	uint32_t GetTexture() {return textureIndex_ ; }
 
 	void SetPosition(const Vector2& position) { this->position_ = position; }
 
@@ -51,9 +51,9 @@ public:
 
 	float GetRotation() const { return rotation_; }
 
-	void SetColor(Vector4 color) { constMapMaterial->color = color; }
+	void SetColor(Vector4 color) { constMapMaterial_->color = color; }
 
-	Vector4 GetColor() { return constMapMaterial->color; }
+	Vector4 GetColor() { return constMapMaterial_->color; }
 
 	Vector2 GetScale() const { return scale_; }
 
@@ -88,28 +88,28 @@ private:
 	void AdjustTextureSize();
 
 protected:
-	Vertex vertices[4] = {};
+	Vertex vertices_[4] = {};
 
-	Vertex* vertMap = nullptr;
+	Vertex* vertMap_ = nullptr;
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;	//頂点バッファ
+	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;	//頂点バッファ
 
 	//頂点バッファビューの作成
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
+	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
 
-	ConstBufferDateTransform* constMapTransform = nullptr;
+	ConstBufferDateTransform* constMapTransform_ = nullptr;
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff_ = nullptr;
 
-	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> srvHeap = nullptr;
+	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> srvHeap_ = nullptr;
 
-	uint32_t textureIndex;
+	uint32_t textureIndex_;
 
 	float rotation_ = 0.0f;
 
@@ -133,7 +133,7 @@ protected:
 
 protected:
 
-	static DirectXCommon* dxCommon;
+	static DirectXCommon* sDxCommon;
 
 };
 

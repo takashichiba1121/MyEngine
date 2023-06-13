@@ -21,13 +21,29 @@ void GameScene::Initialize()
 
 	fbxObjct3d->SetPosition({ 0,0,0 });
 
-	fbxObjct3d->SetRot({ 45.0f,45.0f,45.0f });
+	fbxObjct3d->SetRot({ 0.0f,90.0f,0.0f });
 
-	fbxObjct3d->SetScale({1,1,1 });
+	fbxObjct3d->SetScale({0.03f,0.03f,0.03f });
 
 	fbxObjct3d->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,0.0f });
 
 	assimpObject3d::SetEye({ 0.0f,0.0f,-10.0f });
+
+	fbxModel2.reset(AssimpModel::LoadFormFBX("cubeFBX"));
+
+	fbxObjct3d2 = std::make_unique<assimpObject3d>();
+
+	fbxObjct3d2->SetModel(fbxModel2.get());
+
+	fbxObjct3d2->Initialize();
+
+	fbxObjct3d2->SetPosition({ 0,0,0 });
+
+	fbxObjct3d2->SetRot({ 0.0f,90.0f,0.0f });
+
+	fbxObjct3d2->SetScale({ 0.03f,0.03f,0.03f });
+
+	fbxObjct3d2->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,0.0f });
 
 	//sprite = std::make_unique<Sprite>();
 

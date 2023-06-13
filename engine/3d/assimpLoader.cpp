@@ -30,6 +30,7 @@ AssimpModel* AssimpLoader::Load(const std::string& modelname)
 		aiProcess_MakeLeftHanded | //ノードを左手座標系に
 		aiProcess_GenBoundingBoxes | //AABBを生成
 		aiProcess_JoinIdenticalVertices |//インデックスを生成
+		aiProcess_FlipUVs|//uvのyをマイナスにする(オープンGL用のをDirectX12用に)
 		aiProcess_LimitBoneWeights;//各頂点が影響を受けるボーンを4に制限
 
 	const aiScene* scene = importer.ReadFile(fullpath.c_str(), flag);
@@ -39,13 +40,13 @@ AssimpModel* AssimpLoader::Load(const std::string& modelname)
 		assert(0);
 	}
 
-	std::vector<AssimpModel::Mesh*>* meshs=new std::vector<AssimpModel::Mesh*>;
+	std::vector<AssimpModel::Mesh*> meshs;
 
 	AssimpModel* model = new AssimpModel;
 
-	LodeNode(scene->mRootNode,scene, directoryPath,meshs);
+	LodeNode(scene->mRootNode,scene, directoryPath,&meshs);
 
-	model->SetMeshs(*meshs);
+	model->SetMeshs(meshs);
 
 	// FBXシーン解放
 	//aiReleaseImport(scene);

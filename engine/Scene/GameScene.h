@@ -52,6 +52,10 @@ private:
 
 	std::unique_ptr<assimpObject3d> fbxObjct3d;
 
+	std::unique_ptr<AssimpModel> fbxModel2;
+
+	std::unique_ptr<assimpObject3d> fbxObjct3d2;
+
 	float objX = 0;
 
 	float objY = 0;

@@ -18,21 +18,21 @@ public:
 	//èâä˙âª
 	static void Initialize(DirectXCommon* DXCommon);
 
-	static DirectXCommon* GetDxCommon() {return dxCommon ; }
+	static DirectXCommon* GetDxCommon() {return sDxCommon ; }
 
-	static ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
-	static ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
-	static Matrix4 GetMatProjection() { return matProjection; }
+	static ID3D12PipelineState* GetPipelineState() { return sPipelineState.Get(); }
+	static ID3D12RootSignature* GetRootSignature() { return sRootSignature.Get(); }
+	static Matrix4 GetMatProjection() { return sMatProjection; }
 
 	static void PreDraw();
 
 	static void PostDraw();
 private:
-	static DirectXCommon* dxCommon;
+	static DirectXCommon* sDxCommon;
 
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelineState;
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootSignature;
 
-	static Matrix4 matProjection;
+	static Matrix4 sMatProjection;
 };
 
