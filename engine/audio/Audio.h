@@ -18,7 +18,7 @@
 //チャンクヘッダ
 struct ChunkHeader {
 	char id[4];		//チャンク毎のID
-	int32_t size;	//チャンクサイズ
+	uint32_t size;	//チャンクサイズ
 };
 
 //RIFFヘッダチャンク
@@ -36,8 +36,8 @@ struct FormatChunk {
 class Sound
 {
 public:
-	static Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
-	static IXAudio2MasteringVoice* masterVoice_;
+	static Microsoft::WRL::ComPtr<IXAudio2> sXAudio2;
+	static IXAudio2MasteringVoice* sMasterVoice;
 	~Sound();
 
 	// 初期化
@@ -61,15 +61,15 @@ private:
 		//バッファの先頭アドレス
 		BYTE* pBuffer;
 		//バッファサイズ
-		unsigned int bufferSize;
+		uint32_t bufferSize;
 	};
 
 	SoundData soundData_;
 
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
+	IXAudio2SourceVoice* pSourceVoice_ = nullptr;
 
 	//再生する波形データの設定
-	XAUDIO2_BUFFER buf{};
+	XAUDIO2_BUFFER buf_{};
 
 	
 };

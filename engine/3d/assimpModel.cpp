@@ -7,21 +7,16 @@ ID3D12Device* AssimpModel::sDevice= nullptr;
 
 AssimpModel::~AssimpModel()
 {
-
-	for (Mesh* mesh:meshs_)
-	{
-		delete mesh;
-	}
 }
 
 void AssimpModel::CreateBuffers()
 {
 	HRESULT result = S_FALSE;
 
-	for (Mesh* mesh:meshs_)
+	for (std::unique_ptr<AssimpModel::Mesh>&  mesh:meshs_)
 	{
 
-		UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * mesh->vertexs.size());
+		uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPosNormalUv) * mesh->vertexs.size());
 
 		// ヒーププロパティ
 		CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -50,7 +45,7 @@ void AssimpModel::CreateBuffers()
 		mesh->vbView.StrideInBytes = sizeof(mesh->vertexs[0]);
 
 		/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
-		UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * mesh->indices.size());
+		uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * mesh->indices.size());
 		// リソース設定
 		resourceDesc.Width = sizeIB;
 
@@ -117,9 +112,9 @@ AssimpModel* AssimpModel::LoadFormFBX(const std::string& modelname)
 	return assimpModel;
 }
 
-void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial)
 {
-	for (Mesh* mesh : meshs_)
+	for (std::unique_ptr<AssimpModel::Mesh>& mesh: meshs_) 
 	{
 		// 頂点バッファの設定
 		cmdList->IASetVertexBuffers(0, 1, &mesh->vbView);
@@ -134,10 +129,10 @@ void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMa
 		cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
 		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
-		UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+		uint32_t incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		srvGpuHandle.ptr += incrementSize * mesh->materials.texHandle;
 		cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);
 		// 描画コマンド
-		cmdList->DrawIndexedInstanced((UINT)mesh->indices.size(), 1, 0, 0, 0);
+		cmdList->DrawIndexedInstanced((uint32_t)mesh->indices.size(), 1, 0, 0, 0);
 	}
 }

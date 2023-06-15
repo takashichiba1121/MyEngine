@@ -19,29 +19,29 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-ID3D12Device* assimpObject3d::device = nullptr;
+ID3D12Device* assimpObject3d::sDevice = nullptr;
 //UINT assimpObject3d::descriptorHandleIncrementSize = 0;
-ID3D12GraphicsCommandList* assimpObject3d::cmdList = nullptr;
-ComPtr<ID3D12RootSignature> assimpObject3d::rootsignature;
-ComPtr<ID3D12PipelineState> assimpObject3d::pipelinestate;
+ID3D12GraphicsCommandList* assimpObject3d::sCmdList = nullptr;
+ComPtr<ID3D12RootSignature> assimpObject3d::sRootsignature;
+ComPtr<ID3D12PipelineState> assimpObject3d::sPipelinestate;
 //ComPtr<ID3D12DescriptorHeap> assimpObject3d::descHeap;
 //ComPtr<ID3D12Resource> assimpObject3d::texbuff;
 //CD3DX12_CPU_DESCRIPTOR_HANDLE assimpObject3d::cpuDescHandleSRV;
 //CD3DX12_GPU_DESCRIPTOR_HANDLE assimpObject3d::gpuDescHandleSRV;
-Matrix4 assimpObject3d::matView{};
-Matrix4 assimpObject3d::matProjection{};
-Vector3 assimpObject3d::eye = { 0, 0, 0.0f };
-Vector3 assimpObject3d::target = { 0, 0, 0 };
-Vector3 assimpObject3d::up = { 0, 1, 0 };
+Matrix4 assimpObject3d::sMatView{};
+Matrix4 assimpObject3d::sMatProjection{};
+Vector3 assimpObject3d::sEye = { 0, 0, 0.0f };
+Vector3 assimpObject3d::sTarget = { 0, 0, 0 };
+Vector3 assimpObject3d::sUp = { 0, 1, 0 };
 //assimpObject3d::VertexPosNormalUv assimpObject3d::vertices[vertexCount];
 //unsigned short assimpObject3d::indices[planeCount * 3];
 
-void assimpObject3d::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
+void assimpObject3d::StaticInitialize(ID3D12Device* device, uint32_t window_width, uint32_t window_height)
 {
 	// nullptrチェック
 	assert(device);
 
-	assimpObject3d::device = device;
+	assimpObject3d::sDevice = device;
 
 	Model::SetDevice(device);
 
@@ -56,15 +56,15 @@ void assimpObject3d::StaticInitialize(ID3D12Device* device, int window_width, in
 void assimpObject3d::PreDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(assimpObject3d::cmdList == nullptr);
+	assert(assimpObject3d::sCmdList == nullptr);
 
 	// コマンドリストをセット
-	assimpObject3d::cmdList = cmdList;
+	assimpObject3d::sCmdList = cmdList;
 
 	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelinestate.Get());
+	cmdList->SetPipelineState(sPipelinestate.Get());
 	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootsignature.Get());
+	cmdList->SetGraphicsRootSignature(sRootsignature.Get());
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
@@ -72,33 +72,33 @@ void assimpObject3d::PreDraw(ID3D12GraphicsCommandList* cmdList)
 void assimpObject3d::PostDraw()
 {
 	// コマンドリストを解除
-	assimpObject3d::cmdList = nullptr;
+	assimpObject3d::sCmdList = nullptr;
 }
 
 void assimpObject3d::SetEye(Vector3 eye)
 {
-	assimpObject3d::eye = eye;
+	assimpObject3d::sEye = eye;
 
 	UpdateViewMatrix();
 }
 
 void assimpObject3d::SetTarget(Vector3 target)
 {
-	assimpObject3d::target = target;
+	assimpObject3d::sTarget = target;
 
 	UpdateViewMatrix();
 }
 
-void assimpObject3d::InitializeCamera(int window_width, int window_height)
+void assimpObject3d::InitializeCamera(uint32_t window_width, uint32_t window_height)
 {
 	// ビュー行列の生成
-	matView = Matrix4Math::ViewMat(
-		eye,
-		target,
-		up);
+	sMatView = Matrix4Math::ViewMat(
+		sEye,
+		sTarget,
+		sUp);
 
 	// 透視投影による射影行列の生成
-	matProjection = Matrix4Math::ProjectionMat(
+	sMatProjection = Matrix4Math::ProjectionMat(
 		ToRadian(45.0f),
 		(float)window_width / window_height,
 		0.1f, 1000.0f
@@ -272,117 +272,29 @@ void assimpObject3d::InitializeGraphicsPipeline()
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootsignature));
+	result = sDevice->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&sRootsignature));
 	assert(SUCCEEDED(result));
 
-	gpipeline.pRootSignature = rootsignature.Get();
+	gpipeline.pRootSignature = sRootsignature.Get();
 
 	// グラフィックスパイプラインの生成
-	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate));
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&sPipelinestate));
 	assert(SUCCEEDED(result));
 
 }
-
-//bool assimpObject3d::LoadTexture(const std::string& directoryPath, const std::string& filename)
-//{
-//	HRESULT result = S_FALSE;
-//
-//	TexMetadata metadata{};
-//	ScratchImage scratchImg{};
-//
-//	//ファイルパスを結合
-//	string filepath = directoryPath + filename;
-//
-//	//ユニコード文字列に変換する
-//	wchar_t wfilepath[128];
-//	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
-//
-//
-//	//// WICテクスチャのロード
-//	//result = LoadFromWICFile(L"Resources/tex1.png", WIC_FLAGS_NONE, &metadata, scratchImg);
-//	//assert(SUCCEEDED(result));
-//	// WICテクスチャのロード
-//	result = LoadFromWICFile(wfilepath, WIC_FLAGS_NONE, &metadata, scratchImg);
-//	assert(SUCCEEDED(result));
-//
-//	ScratchImage mipChain{};
-//	// ミップマップ生成
-//	result = GenerateMipMaps(
-//		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-//		TEX_FILTER_DEFAULT, 0, mipChain);
-//	if (SUCCEEDED(result)) {
-//		scratchImg = std::move(mipChain);
-//		metadata = scratchImg.GetMetadata();
-//	}
-//
-//	// 読み込んだディフューズテクスチャをSRGBとして扱う
-//	metadata.format = MakeSRGB(metadata.format);
-//
-//	// リソース設定
-//	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-//		metadata.format, metadata.width, (UINT)metadata.height, (UINT16)metadata.arraySize,
-//		(UINT16)metadata.mipLevels);
-//
-//	// ヒーププロパティ
-//	CD3DX12_HEAP_PROPERTIES heapProps =
-//		CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
-//
-//	// テクスチャ用バッファの生成
-//	result = device->CreateCommittedResource(
-//		&heapProps, D3D12_HEAP_FLAG_NONE, &texresDesc,
-//		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-//		nullptr, IID_PPV_ARGS(&texbuff));
-//	assert(SUCCEEDED(result));
-//
-//	// テクスチャバッファにデータ転送
-//	for (size_t i = 0; i < metadata.mipLevels; i++) {
-//		const Image* img = scratchImg.GetImage(i, 0, 0); // 生データ抽出
-//		result = texbuff->WriteToSubresource(
-//			(UINT)i,
-//			nullptr,              // 全領域へコピー
-//			img->pixels,          // 元データアドレス
-//			(UINT)img->rowPitch,  // 1ラインサイズ
-//			(UINT)img->slicePitch // 1枚サイズ
-//		);
-//		assert(SUCCEEDED(result));
-//	}
-//
-//	// シェーダリソースビュー作成
-//	cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
-//	gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
-//
-//	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-//	D3D12_RESOURCE_DESC resDesc = texbuff->GetDesc();
-//
-//	srvDesc.Format = resDesc.Format;
-//	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-//	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-//	srvDesc.Texture2D.MipLevels = 1;
-//
-//	device->CreateShaderResourceView(texbuff.Get(), //ビューと関連付けるバッファ
-//		&srvDesc, //テクスチャ設定情報
-//		cpuDescHandleSRV
-//	);
-//	if (result == NULL) {
-//		return false;
-//	}
-//
-//	return true;
-//}
-
 void assimpObject3d::UpdateViewMatrix()
 {
 	// ビュー行列の生成
-	matView = Matrix4Math::ViewMat(
-		eye,
-		target,
-		up);
+	sMatView = Matrix4Math::ViewMat(
+		sEye,
+		sTarget,
+		sUp);
 }
 
 bool assimpObject3d::Initialize()
 {
 	// nullptrチェック
-	assert(device);
+	assert(sDevice);
 
 	HRESULT result;
 
@@ -394,7 +306,7 @@ bool assimpObject3d::Initialize()
 			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
 
 		// 定数バッファの生成
-		result = device->CreateCommittedResource(
+		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
 			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 			IID_PPV_ARGS(&constBuffB0));
@@ -415,7 +327,7 @@ bool assimpObject3d::Initialize()
 			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferPolygonExplosion) + 0xff) & ~0xff);
 
 		// 定数バッファの生成
-		result = device->CreateCommittedResource(
+		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
 			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 			IID_PPV_ARGS(&constBuffB2));
@@ -462,7 +374,7 @@ void assimpObject3d::Update()
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	/*constMap->color = color;*/
-	constMap->mat = matWorld * matView * matProjection;	// 行列の合成
+	constMap->mat = matWorld * sMatView * sMatProjection;	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
 
 }
@@ -470,8 +382,8 @@ void assimpObject3d::Update()
 void assimpObject3d::Draw()
 {
 	// nullptrチェック
-	assert(device);
-	assert(assimpObject3d::cmdList);
+	assert(sDevice);
+	assert(assimpObject3d::sCmdList);
 
 	//モデルがセットされていなければ描画をスキップ
 	if (model == nullptr) {
@@ -479,19 +391,19 @@ void assimpObject3d::Draw()
 	}
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(2, constBuffB2->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(2, constBuffB2->GetGPUVirtualAddress());
 
 	//モデルを描画
-	model->Draw(cmdList, 1);
+	model->Draw(sCmdList, 1);
 }
 
 Matrix4 assimpObject3d::GetMatViewPro()
 {
 
-	return matView * matProjection;
+	return sMatView * sMatProjection;
 }
 
 //void assimpObject3d::LoadMaterial(const std::string& directoryPath, const std::string& filename)

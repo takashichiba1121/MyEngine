@@ -86,12 +86,12 @@ public:
 	//setter
 	static void SetDevice(ID3D12Device* device) { sDevice = device; }
 
-	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
+	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
-	void SetMeshs(std::vector<Mesh*> Meshs) { meshs_ = Meshs; }
+	void SetMesh(std::unique_ptr<AssimpModel::Mesh> Meshs) { meshs_.push_back(std::move(Meshs)); }
 
 private:
-	std::vector<Mesh*> meshs_;
+	std::vector<std::unique_ptr<AssimpModel::Mesh>> meshs_;
 
 	//デバイス
 	static ID3D12Device* sDevice;

@@ -29,15 +29,15 @@ public://メンバ関数
 	void PostDrow();
 
 	//デバイス取得
-	ID3D12Device* GetDevice() const { return device.Get(); }
+	ID3D12Device* GetDevice() const { return device_.Get(); }
 
 	//コマンドリスト取得
-	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
+	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
 
 	WinApp* getWinApp() const { return winApp_; }
 
 	//バックバッファの数を取得
-	size_t GetBackBufferCount() const {return backBuffers.size(); }
+	size_t GetBackBufferCount() const {return backBuffers_.size(); }
 private://メンバ関数
 	//FPS固定初期化
 	void InitializeFixFPS();
@@ -47,23 +47,23 @@ private://メンバ関数
 
 private:
 
-	HRESULT result;
-	Microsoft::WRL::ComPtr<ID3D12Device> device;
-	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory;
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> comdAllocator = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue = nullptr;
-	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap = nullptr;
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers;
-	Microsoft::WRL::ComPtr<ID3D12Fence> fence = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff = nullptr;
+	HRESULT result_;
+	Microsoft::WRL::ComPtr<ID3D12Device> device_;
+	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory_;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> comdAllocator_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue_ = nullptr;
+	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap_ = nullptr;
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers_;
+	Microsoft::WRL::ComPtr<ID3D12Fence> fence_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff_ = nullptr;
 
-	UINT64 fenceVal = 0;
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
-	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
-	D3D12_RESOURCE_BARRIER barrierDesc{};
+	uint32_t fenceVal_ = 0;
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
+	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
+	D3D12_RESOURCE_BARRIER barrierDesc_{};
 
 	//記録時間(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;

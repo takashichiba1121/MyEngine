@@ -36,32 +36,31 @@ public://メンバ関数
 	static bool TriggerKey(BYTE keyNumber);
 private://メイン変数
 	//キーボードデバイス
-	static ComPtr<IDirectInputDevice8> keyboard;
+	static ComPtr<IDirectInputDevice8> sKeyboard;
 
-	static ComPtr<IDirectInput8> directInput;
+	static ComPtr<IDirectInput8> sDirectInput;
 
-	static BYTE key[256];
+	static BYTE sKey[256];
 
-	static BYTE keyPre[256];
+	static BYTE sKeyPre[256];
 
 	//WindowAPI
-	static WinApp* winApp_;
+	static WinApp* sWinApp;
 
 public://メンバ関数(ゲームパッド)
 	/// <summary>
 	/// コントローラーの状況の取得（毎フレームする）
 	/// </summary>
-	///<param name="dwUserIndex">つながれてるコントローラーが複数の場合の指定（一つなら0でOK）</param>
 	/// <returns>成功か？</returns>
 	static DWORD Updatekeypad();
 
-	static XINPUT_STATE GetPad() { return gamePad; }
+	static XINPUT_STATE GetPad() { return sGamePad; }
 
-	static XINPUT_STATE OldGetPad() {return oldGamePad; }
+	static XINPUT_STATE OldGetPad() {return sOldGamePad; }
 
 private://メンバ変数(ゲームパッド)
 
-	static XINPUT_STATE gamePad;
+	static XINPUT_STATE sGamePad;
 
-	static XINPUT_STATE oldGamePad;
+	static XINPUT_STATE sOldGamePad;
 };

@@ -16,7 +16,7 @@ void PostEffectBlurH::Initialize(PostEffectCommon* PECommon)
 	D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R16G16B16A16_FLOAT,
 		WinApp::window_width,
-		(UINT)WinApp::window_height,
+		(uint32_t)WinApp::window_height,
 		1,0,1,0,D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 	{
 		//テクスチャバッファの生成
@@ -124,13 +124,13 @@ void PostEffectBlurH::Initialize(PostEffectCommon* PECommon)
 		{{+1.0f,-1.0f,0.0f},{1.0f,1.0f}},
 		{{+1.0f,+1.0f,0.0f},{1.0f,0.0f}},
 	};
-	for (int i = 0; i < 4; i++)
+	for (uint32_t i = 0; i < 4; i++)
 	{
 		vertices[i] = vertices_[i];
 	}
 
 	//頂点データ全体のサイズ=頂点データ一つ分のサイズ*頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(vertices[0]) * _countof(vertices));
 	//頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{};  //ヒープ設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; //GPUへの転送用
@@ -157,7 +157,7 @@ void PostEffectBlurH::Initialize(PostEffectCommon* PECommon)
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	//前頂点に対して
-	for (int i = 0; i < _countof(vertices); i++) {
+	for (uint32_t i = 0; i < _countof(vertices); i++) {
 		vertMap[i] = vertices[i]; //座標コピー
 	}
 
@@ -199,14 +199,14 @@ void PostEffectBlurH::Initialize(PostEffectCommon* PECommon)
 
 	// ここからガウス関数を用いて重みを計算している
 	// ループ変数のxが基準テクセルからの距離
-	for (int x = 0; x < 8; x++)
+	for (uint32_t x = 0; x < 8; x++)
 	{
 		weights[x] = expf(-0.5f * (float)(x * x) / 8);
 		total += 2.0f * weights[x];
 	}
 
 	// 重みの合計で除算することで、重みの合計を1にしている
-	for (int i = 0; i < 8; i++)
+	for (uint32_t i = 0; i < 8; i++)
 	{
 		weights[i] /= total;
 	}
@@ -445,7 +445,7 @@ void PostEffectBlurH::Draw()
 	//画像描画
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = this->PECommon->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
-	UINT incrementSize = this->PECommon->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	uint32_t incrementSize = this->PECommon->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += incrementSize * textureHandle;
 	commandList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 

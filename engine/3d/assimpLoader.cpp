@@ -19,7 +19,7 @@ AssimpModel* AssimpLoader::Load(const std::string& modelname)
 
 	Assimp::Importer importer;
 
-	int flag = 0;
+	uint32_t flag = 0;
 	flag =
 		aiProcess_Triangulate | //三角面化
 		aiProcess_CalcTangentSpace | //接線ベクトル生成
@@ -40,21 +40,24 @@ AssimpModel* AssimpLoader::Load(const std::string& modelname)
 		assert(0);
 	}
 
-	std::vector<AssimpModel::Mesh*> meshs;
+	std::vector<std::unique_ptr<AssimpModel::Mesh>> meshs;
 
 	AssimpModel* model = new AssimpModel;
 
 	LodeNode(scene->mRootNode,scene, directoryPath,&meshs);
 
-	model->SetMeshs(meshs);
-
+	for (std::unique_ptr<AssimpModel::Mesh>& mesh:meshs)
+	{
+		model->SetMesh(std::move(mesh));
+	}
+	
 	// FBXシーン解放
 	//aiReleaseImport(scene);
 
 	return model;
 }
 
-AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scene, const string directoryPath)
+AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scene, const string& directoryPath)
 {
 	aiVector3D zero3D(0.0f,0.0f,0.0f);
 
@@ -63,7 +66,7 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 	AssimpModel::Mesh* result=new AssimpModel::Mesh;
 
 	result->vertexs.resize(src->mNumVertices);
-	for (unsigned int i = 0; i < src->mNumVertices; ++i)
+	for (uint32_t i = 0; i < src->mNumVertices; ++i)
 	{
 		aiVector3D* position = &(src->mVertices[i]);
 		aiVector3D* normal=&(src->mNormals[i]);
@@ -81,9 +84,9 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 	 }
 	result->indices.resize(src->mNumFaces*3);
 
-	for(unsigned int i=0;i<src->mNumFaces;++i)
+	for(uint32_t i=0;i<src->mNumFaces;++i)
 	{
-		const aiFace& face = src->mFaces[i];
+		const aiFace face = src->mFaces[i];
 
 		result->indices[i * 3 + 0] = face.mIndices[0];
 		result->indices[i * 3 + 1] = face.mIndices[1];
@@ -101,7 +104,7 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 	return result;
 }
 
-uint32_t AssimpLoader::LoadTexture(const std::string filename, const string directoryPath)
+uint32_t AssimpLoader::LoadTexture(const std::string filename, const string& directoryPath)
 {
 	HRESULT result = S_FALSE;
 
@@ -110,12 +113,12 @@ uint32_t AssimpLoader::LoadTexture(const std::string filename, const string dire
 
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
+	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
 	return Texture::LoadTexture(wfilepath);
 }
 
-AssimpModel::Material AssimpLoader::LoadMaterial(const aiMaterial* material, const string directoryPath)
+AssimpModel::Material AssimpLoader::LoadMaterial(const aiMaterial* material, const string& directoryPath)
 {
 	AssimpModel::Material result;
 
@@ -144,14 +147,17 @@ AssimpModel::Material AssimpLoader::LoadMaterial(const aiMaterial* material, con
 	return result;
 }
 
-void AssimpLoader::LodeNode(aiNode* node, const aiScene* scene, const string directoryPath, std::vector<AssimpModel::Mesh*>* meshs)
+void AssimpLoader::LodeNode(aiNode* node, const aiScene* scene, const string& directoryPath, std::vector<std::unique_ptr<AssimpModel::Mesh>>* meshs)
 {
-	for (UINT i = 0; i < node->mNumMeshes; i++) {
+	for (uint32_t i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshs->push_back(LoadMesh(mesh, scene,directoryPath));
+		std::unique_ptr<AssimpModel::Mesh> modelmesh;
+
+		modelmesh.reset(LoadMesh(mesh, scene, directoryPath));
+		meshs->push_back(std::move(modelmesh));
 	}
 
-	for (UINT i = 0; i < node->mNumChildren; i++) {
+	for (uint32_t i = 0; i < node->mNumChildren; i++) {
 		LodeNode(node->mChildren[i], scene, directoryPath,meshs);
 	}
 }

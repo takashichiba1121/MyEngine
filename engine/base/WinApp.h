@@ -14,9 +14,9 @@ public://メンバ関数
 	bool ProcessMessage();
 
 	//getter
-	HWND GetHwnd() const { return hwnd; }
+	HWND GetHwnd() const { return hwnd_; }
 
-	HINSTANCE GetInstance() const { return w.hInstance; }
+	HINSTANCE GetInstance() const { return w_.hInstance; }
 public://定数
 //ウィンドウ横幅
 	static const int window_width = 1280;
@@ -24,9 +24,9 @@ public://定数
 	static const int window_height = 720;
 private:
 	//ウィンドウハンドル
-	HWND hwnd = nullptr;
+	HWND hwnd_ = nullptr;
 	//ウィンドウクラスの設定
-	WNDCLASSEX w{};
+	WNDCLASSEX w_{};
 
 };
 

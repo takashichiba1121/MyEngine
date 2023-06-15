@@ -49,9 +49,9 @@ public: // サブクラス
 
 		Vector3 endPosition;
 		// 現在フレーム
-		int frame = 0;
+		uint32_t frame = 0;
 		//終了フレーム
-		int numFrame = 0;
+		uint32_t numFrame = 0;
 		
 		float scale = 1.0f;
 
@@ -79,9 +79,9 @@ public: // サブクラス
 
 		Vector3 endPosition;
 		// 現在フレーム
-		int frame = 0;
+		uint32_t frame = 0;
 		//終了フレーム
-		int numFrame = 0;
+		uint32_t numFrame = 0;
 
 		float scale = 1.0f;
 
@@ -120,19 +120,19 @@ public: // 静的メンバ関数
 
 private: // 静的メンバ変数
 	// デバイス
-	static ID3D12Device* device;
+	static ID3D12Device* sDevice;
 	// コマンドリスト
-	static ID3D12GraphicsCommandList* cmdList;
+	static ID3D12GraphicsCommandList* sCmdList;
 	// ルートシグネチャ
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootsignature;
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootsignature;
 	// パイプラインステートオブジェクト
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelinestate;
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelinestate;
 	// 頂点バッファ
-	static Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff;
+	static Microsoft::WRL::ComPtr<ID3D12Resource> sVertBuff;
 	// 頂点バッファビュー
-	static D3D12_VERTEX_BUFFER_VIEW vbView;
+	static D3D12_VERTEX_BUFFER_VIEW sVbView;
 	//ビルボード行列
-	static Matrix4 matBillboard;
+	static Matrix4 sMatBillboard;
 
 private:// 静的メンバ関数
 
@@ -168,7 +168,7 @@ public: // メンバ関数
 	/// <param name="endScale">最終サイズ</param>
 	/// <param name="startColor">初期色</param>
 	/// <param name="endColor">最終色</param>
-	void InAdd(int life, Vector3 startPosition, Vector3 endPosition,float startScale,float endScale,Vector4 startColor,Vector4 endColor);
+	void InAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition,float startScale,float endScale,const Vector4& startColor,const Vector4& endColor);
 
 	/// <summary>
 	/// イージングパーティクル（out)
@@ -180,7 +180,7 @@ public: // メンバ関数
 	/// <param name="endScale">最終サイズ</param>
 	/// <param name="startColor">初期色</param>
 	/// <param name="endColor">最終色</param>
-	void OutAdd(int life, Vector3 startPosition, Vector3 endPosition, float startScale, float endScale, Vector4 startColor, Vector4 endColor);
+	void OutAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor);
 
 private: // メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff; // 定数バッファ
@@ -202,5 +202,5 @@ private: // メンバ変数
 	//パーティクル配列
 	std::list<OutParticle>outParticles;
 
-	UINT textureHandle_ = 0;
+	uint32_t textureHandle_ = 0;
 };

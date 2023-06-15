@@ -3,41 +3,41 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-Microsoft::WRL::ComPtr<IDirectInputDevice8> Input::keyboard;
+Microsoft::WRL::ComPtr<IDirectInputDevice8> Input::sKeyboard;
 
-Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;
+Microsoft::WRL::ComPtr<IDirectInput8> Input::sDirectInput;
 
- BYTE Input::key[256];
+ BYTE Input::sKey[256];
 
- BYTE Input::keyPre[256];
+ BYTE Input::sKeyPre[256];
 
- WinApp* Input::winApp_;
+ WinApp* Input::sWinApp;
 
- XINPUT_STATE Input::gamePad;
+ XINPUT_STATE Input::sGamePad;
 
- XINPUT_STATE Input::oldGamePad;
+ XINPUT_STATE Input::sOldGamePad;
 
 void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
-	winApp_ = WinApp;
+	sWinApp = WinApp;
 
 	HRESULT result;
 
 	//DirectInputの初期化
 	result = DirectInput8Create(
 		WinApp->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,
-		(void**)&directInput, nullptr);
+		(void**)&sDirectInput, nullptr);
 	assert(SUCCEEDED(result));
 	//キーボードデバイスの生成
 	/*ComPtr<IDirectInputDevice8> keyboard = nullptr;*/
-	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+	result = sDirectInput->CreateDevice(GUID_SysKeyboard, &sKeyboard, NULL);
 	assert(SUCCEEDED(result));
 	//入力データ形式のセット
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
+	result = sKeyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
 	assert(SUCCEEDED(result));
 	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
+	result = sKeyboard->SetCooperativeLevel(
 		WinApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result)); 
 }
@@ -45,37 +45,37 @@ void Input::Initialize(WinApp* WinApp)
 void Input::Update()
 {
 	//前回のキー入力を保存
-	memcpy(keyPre, key, sizeof(key));
+	memcpy(sKeyPre, sKey, sizeof(sKey));
 
 	//キーボード情報の取得開始
-	keyboard->Acquire();
+	sKeyboard->Acquire();
 	//全キーの入力状態を取得する
-	keyboard->GetDeviceState(sizeof(key), key);
+	sKeyboard->GetDeviceState(sizeof(sKey), sKey);
 
 	Updatekeypad();
 
-	if (abs(gamePad.Gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(sGamePad.Gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		gamePad.Gamepad.sThumbLX = 0;
+		sGamePad.Gamepad.sThumbLX = 0;
 	}
-	if (abs(gamePad.Gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(sGamePad.Gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		gamePad.Gamepad.sThumbLY = 0;
+		sGamePad.Gamepad.sThumbLY = 0;
 	}
-	if (abs(gamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(sGamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		gamePad.Gamepad.sThumbRX = 0;
+		sGamePad.Gamepad.sThumbRX = 0;
 	}
-	if (abs(gamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(sGamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		gamePad.Gamepad.sThumbRY = 0;
+		sGamePad.Gamepad.sThumbRY = 0;
 	}
 }
 
 bool Input::PushKey(BYTE keyNumber)
 {
 	//指定キーを押していればtrueを返す
-	if (key[keyNumber]) {
+	if (sKey[keyNumber]) {
 		return true;
 	}
 	//そうでなければfalse返す
@@ -85,7 +85,7 @@ bool Input::PushKey(BYTE keyNumber)
 bool Input::TriggerKey(BYTE keyNumber)
 {
 	//指定キーを押していればtrueを返す
-	if (key[keyNumber]&&keyPre[keyNumber]==0) {
+	if (sKey[keyNumber]&&sKeyPre[keyNumber]==0) {
 		return true;
 	}
 	//そうでなければfalse返す
@@ -96,9 +96,9 @@ bool Input::TriggerKey(BYTE keyNumber)
 
 DWORD Input::Updatekeypad()
 {
-	oldGamePad = gamePad;
+	sOldGamePad = sGamePad;
 
 	return XInputGetState(
 		0,//複数つながれてるときの選択
-		&gamePad);//この変数に入力状況が格納される
+		&sGamePad);//この変数に入力状況が格納される
 }

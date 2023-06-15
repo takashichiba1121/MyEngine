@@ -15,7 +15,7 @@ class Texture
 public:
 	static const size_t sSpriteSRVCount = 2056;
 	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> sDescHeap;			//デスクリプタヒープ
-	static std::array< Microsoft::WRL::ComPtr<ID3D12Resource>, sSpriteSRVCount >texBuffuers;	//テクスチャバッファ
+	static std::array< Microsoft::WRL::ComPtr<ID3D12Resource>, sSpriteSRVCount >sTexBuffuers;	//テクスチャバッファ
 	static D3D12_RESOURCE_DESC sTextureResourceDesc;
 	static Microsoft::WRL::ComPtr<ID3D12Device> sDev;
 

@@ -261,7 +261,7 @@ void ParticleManager::InitializeVerticeBuff()
 
 	HRESULT result;
 
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexPos))*1024;
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPos))*1024;
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -439,10 +439,10 @@ void ParticleManager::Draw()
 
 	// 描画コマンド
 	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-	cmdList->DrawInstanced(static_cast<UINT>(inParticles.size()+outParticles.size()), 1, 0, 0);
+	cmdList->DrawInstanced(static_cast<uint32_t>(inParticles.size()+outParticles.size()), 1, 0, 0);
 }
 
-void ParticleManager::InAdd(int life, Vector3 startPosition, Vector3 endPosition,float startScale, float endScale, Vector4 startColor, Vector4 endColor)
+void ParticleManager::InAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition,float startScale, float endScale,const Vector4& startColor,const Vector4& endColor)
 {
 	//リストに要素を追加
 	inParticles.emplace_front();
@@ -458,7 +458,7 @@ void ParticleManager::InAdd(int life, Vector3 startPosition, Vector3 endPosition
 	p.endColor = endColor;
 }
 
-void ParticleManager::OutAdd(int life, Vector3 startPosition, Vector3 endPosition, float startScale, float endScale, Vector4 startColor, Vector4 endColor)
+void ParticleManager::OutAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor)
 {
 	//リストに要素を追加
 	outParticles.emplace_front();

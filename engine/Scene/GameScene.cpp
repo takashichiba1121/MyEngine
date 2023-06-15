@@ -41,7 +41,7 @@ void GameScene::Initialize()
 
 	fbxObjct3d2->SetRot({ 0.0f,90.0f,0.0f });
 
-	fbxObjct3d2->SetScale({ 0.03f,0.03f,0.03f });
+	fbxObjct3d2->SetScale({ 1.0f,1.0f,1.0f });
 
 	fbxObjct3d2->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,0.0f });
 
@@ -152,6 +152,7 @@ void GameScene::Update()
 	//sprite->Update();
 
 	fbxObjct3d->Update();
+	fbxObjct3d2->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -167,6 +168,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	assimpObject3d::PreDraw(dxCommon->GetCommandList());
 
 	fbxObjct3d->Draw();
+
+	fbxObjct3d2->Draw();
 
 	assimpObject3d::PostDraw();
 

@@ -90,7 +90,7 @@ Vector3 Matrix4Math::transform(const Vector3& v, const Matrix4& m)
 	return result;
 }
 
-Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix4)
+Matrix4 Matrix4Math::MakeInverse(const Matrix4& matrix4)
 {
 	Matrix4 temp;
 	float mat[4][8] = { 0 };
@@ -166,7 +166,7 @@ Matrix4 Matrix4Math::MakeInverse(Matrix4 matrix4)
 	return result;
 }
 
-Matrix4 Matrix4Math::ViewMat(Vector3 eye, Vector3 target, Vector3 up)
+Matrix4 Matrix4Math::ViewMat(const Vector3& eye, const Vector3& target, const Vector3& up)
 {
 	Vector3 zaxis = target - eye;
 	zaxis.normalize();

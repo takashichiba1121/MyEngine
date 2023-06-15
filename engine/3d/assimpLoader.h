@@ -16,13 +16,13 @@ public:
 
 private:
 
-	static AssimpModel::Mesh* LoadMesh(const aiMesh* src, const aiScene* scene, const std::string directoryPath);
+	static AssimpModel::Mesh* LoadMesh(const aiMesh* src, const aiScene* scene, const std::string& directoryPath);
 
-	static uint32_t LoadTexture(const std::string filename, const std::string directoryPath);
+	static uint32_t LoadTexture(const std::string filename, const std::string& directoryPath);
 
-	static AssimpModel::Material LoadMaterial(const aiMaterial* material, const std::string directoryPath);
+	static AssimpModel::Material LoadMaterial(const aiMaterial* material, const std::string& directoryPath);
 
-	static void LodeNode(aiNode* node, const aiScene* scene, const std::string directoryPath, std::vector<AssimpModel::Mesh*>* meshs);
+	static void LodeNode(aiNode* node, const aiScene* scene, const std::string& directoryPath, std::vector<std::unique_ptr<AssimpModel::Mesh>>* meshs);
 private:
 };
 

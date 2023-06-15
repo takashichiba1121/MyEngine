@@ -29,21 +29,21 @@ void WinApp::Initialize()
 {
 
 	//ウインドウクラスの設定
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc;//ウインドウプロ―ジャーの設定
-	w.lpszClassName = L"DirectXGame";//ウインドウクラス名
-	w.hInstance = GetModuleHandle(nullptr);//ウインドウハンドル
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);//カーソル指定
+	w_.cbSize = sizeof(WNDCLASSEX);
+	w_.lpfnWndProc = (WNDPROC)WindowProc;//ウインドウプロ―ジャーの設定
+	w_.lpszClassName = L"DirectXGame";//ウインドウクラス名
+	w_.hInstance = GetModuleHandle(nullptr);//ウインドウハンドル
+	w_.hCursor = LoadCursor(NULL, IDC_ARROW);//カーソル指定
 
 	//ウインドウクラスをOSに登録する
-	RegisterClassEx(&w);
+	RegisterClassEx(&w_);
 	//ウインドウサイズ｛X座標　Y座標　横幅　縦幅｝
 	RECT wrc = { 0,0,window_width,window_height };
 	//自動サイズを補正する
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	//ウインドウオブジェクトの生成
-	hwnd = CreateWindow(w.lpszClassName,//クラス名
+	hwnd_ = CreateWindow(w_.lpszClassName,//クラス名
 		L"DirectXGame",//タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,//標準的なウインドウスタイル
 		CW_USEDEFAULT,//表示X座標（OSに任せる）
@@ -52,11 +52,11 @@ void WinApp::Initialize()
 		wrc.bottom - wrc.top,//ウインドウ縦幅
 		nullptr,//親ウインドウハンドル
 		nullptr,//メニューハンドル
-		w.hInstance,//呼び出しアプリケーションハンドル
+		w_.hInstance,//呼び出しアプリケーションハンドル
 		nullptr);//オプション
 
 	//ウインドウを表示状態にする
-	ShowWindow(hwnd, SW_SHOW);
+	ShowWindow(hwnd_, SW_SHOW);
 
 	//システムタイマーの分解能を上げる
 	timeBeginPeriod(1);
@@ -65,7 +65,7 @@ void WinApp::Initialize()
 void WinApp::Finalize()
 {
 	//ウインドウクラスを登録解除
-	UnregisterClass(w.lpszClassName, w.hInstance);
+	UnregisterClass(w_.lpszClassName, w_.hInstance);
 }
 
 bool WinApp::ProcessMessage()

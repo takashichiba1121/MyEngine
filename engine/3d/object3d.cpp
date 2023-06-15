@@ -18,20 +18,20 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-ID3D12Device* Object3d::device = nullptr;
+ID3D12Device* Object3d::sDevice = nullptr;
 //UINT Object3d::descriptorHandleIncrementSize = 0;
-ID3D12GraphicsCommandList* Object3d::cmdList = nullptr;
-ComPtr<ID3D12RootSignature> Object3d::rootsignature;
-ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
+ID3D12GraphicsCommandList* Object3d::sCmdList = nullptr;
+ComPtr<ID3D12RootSignature> Object3d::sRootsignature;
+ComPtr<ID3D12PipelineState> Object3d::sPipelinestate;
 //ComPtr<ID3D12DescriptorHeap> Object3d::descHeap;
 //ComPtr<ID3D12Resource> Object3d::texbuff;
 //CD3DX12_CPU_DESCRIPTOR_HANDLE Object3d::cpuDescHandleSRV;
 //CD3DX12_GPU_DESCRIPTOR_HANDLE Object3d::gpuDescHandleSRV;
-Matrix4 Object3d::matView{};
-Matrix4 Object3d::matProjection{};
-Vector3 Object3d::eye = { 0, 0, 0.0f };
-Vector3 Object3d::target = { 0, 0, 0 };
-Vector3 Object3d::up = { 0, 1, 0 };
+Matrix4 Object3d::sMatView{};
+Matrix4 Object3d::sMatProjection{};
+Vector3 Object3d::sEye = { 0, 0, 0.0f };
+Vector3 Object3d::sTarget = { 0, 0, 0 };
+Vector3 Object3d::sUp = { 0, 1, 0 };
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
 //unsigned short Object3d::indices[planeCount * 3];
 
@@ -42,12 +42,12 @@ float ToRadian(float angle)
 	return angle * (PI / 180);
 }
 
-void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
+void Object3d::StaticInitialize(ID3D12Device* device, uint32_t window_width, uint32_t window_height)
 {
 	// nullptrチェック
 	assert(device);
 
-	Object3d::device = device;
+	Object3d::sDevice = device;
 
 	Model::SetDevice(device);
 
@@ -62,15 +62,15 @@ void Object3d::StaticInitialize(ID3D12Device* device, int window_width, int wind
 void Object3d::PreDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(Object3d::cmdList == nullptr);
+	assert(Object3d::sCmdList == nullptr);
 
 	// コマンドリストをセット
-	Object3d::cmdList = cmdList;
+	Object3d::sCmdList = cmdList;
 
 	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelinestate.Get());
+	cmdList->SetPipelineState(sPipelinestate.Get());
 	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootsignature.Get());
+	cmdList->SetGraphicsRootSignature(sRootsignature.Get());
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
@@ -78,33 +78,33 @@ void Object3d::PreDraw(ID3D12GraphicsCommandList* cmdList)
 void Object3d::PostDraw()
 {
 	// コマンドリストを解除
-	Object3d::cmdList = nullptr;
+	Object3d::sCmdList = nullptr;
 }
 
-void Object3d::SetEye(Vector3 eye)
+void Object3d::SetEye(const Vector3& eye)
 {
-	Object3d::eye = eye;
+	Object3d::sEye = eye;
 
 	UpdateViewMatrix();
 }
 
-void Object3d::SetTarget(Vector3 target)
+void Object3d::SetTarget(const Vector3& target)
 {
-	Object3d::target = target;
+	Object3d::sTarget = target;
 
 	UpdateViewMatrix();
 }
 
-void Object3d::InitializeCamera(int window_width, int window_height)
+void Object3d::InitializeCamera(uint32_t window_width, uint32_t window_height)
 {
 	// ビュー行列の生成
-	matView = Matrix4Math::ViewMat(
-		eye,
-		target,
-		up);
+	sMatView = Matrix4Math::ViewMat(
+		sEye,
+		sTarget,
+		sUp);
 
 	// 透視投影による射影行列の生成
-	matProjection = Matrix4Math::ProjectionMat(
+	sMatProjection = Matrix4Math::ProjectionMat(
 		ToRadian(45.0f),
 		(float)window_width / window_height,
 		0.1f, 1000.0f
@@ -278,13 +278,13 @@ void Object3d::InitializeGraphicsPipeline()
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootsignature));
+	result = sDevice->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&sRootsignature));
 	assert(SUCCEEDED(result));
 
-	gpipeline.pRootSignature = rootsignature.Get();
+	gpipeline.pRootSignature = sRootsignature.Get();
 
 	// グラフィックスパイプラインの生成
-	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate));
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&sPipelinestate));
 	assert(SUCCEEDED(result));
 
 }
@@ -379,16 +379,16 @@ void Object3d::InitializeGraphicsPipeline()
 void Object3d::UpdateViewMatrix()
 {
 	// ビュー行列の生成
-	matView = Matrix4Math::ViewMat(
-		eye,
-		target,
-		up);
+	sMatView = Matrix4Math::ViewMat(
+		sEye,
+		sTarget,
+		sUp);
 }
 
 bool Object3d::Initialize()
 {
 	// nullptrチェック
-	assert(device);
+	assert(sDevice);
 
 	HRESULT result;
 
@@ -400,7 +400,7 @@ bool Object3d::Initialize()
 			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
 
 		// 定数バッファの生成
-		result = device->CreateCommittedResource(
+		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
 			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 			IID_PPV_ARGS(&constBuffB0));
@@ -421,7 +421,7 @@ bool Object3d::Initialize()
 			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferPolygonExplosion) + 0xff) & ~0xff);
 
 		// 定数バッファの生成
-		result = device->CreateCommittedResource(
+		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
 			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 			IID_PPV_ARGS(&constBuffB2));
@@ -468,7 +468,7 @@ void Object3d::Update()
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
 	/*constMap->color = color;*/
-	constMap->mat = matWorld * matView * matProjection;	// 行列の合成
+	constMap->mat = matWorld * sMatView * sMatProjection;	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
 
 }
@@ -476,8 +476,8 @@ void Object3d::Update()
 void Object3d::Draw()
 {
 	// nullptrチェック
-	assert(device);
-	assert(Object3d::cmdList);
+	assert(sDevice);
+	assert(Object3d::sCmdList);
 
 	//モデルがセットされていなければ描画をスキップ
 	if (model == nullptr) {
@@ -485,19 +485,19 @@ void Object3d::Draw()
 	}
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(2, constBuffB2->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(2, constBuffB2->GetGPUVirtualAddress());
 
 	//モデルを描画
-	model->Draw(cmdList, 1);
+	model->Draw(sCmdList, 1);
 }
 
 Matrix4 Object3d::GetMatViewPro()
 {
 
-	return matView * matProjection;
+	return sMatView * sMatProjection;
 }
 
 //void Object3d::LoadMaterial(const std::string& directoryPath, const std::string& filename)

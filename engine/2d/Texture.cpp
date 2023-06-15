@@ -7,7 +7,7 @@ using namespace Microsoft::WRL;
 
 
 ComPtr<ID3D12DescriptorHeap>Texture::sDescHeap;			//デスクリプタヒープ
-std::array<ComPtr<ID3D12Resource>, Texture::sSpriteSRVCount >Texture::texBuffuers;	//テクスチャバッファ
+std::array<ComPtr<ID3D12Resource>, Texture::sSpriteSRVCount >Texture::sTexBuffuers;	//テクスチャバッファ
 D3D12_RESOURCE_DESC Texture::sTextureResourceDesc{};
 ComPtr<ID3D12Device> Texture::sDev = nullptr;
 
@@ -46,9 +46,9 @@ uint32_t Texture::LoadTexture(const wchar_t* fileName)
 	sTextureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	sTextureResourceDesc.Format = metadata.format;
 	sTextureResourceDesc.Width = metadata.width;	// 幅
-	sTextureResourceDesc.Height = (UINT)metadata.height;	// 高さ
-	sTextureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	sTextureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
+	sTextureResourceDesc.Height = (uint32_t)metadata.height;	// 高さ
+	sTextureResourceDesc.DepthOrArraySize = (uint32_t)metadata.arraySize;
+	sTextureResourceDesc.MipLevels = (uint32_t)metadata.mipLevels;
 	sTextureResourceDesc.SampleDesc.Count = 1;
 	result = sDev->CreateCommittedResource(
 		&textureHeapProp,
@@ -58,27 +58,27 @@ uint32_t Texture::LoadTexture(const wchar_t* fileName)
 		nullptr,
 		IID_PPV_ARGS(&texBuff));
 	//全ミップマップについて
-	for (size_t i = 0; i < metadata.mipLevels; i++) {
+	for (uint32_t i = 0; i < metadata.mipLevels; i++) {
 		//ミップマップレベルを指定してイメージを取得
 		const Image* img = scratchImg.GetImage(i, 0, 0);
 		//テクスチャバッファにデータ転送
 		result = texBuff->WriteToSubresource(
-			(UINT)i,
+			(uint32_t)i,
 			nullptr,				//全領域へコピー
 			img->pixels,			//元データアドレス
-			(UINT)img->rowPitch,	//1ラインサイズ
-			(UINT)img->slicePitch	//全サイズ
+			(uint32_t)img->rowPitch,	//1ラインサイズ
+			(uint32_t)img->slicePitch	//全サイズ
 		);
 		assert(SUCCEEDED(result));
 	}
 
-	for (int i = 0; i < texBuffuers.size(); i++) {
+	for (uint32_t i = 0; i < sTexBuffuers.size(); i++) {
 
 		//まだテクスチャ情報が割り当てられていないところにテクスチャ情報を入れる
-		if (!texBuffuers[i]) {
-			texBuffuers[i] = texBuff;
+		if (!sTexBuffuers[i]) {
+			sTexBuffuers[i] = texBuff;
 			//SRV作成
-			UINT incrementSize = sDev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+			uint32_t incrementSize = sDev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 			D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = sDescHeap->GetCPUDescriptorHandleForHeapStart();
 			srvHandle.ptr += incrementSize * i;
 			CreateSRV(texBuff.Get(), srvHandle);

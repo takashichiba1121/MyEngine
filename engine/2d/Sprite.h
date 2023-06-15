@@ -47,11 +47,11 @@ public:
 
 	Vector2 GetPosition() const { return position_; }
 
-	void SetRotation(const float& rotation) { this->rotation_ = rotation; }
+	void SetRotation(float rotation) { this->rotation_ = rotation; }
 
 	float GetRotation() const { return rotation_; }
 
-	void SetColor(Vector4 color) { constMapMaterial_->color = color; }
+	void SetColor(const Vector4& color) { constMapMaterial_->color = color; }
 
 	Vector4 GetColor() { return constMapMaterial_->color; }
 

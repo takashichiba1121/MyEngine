@@ -29,10 +29,10 @@ public:
 
 private:
 	//SRV用デスクリプタヒープ
-	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> sSrvHeap;
 
-	static DirectXCommon* dxCommon_;
+	static DirectXCommon* sDxCommon;
 
-	static WinApp* winApp_;
+	static WinApp* sWinApp;
 };
 

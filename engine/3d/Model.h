@@ -77,7 +77,7 @@ public:
 	/// </summary>
 	/// <param name="cmdlist">描画コマンドリスト</param>
 	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
-	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
+	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
 	std::vector<VertexPosNormalUv> GetVertices() {return vertices; }
 

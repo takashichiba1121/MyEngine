@@ -87,7 +87,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];
-	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
+	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
 	textureIndex=Texture::LoadTexture(wfilepath);
 }
@@ -95,7 +95,7 @@ void Model::CreateBuffers()
 {
 	HRESULT result = S_FALSE;
 
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * vertices.size());
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPosNormalUv) * vertices.size());
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -124,7 +124,7 @@ void Model::CreateBuffers()
 	vbView.StrideInBytes = sizeof(vertices[0]);
 
 	/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
-	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * indices.size());
+	uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * indices.size());
 	// リソース設定
 	resourceDesc.Width = sizeIB;
 
@@ -179,7 +179,7 @@ void Model::CreateBuffers()
 	}
 }
 
-void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial)
 {
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
@@ -198,7 +198,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial
 	srvGpuHandle.ptr += incrementSize * textureIndex;
 	cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);
 	// 描画コマンド
-	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced((uint32_t)indices.size(), 1, 0, 0, 0);
 }
 
 void Model::LoadFromOBJInternal(const std::string& modelname)
