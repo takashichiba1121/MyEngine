@@ -156,7 +156,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	size_t GetParticlesListSize() {return outParticles.size() ; }
+	size_t GetParticlesListSize() {return outParticles_.size() ; }
 
 	/// <summary>
 	/// イージングパーティクル（in）
@@ -193,14 +193,14 @@ private: // メンバ変数
 	//// ローカル座標
 	//Vector3 position = { 0,0,0 };
 	// ローカルワールド変換行列
-	Matrix4 matWorld;
+	Matrix4 matWorld_;
 	//// 親オブジェクト
 	//ParticleManager* parent = nullptr;
 	//パーティクル配列
-	std::list<InParticle>inParticles;
+	std::list<InParticle>inParticles_;
 
 	//パーティクル配列
-	std::list<OutParticle>outParticles;
+	std::list<OutParticle>outParticles_;
 
 	uint32_t textureHandle_ = 0;
 };

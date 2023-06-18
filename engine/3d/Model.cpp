@@ -89,13 +89,13 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	wchar_t wfilepath[128];
 	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
-	textureIndex=Texture::LoadTexture(wfilepath);
+	textureIndex_=Texture::LoadTexture(wfilepath);
 }
 void Model::CreateBuffers()
 {
 	HRESULT result = S_FALSE;
 
-	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPosNormalUv) * vertices.size());
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPosNormalUv) * vertices_.size());
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -105,37 +105,37 @@ void Model::CreateBuffers()
 	// 頂点バッファ生成
 	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
 
 	// 頂点バッファへのデータ転送
 	VertexPosNormalUv* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 		/*memcpy(vertMap, vertices, sizeof(vertices));*/
-		std::copy(vertices.begin(),vertices.end(), vertMap);
-		vertBuff->Unmap(0, nullptr);
+		std::copy(vertices_.begin(),vertices_.end(), vertMap);
+		vertBuff_->Unmap(0, nullptr);
 	}
 
 	// 頂点バッファビューの作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	/*vbView.SizeInBytes = sizeof(vertices);*/
-	vbView.SizeInBytes = sizeVB;
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView_.SizeInBytes = sizeVB;
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
 
 	/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
-	uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * indices.size());
+	uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * indices_.size());
 	// リソース設定
 	resourceDesc.Width = sizeIB;
 
 	// インデックスバッファ生成
 	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&indexBuff));
+		IID_PPV_ARGS(&indexBuff_));
 
 	// インデックスバッファへのデータ転送
 	unsigned short* indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	if (SUCCEEDED(result)) {
 
 		// 全インデックスに対して
@@ -143,16 +143,16 @@ void Model::CreateBuffers()
 		//{
 		//	indexMap[i] = indices[i];	// インデックスをコピー
 		//}
-		std::copy(indices.begin(), indices.end(), indexMap);
+		std::copy(indices_.begin(), indices_.end(), indexMap);
 
-		indexBuff->Unmap(0, nullptr);
+		indexBuff_->Unmap(0, nullptr);
 	}
 
 	// インデックスバッファビューの作成
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
+	ibView_.Format = DXGI_FORMAT_R16_UINT;
 	/*ibView.SizeInBytes = sizeof(indices);*/
-	ibView.SizeInBytes = sizeIB;
+	ibView_.SizeInBytes = sizeIB;
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapPropsB1 = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -166,39 +166,39 @@ void Model::CreateBuffers()
 		&resourceDescB1,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffB1));
+		IID_PPV_ARGS(&constBuffB1_));
 	// 定数バッファへデータ転送
 	ConstBufferDataB1* constMap1 = nullptr;
-	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
+	result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
 	if (SUCCEEDED(result)) {
 		constMap1->ambient = material.ambient;
 		constMap1->diffuse = material.diffuse;
 		constMap1->specular = material.specular;
 		constMap1->alpha = material.alpha;
-		constBuffB1->Unmap(0, nullptr);
+		constBuffB1_->Unmap(0, nullptr);
 	}
 }
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial)
 {
 	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	cmdList->IASetVertexBuffers(0, 1, &vbView_);
 	// インデックスバッファの設定
-	cmdList->IASetIndexBuffer(&ibView);
+	cmdList->IASetIndexBuffer(&ibView_);
 
 	// デスクリプタヒープの配列
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::sDescHeap.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	srvGpuHandle.ptr += incrementSize * textureIndex;
+	srvGpuHandle.ptr += incrementSize * textureIndex_;
 	cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);
 	// 描画コマンド
-	cmdList->DrawIndexedInstanced((uint32_t)indices.size(), 1, 0, 0, 0);
+	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
 }
 
 void Model::LoadFromOBJInternal(const std::string& modelname)
@@ -293,9 +293,9 @@ void Model::LoadFromOBJInternal(const std::string& modelname)
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcodes[indexTexcord - 1];
-				vertices.emplace_back(vertex);
+				vertices_.emplace_back(vertex);
 				//インデックスデータの追加
-				indices.emplace_back((unsigned short)indices.size());
+				indices_.emplace_back((unsigned short)indices_.size());
 
 				////頂点インデックスに追加
 				//indices.emplace_back(indexPosition - 1);

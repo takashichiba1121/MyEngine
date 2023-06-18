@@ -57,11 +57,11 @@ private:
 	//音声データ
 	struct SoundData {
 		//波形フォーマット
-		WAVEFORMATEX wfex;
+		WAVEFORMATEX wfex_;
 		//バッファの先頭アドレス
-		BYTE* pBuffer;
+		BYTE* pBuffer_;
 		//バッファサイズ
-		uint32_t bufferSize;
+		uint32_t bufferSize_;
 	};
 
 	SoundData soundData_;

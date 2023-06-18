@@ -1,26 +1,26 @@
 #include "Audio.h"
 
-Microsoft::WRL::ComPtr<IXAudio2>Sound::xAudio2_;
-IXAudio2MasteringVoice* Sound::masterVoice_;
+Microsoft::WRL::ComPtr<IXAudio2>Sound::sXAudio2;
+IXAudio2MasteringVoice* Sound::sMasterVoice;
 
 Sound::~Sound()
 {
 	// xaudio2の解放
-	xAudio2_.Reset();
+	sXAudio2.Reset();
 	//バッファのメモリを解放
-	delete[] soundData_.pBuffer;
+	delete[] soundData_.pBuffer_;
 
-	soundData_.pBuffer = 0;
-	soundData_.bufferSize = 0;
-	soundData_.wfex = {};
+	soundData_.pBuffer_ = 0;
+	soundData_.bufferSize_ = 0;
+	soundData_.wfex_ = {};
 }
 
 void Sound::StaticInitialize()
 {
 
 	HRESULT result;
-	result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
-	result = xAudio2_->CreateMasteringVoice(&masterVoice_);
+	result = XAudio2Create(&sXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+	result = sXAudio2->CreateMasteringVoice(&sMasterVoice);
 
 }
 
@@ -116,9 +116,9 @@ void Sound::SoundLoadWave(const char* filename) {
 	//returnする為の音声データ
 	SoundData soundData = {};
 
-	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	soundData.bufferSize = data.size;
+	soundData.wfex_ = format.fmt;
+	soundData.pBuffer_ = reinterpret_cast<BYTE*>(pBuffer);
+	soundData.bufferSize_ = data.size;
 
 	soundData_ = soundData;
 
@@ -127,7 +127,7 @@ void Sound::SoundLoadWave(const char* filename) {
 //-------音声データの解放-------//
 void Sound::SoundUnload() {
 	// xaudio2の解放
-	xAudio2_.Reset();
+	sXAudio2.Reset();
 
 	
 
@@ -141,12 +141,12 @@ void Sound::SoundPlayWave(bool loop, float volume) {
 	HRESULT result;
 
 	//波形フォーマットを元にSourceVoiceの生成
-	result = xAudio2_->CreateSourceVoice(&pSourceVoice_, &soundData_.wfex);
+	result = sXAudio2->CreateSourceVoice(&pSourceVoice_, &soundData_.wfex_);
 	assert(SUCCEEDED(result));
 
 	//再生する波形データの設定
-	buf_.pAudioData = soundData_.pBuffer;
-	buf_.AudioBytes = soundData_.bufferSize;
+	buf_.pAudioData = soundData_.pBuffer_;
+	buf_.AudioBytes = soundData_.bufferSize_;
 
 	pSourceVoice_->SetVolume(volume);
 

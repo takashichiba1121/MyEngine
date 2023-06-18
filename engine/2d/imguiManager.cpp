@@ -3,7 +3,7 @@
 #include"imgui_impl_win32.h"
 #include"imgui_impl_dx12.h"
 
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> imguiManager::sSrvHeap_;
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> imguiManager::sSrvHeap;
 
 DirectXCommon* imguiManager::sDxCommon;
 
@@ -30,15 +30,15 @@ void imguiManager::StaticInitialize(WinApp* winApp, DirectXCommon* dxCommon)
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	//デスクリプタヒープ生成
-	result = sDxCommon->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&sSrvHeap_));
+	result = sDxCommon->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&sSrvHeap));
 	assert(SUCCEEDED(result));
 
 	ImGui_ImplDX12_Init(
 		sDxCommon->GetDevice(),
 		static_cast<int>(sDxCommon->GetBackBufferCount()),
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, sSrvHeap_.Get(),
-		sSrvHeap_->GetCPUDescriptorHandleForHeapStart(),
-		sSrvHeap_->GetGPUDescriptorHandleForHeapStart());
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, sSrvHeap.Get(),
+		sSrvHeap->GetCPUDescriptorHandleForHeapStart(),
+		sSrvHeap->GetGPUDescriptorHandleForHeapStart());
 }
 
 void imguiManager::Finalize()
@@ -47,7 +47,7 @@ void imguiManager::Finalize()
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 	//デスクリプタヒープを解放
-	sSrvHeap_.Reset();
+	sSrvHeap.Reset();
 }
 
 void imguiManager::Begin()
@@ -69,7 +69,7 @@ void imguiManager::Draw()
 
 
 	//デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { sSrvHeap_.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { sSrvHeap.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//描画コマンドを発行
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),commandList);

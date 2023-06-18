@@ -79,7 +79,7 @@ public:
 	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
-	std::vector<VertexPosNormalUv> GetVertices() {return vertices; }
+	std::vector<VertexPosNormalUv> GetVertices() {return vertices_; }
 
 private://非公開のメンバ関数
 	//OBJファイルから3Dモデルを読み込む(非公開)
@@ -91,25 +91,25 @@ private:
 	//デバイス
 	static ID3D12Device* sDevice;
 	// 頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff;
+	ComPtr<ID3D12Resource> vertBuff_;
 	// 頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView;
+	D3D12_VERTEX_BUFFER_VIEW vbView_;
 	// インデックスバッファ
-	ComPtr<ID3D12Resource> indexBuff;
+	ComPtr<ID3D12Resource> indexBuff_;
 	// インデックスバッファビュー
-	D3D12_INDEX_BUFFER_VIEW ibView;
+	D3D12_INDEX_BUFFER_VIEW ibView_;
 	// 頂点データ配列
-	std::vector<VertexPosNormalUv> vertices;
+	std::vector<VertexPosNormalUv> vertices_;
 	// 頂点インデックス配列
-	std::vector<unsigned short>indices;
+	std::vector<unsigned short>indices_;
 	//マテリアル
 	Material material;
 	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_;
 	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_;
 	// 定数バッファ(マテリアル)
-	ComPtr<ID3D12Resource> constBuffB1;
+	ComPtr<ID3D12Resource> constBuffB1_;
 
-	uint32_t textureIndex;
+	uint32_t textureIndex_;
 };

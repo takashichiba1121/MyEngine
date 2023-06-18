@@ -309,7 +309,7 @@ bool assimpObject3d::Initialize()
 		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
 			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-			IID_PPV_ARGS(&constBuffB0));
+			IID_PPV_ARGS(&constBuffB0_));
 		//// 定数バッファの生成
 		//result = device->CreateCommittedResource(
 		//	&heapPropsB1,
@@ -330,7 +330,7 @@ bool assimpObject3d::Initialize()
 		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
 			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-			IID_PPV_ARGS(&constBuffB2));
+			IID_PPV_ARGS(&constBuffB2_));
 		//// 定数バッファの生成
 		//result = device->CreateCommittedResource(
 		//	&heapPropsB1,
@@ -341,7 +341,7 @@ bool assimpObject3d::Initialize()
 		//	IID_PPV_ARGS(&constBuffB1));
 		assert(SUCCEEDED(result));
 	}
-	result = constBuffB2->Map(0, nullptr, (void**)&ConstMapPolygon);
+	result = constBuffB2_->Map(0, nullptr, (void**)&ConstMapPolygon_);
 	return true;
 }
 
@@ -351,31 +351,31 @@ void assimpObject3d::Update()
 	Matrix4 matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
-	matScale = Matrix4Math::scale(scale);
+	matScale = Matrix4Math::scale(scale_);
 	matRot = Matrix4Math::identity();
-	matRot = matRot * Matrix4Math::rotateZ(ToRadian(rotation.z));
-	matRot = matRot * Matrix4Math::rotateX(ToRadian(rotation.x));
-	matRot = matRot * Matrix4Math::rotateY(ToRadian(rotation.y));
-	matTrans = Matrix4Math::translate(position);
+	matRot = matRot * Matrix4Math::rotateZ(ToRadian(rotation_.z));
+	matRot = matRot * Matrix4Math::rotateX(ToRadian(rotation_.x));
+	matRot = matRot * Matrix4Math::rotateY(ToRadian(rotation_.y));
+	matTrans = Matrix4Math::translate(position_);
 
 	// ワールド行列の合成
-	matWorld = Matrix4Math::identity(); // 変形をリセット
-	matWorld = matWorld * matScale; // ワールド行列にスケーリングを反映
-	matWorld = matWorld * matRot; // ワールド行列に回転を反映
-	matWorld = matWorld * matTrans; // ワールド行列に平行移動を反映
+	matWorld_ = Matrix4Math::identity(); // 変形をリセット
+	matWorld_ = matWorld_ * matScale; // ワールド行列にスケーリングを反映
+	matWorld_ = matWorld_ * matRot; // ワールド行列に回転を反映
+	matWorld_ = matWorld_ * matTrans; // ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
-	if (parent != nullptr) {
+	if (parent_ != nullptr) {
 		// 親オブジェクトのワールド行列を掛ける
-		matWorld *= parent->matWorld;
+		matWorld_ *= parent_->matWorld_;
 	}
 
 	// 定数バッファへデータ転送
 	ConstBufferDataB0* constMap = nullptr;
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
+	result = constBuffB0_->Map(0, nullptr, (void**)&constMap);
 	/*constMap->color = color;*/
-	constMap->mat = matWorld * sMatView * sMatProjection;	// 行列の合成
-	constBuffB0->Unmap(0, nullptr);
+	constMap->mat = matWorld_ * sMatView * sMatProjection;	// 行列の合成
+	constBuffB0_->Unmap(0, nullptr);
 
 }
 
@@ -386,18 +386,18 @@ void assimpObject3d::Draw()
 	assert(assimpObject3d::sCmdList);
 
 	//モデルがセットされていなければ描画をスキップ
-	if (model == nullptr) {
+	if (model_ == nullptr) {
 		return;
 	}
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0_->GetGPUVirtualAddress());
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(2, constBuffB2->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(2, constBuffB2_->GetGPUVirtualAddress());
 
 	//モデルを描画
-	model->Draw(sCmdList, 1);
+	model_->Draw(sCmdList, 1);
 }
 
 Matrix4 assimpObject3d::GetMatViewPro()

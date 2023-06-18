@@ -16,13 +16,13 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-ID3D12Device* ParticleManager::device = nullptr;
-ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
-ComPtr<ID3D12RootSignature> ParticleManager::rootsignature;
-ComPtr<ID3D12PipelineState> ParticleManager::pipelinestate;
-ComPtr<ID3D12Resource> ParticleManager::vertBuff;
+ID3D12Device* ParticleManager::sDevice = nullptr;
+ID3D12GraphicsCommandList* ParticleManager::sCmdList = nullptr;
+ComPtr<ID3D12RootSignature> ParticleManager::sRootsignature;
+ComPtr<ID3D12PipelineState> ParticleManager::sPipelinestate;
+ComPtr<ID3D12Resource> ParticleManager::sVertBuff;
 //ComPtr<ID3D12Resource> Object3d::indexBuff;
-D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
+D3D12_VERTEX_BUFFER_VIEW ParticleManager::sVbView{};
 
 float easeOutQuint(float x)
 {
@@ -39,7 +39,7 @@ void ParticleManager::StaticInitialize(ID3D12Device* device)
 	// nullptrチェック
 	assert(device);
 
-	ParticleManager::device = device;
+	ParticleManager::sDevice = device;
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
@@ -51,15 +51,15 @@ void ParticleManager::StaticInitialize(ID3D12Device* device)
 void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(ParticleManager::cmdList == nullptr);
+	assert(ParticleManager::sCmdList == nullptr);
 
 	// コマンドリストをセット
-	ParticleManager::cmdList = cmdList;
+	ParticleManager::sCmdList = cmdList;
 
 	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelinestate.Get());
+	cmdList->SetPipelineState(sPipelinestate.Get());
 	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootsignature.Get());
+	cmdList->SetGraphicsRootSignature(sRootsignature.Get());
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 }
@@ -67,7 +67,7 @@ void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
 void ParticleManager::PostDraw()
 {
 	// コマンドリストを解除
-	ParticleManager::cmdList = nullptr;
+	ParticleManager::sCmdList = nullptr;
 }
 
 void ParticleManager::InitializeGraphicsPipeline()
@@ -244,13 +244,13 @@ void ParticleManager::InitializeGraphicsPipeline()
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 	// ルートシグネチャの生成
-	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootsignature));
+	result = sDevice->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&sRootsignature));
 	assert(SUCCEEDED(result));
 
-	gpipeline.pRootSignature = rootsignature.Get();
+	gpipeline.pRootSignature = sRootsignature.Get();
 
 	// グラフィックスパイプラインの生成
-	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate));
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&sPipelinestate));
 	assert(SUCCEEDED(result));
 
 }
@@ -269,15 +269,15 @@ void ParticleManager::InitializeVerticeBuff()
 	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
 
 	// 頂点バッファ生成
-	result = device->CreateCommittedResource(
+	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&vertBuff));
+		IID_PPV_ARGS(&sVertBuff));
 	assert(SUCCEEDED(result));
 
 	// 頂点バッファビューの作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	vbView.SizeInBytes =sizeVB;
-	vbView.StrideInBytes = sizeof(VertexPos);
+	sVbView.BufferLocation = sVertBuff->GetGPUVirtualAddress();
+	sVbView.SizeInBytes =sizeVB;
+	sVbView.StrideInBytes = sizeof(VertexPos);
 }
 void ParticleManager::Initialize()
 {
@@ -290,7 +290,7 @@ void ParticleManager::Initialize()
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff);
 
 	// 定数バッファの生成
-	result = device->CreateCommittedResource(
+	result = sDevice->CreateCommittedResource(
 		&heapProps, // アップロード可能
 		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuff));
@@ -323,11 +323,11 @@ void ParticleManager::Update()
 	//}
 
 	//寿命が尽きたパーティクルを全削除
-	inParticles.remove_if([](InParticle& x) {
+	inParticles_.remove_if([](InParticle& x) {
 		return x.frame >= x.numFrame;
 		});
 	//全パーティクル
-	for (std::list<InParticle>::iterator it = inParticles.begin(); it != inParticles.end(); it++)
+	for (std::list<InParticle>::iterator it = inParticles_.begin(); it != inParticles_.end(); it++)
 	{
 		//経過フレーム数をカウント
 		it->frame++;
@@ -353,11 +353,11 @@ void ParticleManager::Update()
 		it->color.w += it->startColor.w;
 	}
 	//寿命が尽きたパーティクルを全削除
-	outParticles.remove_if([](OutParticle& x) {
+	outParticles_.remove_if([](OutParticle& x) {
 		return x.frame >= x.numFrame;
 		});
 	//全パーティクル
-	for (std::list<OutParticle>::iterator it = outParticles.begin(); it != outParticles.end(); it++)
+	for (std::list<OutParticle>::iterator it = outParticles_.begin(); it != outParticles_.end(); it++)
 	{
 		//経過フレーム数をカウント
 		it->frame++;
@@ -387,11 +387,11 @@ void ParticleManager::Update()
 	}
 	//頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
-	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = sVertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result))
 	{
 		//パーティクルの情報を1つずつ反映
-		for (std::list<InParticle>::iterator it = inParticles.begin(); it != inParticles.end(); it++)
+		for (std::list<InParticle>::iterator it = inParticles_.begin(); it != inParticles_.end(); it++)
 		{
 			//座標
 			vertMap->pos = it->position;
@@ -401,7 +401,7 @@ void ParticleManager::Update()
 			vertMap++;
 		}
 		//パーティクルの情報を1つずつ反映
-		for (std::list<OutParticle>::iterator it = outParticles.begin(); it != outParticles.end(); it++)
+		for (std::list<OutParticle>::iterator it = outParticles_.begin(); it != outParticles_.end(); it++)
 		{
 			//座標
 			vertMap->pos = it->position;
@@ -410,7 +410,7 @@ void ParticleManager::Update()
 			//次の頂点へ
 			vertMap++;
 		}
-		vertBuff->Unmap(0, nullptr);
+		sVertBuff->Unmap(0, nullptr);
 	}
 }
 
@@ -426,28 +426,28 @@ void ParticleManager::Draw()
 	constBuff->Unmap(0, nullptr);
 
 	// nullptrチェック
-	assert(device);
-	assert(ParticleManager::cmdList);
+	assert(sDevice);
+	assert(ParticleManager::sCmdList);
 
 	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	sCmdList->IASetVertexBuffers(0, 1, &sVbView);
 	//// インデックスバッファの設定
 	//cmdList->IASetIndexBuffer(&ibView);
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
 	// 描画コマンド
 	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-	cmdList->DrawInstanced(static_cast<uint32_t>(inParticles.size()+outParticles.size()), 1, 0, 0);
+	sCmdList->DrawInstanced(static_cast<uint32_t>(inParticles_.size()+outParticles_.size()), 1, 0, 0);
 }
 
 void ParticleManager::InAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition,float startScale, float endScale,const Vector4& startColor,const Vector4& endColor)
 {
 	//リストに要素を追加
-	inParticles.emplace_front();
+	inParticles_.emplace_front();
 	//追加した要素の参照
-	InParticle& p = inParticles.front();
+	InParticle& p = inParticles_.front();
 	//値のセット
 	p.startPosition = startPosition;
 	p.endPosition = endPosition;
@@ -461,9 +461,9 @@ void ParticleManager::InAdd(uint32_t life,const Vector3& startPosition,const Vec
 void ParticleManager::OutAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor)
 {
 	//リストに要素を追加
-	outParticles.emplace_front();
+	outParticles_.emplace_front();
 	//追加した要素の参照
-	OutParticle& p = outParticles.front();
+	OutParticle& p = outParticles_.front();
 	//値のセット
 	p.startPosition = startPosition;
 	p.endPosition = endPosition;

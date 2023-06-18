@@ -87,16 +87,16 @@ void AssimpModel::CreateBuffers()
 			&resourceDescB1,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffB1));
+			IID_PPV_ARGS(&constBuffB1_));
 		// 定数バッファへデータ転送
 		ConstBufferDataB1* constMap1 = nullptr;
-		result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
+		result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
 		if (SUCCEEDED(result)) {
 			constMap1->ambient = mesh->materials.ambient;
 			constMap1->diffuse = mesh->materials.diffuse;
 			constMap1->specular = mesh->materials.specular;
 			constMap1->alpha = mesh->materials.alpha;
-			constBuffB1->Unmap(0, nullptr);
+			constBuffB1_->Unmap(0, nullptr);
 		}
 	}
 }
@@ -126,7 +126,7 @@ void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamInd
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 		// 定数バッファビューをセット
-		cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1->GetGPUVirtualAddress());
+		cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
 		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
 		uint32_t incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);

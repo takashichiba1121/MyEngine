@@ -96,9 +96,9 @@ private:
 	//デバイス
 	static ID3D12Device* sDevice;
 	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_;
 	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_;
 	// 定数バッファ(マテリアル)
-	ComPtr<ID3D12Resource> constBuffB1;
+	ComPtr<ID3D12Resource> constBuffB1_;
 };

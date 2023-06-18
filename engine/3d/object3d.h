@@ -161,66 +161,66 @@ public: // メンバ関数
 	/// 座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetPosition() const { return position; }
+	const Vector3& GetPosition() const { return position_; }
 
 	/// <summary>
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	void SetPosition(const Vector3& position) { this->position = position; }
+	void SetPosition(const Vector3& position) { this->position_ = position; }
 
 	/// <summary>
 	/// 座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetScale() const { return scale; }
+	const Vector3& GetScale() const { return scale_; }
 
 	/// <summary>
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	void SetScale(const Vector3& scale) { this->scale = scale; }
+	void SetScale(const Vector3& scale) { this->scale_ = scale; }
 
 	/// <summary>
 	/// 座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	const Vector3& GetRot() const { return rotation; }
+	const Vector3& GetRot() const { return rotation_; }
 
 	/// <summary>
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	void SetRot(const Vector3& rot) { this->rotation = rot; }
+	void SetRot(const Vector3& rot) { this->rotation_ = rot; }
 
 	//setter
-	void SetModel(Model* model) { this->model = model; }
+	void SetModel(Model* model) { this->model_ = model; }
 
-	const ConstBufferPolygonExplosion GetPolygonExplosion() { return *ConstMapPolygon; }
+	const ConstBufferPolygonExplosion GetPolygonExplosion() { return *ConstMapPolygon_; }
 
-	const void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { *ConstMapPolygon = polygonExplosion; }
+	const void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { *ConstMapPolygon_ = polygonExplosion; }
 
 private: // メンバ変数
-	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
-	ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ
-	ComPtr<ID3D12Resource> constBuffB2; // 定数バッファ
+	ComPtr<ID3D12Resource> constBuffB0_; // 定数バッファ
+	ComPtr<ID3D12Resource> constBuffB1_; // 定数バッファ
+	ComPtr<ID3D12Resource> constBuffB2_; // 定数バッファ
 	//// 色
 	//Vector4 color = { 1,1,1,1 };
 	// ローカルスケール
-	Vector3 scale = { 1,1,1 };
+	Vector3 scale_ = { 1,1,1 };
 	// X,Y,Z軸回りのローカル回転角
-	Vector3 rotation = { 0,0,0 };
+	Vector3 rotation_ = { 0,0,0 };
 	// ローカル座標
-	Vector3 position = { 0,0,0 };
+	Vector3 position_ = { 0,0,0 };
 	// ローカルワールド変換行列
-	Matrix4 matWorld;
+	Matrix4 matWorld_;
 	// 親オブジェクト
-	Object3d* parent = nullptr;
+	Object3d* parent_ = nullptr;
 
-	ConstBufferPolygonExplosion* ConstMapPolygon;
+	ConstBufferPolygonExplosion* ConstMapPolygon_;
 
 	//モデル
-	Model* model = nullptr;
+	Model* model_ = nullptr;
 };
 
 float ToRadian(float angle);
