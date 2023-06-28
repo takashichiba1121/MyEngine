@@ -1,7 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include"PostEffectCommon.h"
-class PostEffectLuminance
+class PostEffectMultiRenderTarget
 {
 public:
 

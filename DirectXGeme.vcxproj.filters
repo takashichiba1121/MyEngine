@@ -152,6 +152,12 @@
     <ClCompile Include="engine\3d\assimpObject3d.cpp">
       <Filter>engin\ソースファイル\3d</Filter>
     </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectTest.cpp">
+      <Filter>engin\ソースファイル\posteffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectMultiRenderTarget.cpp">
+      <Filter>engin\ソースファイル\posteffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -226,6 +232,12 @@
     <ClInclude Include="engine\3d\assimpObject3d.h">
       <Filter>engin\ヘッダーファイル\3d</Filter>
     </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectTest.h">
+      <Filter>engin\ヘッダーファイル\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectMultiRenderTarget.h">
+      <Filter>engin\ヘッダーファイル\PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">
@@ -288,6 +300,18 @@
     <FxCompile Include="Resources\shaders\FbxVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectTestVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\postEffectTestPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -312,6 +336,12 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Fbx.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\postEffectTest.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\PostEffectMultiRenderTarget.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>

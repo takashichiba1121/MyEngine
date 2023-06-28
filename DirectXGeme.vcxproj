@@ -108,6 +108,8 @@
     <ClCompile Include="engine\postEffect\PostEffectCommon.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectLuminance.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectMixed.cpp" />
+    <ClCompile Include="engine\postEffect\PostEffectMultiRenderTarget.cpp" />
+    <ClCompile Include="engine\postEffect\PostEffectTest.cpp" />
     <ClCompile Include="engine\Scene\GameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\Math\Matrix4.cpp" />
@@ -145,6 +147,8 @@
     <ClInclude Include="engine\postEffect\PostEffectCommon.h" />
     <ClInclude Include="engine\postEffect\PostEffectLuminance.h" />
     <ClInclude Include="engine\postEffect\PostEffectMixed.h" />
+    <ClInclude Include="engine\postEffect\PostEffectMultiRenderTarget.h" />
+    <ClInclude Include="engine\postEffect\PostEffectTest.h" />
     <ClInclude Include="engine\Scene\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +260,27 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\postEffectTestPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectTestVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -277,6 +302,8 @@
     <None Include="Resources\shaders\PostEffectBlur.hlsli" />
     <None Include="Resources\shaders\PostEffectLuminance.hlsli" />
     <None Include="Resources\shaders\PostEffectMixed.hlsli" />
+    <None Include="Resources\shaders\PostEffectMultiRenderTarget.hlsli" />
+    <None Include="Resources\shaders\postEffectTest.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>

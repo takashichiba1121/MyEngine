@@ -11,7 +11,7 @@ float4 main(VSOutput input) : SV_TARGET
 
 	col += tex0.Sample(smp, input.uv);
 
-	//col.a=1;	
+	col.a=1;	
 
 	return col;
 }

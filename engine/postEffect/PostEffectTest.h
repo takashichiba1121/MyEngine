@@ -1,7 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include"PostEffectCommon.h"
-class PostEffectLuminance
+class PostEffectTest
 {
 public:
 
@@ -28,7 +28,7 @@ public:
     /// <param name="cmdList">コマンド処理</param>
     void PostDrawScene();
 
-    uint32_t GettextureHandle() { return textureHandle; }
+    uint32_t GettextureHandle() { return textureHandle[0]; }
 
 private://静的メンバ変数
     static const float clearColor[4];
@@ -46,7 +46,7 @@ private:
     //頂点バッファビューの作成
     D3D12_VERTEX_BUFFER_VIEW vbView{};
 
-    Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
+    Microsoft::WRL::ComPtr<ID3D12Resource> texBuff[2];
     //深度バッファ
     Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff;
     //RTV用のデスクリプタヒープ
@@ -58,8 +58,10 @@ private:
     Microsoft::WRL::ComPtr<ID3D12PipelineState> normalPipelineState;
     Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-    uint32_t textureHandle;
+    uint32_t textureHandle[2];
 
-    PostEffectCommon* PECommon;
+    PostEffectCommon* PECommon_;
 };
+
+
 

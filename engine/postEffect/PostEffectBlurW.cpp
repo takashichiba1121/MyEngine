@@ -6,16 +6,16 @@
 
 using namespace DirectX;
 
-const float PostEffectBlurW::clearColor[4] = {0.0f,0.0f,0.0f,0.0f};
+const float PostEffectBlur::clearColor[4] = {0.0f,0.0f,0.0f,0.0f};
 
-void PostEffectBlurW::Initialize(PostEffectCommon* PECommon)
+void PostEffectBlur::Initialize(PostEffectCommon* PECommon)
 {
 	this->PECommon = PECommon;
 	
 	HRESULT result;
 
 	D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_R16G16B16A16_FLOAT,
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		WinApp::window_width,
 		(UINT)WinApp::window_height,
 		1,0,1,0,D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -25,7 +25,7 @@ void PostEffectBlurW::Initialize(PostEffectCommon* PECommon)
 		CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
 			D3D12_MEMORY_POOL_L0);
 
-		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R16G16B16A16_FLOAT, clearColor);
+		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
 
 		result = this->PECommon->device->CreateCommittedResource(
@@ -55,7 +55,7 @@ void PostEffectBlurW::Initialize(PostEffectCommon* PECommon)
 		//	delete[] img;
 		//}
 	}
-	textureHandle = this->PECommon->CreateDescHeapSRV(texBuff.Get());
+	textureHandle_ = this->PECommon->CreateDescHeapSRV(texBuff.Get());
 
 	//RTV用のデスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
@@ -69,7 +69,7 @@ void PostEffectBlurW::Initialize(PostEffectCommon* PECommon)
 	//レンダーターゲットビューも設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	//シェーダーの計算結果をSRGBに変換して書き込む
-	rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	//デスクリプタヒープにRTVを作成
 	this->PECommon->device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
@@ -215,7 +215,7 @@ void PostEffectBlurW::Initialize(PostEffectCommon* PECommon)
 	constBuff->Unmap(0,nullptr);
 }
 
-void PostEffectBlurW::CreatGraphicsPipelineState()
+void PostEffectBlur::CreatGraphicsPipelineState()
 {
 	HRESULT result;
 
@@ -332,7 +332,7 @@ void PostEffectBlurW::CreatGraphicsPipelineState()
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	//その他の設定
 	pipelineDesc.NumRenderTargets = 1;//描画対象は一つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;//0～255指定のRGBA
+	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;//0～255指定のRGBA
 	pipelineDesc.SampleDesc.Count = 1; //1ピクセルにつき一回サンプリング
 
 	//デスクリプタレンジの設定
@@ -393,7 +393,7 @@ void PostEffectBlurW::CreatGraphicsPipelineState()
 	assert(SUCCEEDED(result));
 }
 
-void PostEffectBlurW::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
+void PostEffectBlur::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	commandList=cmdList;
 
@@ -428,7 +428,7 @@ void PostEffectBlurW::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 	commandList->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 }
 
-void PostEffectBlurW::Draw()
+void PostEffectBlur::Draw()
 {
 	//パイプラインステートとルートシグネチャの設定コマンド
 	commandList->SetPipelineState(pipelineState.Get());
@@ -436,6 +436,33 @@ void PostEffectBlurW::Draw()
 
 	//SRVヒープの設定コマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon->descHeapSRV.Get()};
+	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	//プリミティブ形状の設定コマンド
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	//頂点バッファビューの設定コマンド
+	commandList->IASetVertexBuffers(0, 1, &vbView);
+
+	//画像描画
+	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = this->PECommon->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
+	UINT incrementSize = this->PECommon->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	srvGpuHandle.ptr += incrementSize * textureHandle_;
+	commandList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
+
+	commandList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
+
+	//描画コマンド
+	commandList->DrawInstanced(_countof(vertices), 1, 0, 0);//すべての頂点を使って描画
+}
+
+void PostEffectBlur::Draw(uint32_t textureHandle)
+{
+	//パイプラインステートとルートシグネチャの設定コマンド
+	commandList->SetPipelineState(pipelineState.Get());
+	commandList->SetGraphicsRootSignature(rootSignature.Get());
+
+	//SRVヒープの設定コマンド
+	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon->descHeapSRV.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//プリミティブ形状の設定コマンド
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -455,7 +482,7 @@ void PostEffectBlurW::Draw()
 	commandList->DrawInstanced(_countof(vertices), 1, 0, 0);//すべての頂点を使って描画
 }
 
-void PostEffectBlurW::PostDrawScene()
+void PostEffectBlur::PostDrawScene()
 {
 	CD3DX12_RESOURCE_BARRIER RESOURCE_BARRIER= CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);

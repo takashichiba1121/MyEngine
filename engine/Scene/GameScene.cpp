@@ -11,176 +11,74 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	fbxModel.reset(AssimpModel::LoadFormFBX("3dKyaraFix4"));
+	model.reset(Model::LoadFormOBJ("Cube2"));
 
-	fbxObjct3d = std::make_unique<assimpObject3d>();
+	obj = std::make_unique<Object3d>();
 
-	fbxObjct3d->SetModel(fbxModel.get());
+	obj->SetModel(model.get());
 
-	fbxObjct3d->Initialize();
+	obj->Initialize();
 
-	fbxObjct3d->SetPosition({ 0,0,0 });
+	obj->SetPosition({ 0,0,0 });
 
-	fbxObjct3d->SetRot({ 0.0f,90.0f,0.0f });
+	obj->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,1.0f });
 
-	fbxObjct3d->SetScale({0.03f,0.03f,0.03f });
+	Object3d::SetEye({ 0.0f,0.0f,5.0f });
 
-	fbxObjct3d->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,0.0f });
+	skydome.reset(Model::LoadFormOBJ("skydome"));
 
-	assimpObject3d::SetEye({ 0.0f,0.0f,-10.0f });
+	skydomeObj = std::make_unique<Object3d>();
 
-	fbxModel2.reset(AssimpModel::LoadFormFBX("cubeFBX"));
+	skydomeObj->SetModel(skydome.get());
 
-	fbxObjct3d2 = std::make_unique<assimpObject3d>();
+	skydomeObj->Initialize();
 
-	fbxObjct3d2->SetModel(fbxModel2.get());
+	skydomeObj->SetPosition({ 0,0,0 });
 
-	fbxObjct3d2->Initialize();
+	skydomeObj->SetScale({ 50.0f,50.0f,50.0f });
 
-	fbxObjct3d2->SetPosition({ 0,0,0 });
-
-	fbxObjct3d2->SetRot({ 0.0f,90.0f,0.0f });
-
-	fbxObjct3d2->SetScale({ 1.0f,1.0f,1.0f });
-
-	fbxObjct3d2->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,0.0f });
-
-	//sprite = std::make_unique<Sprite>();
-
-	////sprite->SetPosition({-70,-70});
-
-	//sprite->Initialize(Texture::LoadTexture(L"Resources/texture.png"));
-	//sprite->SetScale({100,100});
-
-	//model.reset(Model::LoadFormOBJ("ken"));
-	//
-	//obj = std::make_unique<Object3d>();
-
-	//obj->SetModel(model.get());
-
-	//obj->Initialize();
-
-	//obj->SetPosition({0,0,5});
-
-	//obj->SetRot({0.0f,0.0f,0.0f});
-
-	//obj->SetScale({1,1,1});
-
-	//obj->SetPolygonExplosion({0.0f,1.0f,6.28,10.0f,0.0f});
-
-	//Object3d::SetEye({ 0.0f,0.0f,5.0f });
-
-	//pMan = std::make_unique<ParticleManager>();
-
-	//pMan->Initialize();
-
-	//model2.reset(Model::LoadFormOBJ("skydome"));
-
-	//obj2 = std::make_unique<Object3d>();
-
-	//obj2->SetModel(model2.get());
-
-	//obj2->Initialize();
-
-	//obj2->SetScale({ 50,50,50 });
-
-	//obj2->SetPolygonExplosion({ 0.0f,1.0f,6.28,10.0f,1.0f });
-
-	//sound = std::make_unique<Sound>();
-
-	//sound->SoundLoadWave("Resources/GameClear.wav");
-
-	//sound->SoundPlayWave(true,0.1f);
+	skydomeObj->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,1.0f });
 }
 
 void GameScene::Update()
 {
+	if(Input::TriggerKey(DIK_0))
+	{
+		if (isSkydomeDraw)
+		{
+			isSkydomeDraw = false;
+		}
+		else
+		{
+			isSkydomeDraw = true;
+		}
+	}
 
-	//sprite->SetPosition(pos);
-	//if (Input::TriggerKey(DIK_SPACE))
-	//{
-	//	isP = true;
-	//	obj->SetPolygonExplosion({ 1.0f,1.0f,6.28,50.0f,0.0f });
-	//	flame = 0;
-	//}
-	//if (isP)
-	//{
-	//	flame++;
+	obj->Update();
 
-	//	float endflame = 60;
-
-	//	float Destruction = (0.0f-1.0f) *(flame/endflame);
-	//	Destruction++;
-	//	float a = (1.0f-0.0f) * (flame / endflame);
-
- //  		Object3d::ConstBufferPolygonExplosion polygon=obj->GetPolygonExplosion();
-	//	obj->SetPolygonExplosion({ Destruction,polygon._ScaleFactor,polygon._RotationFactor,polygon._PositionFactor,0 });
-	//	//スペースキーを押していたら
-	//	for (int i = 0; i < 50; i++)
-	//	{
-	//		//消えるまでの時間
-	//		const float rnd_life = 10.0f;
-	//		//最低限のライフ
-	//		const float constlife = 10;
-	//		float life = (float)rand() / RAND_MAX * rnd_life - rnd_life / 2.0f + constlife;
-
-	//		//XYZの広がる距離
-	//		const float rnd_pos = 20.0f;
-	//		//Y方向には最低限の飛ぶ距離
-	//		const float constPosY = 15;
-	//		Vector3 pos{};
-	//		pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-	//		pos.y = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-	//		pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
-	//		//追加
-	//		pMan->InAdd(life, pos, { 0,0,0 }, 0.1, 0.1, { 2,2,2,1 }, { 2,2,2,1 });
-	//	}
-	//	if (flame>=endflame)
-	//	{
-	//		isP = false;
-	//		flame = 0;
-	//		
-	//	}
-	//}
-
-	//obj2->Update();
-
-	//obj->Update();
-
-	//pMan->Update();
-
-	//sprite->Update();
-
-	fbxObjct3d->Update();
-	fbxObjct3d2->Update();
+	skydomeObj->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
 { 
 	Object3d::PreDraw(dxCommon->GetCommandList());
 
-	//obj->Draw();
-
-	//obj2->Draw();
+	obj->Draw();
+	if (isSkydomeDraw)
+	{
+		skydomeObj->Draw();
+	}
 
 	Object3d::PostDraw();
 
 	assimpObject3d::PreDraw(dxCommon->GetCommandList());
 
-	fbxObjct3d->Draw();
-
-	fbxObjct3d2->Draw();
-
 	assimpObject3d::PostDraw();
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
-	//pMan->Draw();
 	ParticleManager::PostDraw();
 
 	SpriteCommon::PreDraw();
-
-	//sprite->Draw();
-
 	SpriteCommon::PostDraw();
 }
 
@@ -191,11 +89,14 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 
 	obj->Draw();
 
-	obj2->Draw();
+	if (isSkydomeDraw)
+	{
+		skydomeObj->Draw();
+	}
 
 	Object3d::PostDraw();
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
-	pMan->Draw();
+	//pMan->Draw();
 	ParticleManager::PostDraw();
 }

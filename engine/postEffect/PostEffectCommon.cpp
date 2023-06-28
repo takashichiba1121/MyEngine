@@ -16,7 +16,7 @@ void PostEffectCommon::StaticInitialize(DirectXCommon* dxCommon)
 	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
 	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 5;
+	srvDescHeapDesc.NumDescriptors = 7;
 	//SRVデスクリプタヒープ設定
 	result = device->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
 	assert(SUCCEEDED(result));
@@ -27,7 +27,7 @@ uint32_t PostEffectCommon::CreateDescHeapSRV(ID3D12Resource* texBuff)
 	uint32_t textureHandle = texIndex;
 	//SRV設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;

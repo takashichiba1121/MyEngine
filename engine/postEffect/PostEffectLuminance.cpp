@@ -6,26 +6,26 @@
 
 using namespace DirectX;
 
-const float PostEffectLuminance::clearColor[4] = {0.0f,0.0f,0.0f,0.0f};
+const float PostEffectLuminance::clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
 
 void PostEffectLuminance::Initialize(PostEffectCommon* PECommon)
 {
 	this->PECommon = PECommon;
-	
+
 	HRESULT result;
 
 	D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_R16G16B16A16_FLOAT,
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		WinApp::window_width,
 		(UINT)WinApp::window_height,
-		1,0,1,0,D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 	{
 		//テクスチャバッファの生成
 		//ヒープ設定
 		CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
 			D3D12_MEMORY_POOL_L0);
 
-		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R16G16B16A16_FLOAT, clearColor);
+		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
 
 		result = this->PECommon->device->CreateCommittedResource(
@@ -63,14 +63,14 @@ void PostEffectLuminance::Initialize(PostEffectCommon* PECommon)
 
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvDescHeapDesc.NumDescriptors = 1;
-	
+
 	//RTV用のデスクリプタヒープを生成
 	result = this->PECommon->device->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
 	assert(SUCCEEDED(result));
 	//レンダーターゲットビューも設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	//シェーダーの計算結果をSRGBに変換して書き込む
-	rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	//デスクリプタヒープにRTVを作成
 	this->PECommon->device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
@@ -290,7 +290,7 @@ void PostEffectLuminance::CreatGraphicsPipelineState()
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	//その他の設定
 	pipelineDesc.NumRenderTargets = 1;//描画対象は一つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;//0～255指定のRGBA
+	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;//0～255指定のRGBA
 	pipelineDesc.SampleDesc.Count = 1; //1ピクセルにつき一回サンプリング
 
 	//デスクリプタレンジの設定
@@ -348,7 +348,7 @@ void PostEffectLuminance::CreatGraphicsPipelineState()
 
 void PostEffectLuminance::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
-	commandList=cmdList;
+	commandList = cmdList;
 
 	CD3DX12_RESOURCE_BARRIER resouceBar = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
@@ -388,7 +388,7 @@ void PostEffectLuminance::Draw()
 	commandList->SetGraphicsRootSignature(rootSignature.Get());
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon->descHeapSRV.Get()};
+	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon->descHeapSRV.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//プリミティブ形状の設定コマンド
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -433,7 +433,7 @@ void PostEffectLuminance::NormalDraw()
 
 void PostEffectLuminance::PostDrawScene()
 {
-	CD3DX12_RESOURCE_BARRIER RESOURCE_BARRIER= CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
+	CD3DX12_RESOURCE_BARRIER RESOURCE_BARRIER = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
 	commandList->ResourceBarrier(1, &RESOURCE_BARRIER);

@@ -14,6 +14,8 @@
 #include"PostEffectBlurH.h"
 #include"PostEffectLuminance.h"
 #include"PostEffectMixed.h"
+#include"PostEffectTest.h"
+#include"PostEffectMultiRenderTarget.h"
 #include"assimpModel.h"
 #include"assimpObject3d.h"
 
@@ -59,26 +61,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	PostEffectCommon* postEffectCommon=new PostEffectCommon;
 
-	/*postEffectCommon->StaticInitialize(dxCommon);
+	postEffectCommon->StaticInitialize(dxCommon);
 
 	PostEffectLuminance* postEffectLuminance = new PostEffectLuminance;
 
 	postEffectLuminance->Initialize(postEffectCommon);
 
-	PostEffectBlurW* postEffectBlurW = new PostEffectBlurW;
+	PostEffectBlur* postEffectBlur = new PostEffectBlur;
 
-	postEffectBlurW->Initialize(postEffectCommon);
-
-	PostEffectBlurH* postEffectBlurH = new PostEffectBlurH;
-
-	postEffectBlurH->Initialize(postEffectCommon);
+	postEffectBlur->Initialize(postEffectCommon);
 
 	PostEffectMixed* postEffectMixed = new PostEffectMixed;
 
-	postEffectMixed->Initialize(postEffectCommon);*/
+	postEffectMixed->Initialize(postEffectCommon);
+
+	PostEffectTest* postEffectTest = new PostEffectTest;
+
+	postEffectTest->Initialize(postEffectCommon);
+
+	PostEffectMultiRenderTarget* postEffectMultiRenderTarget = new PostEffectMultiRenderTarget;
+
+	postEffectMultiRenderTarget->Initialize(postEffectCommon);
 
 	GameScene* gameScene = new GameScene;
 	gameScene->Initialize();
+
+	bool frg=true;
 
 	//ゲームループ
 	while (true) {
@@ -96,40 +104,68 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//postEffect->Update();
 
+		if (Input::TriggerKey(DIK_0))
+		{
+			if (frg)
+			{
+				frg = false;
+			}
+			else
+			{
+				frg = true;
+			}
+		}
+
 		//描画コマンドここから
 
-		/*postEffectLuminance->PreDrawScene(dxCommon->GetCommandList());
+		if (frg)
+		{
+			postEffectMultiRenderTarget->PreDrawScene(dxCommon->GetCommandList());
 
-		gameScene->PostEffectDraw(dxCommon);
+			gameScene->PostEffectDraw(dxCommon);
 
-		postEffectLuminance->PostDrawScene();
+			postEffectMultiRenderTarget->PostDrawScene();
 
-		postEffectBlurW->PreDrawScene(dxCommon->GetCommandList());
+			postEffectTest->PreDrawScene(dxCommon->GetCommandList());
 
-		postEffectLuminance->Draw();
+			postEffectMultiRenderTarget->Draw();
 
-		postEffectBlurW->PostDrawScene();
+			postEffectTest->PostDrawScene();
+		}
+		else
+		{
 
-		postEffectBlurH->PreDrawScene(dxCommon->GetCommandList());
+			postEffectLuminance->PreDrawScene(dxCommon->GetCommandList());
 
-		postEffectBlurW->Draw();
+			gameScene->PostEffectDraw(dxCommon);
 
-		postEffectBlurH->PostDrawScene();
+			postEffectLuminance->PostDrawScene();
 
-		postEffectMixed->PreDrawScene(dxCommon->GetCommandList());
+			postEffectBlur->PreDrawScene(dxCommon->GetCommandList());
 
-		postEffectBlurH->Draw();
+			postEffectLuminance->Draw();
 
-		postEffectMixed->PostDrawScene();*/
+			postEffectBlur->PostDrawScene();
 
-		//描画コマンドここまで
+			postEffectMixed->PreDrawScene(dxCommon->GetCommandList());
+
+			postEffectBlur->Draw();
+
+			postEffectMixed->PostDrawScene();
+		}
 
 		//imguiManager::Draw();
 		dxCommon->PreDraw();
-		
-		//postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
+		if (frg)
+		{
+			postEffectTest->Draw();
+		}
+		else
+		{
+			postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
+		}
 
-		gameScene->Draw(dxCommon);
+		//gameScene->Draw(dxCommon);
 		
 		dxCommon->PostDrow();
 
@@ -140,13 +176,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 	delete postEffectCommon;
 
-	//delete postEffectBlurW;
+	delete postEffectBlur;
 
-	//delete postEffectBlurH;
+	delete postEffectLuminance;
 
-	//delete postEffectLuminance;
+	delete postEffectMixed;
 
-	//delete postEffectMixed;
+	delete postEffectTest;
 
 	delete gameScene;
 

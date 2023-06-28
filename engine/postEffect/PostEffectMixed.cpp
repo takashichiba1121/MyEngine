@@ -15,7 +15,7 @@ void PostEffectMixed::Initialize(PostEffectCommon* PECommon)
 	HRESULT result;
 
 	D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		DXGI_FORMAT_R16G16B16A16_FLOAT,
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		WinApp::window_width,
 		(UINT)WinApp::window_height,
 		1,0,1,0,D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -25,7 +25,7 @@ void PostEffectMixed::Initialize(PostEffectCommon* PECommon)
 		CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
 			D3D12_MEMORY_POOL_L0);
 
-		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R16G16B16A16_FLOAT, clearColor);
+		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
 
 		result = this->PECommon->device->CreateCommittedResource(
@@ -69,7 +69,7 @@ void PostEffectMixed::Initialize(PostEffectCommon* PECommon)
 	//レンダーターゲットビューも設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	//シェーダーの計算結果をSRGBに変換して書き込む
-	rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	//デスクリプタヒープにRTVを作成
 	this->PECommon->device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());

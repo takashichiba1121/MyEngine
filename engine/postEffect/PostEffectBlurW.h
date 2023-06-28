@@ -1,7 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include"PostEffectCommon.h"
-class PostEffectBlurW
+class PostEffectBlur
 {
 public:
 
@@ -19,6 +19,8 @@ public:
     void PreDrawScene(ID3D12GraphicsCommandList* cmdList);
 
     void Draw();
+
+    void Draw(uint32_t textureHandle);
 
     /// <summary>
     /// ÉVÅ[Éìï`âÊå„èàóù
@@ -55,7 +57,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
     Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-    uint32_t textureHandle;
+    uint32_t textureHandle_;
     
     PostEffectCommon* PECommon;
 
