@@ -27,7 +27,7 @@ VSOutput main(float4 pos : POSITION ,float3 normal : NORMAL ,float2 uv : TEXCOOR
 	VSOutput output;//ピクセルシェーダを渡す値
 	output.svpos = pos;
 	output.normal = normal;
-	output.color.rgb = (ambient + diffuse + specular) * float4(1,1,1,1);
+	output.color.rgb = (ambient + diffuse + specular) *m_lightcolor;
 	output.color.a = m_alpha;
 	output.uv = uv;
 	return output;
