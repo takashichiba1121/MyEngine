@@ -16,6 +16,7 @@ public:
 	struct  ConstBufferData
 	{
 		Vector3 lightv;
+		float a;
 		Vector3 lightcolor;
 	};
 private:
