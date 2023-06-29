@@ -1,5 +1,8 @@
 cbuffer cbuff0 : register(b0) {
-    matrix mat; //3Dïœä∑çsóÒ
+    //matrix mat; //3Dïœä∑çsóÒ
+    matrix viewproj;
+    matrix world;
+    float3 cameraPos;
 };
 
 
@@ -11,6 +14,11 @@ cbuffer cbuff1 : register(b1) {
 };
 
 cbuffer cbuff2 : register(b2) {
+    float3 m_lightv;
+    float3 m_lightcolor;
+};
+
+cbuffer cbuff3 : register(b3) {
     float _Destruction : packoffset(c0);
     float _ScaleFactor : packoffset(c0.y);
     float _RotationFactor : packoffset(c0.z);

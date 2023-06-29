@@ -59,7 +59,7 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
             // ñ@ê¸ï˚å¸Ç…íeÇØîÚÇ‘
             v.svpos.xyz += normal *(_Destruction * _PositionFactor) * r3;
 
-        o.svpos = mul(mat, v.svpos);
+        o.svpos = mul(mul(viewproj,world), v.svpos);
         o.uv = v.uv;
         o.normal = v.normal;
         o.color = v.color;

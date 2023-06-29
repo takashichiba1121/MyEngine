@@ -18,6 +18,7 @@
 #include"PostEffectMultiRenderTarget.h"
 #include"assimpModel.h"
 #include"assimpObject3d.h"
+#include"Light.h"
 
 using namespace DirectX;
 using namespace std;
@@ -46,6 +47,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Sprite::StaticInitialize();
 
 	Model::SetDevice(dxCommon->GetDevice());
+
+	Light::StaticInitialize(dxCommon->GetDevice());
 
 	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
@@ -104,7 +107,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//postEffect->Update();
 
-		if (Input::TriggerKey(DIK_0))
+		if (Input::TriggerKey(DIK_0)||Input::PadTriggerKey(XINPUT_GAMEPAD_A))
 		{
 			if (frg)
 			{
@@ -118,7 +121,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		//•`‰æƒRƒ}ƒ“ƒh‚±‚±‚©‚ç
 
-		if (frg)
+		/*if (frg)
 		{
 			postEffectMultiRenderTarget->PreDrawScene(dxCommon->GetCommandList());
 
@@ -152,20 +155,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			postEffectBlur->Draw();
 
 			postEffectMixed->PostDrawScene();
-		}
+		}*/
 
 		//imguiManager::Draw();
 		dxCommon->PreDraw();
-		if (frg)
-		{
-			postEffectTest->Draw();
-		}
-		else
-		{
-			postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
-		}
+		//if (frg)
+		//{
+		//	postEffectTest->Draw();
+		//}
+		//else
+		//{
+		//	postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
+		//}
 
-		//gameScene->Draw(dxCommon);
+		gameScene->Draw(dxCommon);
 		
 		dxCommon->PostDrow();
 

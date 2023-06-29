@@ -4,13 +4,13 @@
 //静的メンバ変数の実体
 ID3D12Device* Model::sDevice = nullptr;
 
-Model* Model::LoadFormOBJ(const std::string& modelname)
+Model* Model::LoadFormOBJ(const std::string& modelname,bool smoothing)
 {
 	//新たなModel型のインスタンスをnewする
 	Model* model = new Model();
 
 	//読み込み
-	model->LoadFromOBJInternal(modelname);
+	model->LoadFromOBJInternal(modelname,smoothing);
 	
 	//バッファ生成
 	model->CreateBuffers();
@@ -196,12 +196,12 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += incrementSize * textureIndex_;
-	cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
 }
 
-void Model::LoadFromOBJInternal(const std::string& modelname)
+void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 {
 	//oBJファイルからデータを読み込む
 		//ファイルストリーム
@@ -217,6 +217,9 @@ void Model::LoadFromOBJInternal(const std::string& modelname)
 	vector<Vector3>positions;	//頂点座標
 	vector<Vector3>normals;	//法線ベクトル
 	vector<Vector2>texcodes;	//テクスチャ
+
+	//頂点法線スムージング用データ
+	std::unordered_map<unsigned short, std::vector<unsigned short>> smoothDate;
 	//1行ずつ読み込む
 	string line;
 	while (getline(file, line)) {
@@ -294,6 +297,7 @@ void Model::LoadFromOBJInternal(const std::string& modelname)
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcodes[indexTexcord - 1];
 				vertices_.emplace_back(vertex);
+				smoothDate[indexPosition].emplace_back(static_cast<unsigned short>(vertices_.size() - 1));
 				//インデックスデータの追加
 				indices_.emplace_back((unsigned short)indices_.size());
 
@@ -305,4 +309,23 @@ void Model::LoadFromOBJInternal(const std::string& modelname)
 	}
 	//ファイルを閉じる
 	file.close();
+	if (smoothing == true)
+	{
+		auto itr = smoothDate.begin();
+		for (; itr != smoothDate.end(); ++itr) {
+			//各面用の共通頂点コレクション
+			std::vector<unsigned short>& v = itr->second;
+			//全頂点の法線を平均する
+			Vector3 normal = {0,0,0};
+			for (unsigned short index : v) {
+				normal += {vertices_[index].normal.x, vertices_[index].normal.y, vertices_[index].normal.z};
+			}
+			normal=(normal / (float)v.size());
+			normal = normal.normalize();
+			//共通法線を使用する全ての頂点データに書き込む
+			for (unsigned short index : v) {
+				vertices_[index].normal = { normal.x,normal.y,normal.z };
+			}
+		}
+	}
 }

@@ -75,6 +75,12 @@
     <Filter Include="application\ソース ファイル\Scene">
       <UniqueIdentifier>{0c7eb7c9-b288-4ddd-8193-5219334dda92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="engin\ソースファイル\3d\Light">
+      <UniqueIdentifier>{fa7ee158-b3e7-4847-a6f1-3ffd959377e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engin\ヘッダーファイル\3d\Light">
+      <UniqueIdentifier>{ab96ebfc-d447-42d9-b305-bab7839f0503}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -158,6 +164,12 @@
     <ClCompile Include="engine\postEffect\PostEffectMultiRenderTarget.cpp">
       <Filter>engin\ソースファイル\posteffect</Filter>
     </ClCompile>
+    <ClCompile Include="engine\3d\levelLoad.cpp">
+      <Filter>engin\ソースファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\3d\Light.cpp">
+      <Filter>engin\ソースファイル\3d\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -237,6 +249,12 @@
     </ClInclude>
     <ClInclude Include="engine\postEffect\PostEffectMultiRenderTarget.h">
       <Filter>engin\ヘッダーファイル\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\3d\levelLoad.h">
+      <Filter>engin\ヘッダーファイル\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\3d\Light.h">
+      <Filter>engin\ヘッダーファイル\3d\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

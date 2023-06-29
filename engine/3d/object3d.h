@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Model.h"
+#include"Light.h"
 
 
 /// <summary>
@@ -30,7 +31,9 @@ public: // サブクラス
 	struct ConstBufferDataB0
 	{
 		//XMFLOAT4 color;	// 色 (RGBA)
-		Matrix4 mat;	// ３Ｄ変換行列
+		Matrix4 viewproj;	// ３Ｄ変換行列
+		Matrix4 world;
+		Vector3 cameraPos;
 	};
 
 	//マテリアル
@@ -105,6 +108,27 @@ public: // 静的メンバ関数
 
 	static Matrix4 GetMatViewPro();
 
+	/// <summary>
+	/// カメラ初期化
+	/// </summary>
+	/// <param name="window_width">画面横幅</param>
+	/// <param name="window_height">画面縦幅</param>
+	static void InitializeCamera(uint32_t window_width, uint32_t window_height);
+
+	/// <summary>
+	/// グラフィックパイプライン生成
+	/// </summary>
+	/// <returns>成否</returns>
+	static void InitializeGraphicsPipeline();
+
+	/// <summary>
+	/// ビュー行列を更新
+	/// </summary>
+	static void UpdateViewMatrix();
+
+	static void SetLight(Light* light) {Object3d::sLight=light ; }
+
+
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* sDevice;
@@ -124,26 +148,8 @@ private: // 静的メンバ変数
 	static Vector3 sTarget;
 	// 上方向ベクトル
 	static Vector3 sUp;
-
-private:// 静的メンバ関数
-
-	/// <summary>
-	/// カメラ初期化
-	/// </summary>
-	/// <param name="window_width">画面横幅</param>
-	/// <param name="window_height">画面縦幅</param>
-	static void InitializeCamera(uint32_t window_width, uint32_t window_height);
-
-	/// <summary>
-	/// グラフィックパイプライン生成
-	/// </summary>
-	/// <returns>成否</returns>
-	static void InitializeGraphicsPipeline();
-
-	/// <summary>
-	/// ビュー行列を更新
-	/// </summary>
-	static void UpdateViewMatrix();
+	//ライト
+	static Light* sLight;
 
 public: // メンバ関数
 	bool Initialize();

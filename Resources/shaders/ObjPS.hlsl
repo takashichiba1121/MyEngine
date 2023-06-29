@@ -9,5 +9,5 @@ float4 main(GSOutput input) : SV_TARGET{
 float4 target= tex.Sample(smp, input.uv);
 
 
-return target;
+return target*input.color;
 }

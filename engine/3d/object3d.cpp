@@ -32,6 +32,7 @@ Matrix4 Object3d::sMatProjection{};
 Vector3 Object3d::sEye = { 0, 0, 0.0f };
 Vector3 Object3d::sTarget = { 0, 0, 0 };
 Vector3 Object3d::sUp = { 0, 1, 0 };
+Light* Object3d::sLight = nullptr;
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
 //unsigned short Object3d::indices[planeCount * 3];
 
@@ -262,11 +263,12 @@ void Object3d::InitializeGraphicsPipeline()
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);*/
 
-	CD3DX12_ROOT_PARAMETER rootparams[4];
+	CD3DX12_ROOT_PARAMETER rootparams[5];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[3].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -469,7 +471,9 @@ void Object3d::Update()
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0_->Map(0, nullptr, (void**)&constMap);
 	/*constMap->color = color;*/
-	constMap->mat = matWorld_ * sMatView * sMatProjection;	// 行列の合成
+	constMap->viewproj = sMatView * sMatProjection;	// 行列の合成
+	constMap->world = matWorld_;
+	constMap->cameraPos = sEye;
 	constBuffB0_->Unmap(0, nullptr);
 
 }
@@ -489,7 +493,9 @@ void Object3d::Draw()
 	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0_->GetGPUVirtualAddress());
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(2, constBuffB2_->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(3, constBuffB2_->GetGPUVirtualAddress());
+
+	sLight->Draw(sCmdList,2);
 
 	//モデルを描画
 	model_->Draw(sCmdList, 1);

@@ -13,6 +13,7 @@
 #include"Vector3.h"
 #include"Vector4.h"
 #include"Matrix4.h"
+#include<unordered_map>
 
 using namespace std;
 
@@ -60,7 +61,7 @@ public:
 	};
 public:
 	//OBJファイルから3Dモデルを読み込む
-	static Model* LoadFormOBJ(const std::string& modelname);
+	static Model* LoadFormOBJ(const std::string& modelname, bool smoothing);
 	/// <summary>
 	/// マテリアルの読み込み
 	/// </summary>
@@ -83,7 +84,7 @@ public:
 
 private://非公開のメンバ関数
 	//OBJファイルから3Dモデルを読み込む(非公開)
-	void LoadFromOBJInternal(const std::string& modelname);
+	void LoadFromOBJInternal(const std::string& modelname, bool smoothing);
 	
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 

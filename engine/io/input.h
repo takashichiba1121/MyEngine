@@ -5,8 +5,19 @@
 #include<wrl.h>
 #include"WinApp.h"
 #include<Xinput.h>
+#include<stdint.h>
 
 #pragma comment (lib, "xinput.lib")
+
+enum class PadStick
+{
+	LT,
+	RT,
+	LX,
+	LY,
+	RX,
+	RY,
+};
 
 //入力
 class Input
@@ -56,7 +67,25 @@ public://メンバ関数(ゲームパッド)
 
 	static XINPUT_STATE GetPad() { return sGamePad; }
 
-	static XINPUT_STATE OldGetPad() {return sOldGamePad; }
+	static XINPUT_STATE GetOldPad() {return sOldGamePad; }
+
+	/// <summary>
+	/// コントローラーのボタンの入力した瞬間
+	/// </summary>
+	/// ///<param name="button">ボタンの種類(XINPUT_GAMEPAD_で始まる定数で指定)</param>
+	/// <returns>押されてるか？</returns>
+	static bool PadTriggerKey(uint32_t button);
+
+	/// <summary>
+/// コントローラーのボタンの入力状況
+/// </summary>
+/// ///<param name="button">ボタンの種類(XINPUT_GAMEPAD_で始まる定数で指定)</param>
+/// <returns>押されてるか？</returns>
+	static bool PadPushKey(uint32_t button);
+
+	static BYTE GetPadStick(PadStick Stick);
+
+
 
 private://メンバ変数(ゲームパッド)
 

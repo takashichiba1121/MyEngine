@@ -11,7 +11,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	model.reset(Model::LoadFormOBJ("Cube2"));
+	model.reset(Model::LoadFormOBJ("sphere",true));
 
 	obj = std::make_unique<Object3d>();
 
@@ -19,13 +19,21 @@ void GameScene::Initialize()
 
 	obj->Initialize();
 
-	obj->SetPosition({ 0,0,0 });
+	obj->SetRot({ 0,0,0 });
 
 	obj->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f,1.0f });
 
-	Object3d::SetEye({ 0.0f,0.0f,5.0f });
+	light = std::make_unique<Light>();
 
-	skydome.reset(Model::LoadFormOBJ("skydome"));
+	light->Initialize();
+
+	light->SetLightColor({1,1,1});
+
+	Object3d::SetLight(light.get());
+
+	Object3d::SetEye({ 0.0f,0.0f,-5.0f });
+
+	skydome.reset(Model::LoadFormOBJ("skydome",true));
 
 	skydomeObj = std::make_unique<Object3d>();
 
@@ -42,17 +50,22 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	if(Input::TriggerKey(DIK_0))
-	{
-		if (isSkydomeDraw)
+		Vector3 rot = obj->GetRot();
+		rot += {0, 1, 0};
+		obj->SetRot(rot);
+
 		{
-			isSkydomeDraw = false;
+			static Vector3 lightDir = { 0,1,5 };
+
+			if (Input::PushKey(DIK_W)) { lightDir.y += 1.0f; }
+			if (Input::PushKey(DIK_S)) { lightDir.y -= 1.0f; }
+			if (Input::PushKey(DIK_D)) { lightDir.x += 1.0f; }
+			if (Input::PushKey(DIK_A)) { lightDir.x -= 1.0f; }
+
+			light->SetLightDir(lightDir);
 		}
-		else
-		{
-			isSkydomeDraw = true;
-		}
-	}
+
+	light->Update();
 
 	obj->Update();
 
@@ -89,10 +102,7 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 
 	obj->Draw();
 
-	if (isSkydomeDraw)
-	{
-		skydomeObj->Draw();
-	}
+	skydomeObj->Draw();
 
 	Object3d::PostDraw();
 

@@ -13,6 +13,7 @@
 #include"assimpModel.h"
 #include"assimpModel.h"
 #include"assimpObject3d.h"
+#include"Light.h"
 class GameScene
 {
 public: // ƒƒ“ƒoŠÖ”
@@ -47,5 +48,7 @@ private:
 	std::unique_ptr<Object3d> skydomeObj;
 
 	bool isSkydomeDraw=false;
+
+	std::unique_ptr<Light> light;
 };
 

@@ -62,14 +62,24 @@ void Input::Update()
 	{
 		sGamePad.Gamepad.sThumbLY = 0;
 	}
-	if (abs(sGamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(sGamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 	{
 		sGamePad.Gamepad.sThumbRX = 0;
 	}
-	if (abs(sGamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(sGamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 	{
 		sGamePad.Gamepad.sThumbRY = 0;
 	}
+	if (sGamePad.Gamepad.bLeftTrigger < XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		sGamePad.Gamepad.bLeftTrigger = 0;
+	}
+	if (sGamePad.Gamepad.bRightTrigger < XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		sGamePad.Gamepad.bRightTrigger = 0;
+	}
+
+
 }
 
 bool Input::PushKey(BYTE keyNumber)
@@ -101,4 +111,43 @@ DWORD Input::Updatekeypad()
 	return XInputGetState(
 		0,//•¡”‚Â‚È‚ª‚ê‚Ä‚é‚Æ‚«‚Ì‘I‘ð
 		&sGamePad);//‚±‚Ì•Ï”‚É“ü—Íó‹µ‚ªŠi”[‚³‚ê‚é
+}
+
+bool Input::PadTriggerKey(uint32_t button)
+{
+	return ((sGamePad.Gamepad.wButtons & button) == button && (sOldGamePad.Gamepad.wButtons & button) != button);
+}
+
+bool Input::PadPushKey(uint32_t button)
+{
+	return sGamePad.Gamepad.wButtons & button;
+}
+
+BYTE Input::GetPadStick(PadStick Stick)
+{
+	switch (Stick)
+	{
+	case PadStick::LT:
+		return sGamePad.Gamepad.bLeftTrigger;
+		break;
+	case PadStick::RT:
+		return sGamePad.Gamepad.bRightTrigger;
+		break;
+	case PadStick::LX:
+		return static_cast<BYTE>(sGamePad.Gamepad.sThumbLX);
+		break;
+	case PadStick::LY:
+		return static_cast<BYTE>(sGamePad.Gamepad.sThumbLY);
+		break;
+	case PadStick::RX:
+		return static_cast<BYTE>(sGamePad.Gamepad.sThumbRX);
+		break;
+	case PadStick::RY:
+		return static_cast<BYTE>(sGamePad.Gamepad.sThumbRY);
+		break;
+	default:
+		return 0;
+		break;
+	}
+	return 0;
 }
