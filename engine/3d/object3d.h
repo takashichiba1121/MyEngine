@@ -207,11 +207,11 @@ private: // メンバ変数
 	// ローカル座標
 	Vector3 position_ = { 0,0,0 };
 	// ローカルワールド変換行列
-	Matrix4 matWorld_;
+	Matrix4 matWorld_ = Matrix4Math::identity();
 	// 親オブジェクト
 	Object3d* parent_ = nullptr;
 
-	ConstBufferPolygonExplosion* ConstMapPolygon_;
+	ConstBufferPolygonExplosion* ConstMapPolygon_ ;
 
 	//モデル
 	Model* model_ = nullptr;
