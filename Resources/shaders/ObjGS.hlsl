@@ -61,9 +61,8 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
 
         o.svpos = mul(mul(viewproj,world), v.svpos);
         o.uv = v.uv;
-        o.normal = v.normal;
-        o.color = v.color;
-        o.color.a*= _AlphaFactor;
+        o.normal = normalize(mul(world, float4(v.normal, 0)));
+        o.worldpos = v.worldpos;
         triStream.Append(o);
     }
 

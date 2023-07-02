@@ -15,6 +15,7 @@ cbuffer cbuff1 : register(b1) {
 
 cbuffer cbuff2 : register(b2) {
     float3 m_lightv;
+    float m_shininess;
     float3 m_lightcolor;
 };
 
@@ -33,7 +34,7 @@ struct VSOutput
     //システム用頂点座標
     float4 svpos : SV_POSITION;
     float3 normal:NORMAL;//法線ベクトル
-    float4 color:COLOR;
+    float4 worldpos:POSITION;
     //uv値
     float2 uv  :TEXCOORD;
 };
@@ -43,14 +44,8 @@ struct GSOutput
     //システム用頂点座標
     float4 svpos : SV_POSITION;
     float3 normal:NORMAL;//法線ベクトル
-    float4 color:COLOR;
+    float4 worldpos:POSITION;
     //uv値
     float2 uv  :TEXCOORD;
-};
-
-struct PSOutput
-{
-    float4 target0:SV_TARGET0;
-    float4 target1:SV_TARGET1;
 };
 

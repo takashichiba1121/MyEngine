@@ -80,6 +80,13 @@ public:
 	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
+	/// <summary>
+/// 画像指定描画
+/// </summary>
+/// <param name="cmdlist">描画コマンドリスト</param>
+/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
+	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial,uint32_t TextureHandle);
+
 	std::vector<VertexPosNormalUv> GetVertices() {return vertices_; }
 
 private://非公開のメンバ関数

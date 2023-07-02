@@ -123,27 +123,27 @@ bool Input::PadPushKey(uint32_t button)
 	return sGamePad.Gamepad.wButtons & button;
 }
 
-BYTE Input::GetPadStick(PadStick Stick)
+float Input::GetPadStick(PadStick Stick)
 {
 	switch (Stick)
 	{
 	case PadStick::LT:
-		return sGamePad.Gamepad.bLeftTrigger;
+		return (float)sGamePad.Gamepad.bLeftTrigger / 255;
 		break;
 	case PadStick::RT:
-		return sGamePad.Gamepad.bRightTrigger;
+		return (float)sGamePad.Gamepad.bRightTrigger / 255;
 		break;
 	case PadStick::LX:
-		return static_cast<BYTE>(sGamePad.Gamepad.sThumbLX);
+		return (float)sGamePad.Gamepad.sThumbLX / SHRT_MAX;
 		break;
 	case PadStick::LY:
-		return static_cast<BYTE>(sGamePad.Gamepad.sThumbLY);
+		return (float)sGamePad.Gamepad.sThumbLY / SHRT_MAX;
 		break;
 	case PadStick::RX:
-		return static_cast<BYTE>(sGamePad.Gamepad.sThumbRX);
+		return (float)sGamePad.Gamepad.sThumbRX / SHRT_MAX;
 		break;
 	case PadStick::RY:
-		return static_cast<BYTE>(sGamePad.Gamepad.sThumbRY);
+		return (float)sGamePad.Gamepad.sThumbRY / SHRT_MAX;
 		break;
 	default:
 		return 0;

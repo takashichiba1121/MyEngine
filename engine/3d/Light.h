@@ -16,7 +16,7 @@ public:
 	struct  ConstBufferData
 	{
 		Vector3 lightv;
-		float a;
+		float shininess;
 		Vector3 lightcolor;
 	};
 private:
@@ -31,6 +31,8 @@ private:
 
 	Vector3 lightColor_ = { 1,1,1 };
 
+	float shininess_ = 4;
+
 	bool dirty_ = false;
 public:
 	void Initialize();
@@ -40,6 +42,8 @@ public:
 	void SetLightDir(const Vector3& lightDir);
 
 	void SetLightColor(const Vector3& lightColor);
+
+	void SetShininess(const float shininess);
 
 	void Update();
 

@@ -201,6 +201,28 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
 }
 
+void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial, uint32_t textureHandle)
+{
+	// 頂点バッファの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView_);
+	// インデックスバッファの設定
+	cmdList->IASetIndexBuffer(&ibView_);
+
+	// デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::sDescHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
+	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
+	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	srvGpuHandle.ptr += incrementSize * textureHandle;
+	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
+	// 描画コマンド
+	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
+}
+
 void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 {
 	//oBJファイルからデータを読み込む

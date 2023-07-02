@@ -501,6 +501,29 @@ void Object3d::Draw()
 	model_->Draw(sCmdList, 1);
 }
 
+void Object3d::Draw(uint32_t texHandle)
+{
+	// nullptrチェック
+	assert(sDevice);
+	assert(Object3d::sCmdList);
+
+	//モデルがセットされていなければ描画をスキップ
+	if (model_ == nullptr) {
+		return;
+	}
+
+	// 定数バッファビューをセット
+	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0_->GetGPUVirtualAddress());
+
+	// 定数バッファビューをセット
+	sCmdList->SetGraphicsRootConstantBufferView(3, constBuffB2_->GetGPUVirtualAddress());
+
+	sLight->Draw(sCmdList, 2);
+
+	//モデルを描画
+	model_->Draw(sCmdList, 1, texHandle);
+}
+
 Matrix4 Object3d::GetMatViewPro()
 {
 

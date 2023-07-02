@@ -41,6 +41,7 @@ void Light::TransferConstBuffer()
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	/*constMap->color = color;*/
 	constMap->lightv = -lightDir_;
+	constMap->shininess = shininess_;
 	constMap->lightcolor = lightColor_;
 	constBuff_->Unmap(0, nullptr);
 }
@@ -55,6 +56,12 @@ void Light::SetLightDir(const Vector3& lightDir)
 void Light::SetLightColor(const Vector3& lightColor)
 {
 	lightColor_ = lightColor;
+	dirty_ = true;
+}
+
+void Light::SetShininess(const float shininess)
+{
+	shininess_= shininess;
 	dirty_ = true;
 }
 

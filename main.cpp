@@ -26,21 +26,21 @@ using namespace std;
 //windowsアプリのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
-	WinApp* winApp = nullptr;
-	winApp = new WinApp;
+	unique_ptr<WinApp> winApp = nullptr;
+	winApp = std::make_unique<WinApp>();
 	winApp->Initialize();
 
 	MSG msg{};
 
-	DirectXCommon* dxCommon = nullptr;
-	dxCommon = new DirectXCommon();
-	dxCommon->Initialize(winApp);
+	unique_ptr<DirectXCommon> dxCommon = nullptr;
+	dxCommon = std::make_unique<DirectXCommon>();
+	dxCommon->Initialize(winApp.get());
 
 	//DirectX初期化処理　ここから
 
-	Input::Initialize(winApp);
+	Input::Initialize(winApp.get());
 
-	SpriteCommon::Initialize(dxCommon);
+	SpriteCommon::Initialize(dxCommon.get());
 
 	Texture::Initialize(dxCommon->GetDevice());
 
@@ -58,38 +58,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Sound::StaticInitialize();
 
-	imguiManager::StaticInitialize(winApp, dxCommon);
+	imguiManager::StaticInitialize(winApp.get(), dxCommon.get());
+	imguiManager imGui;
 
 	ParticleManager::StaticInitialize(dxCommon->GetDevice());
 
-	PostEffectCommon* postEffectCommon=new PostEffectCommon;
+	unique_ptr<PostEffectCommon> postEffectCommon = std::make_unique<PostEffectCommon>();
 
-	postEffectCommon->StaticInitialize(dxCommon);
+	postEffectCommon->StaticInitialize(dxCommon.get());
 
-	PostEffectLuminance* postEffectLuminance = new PostEffectLuminance;
+	unique_ptr<PostEffectLuminance> postEffectLuminance = std::make_unique<PostEffectLuminance>();
 
-	postEffectLuminance->Initialize(postEffectCommon);
+	postEffectLuminance->Initialize(postEffectCommon.get());
 
-	PostEffectBlur* postEffectBlur = new PostEffectBlur;
+	unique_ptr<PostEffectBlur> postEffectBlur = std::make_unique<PostEffectBlur>();
 
-	postEffectBlur->Initialize(postEffectCommon);
+	postEffectBlur->Initialize(postEffectCommon.get());
 
-	PostEffectMixed* postEffectMixed = new PostEffectMixed;
+	unique_ptr<PostEffectMixed> postEffectMixed = std::make_unique<PostEffectMixed>();
 
-	postEffectMixed->Initialize(postEffectCommon);
+	postEffectMixed->Initialize(postEffectCommon.get());
 
-	PostEffectTest* postEffectTest = new PostEffectTest;
+	unique_ptr<PostEffectTest> postEffectTest = std::make_unique<PostEffectTest>();
 
-	postEffectTest->Initialize(postEffectCommon);
+	postEffectTest->Initialize(postEffectCommon.get());
 
-	PostEffectMultiRenderTarget* postEffectMultiRenderTarget = new PostEffectMultiRenderTarget;
+	unique_ptr<PostEffectMultiRenderTarget> postEffectMultiRenderTarget = std::make_unique<PostEffectMultiRenderTarget>();
 
-	postEffectMultiRenderTarget->Initialize(postEffectCommon);
+	postEffectMultiRenderTarget->Initialize(postEffectCommon.get());
 
-	GameScene* gameScene = new GameScene;
+	unique_ptr<GameScene> gameScene = std::make_unique<GameScene>();
 	gameScene->Initialize();
 
-	bool frg=true;
+	bool frg = true;
 
 	//ゲームループ
 	while (true) {
@@ -103,21 +104,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//入力の更新
 		Input::Update();
 
+		imGui.Begin();
 		gameScene->Update();
+		imGui.End();
 
 		//postEffect->Update();
 
-		if (Input::TriggerKey(DIK_0)||Input::PadTriggerKey(XINPUT_GAMEPAD_A))
-		{
-			if (frg)
-			{
-				frg = false;
-			}
-			else
-			{
-				frg = true;
-			}
-		}
+		//if (Input::TriggerKey(DIK_0)||Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+		//{
+		//	if (frg)
+		//	{
+		//		frg = false;
+		//	}
+		//	else
+		//	{
+		//		frg = true;
+		//	}
+		//}
 
 		//描画コマンドここから
 
@@ -156,8 +159,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			postEffectMixed->PostDrawScene();
 		}*/
-
-		//imguiManager::Draw();
 		dxCommon->PreDraw();
 		//if (frg)
 		//{
@@ -168,8 +169,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//	postEffectMixed->Draw(postEffectLuminance->GettextureHandle());
 		//}
 
-		gameScene->Draw(dxCommon);
-		
+		gameScene->Draw(dxCommon.get());
+
+		imguiManager::Draw();
+
 		dxCommon->PostDrow();
 
 		//描画コマンドここまで
@@ -177,25 +180,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//DirectX毎フレーム処理　ここまで
 
 	}
-	delete postEffectCommon;
-
-	delete postEffectBlur;
-
-	delete postEffectLuminance;
-
-	delete postEffectMixed;
-
-	delete postEffectTest;
-
-	delete gameScene;
 
 	imguiManager::Finalize();
 
-	delete dxCommon;
-
 	winApp->Finalize();
-
-	delete winApp;
 
 	return 0;
 }

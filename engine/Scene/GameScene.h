@@ -50,5 +50,11 @@ private:
 	bool isSkydomeDraw=false;
 
 	std::unique_ptr<Light> light;
+
+	uint32_t texHandle=0;
+
+	std::map<std::string, Model*> models;
+	std::vector<bool> collision;
+	std::vector<unique_ptr<Object3d>> objects;
 };
 

@@ -35,23 +35,6 @@ public: // サブクラス
 		Matrix4 world;
 		Vector3 cameraPos;
 	};
-
-	//マテリアル
-	struct Material {
-		std::string name;	//マテリアル名
-		Vector3 ambient;	//アンビエント影響度
-		Vector3 diffuse;	//ディフューズ影響度
-		Vector3 specular;	//スペキュラー影響度
-		float alpha;		//アルファ
-		std::string textureFilename;	//テクスチャファイル名
-		//コンストラクタ
-		Material() {
-			ambient = { 0.3f,0.3f,0.3f };
-			diffuse = { 0.0f,0.0f,0.0f };
-			specular = { 0.0f,0.0f,0.0f };
-			alpha = 1.0f;
-		}
-	};
 	// 定数バッファ用データ構造体
 	struct ConstBufferPolygonExplosion
 	{
@@ -162,6 +145,11 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+/// 画像指定描画
+/// </summary>
+	void Draw(uint32_t texHandle);
 
 	/// <summary>
 	/// 座標の取得

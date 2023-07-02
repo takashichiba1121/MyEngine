@@ -83,7 +83,7 @@ public://メンバ関数(ゲームパッド)
 /// <returns>押されてるか？</returns>
 	static bool PadPushKey(uint32_t button);
 
-	static BYTE GetPadStick(PadStick Stick);
+	static float GetPadStick(PadStick Stick);
 
 
 
