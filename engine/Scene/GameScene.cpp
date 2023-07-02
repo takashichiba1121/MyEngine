@@ -31,6 +31,14 @@ void GameScene::Initialize()
 	unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load());
 
+	sprite = std::make_unique<Sprite>();
+
+	sprite->Initialize(Texture::LoadTexture(L"Resources/mario.jpg"));
+
+	sprite->SetPosition({0.0f,0.0f});
+
+	sprite->SetAnchorPoint({0.0f,0.0f});
+
 	for (auto& objectData : levelData->objects)
 	{
 		//ƒtƒ@ƒCƒ‹–¼‚©‚ç“o˜^Ï‚Ýƒ‚ƒfƒ‹‚ðŒŸõ
@@ -140,6 +148,8 @@ void GameScene::Update()
 	{
 		obj->Update();
 	}
+
+	sprite->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -170,6 +180,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	ParticleManager::PostDraw();
 
 	SpriteCommon::PreDraw();
+
+	sprite->Draw();
 	SpriteCommon::PostDraw();
 }
 

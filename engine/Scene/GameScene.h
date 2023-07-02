@@ -56,5 +56,7 @@ private:
 	std::map<std::string, Model*> models;
 	std::vector<bool> collision;
 	std::vector<unique_ptr<Object3d>> objects;
+
+	unique_ptr<Sprite> sprite;
 };
 

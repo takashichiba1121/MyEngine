@@ -56,6 +56,7 @@ public:
 			diffuse = { 0.0f,0.0f,0.0f };
 			specular = { 0.0f,0.0f,0.0f };
 			alpha = 1.0f;
+			texHandle = 0;
 		}
 	};
 
