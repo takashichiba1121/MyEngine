@@ -18,7 +18,7 @@
 #include"PostEffectMultiRenderTarget.h"
 #include"assimpModel.h"
 #include"assimpObject3d.h"
-#include"Light.h"
+#include"LightGroup.h"
 
 using namespace DirectX;
 using namespace std;
@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Model::SetDevice(dxCommon->GetDevice());
 
-	Light::StaticInitialize(dxCommon->GetDevice());
+	LightGroup::StaticInitialize(dxCommon->GetDevice());
 
 	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 

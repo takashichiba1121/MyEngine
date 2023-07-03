@@ -100,8 +100,9 @@
     <ClCompile Include="engine\3d\assimpLoader.cpp" />
     <ClCompile Include="engine\3d\assimpModel.cpp" />
     <ClCompile Include="engine\3d\assimpObject3d.cpp" />
+    <ClCompile Include="engine\3d\DirectionalLight.cpp" />
     <ClCompile Include="engine\3d\levelLoad.cpp" />
-    <ClCompile Include="engine\3d\Light.cpp" />
+    <ClCompile Include="engine\3d\LightGroup.cpp" />
     <ClCompile Include="engine\3d\ParticleManager.cpp" />
     <ClCompile Include="engine\audio\Audio.cpp" />
     <ClCompile Include="engine\base\DirectXCommon.cpp" />
@@ -132,7 +133,8 @@
     <ClInclude Include="engine\3d\assimpModel.h" />
     <ClInclude Include="engine\3d\assimpObject3d.h" />
     <ClInclude Include="engine\3d\levelLoad.h" />
-    <ClInclude Include="engine\3d\Light.h" />
+    <ClInclude Include="engine\3d\DirectionalLight.h" />
+    <ClInclude Include="engine\3d\LightGroup.h" />
     <ClInclude Include="engine\3d\ParticleManager.h" />
     <ClInclude Include="engine\audio\Audio.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />

@@ -49,7 +49,7 @@ private:
 
 	bool isSkydomeDraw=false;
 
-	std::unique_ptr<Light> light;
+	std::unique_ptr<DirectionalLight> light;
 
 	uint32_t texHandle=0;
 

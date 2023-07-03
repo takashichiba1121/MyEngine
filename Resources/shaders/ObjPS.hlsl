@@ -23,7 +23,12 @@ float3 reflect = normalize(-m_lightv + 2 * dot(m_lightv, input.normal.xyz) * inp
 //‹¾–Ê”½ŽËŒõ
 float3 specular = pow(saturate(dot(reflect, eyedir)), m_shininess) * m_specular;
 
-float4 shadecolor;
+float4 shadecolor=float4(ambientColor*ambient,m_alpha);
+
+for (int i=0;i< DIR_LIGHT_NUM;i++)
+{
+
+}
 
 shadecolor.rgb = (ambient + specular + diffuse) * m_lightcolor;
 shadecolor.a = m_alpha;

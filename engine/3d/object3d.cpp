@@ -32,7 +32,7 @@ Matrix4 Object3d::sMatProjection{};
 Vector3 Object3d::sEye = { 0, 0, 0.0f };
 Vector3 Object3d::sTarget = { 0, 0, 0 };
 Vector3 Object3d::sUp = { 0, 1, 0 };
-Light* Object3d::sLight = nullptr;
+DirectionalLight* Object3d::sLight = nullptr;
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
 //unsigned short Object3d::indices[planeCount * 3];
 

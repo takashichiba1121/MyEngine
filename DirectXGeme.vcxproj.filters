@@ -167,7 +167,10 @@
     <ClCompile Include="engine\3d\levelLoad.cpp">
       <Filter>engin\ソースファイル\3d</Filter>
     </ClCompile>
-    <ClCompile Include="engine\3d\Light.cpp">
+    <ClCompile Include="engine\3d\LightGroup.cpp">
+      <Filter>engin\ソースファイル\3d\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\3d\DirectionalLight.cpp">
       <Filter>engin\ソースファイル\3d\Light</Filter>
     </ClCompile>
   </ItemGroup>
@@ -253,7 +256,10 @@
     <ClInclude Include="engine\3d\levelLoad.h">
       <Filter>engin\ヘッダーファイル\3d</Filter>
     </ClInclude>
-    <ClInclude Include="engine\3d\Light.h">
+    <ClInclude Include="engine\3d\DirectionalLight.h">
+      <Filter>engin\ヘッダーファイル\3d\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\3d\LightGroup.h">
       <Filter>engin\ヘッダーファイル\3d\Light</Filter>
     </ClInclude>
   </ItemGroup>

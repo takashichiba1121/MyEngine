@@ -76,7 +76,7 @@ void GameScene::Initialize()
 
 	}
 
-	light = std::make_unique<Light>();
+	light = std::make_unique<DirectionalLight>();
 
 	light->Initialize();
 
