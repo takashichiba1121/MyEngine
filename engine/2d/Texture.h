@@ -18,17 +18,17 @@ public:
 	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> sDescHeap;			//デスクリプタヒープ
 	static std::array< Microsoft::WRL::ComPtr<ID3D12Resource>, sSpriteSRVCount >sTexBuffuers;	//テクスチャバッファ
 	static D3D12_RESOURCE_DESC sTextureResourceDesc;
-	static DirectXCommon* sDxcommon_;
+	static DirectXCommon* sDxCommon_;
 	static uint32_t sSrvIncrementIndex;
 public:
 	static uint32_t LoadTexture(const wchar_t* fileName = L"NULL");
 	static void Initialize(DirectXCommon* DxCommon);
-	static void CreateSRV(ID3D12Resource* texBuff);
+	static void CreateSRV(ID3D12Resource* texBuff, D3D12_CPU_DESCRIPTOR_HANDLE& srvHandle);
 
-	static void ExcuteComandList();
+	//static void ExcuteComandList();
 
-	[[nodiscard]]
-	static ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
-		ID3D12GraphicsCommandList* commandList);
+	//[[nodiscard]]
+	//static ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
+	//	ID3D12GraphicsCommandList* commandList);
 };
 

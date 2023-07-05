@@ -29,7 +29,7 @@ for (uint i=0;i< DIR_LIGHT_NUM;i++)
 
 		float3 specular = pow(saturate(dot(reflect, eyedir)), dirLights[i].shininess) * m_specular;
 
-		shadecolor.rgb = (specular + diffuse) * dirLights[i].lightcolor;		
+		shadecolor.rgb += (specular + diffuse) * dirLights[i].lightcolor;		
 	}
 }
 
