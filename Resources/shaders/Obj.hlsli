@@ -25,7 +25,7 @@ struct DirLight
 
 cbuffer cbuff2 : register(b2) {
     float3 ambientColor;
-    DirLight dirLights[DIR_LIGHT_NUM]
+    DirLight dirLights[DIR_LIGHT_NUM];
 };
 
 cbuffer cbuff3 : register(b3) {

@@ -32,7 +32,7 @@ Matrix4 Object3d::sMatProjection{};
 Vector3 Object3d::sEye = { 0, 0, 0.0f };
 Vector3 Object3d::sTarget = { 0, 0, 0 };
 Vector3 Object3d::sUp = { 0, 1, 0 };
-DirectionalLight* Object3d::sLight = nullptr;
+LightGroup* Object3d::sLightGroup = nullptr;
 //Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
 //unsigned short Object3d::indices[planeCount * 3];
 
@@ -495,7 +495,7 @@ void Object3d::Draw()
 	// 定数バッファビューをセット
 	sCmdList->SetGraphicsRootConstantBufferView(3, constBuffB2_->GetGPUVirtualAddress());
 
-	sLight->Draw(sCmdList,2);
+	sLightGroup->Draw(sCmdList,2);
 
 	//モデルを描画
 	model_->Draw(sCmdList, 1);
@@ -518,7 +518,7 @@ void Object3d::Draw(uint32_t texHandle)
 	// 定数バッファビューをセット
 	sCmdList->SetGraphicsRootConstantBufferView(3, constBuffB2_->GetGPUVirtualAddress());
 
-	sLight->Draw(sCmdList, 2);
+	sLightGroup->Draw(sCmdList, 2);
 
 	//モデルを描画
 	model_->Draw(sCmdList, 1, texHandle);

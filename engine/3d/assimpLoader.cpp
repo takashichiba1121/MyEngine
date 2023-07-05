@@ -8,6 +8,8 @@
 #include"Texture.h"
 #include"assimpModel.h"
 
+using namespace std;
+
 AssimpModel* AssimpLoader::Load(const std::string& modelname)
 {
 	// モデルと同じ名前のフォルダから読み込む

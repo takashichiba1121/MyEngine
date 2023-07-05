@@ -28,7 +28,7 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,10.0f,-10.0f });
 
-	unique_ptr<LevelData> levelData;
+	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load());
 
 	sprite = std::make_unique<Sprite>();
@@ -46,7 +46,7 @@ void GameScene::Initialize()
 		//decltype(models)::iterator it = models.find(objectData.fileName);
 		//if (it != models.end()) { model = it->second; }
 		//モデルを指定して3Dオブジェクトを生成
-		unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 		newObject->Initialize();
 		newObject->SetModel(models[objectData.fileName]);
 
@@ -76,9 +76,7 @@ void GameScene::Initialize()
 
 	}
 
-	light = std::make_unique<DirectionalLight>();
-
-	light->Initialize();
+	light.reset(LightGroup::Create());
 
 	Object3d::SetLight(light.get());
 }
@@ -97,21 +95,26 @@ void GameScene::Update()
 
 	obj->SetRot(rot);
 
-	static Vector3 lightDir = { 1.0f,0.0f,0.0f };
-
-	static float shininess = 4;
-
 	ImGui::Begin("light");
 
-	ImGui::SliderFloat("Dir.x", &lightDir.x, -1, 1);
-
-	ImGui::SliderFloat("Dir.y", &lightDir.y, -1, 1);
-
-	ImGui::SliderFloat("Dir.z", &lightDir.z, -1, 1);
-
-	ImGui::SliderFloat("shininess", &shininess, 1, 20);
+	ImGui::ColorEdit3("ambientColor", ambientColor, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightDir0", lightDir0);
+	ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightDir1", lightDir1);
+	ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightDir2", lightDir2);
+	ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
 
 	ImGui::End();
+
+	light->SetAmbientColor(Vector3({ ambientColor[0],ambientColor[1],ambientColor[2] }));
+
+	light->SetDirLightDir(0, Vector3({ lightDir0[0],lightDir0[1],lightDir0[2] }));
+	light->SetDirLightColor(0, Vector3({ lightColor0[0],lightColor0[1],lightColor0[2] }));
+	light->SetDirLightDir(1, Vector3({ lightDir1[0],lightDir1[1],lightDir1[2] }));
+	light->SetDirLightColor(1, Vector3({ lightColor1[0],lightColor1[1],lightColor1[2] }));
+	light->SetDirLightDir(2, Vector3({ lightDir2[0],lightDir2[1],lightDir2[2] }));
+	light->SetDirLightColor(2, Vector3({ lightColor2[0],lightColor2[1],lightColor2[2] }));
 
 	for (uint32_t i=0;i<objects.size();i++)
 	{
@@ -136,15 +139,13 @@ void GameScene::Update()
 		}
 	}
 
-	light->SetLightDir(lightDir);
 
-	light->SetShininess(shininess);
 
 	light->Update();
 
 	obj->Update();
 
-	for (unique_ptr<Object3d>& obj : objects)
+	for (std::unique_ptr<Object3d>& obj : objects)
 	{
 		obj->Update();
 	}

@@ -71,7 +71,7 @@ void  LightGroup::TransferConstBuffer()
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	for (uint32_t i=0;cDirLightNum;i++)
+	for (uint32_t i=0;i<cDirLightNum;i++)
 	{
 		if (dirLights[i].IsActive())
 		{

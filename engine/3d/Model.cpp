@@ -1,6 +1,8 @@
 #include "Model.h"
 #include"Texture.h"
 
+using namespace std;
+
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
 ID3D12Device* Model::sDevice = nullptr;
 

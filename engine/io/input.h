@@ -7,8 +7,6 @@
 #include<Xinput.h>
 #include<stdint.h>
 
-#pragma comment (lib, "xinput.lib")
-
 enum class PadStick
 {
 	LT,

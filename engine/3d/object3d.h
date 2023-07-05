@@ -6,7 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include "Model.h"
-#include"DirectionalLight.h"
+#include"LightGroup.h"
 
 
 /// <summary>
@@ -109,7 +109,7 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void UpdateViewMatrix();
 
-	static void SetLight(DirectionalLight* light) {Object3d::sLight=light ; }
+	static void SetLight(LightGroup* light) {Object3d::sLightGroup =light ; }
 
 
 private: // 静的メンバ変数
@@ -132,7 +132,7 @@ private: // 静的メンバ変数
 	// 上方向ベクトル
 	static Vector3 sUp;
 	//ライト
-	static DirectionalLight* sLight;
+	static LightGroup* sLightGroup;
 
 public: // メンバ関数
 	bool Initialize();

@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	SpriteCommon::Initialize(dxCommon.get());
 
-	Texture::Initialize(dxCommon->GetDevice());
+	Texture::Initialize(dxCommon.get());
 
 	Sprite::StaticInitialize();
 

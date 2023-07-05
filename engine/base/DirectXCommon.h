@@ -38,6 +38,16 @@ public://メンバ関数
 
 	//バックバッファの数を取得
 	size_t GetBackBufferCount() const {return backBuffers_.size(); }
+
+	ID3D12CommandQueue* GetCommandQueue() const { return commandQueue_.Get(); }
+
+	void PreIncrimentFenceValue() {++fenceVal_ ; }
+
+	ID3D12Fence* GetFence() const { return fence_.Get(); }
+	
+	uint32_t GetFenceValue() { return fenceVal_; }
+
+	ID3D12CommandAllocator* GetCommandAllocator() {return commandAllocator_.Get(); }
 private://メンバ関数
 	//FPS固定初期化
 	void InitializeFixFPS();
@@ -50,7 +60,7 @@ private:
 	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12Device> device_;
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory_;
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> comdAllocator_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue_ = nullptr;
 	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;

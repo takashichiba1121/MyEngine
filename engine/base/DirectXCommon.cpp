@@ -98,6 +98,7 @@ void DirectXCommon::InitializeDevice()
 	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);//やばいエラーの時に止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);//エラー時に止まる
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);//エラー時に止まる
 		infoQueue->Release();
 	}
 
@@ -128,12 +129,12 @@ void DirectXCommon::InitializeCommand()
 	//コマンドアロケータを生成
 	result_ = device_->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		IID_PPV_ARGS(&comdAllocator_));
+		IID_PPV_ARGS(&commandAllocator_));
 	assert(SUCCEEDED(result_));
 	//コマンドリストの生成
 	result_ = device_->CreateCommandList(0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		comdAllocator_.Get(), nullptr,
+		commandAllocator_.Get(), nullptr,
 		IID_PPV_ARGS(&commandList_));
 	//コマンドキューの設定
 	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
@@ -327,10 +328,10 @@ void DirectXCommon::PostDrow()
 	UpdateFixFPS();
 	
 	//キューのクリア
-	result_ = comdAllocator_->Reset();
+	result_ = commandAllocator_->Reset();
 	assert(SUCCEEDED(result_));
 	//再びコマンドリストをためる準備
-	result_ = commandList_->Reset(comdAllocator_.Get(), nullptr);
+	result_ = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(result_));
 }
 

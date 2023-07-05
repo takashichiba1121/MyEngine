@@ -15,10 +15,6 @@
 #include"Matrix4.h"
 #include<unordered_map>
 
-using namespace std;
-
-using namespace DirectX;
-
 //3Dƒ‚ƒfƒ‹
 class Model 
 {

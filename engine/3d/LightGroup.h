@@ -31,7 +31,7 @@ private:
 	DirectionalLight dirLights[cDirLightNum];
 
 	bool dirty_ = false;
-private:
+public:
 	/// <summary>
 	/// インスタンス生成
 	/// </summary>

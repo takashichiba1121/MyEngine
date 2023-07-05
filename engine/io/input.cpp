@@ -2,6 +2,7 @@
 #include<cassert>
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
+#pragma comment (lib, "xinput.lib")
 
 Microsoft::WRL::ComPtr<IDirectInputDevice8> Input::sKeyboard;
 

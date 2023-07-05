@@ -14,10 +14,6 @@
 #include"Vector4.h"
 #include"Matrix4.h"
 
-using namespace std;
-
-using namespace DirectX;
-
 class AssimpModel
 {
 private:
