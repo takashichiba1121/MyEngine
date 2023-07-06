@@ -102,10 +102,7 @@ uint32_t Texture::LoadTexture(const wchar_t* fileName)
 	metadata.format = MakeSRGB(metadata.format);
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
-	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-	textureHeapProp.CPUPageProperty =
-		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	textureHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
 	//リソース設定
 	sTextureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	sTextureResourceDesc.Format = metadata.format;
