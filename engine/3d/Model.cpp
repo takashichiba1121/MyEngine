@@ -197,7 +197,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	srvGpuHandle.ptr += incrementSize * textureIndex_;
+	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureIndex_);
 	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
@@ -219,7 +219,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	srvGpuHandle.ptr += incrementSize * textureHandle;
+	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureHandle);
 	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);

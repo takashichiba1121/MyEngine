@@ -83,9 +83,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>application\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="engine\2d\Sprite.cpp">
       <Filter>engin\ソースファイル\2d</Filter>
     </ClCompile>
@@ -172,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="engine\3d\DirectionalLight.cpp">
       <Filter>engin\ソースファイル\3d\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>application\ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
