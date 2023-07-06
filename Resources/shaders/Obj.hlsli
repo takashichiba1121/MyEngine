@@ -33,7 +33,6 @@ cbuffer cbuff3 : register(b3) {
     float _ScaleFactor : packoffset(c0.y);
     float _RotationFactor : packoffset(c0.z);
     float _PositionFactor : packoffset(c0.w);
-    float _AlphaFactor : packoffset(c1);
 };
 
 //頂点シェーダの出力構造体

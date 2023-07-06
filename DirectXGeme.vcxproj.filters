@@ -262,6 +262,9 @@
     <ClInclude Include="engine\3d\LightGroup.h">
       <Filter>engin\ヘッダーファイル\3d\Light</Filter>
     </ClInclude>
+    <ClInclude Include="engine\3d\PointLight.h">
+      <Filter>engin\ヘッダーファイル\3d\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">

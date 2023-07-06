@@ -42,7 +42,6 @@ public: // サブクラス
 		float _ScaleFactor = 1.0f;
 		float _RotationFactor = 0.0f;
 		float _PositionFactor = 0.0f;
-		float _AlphaFactor = 1.0f;
 	};
 
 public: // 静的メンバ関数

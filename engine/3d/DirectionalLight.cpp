@@ -12,8 +12,3 @@ void DirectionalLight::SetLightColor(const Vector3& lightColor)
 {
 	lightColor_ = lightColor;
 }
-
-void DirectionalLight::SetShininess(const float shininess)
-{
-	shininess_= shininess;
-}

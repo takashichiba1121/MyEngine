@@ -1,4 +1,7 @@
 #include"LightGroup.h"
+#include<assert.h>
+#include <d3dx12.h>
+#include"Vector3.h"
 
 ID3D12Device* LightGroup::sDevice = nullptr;
 
@@ -78,7 +81,6 @@ void  LightGroup::TransferConstBuffer()
 			constMap->dirLights[i].active = 1;
 			constMap->dirLights[i].lightv = -dirLights[i].GetLightDir();
 			constMap->dirLights[i].lightcolor = dirLights[i].GetLightColor();
-			constMap->dirLights[i].shininess = dirLights[i].GetShininess();
 		}
 		else
 		{
@@ -110,7 +112,6 @@ void LightGroup::SetDirLightColor(uint32_t index, const Vector3& lightcolor)
 void LightGroup::SetDirLightShininess(uint32_t index, float lightShininess)
 {
 	assert(0 <= index && index < cDirLightNum);
-	dirLights[index].SetShininess(lightShininess);
 	dirty_ = true;
 }
 
@@ -119,17 +120,14 @@ void LightGroup::DefaultLightSetting()
 	dirLights[0].SetActive(true);
 	dirLights[0].SetLightColor({1.0f,1.0f,1.0f});
 	dirLights[0].SetLightDir({0.0f,1.0f,0.0f});
-	dirLights[0].SetShininess(10);
 
 	dirLights[1].SetActive(true);
 	dirLights[1].SetLightColor({ 1.0f,1.0f,1.0f });
 	dirLights[1].SetLightDir({ 0.0f,1.0f,0.0f });
-	dirLights[1].SetShininess(10);
 
 	dirLights[2].SetActive(true);
 	dirLights[2].SetLightColor({ 1.0f,1.0f,1.0f });
 	dirLights[2].SetLightDir({ 0.0f,1.0f,0.0f });
-	dirLights[2].SetShininess(10);
 }
 
 void LightGroup::SetDirLightDir(uint32_t index, const Vector3& lightdir)

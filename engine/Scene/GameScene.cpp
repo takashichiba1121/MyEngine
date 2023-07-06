@@ -22,7 +22,7 @@ void GameScene::Initialize()
 
 	obj->SetModel(model.get());
 
-	obj->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f,0.0f });
+	obj->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 
 	models.insert(std::make_pair("cube", model.get()));
 
@@ -67,7 +67,7 @@ void GameScene::Initialize()
 		DirectX::XMStoreFloat3(&scale, objectData.scale);
 		newObject->SetScale({ scale.x,scale.y,scale.z });
 
-		newObject->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f,0.0f });
+		newObject->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 
 		// ”z—ñ‚É“o˜^
 		objects.push_back(std::move(newObject));

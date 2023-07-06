@@ -10,7 +10,7 @@ float4 target = tex.Sample(smp, input.uv);
 
 float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
 
-float3 ambient = m_ambient;;
+float3 ambient = m_ambient;
 
 //‹“_À•W
 const float3 eye = float3(0, 0, -20);
