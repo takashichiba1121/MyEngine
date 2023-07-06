@@ -95,6 +95,8 @@ void GameScene::Update()
 
 	obj->SetRot(rot);
 
+	float shininess=20;
+
 	ImGui::Begin("light");
 
 	ImGui::ColorEdit3("ambientColor", ambientColor, ImGuiColorEditFlags_Float);
@@ -104,6 +106,7 @@ void GameScene::Update()
 	ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
 	ImGui::InputFloat3("lightDir2", lightDir2);
 	ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat("shininess", &shininess);
 
 	ImGui::End();
 
@@ -147,6 +150,8 @@ void GameScene::Update()
 
 	for (std::unique_ptr<Object3d>& obj : objects)
 	{
+		obj->SetShininess(shininess);
+
 		obj->Update();
 	}
 

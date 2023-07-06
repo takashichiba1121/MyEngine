@@ -3,6 +3,7 @@ cbuffer cbuff0 : register(b0) {
     matrix viewproj;
     matrix world;
     float3 cameraPos;
+    float shininess;//光沢度
 };
 
 
@@ -18,7 +19,6 @@ static const uint DIR_LIGHT_NUM = 3;
 struct DirLight
 {
     float3 lightv;//ライトへの方向の単位ベクトル
-    float shininess;//光沢度
     float3 lightcolor;//ライトの色(RGB)
     uint active;
 };

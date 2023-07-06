@@ -9,6 +9,7 @@ public:
 	struct  ConstBufferData
 	{
 		Vector3 lightv;
+		float pad1;
 		Vector3 lightcolor;
 		uint16_t active;
 	};
@@ -17,8 +18,6 @@ private:
 	Vector3 lightDir_ = {1,0,0};
 
 	Vector3 lightColor_ = { 1,1,1 };
-
-	float shininess_ = 4;
 
 	//—LŒøƒtƒ‰ƒO
 	bool active_ = false;
