@@ -1,12 +1,15 @@
 #pragma once
 #include"DirectionalLight.h"
+#include"PointLight.h"
 class LightGroup
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public://定数
-	static const int cDirLightNum = 3;
+	static const uint32_t cDirLightNum = 3;
+
+	static const uint32_t cPointLightNum = 3;
 
 public://サブクラス
 	//定数バッファ用データ構造体
@@ -17,6 +20,8 @@ public://サブクラス
 		float pad1;
 		//平行光源用
 		DirectionalLight::ConstBufferData dirLights[cDirLightNum];
+
+		PointLight::ConstBufferData pointLight[cDirLightNum];
 	};
 
 private:
@@ -28,7 +33,9 @@ private:
 
 	Vector3 ambientColor_ = { 1,1,1 };
 
-	DirectionalLight dirLights[cDirLightNum];
+	DirectionalLight dirLights_[cDirLightNum];
+
+	PointLight pointLight_[cDirLightNum];
 
 	bool dirty_ = false;
 public:
@@ -86,12 +93,33 @@ public:
 	void SetDirLightColor(uint32_t index, const Vector3& lightcolor);
 
 	/// <summary>
-/// 平行光源のライトの光沢度セット
+/// 点光源の有効フラグをセット
 /// </summary>
 /// <param name="index">ライト番号</param>
-/// <param name="lightShininess">ライト色</param>
-	void SetDirLightShininess(uint32_t index, float lightShininess);
-	
+/// <param name="active">有効フラグ</param>
+	void SetPointActive(uint32_t index, bool active);
+
+	/// <summary>
+	/// 点光源のライトの方向設定
+	/// </summary>
+	/// <param name="index">ライト番号</param>
+	/// <param name="lightdir">ライト方向</param>
+	void SetPointPos(uint32_t index, const Vector3& lightPos);
+
+	/// <summary>
+	/// 点光源のライト色をセット
+	/// </summary>
+	/// <param name="index">ライト番号</param>
+	/// <param name="lightcolor">ライト色</param>
+	void SetPointColor(uint32_t index, const Vector3& lightcolor);
+
+	/// <summary>
+/// 点光源のライト色をセット
+/// </summary>
+/// <param name="index">ライト番号</param>
+/// <param name="lightcolor">ライト色</param>
+	void SetPointAtten(uint32_t index, const Vector3& lightAtten);
+
 	/// <summary>
 	/// 標準のライト設定
 	/// </summary>

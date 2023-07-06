@@ -23,9 +23,18 @@ struct DirLight
     uint active;
 };
 
+struct PointLight
+{
+    float3 lightpos;//ライトへの方向の単位ベクトル
+    float3 lightcolor;//ライトの色(RGB)
+    float3 lightAtten;//ライトへの方向の単位ベクトル
+    uint active;
+};
+
 cbuffer cbuff2 : register(b2) {
     float3 ambientColor;
     DirLight dirLights[DIR_LIGHT_NUM];
+    PointLight PointLights[DIR_LIGHT_NUM];
 };
 
 cbuffer cbuff3 : register(b3) {
