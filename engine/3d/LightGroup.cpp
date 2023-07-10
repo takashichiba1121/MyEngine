@@ -95,7 +95,7 @@ void  LightGroup::TransferConstBuffer()
 		}
 		else
 		{
-			constMap->dirLights[i].active = 0;
+			constMap->pointLight[i].active = 0;
 		}
 	}
 	constBuff_->Unmap(0, nullptr);
@@ -160,6 +160,21 @@ void LightGroup::DefaultLightSetting()
 	dirLights_[2].SetActive(true);
 	dirLights_[2].SetLightColor({ 1.0f,1.0f,1.0f });
 	dirLights_[2].SetLightDir({ 0.0f,1.0f,0.0f });
+
+	pointLight_[0].SetActive(false);
+	pointLight_[0].SetLightPos({0.0f,0.0f,0.0f});
+	pointLight_[0].SetLightColor({0.0f,0.0f,0.0f});
+	pointLight_[0].SetLightAtten({1.0f,1.0f,1.0f});
+
+	pointLight_[1].SetActive(false);
+	pointLight_[1].SetLightPos({ 0.0f,0.0f,0.0f });
+	pointLight_[1].SetLightColor({ 0.0f,0.0f,0.0f });
+	pointLight_[1].SetLightAtten({ 1.0f,1.0f,1.0f });
+
+	pointLight_[1].SetActive(false);
+	pointLight_[1].SetLightPos({ 0.0f,0.0f,0.0f });
+	pointLight_[1].SetLightColor({ 0.0f,0.0f,0.0f });
+	pointLight_[1].SetLightAtten({ 1.0f,1.0f,1.0f });
 }
 
 void LightGroup::SetDirLightDir(uint32_t index, const Vector3& lightdir)

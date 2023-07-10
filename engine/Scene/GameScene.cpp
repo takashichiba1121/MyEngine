@@ -79,6 +79,16 @@ void GameScene::Initialize()
 	light.reset(LightGroup::Create());
 
 	Object3d::SetLight(light.get());
+
+	light->SetDirLightActive(0, false);
+
+	light->SetDirLightActive(1, false);
+
+	light->SetDirLightActive(2, false);
+
+	light->SetPointActive(0, true);
+
+	light->SetPointPos(0,{0.5f,1.0f,0.0f});
 }
 
 void GameScene::Update()
@@ -100,24 +110,18 @@ void GameScene::Update()
 	ImGui::Begin("light");
 
 	ImGui::ColorEdit3("ambientColor", ambientColor, ImGuiColorEditFlags_Float);
-	ImGui::InputFloat3("lightDir0", lightDir0);
-	ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
-	ImGui::InputFloat3("lightDir1", lightDir1);
-	ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
-	ImGui::InputFloat3("lightDir2", lightDir2);
-	ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightPos", lightPos);
+	ImGui::ColorEdit3("lightColor", lightColor, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightAtten", lightAtten);
 	ImGui::InputFloat("shininess", &shininess);
 
 	ImGui::End();
 
 	light->SetAmbientColor(Vector3({ ambientColor[0],ambientColor[1],ambientColor[2] }));
 
-	light->SetDirLightDir(0, Vector3({ lightDir0[0],lightDir0[1],lightDir0[2] }));
-	light->SetDirLightColor(0, Vector3({ lightColor0[0],lightColor0[1],lightColor0[2] }));
-	light->SetDirLightDir(1, Vector3({ lightDir1[0],lightDir1[1],lightDir1[2] }));
-	light->SetDirLightColor(1, Vector3({ lightColor1[0],lightColor1[1],lightColor1[2] }));
-	light->SetDirLightDir(2, Vector3({ lightDir2[0],lightDir2[1],lightDir2[2] }));
-	light->SetDirLightColor(2, Vector3({ lightColor2[0],lightColor2[1],lightColor2[2] }));
+	light->SetPointPos(0, Vector3({ lightPos[0],lightPos[1],lightPos[2] }));
+	light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
+	light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
 
 	for (uint32_t i=0;i<objects.size();i++)
 	{
@@ -166,7 +170,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	{
 		if (collision[i])
 		{
-			objects[i]->Draw(texHandle);
+			objects[i]->Draw();
 		}
 		else
 		{
@@ -187,7 +191,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	SpriteCommon::PreDraw();
 
-	sprite->Draw();
+	//sprite->Draw();
 	SpriteCommon::PostDraw();
 }
 
