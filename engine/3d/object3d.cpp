@@ -474,6 +474,7 @@ void Object3d::Update()
 	constMap->viewproj = sMatView * sMatProjection;	// 行列の合成
 	constMap->world = matWorld_;
 	constMap->cameraPos = sEye;
+	constMap->shininess = shininess_;
 	constBuffB0_->Unmap(0, nullptr);
 
 }

@@ -146,6 +146,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\3d\DirectionalLight.h" />
     <ClInclude Include="engine\3d\LightGroup.h" />
     <ClInclude Include="engine\3d\ParticleManager.h" />
+    <ClInclude Include="engine\3d\PointLight.h" />
     <ClInclude Include="engine\audio\Audio.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
     <ClInclude Include="engine\2d\imguiManager.h" />

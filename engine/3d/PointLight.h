@@ -1,33 +1,40 @@
 #pragma once
 #include"Vector3.h"
 #include"DirectXCommon.h"
-
-class DirectionalLight
+class PointLight
 {
 private: // エイリアス
 public:
 	struct  ConstBufferData
 	{
-		Vector3 lightv;
+		Vector3 lightPos;
 		float pad1;
 		Vector3 lightcolor;
+		float pad2;
+		Vector3 lightatten;
 		uint16_t active;
 	};
 private:
 
-	Vector3 lightDir_ = {1,0,0};
+	Vector3 lightPos_ = { 1,0,0 };
 
 	Vector3 lightColor_ = { 1,1,1 };
+
+	Vector3 lightAtten_ = { 1.0f,1.0f,1.0f };
 
 	//有効フラグ
 	bool active_ = false;
 public:
 
-	void SetLightDir(const Vector3& lightDir);
+	void SetLightPos(const Vector3& lightPos) { lightPos_=lightPos; }
 
-	void SetLightColor(const Vector3& lightColor);
+	void SetLightColor(const Vector3& lightColor) { lightColor_ = lightColor; }
 
-	Vector3 GetLightDir() { return lightDir_; }
+	void SetLightAtten(const Vector3& lightAtten) { lightPos_ = lightAtten; }
+
+	Vector3 GetLightAtten() { return lightAtten_; }
+
+	Vector3 GetLightPos() { return lightPos_; }
 
 	Vector3 GetLightColor() { return lightColor_; }
 

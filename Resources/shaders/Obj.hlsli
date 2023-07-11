@@ -3,6 +3,7 @@ cbuffer cbuff0 : register(b0) {
     matrix viewproj;
     matrix world;
     float3 cameraPos;
+    float shininess;//光沢度
 };
 
 
@@ -18,14 +19,22 @@ static const uint DIR_LIGHT_NUM = 3;
 struct DirLight
 {
     float3 lightv;//ライトへの方向の単位ベクトル
-    float shininess;//光沢度
     float3 lightcolor;//ライトの色(RGB)
+    uint active;
+};
+
+struct PointLight
+{
+    float3 lightpos;//ライトへの方向の単位ベクトル
+    float3 lightcolor;//ライトの色(RGB)
+    float3 lightAtten;//ライトへの方向の単位ベクトル
     uint active;
 };
 
 cbuffer cbuff2 : register(b2) {
     float3 ambientColor;
     DirLight dirLights[DIR_LIGHT_NUM];
+    PointLight PointLights[DIR_LIGHT_NUM];
 };
 
 cbuffer cbuff3 : register(b3) {
@@ -33,7 +42,6 @@ cbuffer cbuff3 : register(b3) {
     float _ScaleFactor : packoffset(c0.y);
     float _RotationFactor : packoffset(c0.z);
     float _PositionFactor : packoffset(c0.w);
-    float _AlphaFactor : packoffset(c1);
 };
 
 //頂点シェーダの出力構造体

@@ -62,13 +62,8 @@ private:
 	float ambientColor[3] = {1,1,1};
 
 	//Œõü•ûŒü‰Šú‰»
-	float lightDir0[3] = { 0,0,1 };
-	float lightColor0[3] = { 1,0,0 };
-
-	float lightDir1[3] = { 0,1,0 };
-	float lightColor1[3] = { 0,1,0 };
-
-	float lightDir2[3] = { 1,0,0 };
-	float lightColor2[3] = { 0,0,1 };
+	float lightPos[3] = { 0,0,0 };
+	float lightColor[3] = { 1,1,1 };
+	float lightAtten[3] = { 0.3f,0.1f,0.1f };
 };
 
