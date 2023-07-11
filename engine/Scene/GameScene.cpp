@@ -170,7 +170,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	{
 		if (collision[i])
 		{
-			objects[i]->Draw();
+			objects[i]->Draw(texHandle);
 		}
 		else
 		{

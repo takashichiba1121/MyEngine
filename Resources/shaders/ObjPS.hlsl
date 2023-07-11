@@ -63,5 +63,5 @@ for (uint i = 0; i < DIR_LIGHT_NUM; i++)
 }
 
 
-return target;
+return target*shadecolor;
 }

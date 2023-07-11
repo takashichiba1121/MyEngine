@@ -181,6 +181,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 
+	Texture::fin();
+
 	imguiManager::Finalize();
 
 	winApp->Finalize();
