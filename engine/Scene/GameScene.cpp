@@ -157,17 +157,17 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 {
 	Object3d::PreDraw(dxCommon->GetCommandList());
 
-	//for (uint32_t i = 0; i < objects.size(); i++)
-	//{
-	//	if (collision[i])
-	//	{
-	//		//objects[i]->Draw(texHandle);
-	//	}
-	//	else
-	//	{
-	//		objects[i]->Draw();
-	//	}
-	//}
+	for (uint32_t i = 0; i < objects.size(); i++)
+	{
+		if (collision[i])
+		{
+			objects[i]->Draw(texHandle);
+		}
+		else
+		{
+			objects[i]->Draw();
+		}
+	}
 
 	obj->Draw();
 
@@ -182,7 +182,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	SpriteCommon::PreDraw();
 
-	//sprite->Draw();
+	sprite->Draw();
 	SpriteCommon::PostDraw();
 }
 

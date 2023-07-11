@@ -126,6 +126,7 @@ uint32_t Texture::LoadTexture(const wchar_t* fileName)
 		//まだテクスチャ情報が割り当てられていないところにテクスチャ情報を入れる
 		if (!sTexBuffuers[i]) {
 			sTexBuffuers[i] = texBuff;
+			break;
 		}
 	}
 
