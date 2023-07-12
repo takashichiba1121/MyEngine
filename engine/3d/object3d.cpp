@@ -388,6 +388,12 @@ void Object3d::UpdateViewMatrix()
 		sUp);
 }
 
+void Object3d::Finalize()
+{
+	sPipelinestate = nullptr;
+	sRootsignature = nullptr;
+}
+
 bool Object3d::Initialize()
 {
 	// nullptrチェック

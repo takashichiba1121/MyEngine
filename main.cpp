@@ -19,12 +19,29 @@
 #include"assimpModel.h"
 #include"assimpObject3d.h"
 #include"LightGroup.h"
+#include<dxgidebug.h>
 
 using namespace DirectX;
 using namespace std;
 
+struct D3DResouceLeakChecker
+{
+	~D3DResouceLeakChecker()
+	{
+		// リソースリークチェック
+		Microsoft::WRL::ComPtr<IDXGIDebug1>debug;
+		if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
+			debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+			debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
+			debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
+		}
+	}
+};
+
 //windowsアプリのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+
+	D3DResouceLeakChecker a;
 
 	unique_ptr<WinApp> winApp = nullptr;
 	winApp = std::make_unique<WinApp>();
@@ -56,7 +73,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	assimpObject3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
-	Sound::StaticInitialize();
+	//Sound::StaticInitialize();
 
 	imguiManager::StaticInitialize(winApp.get(), dxCommon.get());
 	imguiManager imGui;
@@ -181,9 +198,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 
-	Texture::fin();
+	Texture::Finalize();
 
 	imguiManager::Finalize();
+
+	SpriteCommon::Finalize();
+
+	Object3d::Finalize();
+	assimpObject3d::Finalize();
+
+	ParticleManager::Finalize();
 
 	winApp->Finalize();
 

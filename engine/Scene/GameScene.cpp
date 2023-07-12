@@ -97,7 +97,7 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	static Vector3 pos = {0.0f,0.0f,0.0f};
+	static Vector3 pos = {5.0f,1.0f,5.0f};
 
 	static Vector3 rot = {0.0f,0.0f,0.0f};
 	if (Input::IsLinkGamePad())
@@ -112,19 +112,19 @@ void GameScene::Update()
 	{
 		if (Input::PushKey(DIK_W))
 		{
-			pos += {0,0,1};
+			pos += {0,0,0.1f};
 		}
 		if (Input::PushKey(DIK_A))
 		{
-			pos += {-1, 0, 0};
+			pos += {-0.1f, 0, 0};
 		}
 		if (Input::PushKey(DIK_S))
 		{
-			pos += {0, 0, -1};
+			pos += {0, 0, -0.1f};
 		}
 		if (Input::PushKey(DIK_D))
 		{
-			pos += {1, 0, 0};
+			pos += {0.1f, 0, 0};
 		}
 	}
 
@@ -217,26 +217,30 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 
 void GameScene::MapCollision()
 {
+
+	Vector3 aabb1Center = obj->GetPosition();
+	Vector3 aabb1Size = obj->GetScale();
 	for (uint32_t i = 0; i < objects.size(); i++)
 	{
-		Vector3 AScale = objects[i]->GetScale();
+		Vector3 aabb2Center = objects[i]->GetPosition();
+		Vector3 aabb2Size = objects[i]->GetScale();
+		std::array<Vector3, 2> min_;
+		min_[0] = { aabb1Center.x - aabb1Size.x, aabb1Center.y - aabb1Size.y ,aabb1Center.z - aabb1Size.z };
+		min_[1] = { aabb2Center.x -aabb2Size.x, aabb2Center.y -aabb2Size.y ,aabb2Center.z -aabb2Size.z };
+		std::array<Vector3, 2> max_;
+		max_[0] = { aabb1Center.x + aabb1Size.x, aabb1Center.y + aabb1Size.y ,aabb1Center.z + aabb1Size.z };
+		max_[1] = { aabb2Center.x +aabb2Size.x, aabb2Center.y +aabb2Size.y ,aabb2Center.z +aabb2Size.z };
 
-		float ASize = (AScale.x + AScale.y + AScale.z) / 3;
-
-		Vector3 APos = objects[i]->GetPosition();
-
-		Vector3 BScale = obj->GetScale();
-
-		float BSize = (BScale.x + BScale.y + BScale.z) / 3;
-
-		Vector3 BPos = obj->GetPosition();
-		if (pow(APos.x - BPos.x, 2) + pow(APos.y - BPos.y, 2) + pow(APos.z - BPos.z, 2) <= pow(ASize + BSize, 2))
+		if (min_[0].x > max_[1].x || max_[0].x < min_[1].x ||
+			min_[0].y > max_[1].y || max_[0].y < min_[1].y ||
+			min_[0].z > max_[1].z || max_[0].z < min_[1].z)
 		{
-			collision[i] = true;
+			collision[i] = false;
 		}
 		else
 		{
-			collision[i] = false;
+			collision[i] = true;
+
 		}
 	}
 }

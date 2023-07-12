@@ -291,6 +291,12 @@ void assimpObject3d::UpdateViewMatrix()
 		sUp);
 }
 
+void assimpObject3d::Finalize()
+{
+	sPipelinestate = nullptr;
+	sRootsignature = nullptr;
+}
+
 bool assimpObject3d::Initialize()
 {
 	// nullptrチェック

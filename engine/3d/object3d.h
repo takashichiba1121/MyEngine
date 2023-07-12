@@ -111,6 +111,8 @@ public: // 静的メンバ関数
 
 	static void SetLight(LightGroup* light) {Object3d::sLightGroup =light ; }
 
+	static void Finalize();
+
 
 private: // 静的メンバ変数
 	// デバイス

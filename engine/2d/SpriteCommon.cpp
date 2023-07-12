@@ -215,3 +215,10 @@ void SpriteCommon::PreDraw()
 void SpriteCommon::PostDraw()
 {
 }
+
+void SpriteCommon::Finalize()
+{
+	sPipelineState = nullptr;
+	sRootSignature = nullptr;
+	//sDxCommon = nullptr;
+}

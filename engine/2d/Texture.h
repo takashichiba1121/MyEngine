@@ -31,6 +31,6 @@ public:
 	static ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
 		ID3D12GraphicsCommandList* commandList);
 
-	static void fin();
+	static void Finalize();
 };
 

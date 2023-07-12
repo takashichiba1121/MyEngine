@@ -118,6 +118,8 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void PostDraw();
 
+	static void Finalize();
+
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* sDevice;

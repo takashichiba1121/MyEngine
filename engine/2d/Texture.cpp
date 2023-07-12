@@ -134,6 +134,8 @@ uint32_t Texture::LoadTexture(const wchar_t* fileName)
 
 	ExcuteComandList();
 
+	Texture->Release();
+
 	return sSrvIncrementIndex++;
 }
 
@@ -256,8 +258,9 @@ void Texture::CreateSRV(ID3D12Resource* texBuff)
 	sDxCommon_->GetDevice()->
 		CreateShaderResourceView(texBuff, &srvDesc, srvCpuHandle);
 }
-void Texture::fin()
+void Texture::Finalize()
 {
+	sDescHeap = nullptr;
 	sTexBuffuers.fill(nullptr);
 }
 

@@ -107,6 +107,8 @@ class assimpObject3d
 
 		static Matrix4 GetMatViewPro();
 
+		static void Finalize();
+
 	private: // 静的メンバ変数
 		// デバイス
 		static ID3D12Device* sDevice;

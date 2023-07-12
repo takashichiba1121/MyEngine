@@ -70,6 +70,13 @@ void ParticleManager::PostDraw()
 	ParticleManager::sCmdList = nullptr;
 }
 
+void ParticleManager::Finalize()
+{
+	sPipelinestate = nullptr;
+	sRootsignature = nullptr;
+	sVertBuff = nullptr;
+}
+
 void ParticleManager::InitializeGraphicsPipeline()
 {
 	HRESULT result = S_FALSE;

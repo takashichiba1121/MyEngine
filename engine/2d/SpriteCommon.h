@@ -27,6 +27,8 @@ public:
 	static void PreDraw();
 
 	static void PostDraw();
+
+	static void Finalize();
 private:
 	static DirectXCommon* sDxCommon;
 
