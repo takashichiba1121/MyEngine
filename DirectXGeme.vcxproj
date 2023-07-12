@@ -101,7 +101,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)lib\assimp-vc143-mtd.dll" "$(TargetDir)assimp-vc143-mtd.dll"
+      <Command>copy "$(SolutionDir)lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-mtd.dll"
 copy "$(SolutionDir)lib\zlibd1.dll" "$(TargetDir)zlibd1.dll"
 copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     </PostBuildEvent>

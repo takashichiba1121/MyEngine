@@ -36,6 +36,11 @@ public: // メンバ関数
 /// 描画
 /// </summary>
 	void PostEffectDraw(DirectXCommon* dxCommon);
+
+/// <summary>
+/// jsonから読み取った地形データとプレイヤーの当たり判定
+/// </summary>
+	void MapCollision();
 private:
 
 	std::unique_ptr<Model> model;

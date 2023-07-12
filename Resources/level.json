@@ -7,28 +7,6 @@
             "transform": {
                 "translation": [
                     0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.001",
-            "transform": {
-                "translation": [
-                    0.0,
                     5.0,
                     0.0
                 ],
@@ -43,7 +21,55 @@
                     1.0
                 ]
             },
-            "file_name": "cube"
+            "file_name": "cube",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.001",
+            "transform": {
+                "translation": [
+                    -5.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cube",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
         },
         {
             "type": "MESH",
@@ -65,7 +91,20 @@
                     1.0
                 ]
             },
-            "file_name": "cube"
+            "file_name": "cube",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
         },
         {
             "type": "MESH",
@@ -87,14 +126,27 @@
                     1.0
                 ]
             },
-            "file_name": "cube"
+            "file_name": "cube",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
         },
         {
             "type": "MESH",
             "name": "Cube.004",
             "transform": {
                 "translation": [
-                    -5.0,
+                    0.0,
                     0.0,
                     0.0
                 ],
@@ -109,7 +161,55 @@
                     1.0
                 ]
             },
-            "file_name": "cube"
+            "file_name": "cube",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.005",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    5.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "cube",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            }
         }
     ]
 }

@@ -18,6 +18,8 @@ Microsoft::WRL::ComPtr<IDirectInput8> Input::sDirectInput;
 
  XINPUT_STATE Input::sOldGamePad;
 
+ DWORD Input::isLinkGamePad;
+
 void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
@@ -105,13 +107,22 @@ bool Input::TriggerKey(BYTE keyNumber)
 
 //ゲームパッド
 
-DWORD Input::Updatekeypad()
+void Input::Updatekeypad()
 {
 	sOldGamePad = sGamePad;
 
-	return XInputGetState(
+	isLinkGamePad=XInputGetState(
 		0,//複数つながれてるときの選択
 		&sGamePad);//この変数に入力状況が格納される
+}
+
+bool Input::IsLinkGamePad()
+{
+	if (isLinkGamePad== ERROR_SUCCESS)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool Input::PadTriggerKey(uint32_t button)

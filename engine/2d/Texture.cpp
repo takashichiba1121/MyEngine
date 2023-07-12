@@ -258,6 +258,6 @@ void Texture::CreateSRV(ID3D12Resource* texBuff)
 }
 void Texture::fin()
 {
-	sTexBuffuers.fill(0);
+	sTexBuffuers.fill(nullptr);
 }
 

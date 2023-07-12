@@ -14,7 +14,7 @@ void GameScene::Initialize()
 {
 	texHandle = Texture::LoadTexture(L"Resources/RedTexture.png");
 
-	model.reset(Model::LoadFormOBJ("playerbullet", true));
+	model.reset(Model::LoadFormOBJ("cube", true));
 
 	obj = std::make_unique<Object3d>();
 
@@ -80,15 +80,19 @@ void GameScene::Initialize()
 
 	Object3d::SetLight(light.get());
 
-	light->SetDirLightActive(0, false);
+	//light->SetDirLightActive(0, false);
+
+	light->SetDirLightDir(0,{0,-1,1});
+
+	light->SetDirLightColor(0,{1,1,1});
 
 	light->SetDirLightActive(1, false);
 
 	light->SetDirLightActive(2, false);
 
-	light->SetPointActive(0, true);
+	//light->SetPointActive(0, true);
 
-	light->SetPointPos(0,{0.5f,1.0f,0.0f});
+	//light->SetPointPos(0,{0.5f,1.0f,0.0f});
 }
 
 void GameScene::Update()
@@ -96,10 +100,33 @@ void GameScene::Update()
 	static Vector3 pos = {0.0f,0.0f,0.0f};
 
 	static Vector3 rot = {0.0f,0.0f,0.0f};
+	if (Input::IsLinkGamePad())
+	{
 
-	pos += {Input::GetPadStick(PadStick::LX), Input::GetPadStick(PadStick::LY),0};
+		pos += {Input::GetPadStick(PadStick::LX),0, Input::GetPadStick(PadStick::LY)};
 
-	rot += {Input::GetPadStick(PadStick::RY), Input::GetPadStick(PadStick::RX), 0};
+		rot += {Input::GetPadStick(PadStick::RY), Input::GetPadStick(PadStick::RX), 0};
+
+	}
+	else
+	{
+		if (Input::PushKey(DIK_W))
+		{
+			pos += {0,0,1};
+		}
+		if (Input::PushKey(DIK_A))
+		{
+			pos += {-1, 0, 0};
+		}
+		if (Input::PushKey(DIK_S))
+		{
+			pos += {0, 0, -1};
+		}
+		if (Input::PushKey(DIK_D))
+		{
+			pos += {1, 0, 0};
+		}
+	}
 
 	obj->SetPosition(pos);
 
@@ -123,30 +150,7 @@ void GameScene::Update()
 	light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
 	light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
 
-	for (uint32_t i=0;i<objects.size();i++)
-	{
-		Vector3 AScale=objects[i]->GetScale();
-
-		float ASize = (AScale.x + AScale.y + AScale.z) / 3;
-
-		Vector3 APos= objects[i]->GetPosition();
-
-		Vector3 BScale = obj->GetScale();
-
-		float BSize = (BScale.x + BScale.y + BScale.z) / 3;
-
-		Vector3 BPos = obj->GetPosition();
-		if (pow(APos.x- BPos.x,2)+pow(APos.y - BPos.y, 2)+pow(APos.z - BPos.z, 2)<=pow(ASize+BSize,2))
-		{
-			collision[i] = true;
-		}
-		else
-		{
-			collision[i] = false;
-		}
-	}
-
-
+	MapCollision();
 
 	light->Update();
 
@@ -209,4 +213,30 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
 	//pMan->Draw();
 	ParticleManager::PostDraw();
+}
+
+void GameScene::MapCollision()
+{
+	for (uint32_t i = 0; i < objects.size(); i++)
+	{
+		Vector3 AScale = objects[i]->GetScale();
+
+		float ASize = (AScale.x + AScale.y + AScale.z) / 3;
+
+		Vector3 APos = objects[i]->GetPosition();
+
+		Vector3 BScale = obj->GetScale();
+
+		float BSize = (BScale.x + BScale.y + BScale.z) / 3;
+
+		Vector3 BPos = obj->GetPosition();
+		if (pow(APos.x - BPos.x, 2) + pow(APos.y - BPos.y, 2) + pow(APos.z - BPos.z, 2) <= pow(ASize + BSize, 2))
+		{
+			collision[i] = true;
+		}
+		else
+		{
+			collision[i] = false;
+		}
+	}
 }

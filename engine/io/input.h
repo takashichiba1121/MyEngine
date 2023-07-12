@@ -60,8 +60,9 @@ public://メンバ関数(ゲームパッド)
 	/// <summary>
 	/// コントローラーの状況の取得（毎フレームする）
 	/// </summary>
-	/// <returns>成功か？</returns>
-	static DWORD Updatekeypad();
+	static void Updatekeypad();
+
+	static bool IsLinkGamePad();
 
 	static XINPUT_STATE GetPad() { return sGamePad; }
 
@@ -90,4 +91,6 @@ private://メンバ変数(ゲームパッド)
 	static XINPUT_STATE sGamePad;
 
 	static XINPUT_STATE sOldGamePad;
+
+	static DWORD isLinkGamePad;
 };
