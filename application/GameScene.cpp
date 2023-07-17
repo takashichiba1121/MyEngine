@@ -27,7 +27,7 @@ void GameScene::Initialize()
 
 	models.insert(std::make_pair("cube", model.get()));
 
-	Object3d::SetEye({ 0.0f,0.0f,-10.0f });
+	Object3d::SetEye({ 0.0f,10.0f,-10.0f });
 
 	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load());
@@ -111,7 +111,7 @@ void GameScene::Update()
 	{
 		if (Input::PushKey(DIK_W))
 		{
-			move += {0, 0.1f,0};
+			move += {0,0, 0.1f};
 		}
 		if (Input::PushKey(DIK_A))
 		{
@@ -119,11 +119,19 @@ void GameScene::Update()
 		}
 		if (Input::PushKey(DIK_S))
 		{
-			move += {0, -0.1f,0};
+			move += {0,0, -0.1f};
 		}
 		if (Input::PushKey(DIK_D))
 		{
 			move += {0.1f, 0, 0};
+		}
+		if (Input::PushKey(DIK_Z))
+		{
+			move += {0, -0.1f,0};
+		}
+		if (Input::PushKey(DIK_X))
+		{
+			move += {0,0.1f, 0};
 		}
 	}
 
@@ -186,7 +194,19 @@ void GameScene::Update()
 
 					move.x = 0;
 				}
+				if (mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z)
+				{
 
+					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z;
+
+					move.z = 0;
+				}
+				else if (mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z)
+				{
+					pos.z = mapCube.Pos.z - (mapCube.scale.z + objCube.scale.z);
+
+					move.z = 0;
+				}
 			}
 		}
 		else
