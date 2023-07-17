@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include"DirectXCommon.h"
 #include"levelLoad.h"
+#include"Collider.h"
 
 GameScene::GameScene()
 {
@@ -26,7 +27,7 @@ void GameScene::Initialize()
 
 	models.insert(std::make_pair("cube", model.get()));
 
-	Object3d::SetEye({ 0.0f,10.0f,-10.0f });
+	Object3d::SetEye({ 0.0f,0.0f,-10.0f });
 
 	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load());
@@ -35,16 +36,12 @@ void GameScene::Initialize()
 
 	sprite->Initialize(Texture::LoadTexture(L"Resources/mario.jpg"));
 
-	sprite->SetPosition({0.0f,0.0f});
+	sprite->SetPosition({ 0.0f,0.0f });
 
-	sprite->SetAnchorPoint({0.0f,0.0f});
+	sprite->SetAnchorPoint({ 0.0f,0.0f });
 
 	for (auto& objectData : levelData->objects)
 	{
-		//ファイル名から登録済みモデルを検索
-		//Model* model = nullptr;
-		//decltype(models)::iterator it = models.find(objectData.fileName);
-		//if (it != models.end()) { model = it->second; }
 		//モデルを指定して3Dオブジェクトを生成
 		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 		newObject->Initialize();
@@ -82,9 +79,9 @@ void GameScene::Initialize()
 
 	//light->SetDirLightActive(0, false);
 
-	light->SetDirLightDir(0,{0,-1,1});
+	light->SetDirLightDir(0, { 0,-1,1 });
 
-	light->SetDirLightColor(0,{1,1,1});
+	light->SetDirLightColor(0, { 1,1,1 });
 
 	light->SetDirLightActive(1, false);
 
@@ -97,13 +94,15 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	static Vector3 pos = {5.0f,1.0f,5.0f};
+	static Vector3 pos = { 5.0f,0.0f,0.0f };
 
-	static Vector3 rot = {0.0f,0.0f,0.0f};
+	static Vector3 rot = { 0.0f,0.0f,0.0f };
+
+	Vector3 move;
 	if (Input::IsLinkGamePad())
 	{
 
-		pos += {Input::GetPadStick(PadStick::LX),0, Input::GetPadStick(PadStick::LY)};
+		move += {Input::GetPadStick(PadStick::LX), 0, Input::GetPadStick(PadStick::LY)};
 
 		rot += {Input::GetPadStick(PadStick::RY), Input::GetPadStick(PadStick::RX), 0};
 
@@ -112,27 +111,25 @@ void GameScene::Update()
 	{
 		if (Input::PushKey(DIK_W))
 		{
-			pos += {0,0,0.1f};
+			move += {0, 0.1f,0};
 		}
 		if (Input::PushKey(DIK_A))
 		{
-			pos += {-0.1f, 0, 0};
+			move += {-0.1f, 0, 0};
 		}
 		if (Input::PushKey(DIK_S))
 		{
-			pos += {0, 0, -0.1f};
+			move += {0, -0.1f,0};
 		}
 		if (Input::PushKey(DIK_D))
 		{
-			pos += {0.1f, 0, 0};
+			move += {0.1f, 0, 0};
 		}
 	}
 
-	obj->SetPosition(pos);
-
 	obj->SetRot(rot);
 
-	float shininess=20;
+	float shininess = 20;
 
 	ImGui::Begin("light");
 
@@ -150,7 +147,56 @@ void GameScene::Update()
 	light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
 	light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
 
-	MapCollision();
+	for (uint32_t i=0;i<objects.size();i++)
+	{
+		Cube mapCube, objCube;
+		mapCube.Pos = objects[i]->GetPosition();
+		mapCube.scale = objects[i]->GetScale();
+		objCube.Pos = obj->GetPosition()+move;
+		objCube.oldPos = obj->GetPosition();
+		objCube.scale = obj->GetScale();
+		if (Collider::CubeAndCube(mapCube, objCube)==true)
+		{
+			collision[i] = true;
+			if (mapCube.Pos.y-mapCube.scale.y>=objCube.oldPos.y+objCube.scale.y)
+			{
+				pos.y = mapCube.Pos.y - (mapCube.scale.y + objCube.scale.y);
+
+				move.y = 0;
+			}
+			else if(mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y)
+			{
+				pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
+
+				move.y = 0;
+			}
+			else
+			{
+
+				if (mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x)
+				{
+
+					pos.x= mapCube.Pos.x+mapCube.scale.x+objCube.scale.x;
+
+					move.x = 0;
+				}
+				else if(mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x)
+				{
+					pos.x = mapCube.Pos.x-(mapCube.scale.x + objCube.scale.x);
+
+					move.x = 0;
+				}
+
+			}
+		}
+		else
+		{
+			collision[i] = false;
+		}
+	}
+	pos += move;
+
+	obj->SetPosition(pos);
 
 	light->Update();
 
@@ -213,34 +259,4 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
 	//pMan->Draw();
 	ParticleManager::PostDraw();
-}
-
-void GameScene::MapCollision()
-{
-
-	Vector3 aabb1Center = obj->GetPosition();
-	Vector3 aabb1Size = obj->GetScale();
-	for (uint32_t i = 0; i < objects.size(); i++)
-	{
-		Vector3 aabb2Center = objects[i]->GetPosition();
-		Vector3 aabb2Size = objects[i]->GetScale();
-		std::array<Vector3, 2> min_;
-		min_[0] = { aabb1Center.x - aabb1Size.x, aabb1Center.y - aabb1Size.y ,aabb1Center.z - aabb1Size.z };
-		min_[1] = { aabb2Center.x -aabb2Size.x, aabb2Center.y -aabb2Size.y ,aabb2Center.z -aabb2Size.z };
-		std::array<Vector3, 2> max_;
-		max_[0] = { aabb1Center.x + aabb1Size.x, aabb1Center.y + aabb1Size.y ,aabb1Center.z + aabb1Size.z };
-		max_[1] = { aabb2Center.x +aabb2Size.x, aabb2Center.y +aabb2Size.y ,aabb2Center.z +aabb2Size.z };
-
-		if (min_[0].x > max_[1].x || max_[0].x < min_[1].x ||
-			min_[0].y > max_[1].y || max_[0].y < min_[1].y ||
-			min_[0].z > max_[1].z || max_[0].z < min_[1].z)
-		{
-			collision[i] = false;
-		}
-		else
-		{
-			collision[i] = true;
-
-		}
-	}
 }

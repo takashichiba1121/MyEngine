@@ -81,6 +81,18 @@
     <Filter Include="engin\ヘッダーファイル\3d\Light">
       <UniqueIdentifier>{ab96ebfc-d447-42d9-b305-bab7839f0503}</UniqueIdentifier>
     </Filter>
+    <Filter Include="application\ソース ファイル\player">
+      <UniqueIdentifier>{4066f2dd-b7aa-48e0-8fc9-b0e0ea1c09e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application\ヘッダーファイル\Player">
+      <UniqueIdentifier>{f7852599-cb0a-40cf-b02a-a7290fd71a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engin\ヘッダーファイル\Collider">
+      <UniqueIdentifier>{2571224d-e22f-43dc-baa0-37cc7bcf5787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engin\ソースファイル\Collider">
+      <UniqueIdentifier>{9451e2d3-0474-47db-83be-41c126431e5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\2d\Sprite.cpp">
@@ -124,9 +136,6 @@
     </ClCompile>
     <ClCompile Include="engine\io\input.cpp">
       <Filter>engin\ソースファイル\io</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\Scene\GameScene.cpp">
-      <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="engine\3d\ParticleManager.cpp">
       <Filter>engin\ソースファイル\3d</Filter>
@@ -173,6 +182,15 @@
     <ClCompile Include="main.cpp">
       <Filter>application\ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="application\GameScene.cpp">
+      <Filter>application\ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Player.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Collider\Collider.cpp">
+      <Filter>engin\ソースファイル\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -216,9 +234,6 @@
     </ClInclude>
     <ClInclude Include="engine\io\input.h">
       <Filter>engin\ヘッダーファイル\io</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\Scene\GameScene.h">
-      <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="engine\3d\ParticleManager.h">
       <Filter>engin\ヘッダーファイル\3d</Filter>
@@ -264,6 +279,15 @@
     </ClInclude>
     <ClInclude Include="engine\3d\PointLight.h">
       <Filter>engin\ヘッダーファイル\3d\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="application\GameScene.h">
+      <Filter>application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Player.h">
+      <Filter>application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Collider\Collider.h">
+      <Filter>engin\ヘッダーファイル\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

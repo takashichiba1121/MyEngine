@@ -13,6 +13,8 @@ struct LevelData
 		DirectX::XMVECTOR trans;
 		DirectX::XMVECTOR scale;
 		DirectX::XMVECTOR rot;
+		DirectX::XMVECTOR center;
+		DirectX::XMVECTOR size;
 	};
 
 	std::list<ObjectData> objects;

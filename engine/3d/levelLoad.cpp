@@ -51,6 +51,22 @@ LevelData* LevelLoad::Load()
 				objectData.fileName = object["file_name"];
 			}
 			nlohmann::json& transform = object["transform"];
+
+			if (object.contains("colider")) {
+				//当たり判定
+				nlohmann::json& collision = object["colider"];
+
+				//当たり判定のサイズ
+				objectData.size.m128_f32[0] = (float)collision["size"][1];
+				objectData.size.m128_f32[1] = (float)collision["size"][2];
+				objectData.size.m128_f32[2] = (float)collision["size"][0];
+				objectData.size.m128_f32[3] = 0.0f;
+				//当たり判定の中心
+				objectData.center.m128_f32[0] = (float)collision["center"][1];
+				objectData.center.m128_f32[1] = (float)collision["center"][2];
+				objectData.center.m128_f32[2] = (float)collision["center"][0];
+				objectData.center.m128_f32[3] = 0.0f;
+			}
 			//平行移動
 			objectData.trans.m128_f32[0] = (float)transform["translation"][1];
 			objectData.trans.m128_f32[1] = (float)transform["translation"][2];
@@ -61,11 +77,15 @@ LevelData* LevelLoad::Load()
 			objectData.rot.m128_f32[1] = -(float)transform["rotation"][2];
 			objectData.rot.m128_f32[2] = (float)transform["rotation"][0];
 			objectData.rot.m128_f32[3] = 0.0f;
-			//回転角
+			//スケール
 			objectData.scale.m128_f32[0] = (float)transform["scaling"][1];
 			objectData.scale.m128_f32[1] = (float)transform["scaling"][2];
 			objectData.scale.m128_f32[2] = (float)transform["scaling"][0];
 			objectData.scale.m128_f32[3] = 0.0f;
+
+			objectData.center.m128_f32[0] += objectData.trans.m128_f32[0];
+			objectData.center.m128_f32[1] += objectData.trans.m128_f32[1];
+			objectData.center.m128_f32[2] += objectData.trans.m128_f32[2];
 		}
 	}	
 	return levelData;

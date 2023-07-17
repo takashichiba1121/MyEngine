@@ -63,7 +63,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\audio;$(ProjectDir)engine\base;$(ProjectDir)engine\io;$(ProjectDir)engine\Math;$(ProjectDir)engine\Scene;$(ProjectDir)engine\postEffect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)application;$(ProjectDir)engine\2d;$(ProjectDir)engine\3d;$(ProjectDir)engine\audio;$(ProjectDir)engine\base;$(ProjectDir)engine\io;$(ProjectDir)engine\Math;$(ProjectDir)engine\Scene;$(ProjectDir)engine\postEffect;$(ProjectDir)engine\Collider;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
@@ -107,6 +107,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="application\GameScene.cpp" />
+    <ClCompile Include="application\Player.cpp" />
     <ClCompile Include="engine\3d\assimpLoader.cpp" />
     <ClCompile Include="engine\3d\assimpModel.cpp" />
     <ClCompile Include="engine\3d\assimpObject3d.cpp" />
@@ -117,6 +119,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\audio\Audio.cpp" />
     <ClCompile Include="engine\base\DirectXCommon.cpp" />
     <ClCompile Include="engine\2d\imguiManager.cpp" />
+    <ClCompile Include="engine\Collider\Collider.cpp" />
     <ClCompile Include="engine\io\input.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectBlurH.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectBlurW.cpp" />
@@ -125,7 +128,6 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\postEffect\PostEffectMixed.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectMultiRenderTarget.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectTest.cpp" />
-    <ClCompile Include="engine\Scene\GameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\Math\Matrix4.cpp" />
     <ClCompile Include="engine\3d\Model.cpp" />
@@ -139,6 +141,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\base\WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="application\GameScene.h" />
+    <ClInclude Include="application\Player.h" />
     <ClInclude Include="engine\3d\assimpLoader.h" />
     <ClInclude Include="engine\3d\assimpModel.h" />
     <ClInclude Include="engine\3d\assimpObject3d.h" />
@@ -150,6 +154,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\audio\Audio.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
     <ClInclude Include="engine\2d\imguiManager.h" />
+    <ClInclude Include="engine\Collider\Collider.h" />
     <ClInclude Include="engine\io\input.h" />
     <ClInclude Include="engine\Math\Matrix4.h" />
     <ClInclude Include="engine\3d\Model.h" />
@@ -168,7 +173,6 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\postEffect\PostEffectMixed.h" />
     <ClInclude Include="engine\postEffect\PostEffectMultiRenderTarget.h" />
     <ClInclude Include="engine\postEffect\PostEffectTest.h" />
-    <ClInclude Include="engine\Scene\GameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">
