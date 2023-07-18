@@ -27,7 +27,7 @@ void GameScene::Initialize()
 
 	models.insert(std::make_pair("cube", model.get()));
 
-	Object3d::SetEye({ 0.0f,10.0f,-10.0f });
+	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
 	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load());
@@ -90,50 +90,19 @@ void GameScene::Initialize()
 	//light->SetPointActive(0, true);
 
 	//light->SetPointPos(0,{0.5f,1.0f,0.0f});
+
+	player_ = std::make_unique<Player>();
+
+	player_->SetMapData(&objects);
+
+	player_->Initialize(model.get());
 }
 
 void GameScene::Update()
 {
-	static Vector3 pos = { 5.0f,0.0f,0.0f };
+	static Vector3 pos = { 5.0f,5.0f,0.0f };
 
 	static Vector3 rot = { 0.0f,0.0f,0.0f };
-
-	Vector3 move;
-	if (Input::IsLinkGamePad())
-	{
-
-		move += {Input::GetPadStick(PadStick::LX), 0, Input::GetPadStick(PadStick::LY)};
-
-		rot += {Input::GetPadStick(PadStick::RY), Input::GetPadStick(PadStick::RX), 0};
-
-	}
-	else
-	{
-		if (Input::PushKey(DIK_W))
-		{
-			move += {0,0, 0.1f};
-		}
-		if (Input::PushKey(DIK_A))
-		{
-			move += {-0.1f, 0, 0};
-		}
-		if (Input::PushKey(DIK_S))
-		{
-			move += {0,0, -0.1f};
-		}
-		if (Input::PushKey(DIK_D))
-		{
-			move += {0.1f, 0, 0};
-		}
-		if (Input::PushKey(DIK_Z))
-		{
-			move += {0, -0.1f,0};
-		}
-		if (Input::PushKey(DIK_X))
-		{
-			move += {0,0.1f, 0};
-		}
-	}
 
 	obj->SetRot(rot);
 
@@ -155,7 +124,7 @@ void GameScene::Update()
 	light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
 	light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
 
-	for (uint32_t i=0;i<objects.size();i++)
+	/*for (uint32_t i=0;i<objects.size();i++)
 	{
 		Cube mapCube, objCube;
 		mapCube.Pos = objects[i]->GetPosition();
@@ -213,14 +182,10 @@ void GameScene::Update()
 		{
 			collision[i] = false;
 		}
-	}
-	pos += move;
+	}*/
 
-	obj->SetPosition(pos);
-
+	player_->Update();
 	light->Update();
-
-	obj->Update();
 
 	for (std::unique_ptr<Object3d>& obj : objects)
 	{
@@ -248,7 +213,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		}
 	}
 
-	obj->Draw();
+	player_->Draw();
 
 	Object3d::PostDraw();
 

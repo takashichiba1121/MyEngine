@@ -14,6 +14,7 @@
 #include"assimpModel.h"
 #include"assimpObject3d.h"
 #include"LightGroup.h"
+#include"Player.h"
 class GameScene
 {
 public: // メンバ関数
@@ -36,11 +37,6 @@ public: // メンバ関数
 /// 描画
 /// </summary>
 	void PostEffectDraw(DirectXCommon* dxCommon);
-
-/// <summary>
-/// jsonから読み取った地形データとプレイヤーの当たり判定
-/// </summary>
-	void MapCollision();
 private:
 
 	std::unique_ptr<Model> model;
@@ -70,5 +66,7 @@ private:
 	float lightPos[3] = { 0,0,0 };
 	float lightColor[3] = { 1,1,1 };
 	float lightAtten[3] = { 0.3f,0.1f,0.1f };
+
+	std::unique_ptr<Player> player_;
 };
 
