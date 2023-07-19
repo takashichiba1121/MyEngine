@@ -11,4 +11,6 @@ struct  Cube
 namespace Collider
 {
 	bool CubeAndCube(Cube A,Cube B);
+
+	bool QuadAndQuad(Cube A, Cube B);
 }

@@ -39,9 +39,9 @@ private:
 
 	float fallSpeed =0;
 
-	const float fallAcceleration = 0.01f;
+	const float fallAcceleration = 0.03f;
 
-	const float StartJumpSpeed = 5;
+	const float StartJumpSpeed = -0.5;
 
 	bool onGround;
 };

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include"input.h"
 #include"Collider.h"
+#include<imgui.h>
 
 void Player::Initialize(Model* model)
 {
@@ -10,20 +11,26 @@ void Player::Initialize(Model* model)
 
 	obj_->SetModel(model);
 
-	obj_->SetPosition({5,5,5});
+	obj_->SetPosition({ 5,5,5 });
 
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 }
 
 void Player::Update()
 {
-	move = {0,0,0};
+	move = { 0,0,0 };
 
 	Move();
 
 	Attack();
 
 	obj_->Update();
+
+	ImGui::Begin("Player");
+
+	ImGui::Text("%d", onGround);
+
+	ImGui::End();
 }
 
 void Player::Move()
@@ -55,9 +62,15 @@ void Player::Move()
 		{
 			move += {0.1f, 0, 0};
 		}
-		if (Input::PushKey(DIK_X))
+		if (Input::TriggerKey(DIK_SPACE) && onGround == false)
 		{
-			move += {0, 0.5f, 0};
+			fallSpeed = StartJumpSpeed;
+			onGround = true;
+		}
+		if (Input::TriggerKey(DIK_1))
+		{
+			obj_->SetPosition({ 5,5,5 });
+			fallSpeed = 0;
 		}
 	}
 
@@ -68,9 +81,9 @@ void Player::Move()
 	}
 
 
-	 Vector3 pos=MapCollision();
+	Vector3 pos = MapCollision();
 
-	 obj_->SetPosition(pos);
+	obj_->SetPosition(pos);
 }
 
 void Player::Attack()
@@ -86,14 +99,14 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 {
 	assert(objects);
 
-	objects_=objects;
+	objects_ = objects;
 }
 
 Vector3 Player::MapCollision()
 {
-
-Vector3 pos= obj_->GetPosition() + move;
-	for (const std::unique_ptr<Object3d>& MapObj:*objects_)
+	bool Ground = false;
+	Vector3 pos = obj_->GetPosition() + move;
+	for (const std::unique_ptr<Object3d>& MapObj : *objects_)
 	{
 
 		Cube mapCube, objCube;
@@ -104,7 +117,7 @@ Vector3 pos= obj_->GetPosition() + move;
 		objCube.scale = obj_->GetScale();
 		if (Collider::CubeAndCube(mapCube, objCube) == true)
 		{
-			if (mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y&&onGround)
+			if (mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround)
 			{
 				pos.y = mapCube.Pos.y - (mapCube.scale.y + objCube.scale.y);
 
@@ -112,17 +125,19 @@ Vector3 pos= obj_->GetPosition() + move;
 
 				fallSpeed = 0;
 			}
-			else if (mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y&& onGround)
+			else if (mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y && onGround)
 			{
 				pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
 
 				move.y = 0;
 
 				onGround = false;
+
+				Ground = true;
 			}
 			else
 			{
-				
+
 				if (mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x)
 				{
 
@@ -151,11 +166,41 @@ Vector3 pos= obj_->GetPosition() + move;
 				}
 			}
 		}
-		if (mapCube.Pos.y + mapCube.scale.y >= objCube.Pos.y - objCube.scale.y&&onGround==false)
-		{
-			onGround = true;
+	}
 
-			fallSpeed = 0;
+	if (Ground == false&&onGround==false)
+	{
+		for (const std::unique_ptr<Object3d>& MapObj : *objects_)
+		{
+
+			Cube mapCube, objCube;
+			mapCube.Pos = MapObj->GetPosition();
+			mapCube.scale = MapObj->GetScale();
+			objCube.Pos = obj_->GetPosition() + move;
+			objCube.oldPos = obj_->GetPosition();
+			objCube.scale = obj_->GetScale();
+
+			if (Collider::QuadAndQuad(mapCube, objCube))
+			{
+				if (mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - fallAcceleration)
+				{
+					onGround = true;
+
+					Ground = true;
+				}
+				else
+				{
+					onGround = false;
+
+					break;
+				}
+			}
+			else
+			{
+				onGround = true;
+
+				Ground = true;
+			}
 		}
 	}
 	return pos;
