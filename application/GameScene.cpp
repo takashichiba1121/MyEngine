@@ -124,66 +124,6 @@ void GameScene::Update()
 	light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
 	light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
 
-	/*for (uint32_t i=0;i<objects.size();i++)
-	{
-		Cube mapCube, objCube;
-		mapCube.Pos = objects[i]->GetPosition();
-		mapCube.scale = objects[i]->GetScale();
-		objCube.Pos = obj->GetPosition()+move;
-		objCube.oldPos = obj->GetPosition();
-		objCube.scale = obj->GetScale();
-		if (Collider::CubeAndCube(mapCube, objCube)==true)
-		{
-			collision[i] = true;
-			if (mapCube.Pos.y-mapCube.scale.y>=objCube.oldPos.y+objCube.scale.y)
-			{
-				pos.y = mapCube.Pos.y - (mapCube.scale.y + objCube.scale.y);
-
-				move.y = 0;
-			}
-			else if(mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y)
-			{
-				pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
-
-				move.y = 0;
-			}
-			else
-			{
-
-				if (mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x)
-				{
-
-					pos.x= mapCube.Pos.x+mapCube.scale.x+objCube.scale.x;
-
-					move.x = 0;
-				}
-				else if(mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x)
-				{
-					pos.x = mapCube.Pos.x-(mapCube.scale.x + objCube.scale.x);
-
-					move.x = 0;
-				}
-				if (mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z)
-				{
-
-					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z;
-
-					move.z = 0;
-				}
-				else if (mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z)
-				{
-					pos.z = mapCube.Pos.z - (mapCube.scale.z + objCube.scale.z);
-
-					move.z = 0;
-				}
-			}
-		}
-		else
-		{
-			collision[i] = false;
-		}
-	}*/
-
 	player_->Update();
 	light->Update();
 

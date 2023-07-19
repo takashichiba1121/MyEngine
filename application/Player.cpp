@@ -39,9 +39,15 @@ void Player::Move()
 	if (Input::IsLinkGamePad())
 	{
 
-		move += {Input::GetPadStick(PadStick::LX), 0, Input::GetPadStick(PadStick::LY)};
+		move += {Input::GetPadStick(PadStick::LX)/5, 0, Input::GetPadStick(PadStick::LY)/5};
 
-		rot += {Input::GetPadStick(PadStick::RY), Input::GetPadStick(PadStick::RX), 0};
+		rot += {Input::GetPadStick(PadStick::RY)/5, Input::GetPadStick(PadStick::RX)/5, 0};
+
+		if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+		{
+			fallSpeed = StartJumpSpeed;
+			onGround = true;
+		}
 
 	}
 	else
@@ -67,7 +73,7 @@ void Player::Move()
 			fallSpeed = StartJumpSpeed;
 			onGround = true;
 		}
-		if (Input::TriggerKey(DIK_1))
+		if (obj_->GetPosition().y<=-5)
 		{
 			obj_->SetPosition({ 5,5,5 });
 			fallSpeed = 0;

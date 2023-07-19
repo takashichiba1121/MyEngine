@@ -121,6 +121,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//“ü—Í‚ÌXV
 		Input::Update();
 
+		if (Input::TriggerKey(DIK_ESCAPE))
+		{
+			break;
+		}
+
 		imGui.Begin();
 		gameScene->Update();
 		imGui.End();
