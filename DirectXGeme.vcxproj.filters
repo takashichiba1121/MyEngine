@@ -137,9 +137,6 @@
     <ClCompile Include="engine\io\input.cpp">
       <Filter>engin\ソースファイル\io</Filter>
     </ClCompile>
-    <ClCompile Include="engine\3d\ParticleManager.cpp">
-      <Filter>engin\ソースファイル\3d</Filter>
-    </ClCompile>
     <ClCompile Include="engine\postEffect\PostEffectCommon.cpp">
       <Filter>engin\ソースファイル\posteffect</Filter>
     </ClCompile>
@@ -179,9 +176,6 @@
     <ClCompile Include="engine\3d\DirectionalLight.cpp">
       <Filter>engin\ソースファイル\3d\Light</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>application\ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="application\GameScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -190,6 +184,15 @@
     </ClCompile>
     <ClCompile Include="engine\Collider\Collider.cpp">
       <Filter>engin\ソースファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\3d\ParticleManager.cpp">
+      <Filter>engin\ソースファイル\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\main.cpp">
+      <Filter>application</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Math\Easing.cpp">
+      <Filter>engin\ソースファイル\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="engine\Collider\Collider.h">
       <Filter>engin\ヘッダーファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Math\Easing.h">
+      <Filter>engin\ヘッダーファイル\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

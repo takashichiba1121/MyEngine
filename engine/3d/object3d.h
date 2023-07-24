@@ -89,7 +89,17 @@ public: // 静的メンバ関数
 	/// <param name="position">座標</param>
 	static void SetTarget(const Vector3& target);
 
+	/// <summary>
+	/// ViewPro行列の取得
+	/// </summary>
+	/// <returns>ViewPro行列</returns>
 	static Matrix4 GetMatViewPro();
+
+	/// <summary>
+/// ViewPro行列の取得
+/// </summary>
+/// <returns>ViewPro行列</returns>
+	static Matrix4 GetMatBillboard() { return sMatBillboard; }
 
 	/// <summary>
 	/// カメラ初期化
@@ -127,6 +137,8 @@ private: // 静的メンバ変数
 	static Matrix4 sMatView;
 	// 射影行列
 	static Matrix4 sMatProjection;
+
+	static Matrix4 sMatBillboard;
 	// 視点座標
 	static Vector3 sEye;
 	// 注視点座標

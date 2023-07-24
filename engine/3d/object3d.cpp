@@ -29,6 +29,7 @@ ComPtr<ID3D12PipelineState> Object3d::sPipelinestate;
 //CD3DX12_GPU_DESCRIPTOR_HANDLE Object3d::gpuDescHandleSRV;
 Matrix4 Object3d::sMatView{};
 Matrix4 Object3d::sMatProjection{};
+Matrix4 Object3d::sMatBillboard{};
 Vector3 Object3d::sEye = { 0, 0, 0.0f };
 Vector3 Object3d::sTarget = { 0, 0, 0 };
 Vector3 Object3d::sUp = { 0, 1, 0 };
@@ -386,6 +387,46 @@ void Object3d::UpdateViewMatrix()
 		sEye,
 		sTarget,
 		sUp);
+
+	//視点座標
+	Vector3 eyePosition = sEye;
+	//注視点座標X
+	Vector3 targetPosition = sTarget;
+	//(仮の)上方向
+	Vector3 upVector = sUp;
+
+	//カメラZ軸(視点方向)
+	Vector3 cameraAxisZ = targetPosition - eyePosition;
+
+	//ベクトルを正規化
+	cameraAxisZ.normalize();
+
+	//カメラのX軸(右方向)
+	Vector3 cameraAxisX;
+	//X軸は上方向→Z軸の外積で求まる
+	cameraAxisX = upVector.cross(cameraAxisZ);
+	//ベクトルを正規化
+	cameraAxisX.normalize();
+
+	//カメラのY軸(上方向)
+	Vector3 cameraAxisY;
+	//Y軸は上方向→Z軸の外積で求まる
+	cameraAxisY = cameraAxisZ.cross(cameraAxisX);
+	//ベクトルを正規化
+	cameraAxisY.normalize();
+
+	sMatBillboard = Matrix4Math::identity();
+
+	//ビルボード行列
+	sMatBillboard.m[0][0] = cameraAxisX.x;
+	sMatBillboard.m[0][1] = cameraAxisX.y;
+	sMatBillboard.m[0][2] = cameraAxisX.z;
+	sMatBillboard.m[1][0] = cameraAxisY.x;
+	sMatBillboard.m[1][1] = cameraAxisY.y;
+	sMatBillboard.m[1][2] = cameraAxisY.z;
+	sMatBillboard.m[2][0] = cameraAxisZ.x;
+	sMatBillboard.m[2][1] = cameraAxisZ.y;
+	sMatBillboard.m[2][2] = cameraAxisZ.z;
 }
 
 void Object3d::Finalize()

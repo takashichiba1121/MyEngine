@@ -1,22 +1,18 @@
 #pragma once
 #include"object3d.h"
-#include"input.h"
-#include"WinApp.h"
-#include"DirectXCommon.h"
-#include"SpriteCommon.h"
 #include"Sprite.h"
-#include"Texture.h"
 #include"Audio.h"
-#include"imguiManager.h"
-#include<imgui.h>
 #include"ParticleManager.h"
-#include"assimpModel.h"
-#include"assimpModel.h"
-#include"assimpObject3d.h"
 #include"LightGroup.h"
 #include"Player.h"
 class GameScene
 {
+	enum class Scene {
+		Title,
+		Game,
+		Result
+	};
+
 public: // メンバ関数
 	GameScene();
 
@@ -41,21 +37,11 @@ private:
 
 	std::unique_ptr<Model> model;
 
-	std::unique_ptr<Object3d> obj;
-
-
-	std::unique_ptr<Model> skydome;
-
-	std::unique_ptr<Object3d> skydomeObj;
-
-	bool isSkydomeDraw=false;
-
 	std::unique_ptr<LightGroup> light;
 
 	uint32_t texHandle=0;
 
 	std::map<std::string, Model*> models;
-	std::vector<bool> collision;
 	std::vector<std::unique_ptr<Object3d>> objects;
 
 	std::unique_ptr<Sprite> sprite;
@@ -68,5 +54,28 @@ private:
 	float lightAtten[3] = { 0.3f,0.1f,0.1f };
 
 	std::unique_ptr<Player> player_;
+
+	std::unique_ptr<ParticleManager> paMan_;
+
+	#pragma region シーン遷移用変数群
+
+	Scene scene_ = Scene::Title;
+
+	bool EasingStart = false;
+
+	uint32_t frame=0;
+
+	const uint32_t endFrame=120;
+
+	//シーン遷移のスプライトの開始地点
+	const float startSpriteY = -720;
+
+	//シーン遷移のスプライトの終了地点
+	const uint32_t endSpriteY = 0;
+
+	//シーン遷移用のスプライト
+	std::unique_ptr<Sprite> sceneSprite;
+
+	#pragma endregion
 };
 

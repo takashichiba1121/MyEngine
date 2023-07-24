@@ -21,7 +21,6 @@
 #include"LightGroup.h"
 #include<dxgidebug.h>
 
-using namespace DirectX;
 using namespace std;
 
 struct D3DResouceLeakChecker

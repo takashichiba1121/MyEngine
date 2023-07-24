@@ -2,6 +2,11 @@
 #include"DirectXCommon.h"
 #include"levelLoad.h"
 #include"Collider.h"
+#include"Texture.h"
+#include<imgui.h>
+#include"input.h"
+#include<time.h>
+#include"Easing.h"
 
 GameScene::GameScene()
 {
@@ -16,14 +21,6 @@ void GameScene::Initialize()
 	texHandle = Texture::LoadTexture(L"Resources/RedTexture.png");
 
 	model.reset(Model::LoadFormOBJ("cube", true));
-
-	obj = std::make_unique<Object3d>();
-
-	obj->Initialize();
-
-	obj->SetModel(model.get());
-
-	obj->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 
 	models.insert(std::make_pair("cube", model.get()));
 
@@ -69,8 +66,6 @@ void GameScene::Initialize()
 		// ”z—ñ‚É“o˜^
 		objects.push_back(std::move(newObject));
 
-		collision.emplace_back();
-
 	}
 
 	light.reset(LightGroup::Create());
@@ -96,45 +91,135 @@ void GameScene::Initialize()
 	player_->SetMapData(&objects);
 
 	player_->Initialize(model.get());
+
+	paMan_ = std::make_unique<ParticleManager>();
+
+	paMan_->Initialize();
+
+	paMan_->SetTextureHandle(Texture::LoadTexture(L"Resources/effect4.png"));
+
+	sceneSprite = std::make_unique<Sprite>();
+
+	sceneSprite->Initialize(Texture::LoadTexture(L"Resources/scene.png"));
+
+	sceneSprite->SetAnchorPoint({0,0});
+
+	sceneSprite->SetScale({1280,720});
+
+	sceneSprite->SetPosition({0,float(startSpriteY)});
+
+	sceneSprite->Update();
 }
 
 void GameScene::Update()
 {
-	static Vector3 pos = { 5.0f,5.0f,0.0f };
-
-	static Vector3 rot = { 0.0f,0.0f,0.0f };
-
-	obj->SetRot(rot);
+	srand((unsigned int)time(NULL));
 
 	float shininess = 20;
 
-	ImGui::Begin("light");
-
-	ImGui::ColorEdit3("ambientColor", ambientColor, ImGuiColorEditFlags_Float);
-	ImGui::InputFloat3("lightPos", lightPos);
-	ImGui::ColorEdit3("lightColor", lightColor, ImGuiColorEditFlags_Float);
-	ImGui::InputFloat3("lightAtten", lightAtten);
-	ImGui::InputFloat("shininess", &shininess);
-
-	ImGui::End();
-
-	light->SetAmbientColor(Vector3({ ambientColor[0],ambientColor[1],ambientColor[2] }));
-
-	light->SetPointPos(0, Vector3({ lightPos[0],lightPos[1],lightPos[2] }));
-	light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
-	light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
-
-	player_->Update();
-	light->Update();
-
-	for (std::unique_ptr<Object3d>& obj : objects)
+	switch (scene_)
 	{
-		obj->SetShininess(shininess);
+	case GameScene::Scene::Title:
+		if (Input::TriggerKey(DIK_SPACE))
+		{
+			EasingStart = true;
+		}
+		if (EasingStart)
+		{
+			frame++;
 
-		obj->Update();
+			float f = Easing::easeOutBounce((float)frame/endFrame);
+
+			sceneSprite->SetPosition({0,((endSpriteY-startSpriteY)*f)+startSpriteY});
+
+			if (frame>=endFrame)
+			{
+				scene_ = Scene::Game;
+				//frame = 0;
+			}
+		}
+		sceneSprite->Update();
+
+		ImGui::Begin("Partcle");
+
+		ImGui::Text("%d", frame);
+
+		ImGui::Text("%f", sceneSprite->GetPosition().y);
+
+		ImGui::End();
+		break;
+	case GameScene::Scene::Game:
+		if (EasingStart)
+		{
+			frame--;
+			float f = (float)frame / endFrame;
+
+			sceneSprite->SetPosition({ 0,((endSpriteY- startSpriteY) * f) + startSpriteY });
+
+			if (frame <=0)
+			{
+				EasingStart = false;
+				frame = 0;
+			}
+			sceneSprite->Update();
+		}
+		else
+		{
+			ImGui::Begin("Partcle");
+
+			ImGui::Text("%d", paMan_->GetParticlesListSize());
+
+			ImGui::End();
+
+			light->SetAmbientColor(Vector3({ ambientColor[0],ambientColor[1],ambientColor[2] }));
+
+			light->SetPointPos(0, Vector3({ lightPos[0],lightPos[1],lightPos[2] }));
+			light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
+			light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
+
+			for (int i = 0; i < 1; i++)
+			{
+				//Á‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
+				const uint32_t rnd_life = 120;
+				//Å’áŒÀ‚Ìƒ‰ƒCƒt
+				const uint32_t constlife = 60;
+				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+
+				//XYZ‚ÌL‚ª‚é‹——£
+				const float rnd_pos = 0.3f;
+				//Y•ûŒü‚É‚ÍÅ’áŒÀ‚Ì”ò‚Ô‹——£
+				const float constPosY = 1;
+				Vector3 pos{};
+				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2) + constPosY;
+				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+				pos.normalize();
+
+				//’Ç‰Á
+				paMan_->Add(life, { 3,0,0 }, pos, { 0,0,0 }, 5.0f, 5.0f, { 1,1,1,1 }, { 1,1,1,1 });
+			}
+		}
+
+		sprite->Update();
+
+		paMan_->Update();
+
+		player_->Update();
+		light->Update();
+
+		for (std::unique_ptr<Object3d>& obj : objects)
+		{
+			obj->SetShininess(shininess);
+
+			obj->Update();
+		}
+		break;
+	case GameScene::Scene::Result:
+		break;
+	default:
+		break;
 	}
-
-	sprite->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -143,30 +228,20 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	for (uint32_t i = 0; i < objects.size(); i++)
 	{
-		if (collision[i])
-		{
-			objects[i]->Draw(texHandle);
-		}
-		else
-		{
-			objects[i]->Draw();
-		}
+		objects[i]->Draw();
 	}
 
 	player_->Draw();
 
 	Object3d::PostDraw();
 
-	assimpObject3d::PreDraw(dxCommon->GetCommandList());
-
-	assimpObject3d::PostDraw();
-
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
+	paMan_->Draw();
 	ParticleManager::PostDraw();
 
 	SpriteCommon::PreDraw();
 
-	//sprite->Draw();
+	sceneSprite->Draw();
 	SpriteCommon::PostDraw();
 }
 
@@ -174,10 +249,6 @@ void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
 {
 
 	Object3d::PreDraw(dxCommon->GetCommandList());
-
-	obj->Draw();
-
-	skydomeObj->Draw();
 
 	Object3d::PostDraw();
 

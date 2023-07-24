@@ -40,44 +40,14 @@ public: // サブクラス
 	};
 
 	//パーティクル一粒
-	struct InParticle
-	{
-		//座標
-		Vector3 position = {};
-
-		Vector3 startPosition;
-
-		Vector3 endPosition;
-		// 現在フレーム
-		uint32_t frame = 0;
-		//終了フレーム
-		uint32_t numFrame = 0;
-		
-		float scale = 1.0f;
-
-		float startScale = 1.0f;
-
-		float endScale = 0.0f;
-
-		Vector4 color = {};
-
-		Vector4 startColor = {};
-
-		Vector4 endColor = {};
-
-	};
-
-	//パーティクル一粒
 	struct OutParticle
 	{
 		//座標
 		Vector3 position = {};
-
-		Vector3 startPosition;
-
-		Vector3 controlPosition;
-
-		Vector3 endPosition;
+		//速度
+		Vector3 velocity = {};
+		//加速度
+		Vector3 accel = {};
 		// 現在フレーム
 		uint32_t frame = 0;
 		//終了フレーム
@@ -158,31 +128,22 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	size_t GetParticlesListSize() {return outParticles_.size() ; }
+	//テクスチャの指定
+	void SetTextureHandle(uint32_t textureHandle) {textureHandle_=textureHandle ; }
 
-	/// <summary>
-	/// イージングパーティクル（in）
-	/// </summary>
-	/// <param name="life">寿命(イージングなんでスピードにも関係する)</param>
-	/// <param name="startPosition">初期座標</param>
-	/// <param name="endPosition">最終座標</param>
-	/// <param name="startScale">初期サイズ</param>
-	/// <param name="endScale">最終サイズ</param>
-	/// <param name="startColor">初期色</param>
-	/// <param name="endColor">最終色</param>
-	void InAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition,float startScale,float endScale,const Vector4& startColor,const Vector4& endColor);
+	size_t GetParticlesListSize() {return Particles_.size() ; }
 
 	/// <summary>
 	/// イージングパーティクル（out)
 	/// </summary>
 	/// <param name="life">寿命(イージングなんでスピードにも関係する)</param>
 	/// <param name="startPosition">初期座標</param>
-	/// <param name="endPosition">最終座標</param>
+	/// <param name="velocity">速度</param>
 	/// <param name="startScale">初期サイズ</param>
 	/// <param name="endScale">最終サイズ</param>
 	/// <param name="startColor">初期色</param>
 	/// <param name="endColor">最終色</param>
-	void OutAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor);
+	void Add(uint32_t life,const Vector3& startPosition,const Vector3& velocity,const Vector3& accel, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor);
 
 private: // メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff; // 定数バッファ
@@ -197,12 +158,9 @@ private: // メンバ変数
 	// ローカルワールド変換行列
 	Matrix4 matWorld_;
 	//// 親オブジェクト
-	//ParticleManager* parent = nullptr;
-	//パーティクル配列
-	std::list<InParticle>inParticles_;
 
 	//パーティクル配列
-	std::list<OutParticle>outParticles_;
+	std::list<OutParticle>Particles_;
 
 	uint32_t textureHandle_ = 0;
 };

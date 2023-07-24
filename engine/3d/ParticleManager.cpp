@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include"object3d.h"
+#include"Texture.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -23,16 +24,6 @@ ComPtr<ID3D12PipelineState> ParticleManager::sPipelinestate;
 ComPtr<ID3D12Resource> ParticleManager::sVertBuff;
 //ComPtr<ID3D12Resource> Object3d::indexBuff;
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::sVbView{};
-
-float easeOutQuint(float x)
-{
-	float PI = 3.141592f;
-	return sin((x * PI) / 2);
-}
-float easeInQuint(float x)
-{
-	return x * x * x * x * x;
-}
 
 void ParticleManager::StaticInitialize(ID3D12Device* device)
 {
@@ -268,7 +259,7 @@ void ParticleManager::InitializeVerticeBuff()
 
 	HRESULT result;
 
-	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPos))*1024;
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPos)) * 1024;
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -283,7 +274,7 @@ void ParticleManager::InitializeVerticeBuff()
 
 	// 頂点バッファビューの作成
 	sVbView.BufferLocation = sVertBuff->GetGPUVirtualAddress();
-	sVbView.SizeInBytes =sizeVB;
+	sVbView.SizeInBytes = sizeVB;
 	sVbView.StrideInBytes = sizeof(VertexPos);
 }
 void ParticleManager::Initialize()
@@ -328,20 +319,23 @@ void ParticleManager::Update()
 	//	// 親オブジェクトのワールド行列を掛ける
 	//	matWorld *= parent->matWorld;
 	//}
-
 	//寿命が尽きたパーティクルを全削除
-	inParticles_.remove_if([](InParticle& x) {
+	Particles_.remove_if([](OutParticle& x) {
 		return x.frame >= x.numFrame;
 		});
 	//全パーティクル
-	for (std::list<InParticle>::iterator it = inParticles_.begin(); it != inParticles_.end(); it++)
+	for (std::list<OutParticle>::iterator it = Particles_.begin(); it != Particles_.end(); it++)
 	{
 		//経過フレーム数をカウント
 		it->frame++;
 
+		//移動
+		it->velocity += it->accel;
+		it->position += it->velocity;
+
+		//進行度を0～1の範囲に換算
 		float f = (float)it->frame / it->numFrame;
-		//速度による移動
-		it->position = easeInQuint(f) * (it->endPosition - it->startPosition)+it->startPosition;
+
 		//スケールの線形補間
 		it->scale = (it->endScale - it->startScale) * f;
 		it->scale += it->startScale;
@@ -355,40 +349,7 @@ void ParticleManager::Update()
 		//緑の線形補間
 		it->color.z = (it->endColor.z - it->startColor.z) * f;
 		it->color.z += it->startColor.z;
-		//緑の線形補間
-		it->color.w = (it->endColor.w - it->startColor.w) * f;
-		it->color.w += it->startColor.w;
-	}
-	//寿命が尽きたパーティクルを全削除
-	outParticles_.remove_if([](OutParticle& x) {
-		return x.frame >= x.numFrame;
-		});
-	//全パーティクル
-	for (std::list<OutParticle>::iterator it = outParticles_.begin(); it != outParticles_.end(); it++)
-	{
-		//経過フレーム数をカウント
-		it->frame++;
-
-		float f = easeOutQuint((float)it->frame / it->numFrame);
-		//速度による移動
-		Vector3 p1 = it->startPosition*(1.0f-f)+it->controlPosition*f;
-		Vector3 p2 =it->controlPosition * (1.0f - f) + it->endPosition * f;
-
-		it->position = p1 * (1.0f - f) + p2 * f;
-		//スケールの線形補間
-		it->scale = (it->endScale - it->startScale) * f;
-		it->scale += it->startScale;
-
-		//赤の線形補間
-		it->color.x = (it->endColor.x - it->startColor.x) * f;
-		it->color.x += it->startColor.x;
-		//青の線形補間
-		it->color.y = (it->endColor.y - it->startColor.y) * f;
-		it->color.y += it->startColor.y;
-		//緑の線形補間
-		it->color.z = (it->endColor.z - it->startColor.z) * f;
-		it->color.z += it->startColor.z;
-		//緑の線形補間
+		//透明度の線形補間
 		it->color.w = (it->endColor.w - it->startColor.w) * f;
 		it->color.w += it->startColor.w;
 	}
@@ -398,17 +359,7 @@ void ParticleManager::Update()
 	if (SUCCEEDED(result))
 	{
 		//パーティクルの情報を1つずつ反映
-		for (std::list<InParticle>::iterator it = inParticles_.begin(); it != inParticles_.end(); it++)
-		{
-			//座標
-			vertMap->pos = it->position;
-			vertMap->scale = it->scale;
-			vertMap->color = it->color;
-			//次の頂点へ
-			vertMap++;
-		}
-		//パーティクルの情報を1つずつ反映
-		for (std::list<OutParticle>::iterator it = outParticles_.begin(); it != outParticles_.end(); it++)
+		for (std::list<OutParticle>::iterator it = Particles_.begin(); it != Particles_.end(); it++)
 		{
 			//座標
 			vertMap->pos = it->position;
@@ -430,6 +381,7 @@ void ParticleManager::Draw()
 	//constMap->color = color;
 	//constMap->mat = matWorld * matView * matProjection;	// 行列の合成
 	constMap->mat = Object3d::GetMatViewPro();	// 行列の合成
+	constMap->matBillboard = Object3d::GetMatBillboard();
 	constBuff->Unmap(0, nullptr);
 
 	// nullptrチェック
@@ -444,37 +396,27 @@ void ParticleManager::Draw()
 	// 定数バッファビューをセット
 	sCmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
+	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
+	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureHandle_);
+	sCmdList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
 	// 描画コマンド
 	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-	sCmdList->DrawInstanced(static_cast<uint32_t>(inParticles_.size()+outParticles_.size()), 1, 0, 0);
+	sCmdList->DrawInstanced(static_cast<uint32_t>(std::distance(Particles_.begin(),Particles_.end())), 1, 0, 0);
 }
 
-void ParticleManager::InAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition,float startScale, float endScale,const Vector4& startColor,const Vector4& endColor)
+void ParticleManager::Add(uint32_t life, const Vector3& startPosition, const Vector3& velocity, const Vector3& accel, float startScale, float endScale, const Vector4& startColor, const Vector4& endColor)
 {
 	//リストに要素を追加
-	inParticles_.emplace_front();
+	Particles_.emplace_front();
 	//追加した要素の参照
-	InParticle& p = inParticles_.front();
+	OutParticle& p = Particles_.front();
 	//値のセット
-	p.startPosition = startPosition;
-	p.endPosition = endPosition;
-	p.numFrame = life;
-	p.startScale= startScale;
-	p.endScale= endScale;
-	p.startColor = startColor;
-	p.endColor = endColor;
-}
-
-void ParticleManager::OutAdd(uint32_t life,const Vector3& startPosition,const Vector3& endPosition, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor)
-{
-	//リストに要素を追加
-	outParticles_.emplace_front();
-	//追加した要素の参照
-	OutParticle& p = outParticles_.front();
-	//値のセット
-	p.startPosition = startPosition;
-	p.endPosition = endPosition;
-	p.controlPosition = {endPosition.x,startPosition.y,endPosition.z};
+	p.position = startPosition;
+	p.velocity = velocity;
+	p.accel = accel;
 	p.numFrame = life;
 	p.startScale = startScale;
 	p.endScale = endScale;

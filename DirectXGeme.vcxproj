@@ -121,6 +121,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\2d\imguiManager.cpp" />
     <ClCompile Include="engine\Collider\Collider.cpp" />
     <ClCompile Include="engine\io\input.cpp" />
+    <ClCompile Include="engine\main.cpp" />
+    <ClCompile Include="engine\Math\Easing.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectBlurH.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectBlurW.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectCommon.cpp" />
@@ -128,7 +130,6 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\postEffect\PostEffectMixed.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectMultiRenderTarget.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectTest.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\Math\Matrix4.cpp" />
     <ClCompile Include="engine\3d\Model.cpp" />
     <ClCompile Include="engine\3d\object3d.cpp" />
@@ -156,6 +157,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\2d\imguiManager.h" />
     <ClInclude Include="engine\Collider\Collider.h" />
     <ClInclude Include="engine\io\input.h" />
+    <ClInclude Include="engine\Math\Easing.h" />
     <ClInclude Include="engine\Math\Matrix4.h" />
     <ClInclude Include="engine\3d\Model.h" />
     <ClInclude Include="engine\3d\object3d.h" />
