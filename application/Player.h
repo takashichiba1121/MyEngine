@@ -1,5 +1,6 @@
 #pragma once
 #include"object3d.h"
+#include"ParticleManager.h"
 
 
 class Player
@@ -23,6 +24,11 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// パーティクルの描画
+	/// </summary>
+	void ParticleDraw();
+
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
 	/// <summary>
@@ -44,5 +50,7 @@ private:
 	const float StartJumpSpeed = -0.5;
 
 	bool onGround;
+
+	std::unique_ptr<ParticleManager> paMan_;
 };
 

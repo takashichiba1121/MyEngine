@@ -55,8 +55,6 @@ private:
 
 	std::unique_ptr<Player> player_;
 
-	std::unique_ptr<ParticleManager> paMan_;
-
 	#pragma region ƒV[ƒ“‘JˆÚ—p•Ï”ŒQ
 
 	Scene scene_ = Scene::Title;

@@ -2,6 +2,7 @@
 #include"input.h"
 #include"Collider.h"
 #include<imgui.h>
+#include"Texture.h"
 
 void Player::Initialize(Model* model)
 {
@@ -14,6 +15,12 @@ void Player::Initialize(Model* model)
 	obj_->SetPosition({ 5,5,5 });
 
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+
+	paMan_ = std::make_unique<ParticleManager>();
+
+	paMan_->Initialize();
+
+	paMan_->SetTextureHandle(Texture::LoadTexture(L"Resources/effect4.png"));
 }
 
 void Player::Update()
@@ -26,7 +33,11 @@ void Player::Update()
 
 	obj_->Update();
 
+	paMan_->Update();
+
 	ImGui::Begin("Player");
+
+	ImGui::Text("%d", paMan_->GetParticlesListSize());
 
 	ImGui::Text("%d", onGround);
 
@@ -72,6 +83,29 @@ void Player::Move()
 		{
 			fallSpeed = StartJumpSpeed;
 			onGround = true;
+
+			for (int i = 0; i < 10; i++)
+			{
+				//Á‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
+				const uint32_t rnd_life = 10;
+				//Å’áŒÀ‚Ìƒ‰ƒCƒt
+				const uint32_t constlife = 60;
+				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+
+				//XYZ‚ÌL‚ª‚é‹——£
+				const float rnd_pos = 0.1f;
+				//Y•ûŒü‚É‚ÍÅ’áŒÀ‚Ì”ò‚Ô‹——£
+				const float constPosY = 1;
+				Vector3 pos{};
+				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
+				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+				//pos.normalize();
+
+				//’Ç‰Á
+				paMan_->Add(life, obj_->GetPosition(), pos, {0,0,0}, 1.0f, 1.0f, {1,1,1,1}, {1,1,1,1});
+			}
 		}
 		if (obj_->GetPosition().y<=-5)
 		{
@@ -99,6 +133,11 @@ void Player::Attack()
 void Player::Draw()
 {
 	obj_->Draw();
+}
+
+void Player::ParticleDraw()
+{
+	paMan_->Draw();
 }
 
 void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)

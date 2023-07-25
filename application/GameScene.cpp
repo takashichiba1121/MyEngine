@@ -92,12 +92,6 @@ void GameScene::Initialize()
 
 	player_->Initialize(model.get());
 
-	paMan_ = std::make_unique<ParticleManager>();
-
-	paMan_->Initialize();
-
-	paMan_->SetTextureHandle(Texture::LoadTexture(L"Resources/effect4.png"));
-
 	sceneSprite = std::make_unique<Sprite>();
 
 	sceneSprite->Initialize(Texture::LoadTexture(L"Resources/scene.png"));
@@ -165,45 +159,14 @@ void GameScene::Update()
 		}
 		else
 		{
-			ImGui::Begin("Partcle");
-
-			ImGui::Text("%d", paMan_->GetParticlesListSize());
-
-			ImGui::End();
-
 			light->SetAmbientColor(Vector3({ ambientColor[0],ambientColor[1],ambientColor[2] }));
 
 			light->SetPointPos(0, Vector3({ lightPos[0],lightPos[1],lightPos[2] }));
 			light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
 			light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
-
-			for (int i = 0; i < 1; i++)
-			{
-				//Á‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
-				const uint32_t rnd_life = 120;
-				//Å’áŒÀ‚Ìƒ‰ƒCƒt
-				const uint32_t constlife = 60;
-				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
-
-				//XYZ‚ÌL‚ª‚é‹——£
-				const float rnd_pos = 0.3f;
-				//Y•ûŒü‚É‚ÍÅ’áŒÀ‚Ì”ò‚Ô‹——£
-				const float constPosY = 1;
-				Vector3 pos{};
-				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2) + constPosY;
-				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-
-				pos.normalize();
-
-				//’Ç‰Á
-				paMan_->Add(life, { 3,0,0 }, pos, { 0,0,0 }, 5.0f, 5.0f, { 1,1,1,1 }, { 1,1,1,1 });
-			}
 		}
 
 		sprite->Update();
-
-		paMan_->Update();
 
 		player_->Update();
 		light->Update();
@@ -236,7 +199,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	Object3d::PostDraw();
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
-	paMan_->Draw();
+	player_->ParticleDraw();
 	ParticleManager::PostDraw();
 
 	SpriteCommon::PreDraw();
