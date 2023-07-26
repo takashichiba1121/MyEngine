@@ -33,6 +33,11 @@ public: // メンバ関数
 /// 描画
 /// </summary>
 	void PostEffectDraw(DirectXCommon* dxCommon);
+
+	/// <summary>
+	/// マップデータのロード
+	/// </summary>
+	void MapLoad();
 private:
 
 	std::unique_ptr<Model> model;
@@ -44,7 +49,7 @@ private:
 	std::map<std::string, Model*> models;
 	std::vector<std::unique_ptr<Object3d>> objects;
 
-	std::unique_ptr<Sprite> sprite;
+	std::unique_ptr<Sprite> spaceSprite;
 
 	float ambientColor[3] = {1,1,1};
 

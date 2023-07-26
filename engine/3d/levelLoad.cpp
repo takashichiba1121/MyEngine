@@ -1,9 +1,8 @@
 #include "levelLoad.h"
 #include<fstream>
 
-LevelData* LevelLoad::Load()
+LevelData* LevelLoad::Load(const std::string fullpath)
 {
-	const std::string fullpath = "Resources/level.json";
 	//ファイルストリーム
 	std::ifstream file;
 	//ファイルを開く
@@ -57,35 +56,30 @@ LevelData* LevelLoad::Load()
 				nlohmann::json& collision = object["colider"];
 
 				//当たり判定のサイズ
-				objectData.size.m128_f32[0] = (float)collision["size"][1];
-				objectData.size.m128_f32[1] = (float)collision["size"][2];
-				objectData.size.m128_f32[2] = (float)collision["size"][0];
-				objectData.size.m128_f32[3] = 0.0f;
+				objectData.size.x = (float)collision["size"][1];
+				objectData.size.y = (float)collision["size"][2];
+				objectData.size.z = (float)collision["size"][0];
 				//当たり判定の中心
-				objectData.center.m128_f32[0] = (float)collision["center"][1];
-				objectData.center.m128_f32[1] = (float)collision["center"][2];
-				objectData.center.m128_f32[2] = (float)collision["center"][0];
-				objectData.center.m128_f32[3] = 0.0f;
+				objectData.center.x = (float)collision["center"][1];
+				objectData.center.y = (float)collision["center"][2];
+				objectData.center.z = (float)collision["center"][0];
 			}
 			//平行移動
-			objectData.trans.m128_f32[0] = (float)transform["translation"][1];
-			objectData.trans.m128_f32[1] = (float)transform["translation"][2];
-			objectData.trans.m128_f32[2] = -(float)transform["translation"][0];
-			objectData.trans.m128_f32[3] = 1.0f;
+			objectData.trans.x = (float)transform["translation"][1];
+			objectData.trans.y = (float)transform["translation"][2];
+			objectData.trans.z = -(float)transform["translation"][0];
 			//回転角
-			objectData.rot.m128_f32[0] = -(float)transform["rotation"][1];
-			objectData.rot.m128_f32[1] = -(float)transform["rotation"][2];
-			objectData.rot.m128_f32[2] = (float)transform["rotation"][0];
-			objectData.rot.m128_f32[3] = 0.0f;
+			objectData.rot.x = -(float)transform["rotation"][1];
+			objectData.rot.y = -(float)transform["rotation"][2];
+			objectData.rot.z = (float)transform["rotation"][0];
 			//スケール
-			objectData.scale.m128_f32[0] = (float)transform["scaling"][1];
-			objectData.scale.m128_f32[1] = (float)transform["scaling"][2];
-			objectData.scale.m128_f32[2] = (float)transform["scaling"][0];
-			objectData.scale.m128_f32[3] = 0.0f;
+			objectData.scale.x = (float)transform["scaling"][1];
+			objectData.scale.y = (float)transform["scaling"][2];
+			objectData.scale.z = (float)transform["scaling"][0];
 
-			objectData.center.m128_f32[0] += objectData.trans.m128_f32[0];
-			objectData.center.m128_f32[1] += objectData.trans.m128_f32[1];
-			objectData.center.m128_f32[2] += objectData.trans.m128_f32[2];
+			objectData.center.x += objectData.trans.x;
+			objectData.center.y += objectData.trans.y;
+			objectData.center.z += objectData.trans.z;
 		}
 	}	
 	return levelData;

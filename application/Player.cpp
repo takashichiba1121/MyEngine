@@ -21,6 +21,8 @@ void Player::Initialize(Model* model)
 	paMan_->Initialize();
 
 	paMan_->SetTextureHandle(Texture::LoadTexture(L"Resources/effect4.png"));
+
+	obj_->Update();
 }
 
 void Player::Update()
@@ -104,7 +106,7 @@ void Player::Move()
 				//pos.normalize();
 
 				//’Ç‰Á
-				paMan_->Add(life, obj_->GetPosition(), pos, {0,0,0}, 1.0f, 1.0f, {1,1,1,1}, {1,1,1,1});
+				paMan_->Add(life, obj_->GetPosition(), pos, {0,0,0}, 0.5f, 0.5f, {1,1,1,1}, {1,1,1,1});
 			}
 		}
 		if (obj_->GetPosition().y<=-5)

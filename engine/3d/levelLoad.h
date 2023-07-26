@@ -10,11 +10,11 @@ struct LevelData
 	struct ObjectData
 	{
 		std::string fileName;
-		DirectX::XMVECTOR trans;
-		DirectX::XMVECTOR scale;
-		DirectX::XMVECTOR rot;
-		DirectX::XMVECTOR center;
-		DirectX::XMVECTOR size;
+		Vector3 trans;
+		Vector3 scale;
+		Vector3 rot;
+		Vector3 center;
+		Vector3 size;
 	};
 
 	std::list<ObjectData> objects;
@@ -23,5 +23,5 @@ struct LevelData
 class LevelLoad
 {
 public:
-	static LevelData* Load();
+	static LevelData* Load(const std::string fullpath);
 };
