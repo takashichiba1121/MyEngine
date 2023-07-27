@@ -32,6 +32,8 @@ void GameScene::Initialize()
 
 	spaceSprite->SetAnchorPoint({ 0.5f,0.5f });
 
+	spaceSprite->Update();
+
 	MapLoad();
 
 	light.reset(LightGroup::Create());
@@ -69,6 +71,16 @@ void GameScene::Initialize()
 	sceneSprite->SetPosition({0,float(startSpriteY)});
 
 	sceneSprite->Update();
+
+	TitleSprite = std::make_unique<Sprite>();
+
+	TitleSprite->Initialize(Texture::LoadTexture(L"Resources/Title.png"));
+
+	TitleSprite->SetPosition({640,230 });
+
+	TitleSprite->SetAnchorPoint({ 0.5f,0.5f });
+
+	TitleSprite->Update();
 	light->Update();
 
 	for (std::unique_ptr<Object3d>& obj : objects)
@@ -105,8 +117,6 @@ void GameScene::Update()
 			}
 		}
 		sceneSprite->Update();
-
-		spaceSprite->Update();
 
 		ImGui::Begin("Partcle");
 
@@ -172,6 +182,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	case GameScene::Scene::Title:
 		SpriteCommon::PreDraw();
 		spaceSprite->Draw();
+		TitleSprite->Draw();
 		sceneSprite->Draw();
 		SpriteCommon::PostDraw();
 		break;

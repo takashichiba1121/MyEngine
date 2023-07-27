@@ -49,8 +49,6 @@ private:
 	std::map<std::string, Model*> models;
 	std::vector<std::unique_ptr<Object3d>> objects;
 
-	std::unique_ptr<Sprite> spaceSprite;
-
 	float ambientColor[3] = {1,1,1};
 
 	//光線方向初期化
@@ -78,6 +76,10 @@ private:
 
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite;
+	//シーン遷移用のスプライト
+	std::unique_ptr<Sprite> TitleSprite;
+
+	std::unique_ptr<Sprite> spaceSprite;
 
 	#pragma endregion
 };
