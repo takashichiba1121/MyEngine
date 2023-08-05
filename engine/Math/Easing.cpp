@@ -1,4 +1,5 @@
 #include "Easing.h"
+#include<math.h>
 
 float Easing::easeOutBounce(float x)
 {
@@ -17,4 +18,7 @@ float Easing::easeOutBounce(float x)
     else {
         return n1 * (x -= 2.625f / d1) * x + 0.984375f;
     }
+}
+float Easing::easeOutSine(float x){
+return static_cast<float>(sin((x * 3.141592f) / 2));
 }

@@ -10,7 +10,7 @@ class GameScene
 	enum class Scene {
 		Title,
 		Game,
-		Result
+		Result,
 	};
 
 public: // ƒƒ“ƒoŠÖ”
@@ -39,8 +39,9 @@ public: // ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void MapLoad();
 private:
-
-	std::unique_ptr<Model> model;
+	std::unique_ptr <Model> mapModel;
+	std::unique_ptr <Model> goalModel;
+	std::unique_ptr <Model> bulletModel;
 
 	std::unique_ptr<LightGroup> light;
 
@@ -48,6 +49,9 @@ private:
 
 	std::map<std::string, Model*> models;
 	std::vector<std::unique_ptr<Object3d>> objects;
+
+	std::unique_ptr<Object3d> goalObj_;
+	std::unique_ptr<Object3d> spawnObj_;
 
 	float ambientColor[3] = {1,1,1};
 

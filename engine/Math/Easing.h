@@ -3,4 +3,6 @@
 namespace Easing
 {
 	float easeOutBounce(float x);
+
+	float easeOutSine(float x);
 }

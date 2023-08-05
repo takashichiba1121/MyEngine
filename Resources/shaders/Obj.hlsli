@@ -4,6 +4,7 @@ cbuffer cbuff0 : register(b0) {
     matrix world;
     float3 cameraPos;
     float shininess;//Œõ‘ò“x
+    float alpha;
 };
 
 

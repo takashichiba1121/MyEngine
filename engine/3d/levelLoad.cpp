@@ -49,6 +49,10 @@ LevelData* LevelLoad::Load(const std::string fullpath)
 				//ファイル名
 				objectData.fileName = object["file_name"];
 			}
+			if (object.contains("Tag_name")) {
+				//ファイル名
+				objectData.tagName = object["Tag_name"];
+			}
 			nlohmann::json& transform = object["transform"];
 
 			if (object.contains("colider")) {

@@ -18,9 +18,17 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	model.reset(Model::LoadFormOBJ("cube", true));
+	bulletModel.reset(Model::LoadFormOBJ("playerBullet", true));
 
-	models.insert(std::make_pair("cube", model.get()));
+	mapModel.reset(Model::LoadFormOBJ("Map", true));
+
+	goalModel.reset(Model::LoadFormOBJ("Goal", true));
+
+	models.insert(std::make_pair("PlayerBullet",bulletModel.get()));
+
+	models.insert(std::make_pair("Map",mapModel.get()));
+
+	models.insert(std::make_pair("Goal", goalModel.get()));
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
@@ -34,7 +42,17 @@ void GameScene::Initialize()
 
 	spaceSprite->Update();
 
+	player_ = std::make_unique<Player>();
+
+	player_->Initialize(models["Map"], models["PlayerBullet"]);
+
+	goalObj_= std::make_unique<Object3d>();
+
+	goalObj_->Initialize();
+
 	MapLoad();
+
+	player_->SetMapData(&objects);
 
 	light.reset(LightGroup::Create());
 
@@ -53,12 +71,6 @@ void GameScene::Initialize()
 	//light->SetPointActive(0, true);
 
 	//light->SetPointPos(0,{0.5f,1.0f,0.0f});
-
-	player_ = std::make_unique<Player>();
-
-	player_->SetMapData(&objects);
-
-	player_->Initialize(model.get());
 
 	sceneSprite = std::make_unique<Sprite>();
 
@@ -95,7 +107,7 @@ void GameScene::Update()
 
 	float shininess = 20;
 
-	switch (scene_)
+ 	switch (scene_)
 	{
 	case GameScene::Scene::Title:
 		if (Input::TriggerKey(DIK_SPACE))
@@ -114,6 +126,11 @@ void GameScene::Update()
 			{
 				scene_ = Scene::Game;
 				//frame = 0;
+
+				MapLoad();
+
+				player_->SetMapData(&objects);
+				player_->Update();
 			}
 		}
 		sceneSprite->Update();
@@ -152,13 +169,6 @@ void GameScene::Update()
 			player_->Update();
 			light->Update();
 
-			for (std::unique_ptr<Object3d>& obj : objects)
-			{
-				obj->SetShininess(shininess);
-
-				obj->Update();
-			}
-
 			if (Input::TriggerKey(DIK_0)) 
 			{
 				objects.clear();
@@ -166,13 +176,32 @@ void GameScene::Update()
 
 				player_->SetMapData(&objects);
 			}
+
+			if (player_->GetClear())
+			{
+				scene_ = Scene::Result;
+			}
 		}
 		break;
 	case GameScene::Scene::Result:
+		if (Input::TriggerKey(DIK_SPACE))
+		{
+			scene_ = Scene::Title;
+		}
+
 		break;
 	default:
 		break;
 	}
+
+	for (std::unique_ptr<Object3d>& obj : objects)
+	{
+		obj->SetShininess(shininess);
+
+		obj->Update();
+	}
+
+	goalObj_->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -195,6 +224,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 		player_->Draw();
 
+		goalObj_->Draw();
+
 		Object3d::PostDraw();
 
 		ParticleManager::PreDraw(dxCommon->GetCommandList());
@@ -207,6 +238,9 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		SpriteCommon::PostDraw();
 		break;
 	case GameScene::Scene::Result:
+		SpriteCommon::PreDraw();
+		spaceSprite->Draw();
+		SpriteCommon::PostDraw();
 		break;
 	default:
 		break;
@@ -231,26 +265,54 @@ void GameScene::MapLoad()
 	levelData.reset(LevelLoad::Load("Resources/level.json"));
 	for (auto& objectData : levelData->objects)
 	{
-		//モデルを指定して3Dオブジェクトを生成
-		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
-		newObject->Initialize();
-		newObject->SetModel(models[objectData.fileName]);
+		if (objectData.tagName=="Map")
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+			newObject->Initialize();
+			newObject->SetModel(models[objectData.fileName]);
 
-		assert(newObject);
+			assert(newObject);
 
-		// 座標
-		newObject->SetPosition({ objectData.trans });
+			// 座標
+			newObject->SetPosition({ objectData.trans });
 
-		// 回転角
-		newObject->SetRot({ objectData.rot });
+			// 回転角
+			newObject->SetRot({ objectData.rot });
 
-		// 座標
-		newObject->SetScale({ objectData.scale });
+			// 座標
+			newObject->SetScale({ objectData.scale });
 
-		newObject->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+			newObject->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 
-		// 配列に登録
-		objects.push_back(std::move(newObject));
+			// 配列に登録
+			objects.push_back(std::move(newObject));
+		}
+		if (objectData.tagName == "Spawn")
+		{
+			player_->SetSpawn(objectData.trans);
+		}
+		if (objectData.tagName == "Goal")
+		{
+			player_->SetGoal(objectData.trans,objectData.scale);
 
+			//モデルを指定して3Dオブジェクトを生成
+			goalObj_->SetModel(models[objectData.fileName]);
+
+			// 座標
+			goalObj_->SetPosition({ objectData.trans });
+
+			// 回転角
+			goalObj_->SetRot({ objectData.rot });
+
+			// 座標
+			goalObj_->SetScale({ objectData.scale });
+
+			goalObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+
+			goalObj_->Setalpha(0.3f);
+
+			goalObj_->Update();
+		}
 	}
 }

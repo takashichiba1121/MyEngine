@@ -35,6 +35,7 @@ public: // サブクラス
 		Matrix4 world;
 		Vector3 cameraPos;
 		float shininess;//光沢度
+		float alpha; //透明度
 	};
 	// 定数バッファ用データ構造体
 	struct ConstBufferPolygonExplosion
@@ -208,7 +209,11 @@ public: // メンバ関数
 
 	void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { *ConstMapPolygon_ = polygonExplosion; }
 
+	Matrix4 GetMatWorld() { return matWorld_; }
+
 	void SetShininess(float shininess) {shininess_= shininess; }
+
+	void Setalpha(float alpha) { alpha_=alpha; }
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0_; // 定数バッファ
@@ -234,6 +239,8 @@ private: // メンバ変数
 
 	//光沢度
 	float shininess_=4;
+
+	float alpha_ = 1.0f;
 };
 
 float ToRadian(float angle);

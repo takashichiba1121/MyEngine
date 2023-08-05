@@ -15,6 +15,7 @@ struct LevelData
 		Vector3 rot;
 		Vector3 center;
 		Vector3 size;
+		std::string tagName;
 	};
 
 	std::list<ObjectData> objects;

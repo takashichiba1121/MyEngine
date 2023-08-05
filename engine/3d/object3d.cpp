@@ -219,7 +219,7 @@ void Object3d::InitializeGraphicsPipeline()
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	//gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
 	gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//ポリゴン内塗りつぶし
 	gpipeline.RasterizerState.DepthClipEnable = true;//深度グリッピングを有効に
 	// デプスステンシルステート
@@ -229,17 +229,16 @@ void Object3d::InitializeGraphicsPipeline()
 	D3D12_RENDER_TARGET_BLEND_DESC blenddesc{};
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
+	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+
 	// ブレンドステートの設定
 	gpipeline.BlendState.RenderTarget[0] = blenddesc;
-	gpipeline.BlendState.RenderTarget[1] = blenddesc;
 
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
@@ -256,8 +255,8 @@ void Object3d::InitializeGraphicsPipeline()
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV[1] = {};
-	descRangeSRV[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV = {};
+	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	// ルートパラメータ
 	/*CD3DX12_ROOT_PARAMETER rootparams[2];
@@ -269,7 +268,7 @@ void Object3d::InitializeGraphicsPipeline()
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[4].InitAsDescriptorTable(_countof(descRangeSRV), descRangeSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_PIXEL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -292,93 +291,6 @@ void Object3d::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 
 }
-
-//bool Object3d::LoadTexture(const std::string& directoryPath, const std::string& filename)
-//{
-//	HRESULT result = S_FALSE;
-//
-//	TexMetadata metadata{};
-//	ScratchImage scratchImg{};
-//
-//	//ファイルパスを結合
-//	string filepath = directoryPath + filename;
-//
-//	//ユニコード文字列に変換する
-//	wchar_t wfilepath[128];
-//	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
-//
-//
-//	//// WICテクスチャのロード
-//	//result = LoadFromWICFile(L"Resources/tex1.png", WIC_FLAGS_NONE, &metadata, scratchImg);
-//	//assert(SUCCEEDED(result));
-//	// WICテクスチャのロード
-//	result = LoadFromWICFile(wfilepath, WIC_FLAGS_NONE, &metadata, scratchImg);
-//	assert(SUCCEEDED(result));
-//
-//	ScratchImage mipChain{};
-//	// ミップマップ生成
-//	result = GenerateMipMaps(
-//		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-//		TEX_FILTER_DEFAULT, 0, mipChain);
-//	if (SUCCEEDED(result)) {
-//		scratchImg = std::move(mipChain);
-//		metadata = scratchImg.GetMetadata();
-//	}
-//
-//	// 読み込んだディフューズテクスチャをSRGBとして扱う
-//	metadata.format = MakeSRGB(metadata.format);
-//
-//	// リソース設定
-//	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-//		metadata.format, metadata.width, (UINT)metadata.height, (UINT16)metadata.arraySize,
-//		(UINT16)metadata.mipLevels);
-//
-//	// ヒーププロパティ
-//	CD3DX12_HEAP_PROPERTIES heapProps =
-//		CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
-//
-//	// テクスチャ用バッファの生成
-//	result = device->CreateCommittedResource(
-//		&heapProps, D3D12_HEAP_FLAG_NONE, &texresDesc,
-//		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-//		nullptr, IID_PPV_ARGS(&texbuff));
-//	assert(SUCCEEDED(result));
-//
-//	// テクスチャバッファにデータ転送
-//	for (size_t i = 0; i < metadata.mipLevels; i++) {
-//		const Image* img = scratchImg.GetImage(i, 0, 0); // 生データ抽出
-//		result = texbuff->WriteToSubresource(
-//			(UINT)i,
-//			nullptr,              // 全領域へコピー
-//			img->pixels,          // 元データアドレス
-//			(UINT)img->rowPitch,  // 1ラインサイズ
-//			(UINT)img->slicePitch // 1枚サイズ
-//		);
-//		assert(SUCCEEDED(result));
-//	}
-//
-//	// シェーダリソースビュー作成
-//	cpuDescHandleSRV = CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
-//	gpuDescHandleSRV = CD3DX12_GPU_DESCRIPTOR_HANDLE(descHeap->GetGPUDescriptorHandleForHeapStart(), 0, descriptorHandleIncrementSize);
-//
-//	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-//	D3D12_RESOURCE_DESC resDesc = texbuff->GetDesc();
-//
-//	srvDesc.Format = resDesc.Format;
-//	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-//	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-//	srvDesc.Texture2D.MipLevels = 1;
-//
-//	device->CreateShaderResourceView(texbuff.Get(), //ビューと関連付けるバッファ
-//		&srvDesc, //テクスチャ設定情報
-//		cpuDescHandleSRV
-//	);
-//	if (result == NULL) {
-//		return false;
-//	}
-//
-//	return true;
-//}
 
 void Object3d::UpdateViewMatrix()
 {
@@ -497,9 +409,9 @@ void Object3d::Update()
 	// スケール、回転、平行移動行列の計算
 	matScale = Matrix4Math::scale(scale_);
 	matRot = Matrix4Math::identity();
-	matRot = matRot * Matrix4Math::rotateZ(ToRadian(rotation_.z));
-	matRot = matRot * Matrix4Math::rotateX(ToRadian(rotation_.x));
-	matRot = matRot * Matrix4Math::rotateY(ToRadian(rotation_.y));
+	matRot = matRot * Matrix4Math::rotateZ((rotation_.z));
+	matRot = matRot * Matrix4Math::rotateX((rotation_.x));
+	matRot = matRot * Matrix4Math::rotateY((rotation_.y));
 	matTrans = Matrix4Math::translate(position_);
 
 	// ワールド行列の合成
@@ -522,6 +434,7 @@ void Object3d::Update()
 	constMap->world = matWorld_;
 	constMap->cameraPos = sEye;
 	constMap->shininess = shininess_;
+	constMap->alpha = alpha_;
 	constBuffB0_->Unmap(0, nullptr);
 
 }

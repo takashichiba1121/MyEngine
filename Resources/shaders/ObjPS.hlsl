@@ -15,7 +15,7 @@ float3 ambient = m_ambient;
 //‹“_À•W
 const float3 eye = float3(0, 0, -20);
 
-float4 shadecolor=float4(ambientColor*ambient,m_alpha);
+float4 shadecolor=float4(ambientColor*ambient,m_alpha*alpha);
 
 for (uint i=0;i< DIR_LIGHT_NUM;i++)
 {

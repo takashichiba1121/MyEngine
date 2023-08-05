@@ -8,7 +8,7 @@
                 "translation": [
                     0.0,
                     0.0,
-                    -10.0
+                    -1.0
                 ],
                 "rotation": [
                     0.0,
@@ -16,34 +16,22 @@
                     0.0
                 ],
                 "scaling": [
-                    10.0,
-                    10.0,
-                    10.0
+                    11.0,
+                    11.0,
+                    1.0
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体",
             "transform": {
                 "translation": [
-                    0.0,
-                    9.0,
-                    1.0
+                    2.0,
+                    2.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -53,32 +41,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.001",
             "transform": {
                 "translation": [
-                    0.0,
-                    -9.0,
-                    1.0
+                    6.0,
+                    6.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -88,32 +64,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.002",
             "transform": {
                 "translation": [
-                    9.0,
-                    0.0,
-                    1.0
+                    4.0,
+                    4.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -123,32 +87,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.003",
             "transform": {
                 "translation": [
-                    -9.0,
-                    0.0,
-                    1.0
+                    8.0,
+                    8.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -158,32 +110,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.004",
             "transform": {
                 "translation": [
-                    5.0,
-                    5.0,
-                    1.0
+                    -2.0,
+                    -2.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -193,32 +133,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.005",
             "transform": {
                 "translation": [
-                    -5.0,
-                    5.0,
-                    1.0
+                    -4.0,
+                    -4.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -228,32 +156,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.006",
             "transform": {
                 "translation": [
-                    -5.0,
-                    -5.0,
-                    1.0
+                    -6.0,
+                    -6.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -263,32 +179,20 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            }
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.007",
             "transform": {
                 "translation": [
-                    5.0,
-                    -5.0,
-                    1.0
+                    -8.0,
+                    -8.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -298,32 +202,43 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    1.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
+            "file_name": "Map",
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.008",
+            "transform": {
+                "translation": [
+                    10.0,
+                    10.0,
+                    1.5
+                ],
+                "rotation": [
                     0.0,
-                    0.0,
+                    -0.0,
                     0.0
                 ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.5
                 ]
-            }
+            },
+            "file_name": "Map",
+            "Tag_name": "Map"
         },
         {
             "type": "MESH",
             "name": "立方体.009",
             "transform": {
                 "translation": [
-                    0.0,
-                    0.0,
-                    3.0
+                    -10.0,
+                    -10.0,
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -333,23 +248,80 @@
                 "scaling": [
                     1.0,
                     1.0,
-                    3.0
+                    1.5
                 ]
             },
-            "file_name": "cube",
-            "colider": {
-                "type": "BOX",
-                "center": [
+            "file_name": "Map",
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.010",
+            "transform": {
+                "translation": [
+                    8.0,
+                    -8.0,
+                    1.0
+                ],
+                "rotation": [
                     0.0,
-                    0.0,
+                    -0.0,
                     0.0
                 ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
                 ]
-            }
+            },
+            "file_name": "start",
+            "Tag_name": "Spawn"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.011",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    1.5
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.5
+                ]
+            },
+            "file_name": "Map",
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.012",
+            "transform": {
+                "translation": [
+                    -8.0,
+                    8.0,
+                    1.5
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.5,
+                    1.5,
+                    1.5
+                ]
+            },
+            "file_name": "Goal",
+            "Tag_name": "Goal"
         }
     ]
 }

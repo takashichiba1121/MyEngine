@@ -133,6 +133,8 @@ public: // メンバ関数
 
 	size_t GetParticlesListSize() {return Particles_.size() ; }
 
+	void Clear() { Particles_.clear() ; }
+
 	/// <summary>
 	/// イージングパーティクル（out)
 	/// </summary>

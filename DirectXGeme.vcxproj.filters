@@ -179,9 +179,6 @@
     <ClCompile Include="application\GameScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="application\Player.cpp">
-      <Filter>application\ソース ファイル\player</Filter>
-    </ClCompile>
     <ClCompile Include="engine\Collider\Collider.cpp">
       <Filter>engin\ソースファイル\Collider</Filter>
     </ClCompile>
@@ -193,6 +190,12 @@
     </ClCompile>
     <ClCompile Include="engine\Math\Easing.cpp">
       <Filter>engin\ソースファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Player.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
+    </ClCompile>
+    <ClCompile Include="application\PlayerBullet.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -294,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="engine\Math\Easing.h">
       <Filter>engin\ヘッダーファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="application\PlayerBullet.h">
+      <Filter>application\ヘッダーファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
