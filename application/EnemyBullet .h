@@ -1,8 +1,7 @@
 #pragma once
 #include"object3d.h"
-#include"EnemyBullet .h"
 
-class PlayerBullet
+class EnemyBullet
 {
 public:
 	
@@ -49,6 +48,4 @@ private:
 	uint32_t deathTimer_ = kLifeTime;
 	//デスフラグ
 	bool isDead_ = false;
-
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 };

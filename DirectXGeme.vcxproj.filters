@@ -93,6 +93,12 @@
     <Filter Include="engin\ソースファイル\Collider">
       <UniqueIdentifier>{9451e2d3-0474-47db-83be-41c126431e5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="application\ヘッダーファイル\Enemy">
+      <UniqueIdentifier>{fbbd07d6-c206-4a3e-b179-739271b874e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application\ソース ファイル\Enemy">
+      <UniqueIdentifier>{e2361f19-de8c-4d49-a8df-07b730b76937}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\2d\Sprite.cpp">
@@ -197,6 +203,15 @@
     <ClCompile Include="application\PlayerBullet.cpp">
       <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
+    <ClCompile Include="application\Enemy.cpp">
+      <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="application\EnemyManager.cpp">
+      <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="application\EnemyBullet.cpp">
+      <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -300,6 +315,15 @@
     </ClInclude>
     <ClInclude Include="application\PlayerBullet.h">
       <Filter>application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Enemy.h">
+      <Filter>application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="application\EnemyManager.h">
+      <Filter>application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="application\EnemyBullet .h">
+      <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

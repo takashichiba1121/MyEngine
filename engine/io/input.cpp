@@ -163,3 +163,32 @@ float Input::GetPadStick(PadStick Stick)
 	}
 	return 0;
 }
+
+float Input::GetOldPadStick(PadStick Stick)
+{
+	switch (Stick)
+	{
+	case PadStick::LT:
+		return (float)sOldGamePad.Gamepad.bLeftTrigger / 255;
+		break;
+	case PadStick::RT:
+		return (float)sOldGamePad.Gamepad.bRightTrigger / 255;
+		break;
+	case PadStick::LX:
+		return (float)sOldGamePad.Gamepad.sThumbLX / SHRT_MAX;
+		break;
+	case PadStick::LY:
+		return (float)sOldGamePad.Gamepad.sThumbLY / SHRT_MAX;
+		break;
+	case PadStick::RX:
+		return (float)sOldGamePad.Gamepad.sThumbRX / SHRT_MAX;
+		break;
+	case PadStick::RY:
+		return (float)sOldGamePad.Gamepad.sThumbRY / SHRT_MAX;
+		break;
+	default:
+		return 0;
+		break;
+	}
+	return 0;
+}

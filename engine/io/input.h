@@ -84,7 +84,7 @@ public://メンバ関数(ゲームパッド)
 
 	static float GetPadStick(PadStick Stick);
 
-
+	static float GetOldPadStick(PadStick Stick);
 
 private://メンバ変数(ゲームパッド)
 

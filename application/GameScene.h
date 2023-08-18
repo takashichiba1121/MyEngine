@@ -5,6 +5,7 @@
 #include"ParticleManager.h"
 #include"LightGroup.h"
 #include"Player.h"
+#include"EnemyManager.h"
 class GameScene
 {
 	enum class Scene {
@@ -38,6 +39,8 @@ public: // メンバ関数
 	/// マップデータのロード
 	/// </summary>
 	void MapLoad();
+
+	void Collision();
 private:
 	std::unique_ptr <Model> mapModel;
 	std::unique_ptr <Model> goalModel;

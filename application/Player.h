@@ -7,7 +7,12 @@
 class Player
 {
 public:
-	void Initialize(Model* model,Model* bulletModel);
+	/// <summary>
+	/// 初期化全般
+	/// </summary>
+	/// <param name="model">モデル</param>
+	/// <param name="bulletModel">弾のモデル</param>
+	void Initialize(Model* model, Model* bulletModel);
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -18,6 +23,9 @@ public:
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// 攻撃全般
+	/// </summary>
 	void Attack();
 
 	/// <summary>
@@ -33,15 +41,17 @@ public:
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
 	/// <summary>
-/// jsonから読み取った地形データとプレイヤーの当たり判定
-/// </summary>
+	/// jsonから読み取った地形データとプレイヤーの当たり判定
+	/// </summary>
 	Vector3 MapCollision();
 
 	void SetGoal(Vector3 goalPosition, Vector3 goalScale);
 
 	void SetSpawn(Vector3 spawnPosition);
 
-	bool GetClear() {return isClear ; }
+	bool GetClear() { return isClear; }
+
+	Object3d* GetObj() { return obj_.get(); }
 private:
 
 	Model* bulletModel_;
@@ -52,7 +62,7 @@ private:
 
 	Vector3 move_;
 
-	float fallSpeed_ =0;
+	float fallSpeed_ = 0;
 
 	const float fallAcceleration_ = 0.03f;
 
@@ -71,13 +81,11 @@ private:
 	bool isClear = false;
 
 	//プレイヤーから見たカメラの位置
-	const Vector3 cameraPos = {0,20.0f,-10.0f};
+	const Vector3 cameraPos = { 0.0f,20.0f,-10.0f };
 
-	const float cameraSpeed=0.1f;
+	const float cameraSpeed = 0.1f;
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
-
-	double y;
 
 };
 

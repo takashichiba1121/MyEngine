@@ -107,6 +107,9 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="application\Enemy.cpp" />
+    <ClCompile Include="application\EnemyBullet.cpp" />
+    <ClCompile Include="application\EnemyManager.cpp" />
     <ClCompile Include="application\PlayerBullet.cpp" />
     <ClCompile Include="application\GameScene.cpp" />
     <ClCompile Include="application\Player.cpp" />
@@ -143,6 +146,9 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\base\WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="application\Enemy.h" />
+    <ClInclude Include="application\EnemyBullet .h" />
+    <ClInclude Include="application\EnemyManager.h" />
     <ClInclude Include="application\PlayerBullet.h" />
     <ClInclude Include="application\GameScene.h" />
     <ClInclude Include="application\Player.h" />

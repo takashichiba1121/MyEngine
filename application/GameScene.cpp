@@ -14,6 +14,7 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+	EnemyManager::Fin();
 }
 
 void GameScene::Initialize()
@@ -45,6 +46,16 @@ void GameScene::Initialize()
 	player_ = std::make_unique<Player>();
 
 	player_->Initialize(models["Map"], models["PlayerBullet"]);
+
+	std::unique_ptr<Enemy> enemy;
+
+	enemy = std::make_unique<Enemy>();
+
+	enemy->Initialize(models["Map"], models["PlayerBullet"], {-3,1,0},player_->GetObj());
+
+	enemy->Update();
+
+	EnemyManager::AddEnemy(std::move(enemy));
 
 	goalObj_= std::make_unique<Object3d>();
 
@@ -110,7 +121,14 @@ void GameScene::Update()
  	switch (scene_)
 	{
 	case GameScene::Scene::Title:
-		if (Input::TriggerKey(DIK_SPACE))
+		if (Input::IsLinkGamePad())
+		{
+			if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+			{
+				EasingStart = true;
+			}
+		}
+		else if (Input::TriggerKey(DIK_SPACE))
 		{
 			EasingStart = true;
 		}
@@ -168,6 +186,7 @@ void GameScene::Update()
 
 			player_->Update();
 			light->Update();
+			EnemyManager::Update();
 
 			if (Input::TriggerKey(DIK_0)) 
 			{
@@ -221,6 +240,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		{
 			objects[i]->Draw();
 		}
+
+		EnemyManager::Draw();
 
 		player_->Draw();
 
@@ -315,4 +336,9 @@ void GameScene::MapLoad()
 			goalObj_->Update();
 		}
 	}
+}
+
+void GameScene::Collision()
+{
+
 }

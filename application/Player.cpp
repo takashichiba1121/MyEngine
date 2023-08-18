@@ -82,18 +82,38 @@ void Player::Update()
 
 void Player::Move()
 {
-	Vector3 rot = obj_->GetRot();
 	if (Input::IsLinkGamePad())
 	{
 
-		move_ += {Input::GetPadStick(PadStick::LX) / 5, 0, Input::GetPadStick(PadStick::LY) / 5};
+		move_ += {Input::GetPadStick(PadStick::LX) / 10, 0, Input::GetPadStick(PadStick::LY) / 10};
 
-		rot += {Input::GetPadStick(PadStick::RY) / 5, Input::GetPadStick(PadStick::RX) / 5, 0};
-
-		if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+		if (Input::PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
 		{
 			fallSpeed_ = StartJumpSpeed_;
 			onGround_ = true;
+
+			for (int i = 0; i < 10; i++)
+			{
+				//è¡Ç¶ÇÈÇ‹Ç≈ÇÃéûä‘
+				const uint32_t rnd_life = 10;
+				//ç≈í·å¿ÇÃÉâÉCÉt
+				const uint32_t constlife = 60;
+				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+
+				//XYZÇÃçLÇ™ÇÈãóó£
+				const float rnd_pos = 0.1f;
+				//Yï˚å¸Ç…ÇÕç≈í·å¿ÇÃîÚÇ‘ãóó£
+				const float constPosY = 1;
+				Vector3 pos{};
+				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
+				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+				//pos.normalize();
+
+				//í«â¡
+				paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+			}
 		}
 
 	}
@@ -143,11 +163,11 @@ void Player::Move()
 				paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
 			}
 		}
-		if (obj_->GetPosition().y <= -5)
-		{
-			obj_->SetPosition(spawnPosition_);
-			fallSpeed_ = 0;
-		}
+	}
+	if (obj_->GetPosition().y <= -5)
+	{
+		obj_->SetPosition(spawnPosition_);
+		fallSpeed_ = 0;
 	}
 
 	if (onGround_)
@@ -179,7 +199,32 @@ void Player::Move()
 
 void Player::Attack()
 {
-	if (Input::TriggerKey(DIK_Z))
+	if (Input::IsLinkGamePad())
+	{
+
+		if (Input::GetPadStick(PadStick::RT)>=0.5&&Input::GetOldPadStick(PadStick::RT)<0.5)
+		{
+			//íeÇÃë¨ìx
+			const float kBulletSpeed = 0.5f;
+			Vector3 velocity(0, 0, kBulletSpeed);
+			velocity = Matrix4Math::transform(velocity, obj_->GetMatWorld());
+			float len = sqrt(velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z);
+			if (len != 0)
+			{
+				velocity /= len;
+			}
+			velocity *= kBulletSpeed;
+
+			//íeÇÃê∂ê¨ÇµÅAèâä˙âª
+			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
+
+			//íeÇÃìoò^Ç∑ÇÈ
+			bullets_.push_back(std::move(newBullet));
+		}
+
+	}
+	else if (Input::TriggerKey(DIK_Z))
 	{
 		//íeÇÃë¨ìx
 		const float kBulletSpeed = 0.5f;
@@ -287,6 +332,16 @@ Vector3 Player::MapCollision()
 
 					move_.z = 0;
 				}
+			}
+		}
+
+		for (std::unique_ptr<PlayerBullet>& bullet:bullets_)
+		{
+			objCube.Pos = bullet->GetPosition();
+			objCube.scale = bullet->GetScale();
+			if (Collider::CubeAndCube(mapCube, objCube) == true)
+			{
+				bullet->OnCollision();
 			}
 		}
 	}
