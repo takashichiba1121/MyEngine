@@ -29,7 +29,7 @@
             "name": "立方体",
             "transform": {
                 "translation": [
-                    2.0,
+                    0.0,
                     2.0,
                     1.5
                 ],
@@ -45,7 +45,7 @@
                 ]
             },
             "file_name": "Map",
-            "Tag_name": "Map"
+            "Tag_name": "Enemy"
         },
         {
             "type": "MESH",
@@ -121,7 +121,7 @@
             "name": "立方体.004",
             "transform": {
                 "translation": [
-                    -2.0,
+                    0.0,
                     -2.0,
                     1.5
                 ],
@@ -137,7 +137,7 @@
                 ]
             },
             "file_name": "Map",
-            "Tag_name": "Map"
+            "Tag_name": "Enemy"
         },
         {
             "type": "MESH",
@@ -298,7 +298,7 @@
                 ]
             },
             "file_name": "Map",
-            "Tag_name": "Map"
+            "Tag_name": "Enemy"
         },
         {
             "type": "MESH",

@@ -11,7 +11,7 @@ public:
 	///<param name="model">モデル</param>
 	///<param name="bulletModel">弾のモデル</param>
 	///<param name="position">位置</param>
-	void Initialize(Model* model, Model* bulletModel, Vector3 position,Object3d* playerObj);
+	void Initialize(Model* bulletModel, Vector3 position,Object3d* playerObj);
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -28,7 +28,13 @@ public:
 	void Draw();
 
 	bool IsDaed() { return isDaed_; }
+
+	Object3d* GetEnemyObj() { return obj_.get(); }
+
+	void OnCollision();
 private:
+	std::unique_ptr<Model> model;
+
 	Model* bulletModel_;
 
 	std::unique_ptr<Object3d> obj_;

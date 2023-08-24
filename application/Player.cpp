@@ -5,14 +5,18 @@
 #include"Texture.h"
 #include"Easing.h"
 #include<math.h>
+#include"EnemyManager.h"
 
-void Player::Initialize(Model* model,Model* bulletModel)
+
+void Player::Initialize(Model* bulletModel)
 {
+	model.reset(Model::LoadFormOBJ("player",true));
+
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
-	obj_->SetModel(model);
+	obj_->SetModel(model.get());
 
 	obj_->SetPosition({ 5,5,5 });
 
@@ -77,6 +81,8 @@ void Player::Update()
 
 	ImGui::Text("Goal:%d", isClear);
 
+	ImGui::Text("KnockBack:%d", isKnockBack);
+
 	ImGui::End();
 }
 
@@ -85,7 +91,7 @@ void Player::Move()
 	if (Input::IsLinkGamePad())
 	{
 
-		move_ += {Input::GetPadStick(PadStick::LX) / 10, 0, Input::GetPadStick(PadStick::LY) / 10};
+		move_ += {Input::GetPadStick(PadStick::LX) / 5, 0, Input::GetPadStick(PadStick::LY) / 5};
 
 		if (Input::PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
 		{
@@ -176,8 +182,6 @@ void Player::Move()
 		move_.y -= fallSpeed_;
 	}
 
-	Vector3 pos = MapCollision();
-
 	Vector3 cameForward = { 0,0,-1 };
 
 	Vector3  cameRight = {1,0,0};
@@ -194,7 +198,11 @@ void Player::Move()
 		obj_->SetRot({0, atan2f(frontVec.x, -frontVec.z),0 });
 	}
 
-	obj_->SetPosition(pos);
+	EnemyCollision();
+
+	move_ = MapCollision();
+
+	obj_->SetPosition(move_);
 }
 
 void Player::Attack()
@@ -382,6 +390,53 @@ Vector3 Player::MapCollision()
 		}
 	}
 	return pos;
+}
+
+void Player::EnemyCollision()
+{
+	for (std::unique_ptr<Enemy>& enemy:EnemyManager::GetEnemys())
+	{
+
+		Cube enemyCube, playerCube;
+		enemyCube.Pos=enemy->GetEnemyObj()->GetPosition();
+		enemyCube.scale = enemy->GetEnemyObj()->GetScale();
+		playerCube.Pos = obj_->GetPosition() + move_;
+		playerCube.scale = obj_->GetScale();
+		for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
+		{
+			Cube bulletCube;
+
+			bulletCube.Pos = bullet->GetPosition();
+			bulletCube.scale = bullet->GetScale();
+			if (Collider::CubeAndCube(enemyCube, bulletCube) == true)
+			{
+				bullet->OnCollision();
+
+				enemy->OnCollision();
+			}
+		}
+
+		if (Collider::CubeAndCube(enemyCube, playerCube) == true)
+		{
+			isKnockBack = true;
+		}
+	}
+
+	for (std::unique_ptr<EnemyBullet>& bullet : EnemyManager::GetBullets())
+	{
+		Cube bulletCube, playerCube;
+		bulletCube.Pos =bullet->GetPosition();
+		bulletCube.scale = bullet->GetScale();
+		playerCube.Pos = obj_->GetPosition() + move_;
+		playerCube.scale = obj_->GetScale();
+
+		if (Collider::CubeAndCube(bulletCube, playerCube) == true)
+		{
+			isKnockBack = true;
+
+			bullet->OnCollision();
+		}
+	}
 }
 
 void Player::SetGoal(Vector3 goalPosition, Vector3 goalScale)

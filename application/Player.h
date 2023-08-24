@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="bulletModel">弾のモデル</param>
-	void Initialize(Model* model, Model* bulletModel);
+	void Initialize(Model* bulletModel);
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -45,6 +45,8 @@ public:
 	/// </summary>
 	Vector3 MapCollision();
 
+	void EnemyCollision();
+
 	void SetGoal(Vector3 goalPosition, Vector3 goalScale);
 
 	void SetSpawn(Vector3 spawnPosition);
@@ -53,6 +55,7 @@ public:
 
 	Object3d* GetObj() { return obj_.get(); }
 private:
+	std::unique_ptr<Model> model;
 
 	Model* bulletModel_;
 
@@ -87,5 +90,6 @@ private:
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
+	bool isKnockBack = false;
 };
 

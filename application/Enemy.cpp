@@ -1,13 +1,15 @@
 #include"Enemy.h"
 #include"EnemyManager.h"
 
-void Enemy::Initialize(Model* model, Model* bulletModel,Vector3 position, Object3d* playerObj)
+void Enemy::Initialize(Model* bulletModel,Vector3 position, Object3d* playerObj)
 {
+	model.reset(Model::LoadFormOBJ("enemy", true));
+
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
-	obj_->SetModel(model);
+	obj_->SetModel(model.get());
 
 	obj_->SetPosition(position);
 
@@ -60,4 +62,9 @@ void Enemy::Attack()
 void Enemy::Draw()
 {
 	obj_->Draw();
+}
+
+void Enemy::OnCollision()
+{
+	isDaed_ = true;
 }

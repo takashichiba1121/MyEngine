@@ -1,8 +1,11 @@
 #include"EnemyManager.h"
+#include"Collider.h"
 
- std::list<std::unique_ptr<Enemy>> EnemyManager::Enemys_;
+std::list<std::unique_ptr<Enemy>> EnemyManager::Enemys_;
 
 std::list<std::unique_ptr<EnemyBullet>> EnemyManager::bullets_;
+
+std::vector<std::unique_ptr<Object3d>>* EnemyManager::objects_;
 
 void EnemyManager::Update()
 {
@@ -13,6 +16,8 @@ void EnemyManager::Update()
 	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
 		return bullet->IsDead();
 		});
+
+	Collision();
 
 	for (std::unique_ptr<Enemy>& enemy : Enemys_)
 	{
@@ -53,4 +58,30 @@ void EnemyManager::Fin()
 	bullets_.clear();
 
 	Enemys_.clear();
+}
+
+void EnemyManager::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
+{
+	assert(objects);
+
+	objects_ = objects;
+}
+
+void EnemyManager::Collision()
+{
+	for (const std::unique_ptr<Object3d>& MapObj : *objects_)
+	{
+		Cube mapCube, objCube;
+		mapCube.Pos = MapObj->GetPosition();
+		mapCube.scale = MapObj->GetScale();
+		for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
+		{
+			objCube.Pos = bullet->GetPosition();
+			objCube.scale = bullet->GetScale();
+			if (Collider::CubeAndCube(mapCube, objCube) == true)
+			{
+				bullet->OnCollision();
+			}
+		}
+	}
 }

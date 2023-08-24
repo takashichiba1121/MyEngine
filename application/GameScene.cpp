@@ -45,17 +45,7 @@ void GameScene::Initialize()
 
 	player_ = std::make_unique<Player>();
 
-	player_->Initialize(models["Map"], models["PlayerBullet"]);
-
-	std::unique_ptr<Enemy> enemy;
-
-	enemy = std::make_unique<Enemy>();
-
-	enemy->Initialize(models["Map"], models["PlayerBullet"], {-3,1,0},player_->GetObj());
-
-	enemy->Update();
-
-	EnemyManager::AddEnemy(std::move(enemy));
+	player_->Initialize(models["PlayerBullet"]);
 
 	goalObj_= std::make_unique<Object3d>();
 
@@ -64,6 +54,8 @@ void GameScene::Initialize()
 	MapLoad();
 
 	player_->SetMapData(&objects);
+
+	EnemyManager::SetMapData(&objects);
 
 	light.reset(LightGroup::Create());
 
@@ -116,7 +108,7 @@ void GameScene::Update()
 {
 	srand((unsigned int)time(NULL));
 
-	float shininess = 20;
+ 	float shininess = 20;
 
  	switch (scene_)
 	{
@@ -136,6 +128,11 @@ void GameScene::Update()
 		{
 			frame++;
 
+			if(frame==119)
+			{
+				frame = 119;
+			}
+
 			float f = Easing::easeOutBounce((float)frame/endFrame);
 
 			sceneSprite->SetPosition({0,((endSpriteY-startSpriteY)*f)+startSpriteY});
@@ -148,7 +145,9 @@ void GameScene::Update()
 				MapLoad();
 
 				player_->SetMapData(&objects);
+				EnemyManager::SetMapData(&objects);
 				player_->Update();
+				EnemyManager::Update();
 			}
 		}
 		sceneSprite->Update();
@@ -192,6 +191,8 @@ void GameScene::Update()
 			{
 				objects.clear();
 				MapLoad();
+
+				EnemyManager::SetMapData(&objects);
 
 				player_->SetMapData(&objects);
 			}
@@ -335,10 +336,17 @@ void GameScene::MapLoad()
 
 			goalObj_->Update();
 		}
+		if (objectData.tagName=="Enemy")
+		{
+			std::unique_ptr<Enemy> enemy;
+
+			enemy = std::make_unique<Enemy>();
+
+			enemy->Initialize(models["PlayerBullet"], { objectData.trans }, player_->GetObj());
+
+			enemy->Update();
+
+			EnemyManager::AddEnemy(std::move(enemy));
+		}
 	}
-}
-
-void GameScene::Collision()
-{
-
 }
