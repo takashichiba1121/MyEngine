@@ -1,13 +1,19 @@
 #pragma once
 #include"Enemy.h"
 #include"EnemyBullet .h"
+#include"ParticleManager.h"
+#include"Player.h"
 class EnemyManager
 {
 public:
 
+	static void Initialize();
+
 	static void Update();
 
 	static void Draw();
+
+	static void ParticleDraw();
 
 	static void AddBullet(std::unique_ptr<EnemyBullet> newBullet);
 
@@ -22,10 +28,18 @@ public:
 	static void Fin();
 
 	static void Collision();
+
+	static void Clear();
+
+	static void SetPlayer(Player* player) {player_=player ; }
 private:
 	static std::list<std::unique_ptr<Enemy>> Enemys_;
 
 	static std::list<std::unique_ptr<EnemyBullet>> bullets_;
 
 	static std::vector<std::unique_ptr<Object3d>>* objects_;
+
+	static std::unique_ptr<ParticleManager> particle_;
+
+	static Player* player_;
 };

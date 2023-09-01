@@ -12,6 +12,7 @@ class GameScene
 		Title,
 		Game,
 		Result,
+		GameOver,
 	};
 
 public: // メンバ関数
@@ -69,11 +70,13 @@ private:
 
 	Scene scene_ = Scene::Title;
 
-	bool EasingStart = false;
+	bool sceneStart = true;
 
-	uint32_t frame=0;
+	bool sceneChange = false;
 
 	const uint32_t endFrame=120;
+
+	uint32_t frame =endFrame ;
 
 	//シーン遷移のスプライトの開始地点
 	const float startSpriteY = -720;
@@ -87,6 +90,10 @@ private:
 	std::unique_ptr<Sprite> TitleSprite;
 
 	std::unique_ptr<Sprite> spaceSprite;
+
+	std::unique_ptr<Sprite> overSprite;
+
+	std::unique_ptr<Sprite> clearSprite;
 
 	#pragma endregion
 };

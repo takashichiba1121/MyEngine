@@ -38,6 +38,8 @@ public:
 	/// </summary>
 	void ParticleDraw();
 
+	void Reset();
+
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
 	/// <summary>
@@ -51,9 +53,11 @@ public:
 
 	void SetSpawn(Vector3 spawnPosition);
 
-	bool GetClear() { return isClear; }
+	bool IsClear() { return isClear; }
 
 	Object3d* GetObj() { return obj_.get(); }
+
+	bool IsDaed() { return isDaed_; }
 private:
 	std::unique_ptr<Model> model;
 
@@ -84,12 +88,18 @@ private:
 	bool isClear = false;
 
 	//プレイヤーから見たカメラの位置
-	const Vector3 cameraPos = { 0.0f,20.0f,-10.0f };
+	const Vector3 cameraPos = { 0.0f,40.0f,-20.0f };
 
 	const float cameraSpeed = 0.1f;
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
 	bool isKnockBack = false;
+
+	bool isDaed_ = false;
+
+    const uint32_t maxHp = 1;
+
+	uint32_t hp = maxHp;
 };
 

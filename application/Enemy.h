@@ -29,9 +29,11 @@ public:
 
 	bool IsDaed() { return isDaed_; }
 
-	Object3d* GetEnemyObj() { return obj_.get(); }
+	Object3d* GetObj() { return obj_.get(); }
 
 	void OnCollision();
+
+	void SetIsAttack(bool isAttack) { isAttack_ = isAttack; }
 private:
 	std::unique_ptr<Model> model;
 
@@ -47,4 +49,6 @@ private:
 	uint32_t attackTimer_ = kAttackTime;
 
 	Object3d* playerObj_;
+
+	bool isAttack_=false;
 };

@@ -1,5 +1,6 @@
 #include"Enemy.h"
 #include"EnemyManager.h"
+#include<imgui.h>
 
 void Enemy::Initialize(Model* bulletModel,Vector3 position, Object3d* playerObj)
 {
@@ -33,9 +34,12 @@ void Enemy::Update()
 
 void Enemy::Attack()
 {
-	attackTimer_--;
+	if (attackTimer_ > 0)
+	{
+		attackTimer_--;
+	}
 
-	if (attackTimer_<=0)
+	if (attackTimer_<=0&&isAttack_==true)
 	{
 		attackTimer_ = kAttackTime;
 
@@ -57,6 +61,8 @@ void Enemy::Attack()
 		//’e‚Ì“o˜^‚·‚é
 		EnemyManager::AddBullet(std::move(newBullet));
 	}
+
+	ImGui::Text("%d",attackTimer_);
 }
 
 void Enemy::Draw()

@@ -41,12 +41,21 @@ void Player::Update()
 		});
 
 	move_ = { 0,0,0 };
+	if (hp > 0)
+	{
+		Move();
 
-	Move();
+		obj_->Update();
 
-	obj_->Update();
-
-	Attack();
+		Attack();
+	}
+	else
+	{
+		if (paMan_->GetParticlesListSize()==0)
+		{
+			isDaed_ = true;
+		}
+	}
 
 	for (std::unique_ptr<PlayerBullet>& bullet:bullets_)
 	{
@@ -77,9 +86,7 @@ void Player::Update()
 
 	ImGui::Begin("Player");
 
-	ImGui::Text("bullet:%d", bullets_.size());
-
-	ImGui::Text("Goal:%d", isClear);
+	ImGui::Text("HP:%d", hp);
 
 	ImGui::Text("KnockBack:%d", isKnockBack);
 
@@ -127,19 +134,19 @@ void Player::Move()
 	{
 		if (Input::PushKey(DIK_W))
 		{
-			move_ += {0, 0, 0.1f};
+			move_ += {0, 0, 0.2f};
 		}
 		if (Input::PushKey(DIK_A))
 		{
-			move_ += {-0.1f, 0, 0};
+			move_ += {-0.2f, 0, 0};
 		}
 		if (Input::PushKey(DIK_S))
 		{
-			move_ += {0, 0, -0.1f};
+			move_ += {0, 0, -0.2f};
 		}
 		if (Input::PushKey(DIK_D))
 		{
-			move_ += {0.1f, 0, 0};
+			move_ += {0.2f, 0, 0};
 		}
 		if (Input::TriggerKey(DIK_SPACE) && onGround_ == false)
 		{
@@ -256,7 +263,10 @@ void Player::Attack()
 
 void Player::Draw()
 {
-	obj_->Draw();
+	if (hp>0)
+	{
+		obj_->Draw();
+	}
 
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
 	{
@@ -267,6 +277,17 @@ void Player::Draw()
 void Player::ParticleDraw()
 {
 	paMan_->Draw();
+}
+
+void Player::Reset()
+{
+	isDaed_ = false;
+
+	hp = maxHp;
+
+	bullets_.clear();
+
+	isKnockBack = false;
 }
 
 void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
@@ -398,8 +419,8 @@ void Player::EnemyCollision()
 	{
 
 		Cube enemyCube, playerCube;
-		enemyCube.Pos=enemy->GetEnemyObj()->GetPosition();
-		enemyCube.scale = enemy->GetEnemyObj()->GetScale();
+		enemyCube.Pos=enemy->GetObj()->GetPosition();
+		enemyCube.scale = enemy->GetObj()->GetScale();
 		playerCube.Pos = obj_->GetPosition() + move_;
 		playerCube.scale = obj_->GetScale();
 		for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
@@ -418,7 +439,35 @@ void Player::EnemyCollision()
 
 		if (Collider::CubeAndCube(enemyCube, playerCube) == true)
 		{
-			isKnockBack = true;
+			if (isKnockBack == false)
+			{
+				hp--;
+
+				isKnockBack = true;
+
+				for (int i = 0; i < 10; i++)
+				{
+					//Á‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
+					const uint32_t rnd_life = 10;
+					//Å’áŒÀ‚Ìƒ‰ƒCƒt
+					const uint32_t constlife = 60;
+					uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+
+					//XYZ‚ÌL‚ª‚é‹——£
+					const float rnd_pos = 0.1f;
+					//Y•ûŒü‚É‚ÍÅ’áŒÀ‚Ì”ò‚Ô‹——£
+					const float constPosY = 1;
+					Vector3 pos{};
+					pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+					pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
+					pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+					//pos.normalize();
+
+					//’Ç‰Á
+					paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+				}
+			}
 		}
 	}
 
@@ -432,7 +481,35 @@ void Player::EnemyCollision()
 
 		if (Collider::CubeAndCube(bulletCube, playerCube) == true)
 		{
-			isKnockBack = true;
+			if (isKnockBack == false)
+			{
+				hp--;
+
+				isKnockBack = true;
+
+				for (int i = 0; i < 10; i++)
+				{
+					//Á‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
+					const uint32_t rnd_life = 10;
+					//Å’áŒÀ‚Ìƒ‰ƒCƒt
+					const uint32_t constlife = 60;
+					uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+
+					//XYZ‚ÌL‚ª‚é‹——£
+					const float rnd_pos = 0.1f;
+					//Y•ûŒü‚É‚ÍÅ’áŒÀ‚Ì”ò‚Ô‹——£
+					const float constPosY = 1;
+					Vector3 pos{};
+					pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+					pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
+					pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+					//pos.normalize();
+
+					//’Ç‰Á
+					paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+				}
+			}
 
 			bullet->OnCollision();
 		}

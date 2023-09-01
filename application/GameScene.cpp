@@ -51,12 +51,6 @@ void GameScene::Initialize()
 
 	goalObj_->Initialize();
 
-	MapLoad();
-
-	player_->SetMapData(&objects);
-
-	EnemyManager::SetMapData(&objects);
-
 	light.reset(LightGroup::Create());
 
 	Object3d::SetLight(light.get());
@@ -87,6 +81,26 @@ void GameScene::Initialize()
 
 	sceneSprite->Update();
 
+	overSprite = std::make_unique<Sprite>();
+
+	overSprite->Initialize(Texture::LoadTexture(L"Resources/GameOver.png"));
+
+	overSprite->SetPosition({ 640,230 });
+
+	overSprite->SetAnchorPoint({ 0.5f,0.5f });
+
+	overSprite->Update();
+
+	clearSprite = std::make_unique<Sprite>();
+
+	clearSprite->Initialize(Texture::LoadTexture(L"Resources/Clear.png"));
+
+	clearSprite->SetPosition({ 640,230 });
+
+	clearSprite->SetAnchorPoint({ 0.5f,0.5f });
+
+	clearSprite->Update();
+
 	TitleSprite = std::make_unique<Sprite>();
 
 	TitleSprite->Initialize(Texture::LoadTexture(L"Resources/Title.png"));
@@ -98,49 +112,67 @@ void GameScene::Initialize()
 	TitleSprite->Update();
 	light->Update();
 
-	for (std::unique_ptr<Object3d>& obj : objects)
-	{
-		obj->Update();
-	}
+	EnemyManager::Initialize();
+
+	EnemyManager::SetPlayer(player_.get());
 }
 
 void GameScene::Update()
 {
 	srand((unsigned int)time(NULL));
 
- 	float shininess = 20;
-
  	switch (scene_)
 	{
-	case GameScene::Scene::Title:
-		if (Input::IsLinkGamePad())
+	case Scene::Title:
+
+		if (sceneStart)
 		{
-			if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+			frame--;
+			float f = (float)frame / endFrame;
+
+			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+			if (frame <= 0)
 			{
-				EasingStart = true;
+				sceneStart = false;
+				frame = 0;
+			}
+			sceneSprite->Update();
+		}
+		else
+		{
+			if (Input::IsLinkGamePad())
+			{
+				if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+				{
+					sceneChange = true;
+				}
+			}
+			else if (Input::TriggerKey(DIK_SPACE))
+			{
+				sceneChange = true;
 			}
 		}
-		else if (Input::TriggerKey(DIK_SPACE))
+		if (sceneChange)
 		{
-			EasingStart = true;
-		}
-		if (EasingStart)
-		{
-			frame++;
-
-			if(frame==119)
+			if (frame < endFrame)
 			{
-				frame = 119;
+				frame++;
+
+				float f = Easing::easeOutBounce((float)frame / endFrame);
+
+				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
 			}
-
-			float f = Easing::easeOutBounce((float)frame/endFrame);
-
-			sceneSprite->SetPosition({0,((endSpriteY-startSpriteY)*f)+startSpriteY});
-
-			if (frame>=endFrame)
+			else if (frame >= endFrame+5)
 			{
+				frame = 120;
+
 				scene_ = Scene::Game;
-				//frame = 0;
+				
+				sceneStart = true;
+
+				sceneChange = false;
 
 				MapLoad();
 
@@ -148,6 +180,10 @@ void GameScene::Update()
 				EnemyManager::SetMapData(&objects);
 				player_->Update();
 				EnemyManager::Update();
+			}
+			else
+			{
+				frame++;
 			}
 		}
 		sceneSprite->Update();
@@ -160,8 +196,8 @@ void GameScene::Update()
 
 		ImGui::End();
 		break;
-	case GameScene::Scene::Game:
-		if (EasingStart)
+	case Scene::Game:
+		if (sceneStart)
 		{
 			frame--;
 			float f = (float)frame / endFrame;
@@ -170,19 +206,13 @@ void GameScene::Update()
 
 			if (frame <=0)
 			{
-				EasingStart = false;
+				sceneStart = false;
 				frame = 0;
 			}
 			sceneSprite->Update();
 		}
-		else
+		else if(player_->IsDaed()==false&&player_->IsClear()==false)
 		{
-			light->SetAmbientColor(Vector3({ ambientColor[0],ambientColor[1],ambientColor[2] }));
-
-			light->SetPointPos(0, Vector3({ lightPos[0],lightPos[1],lightPos[2] }));
-			light->SetPointAtten(0, Vector3({ lightAtten[0],lightAtten[1],lightAtten[2] }));
-			light->SetPointColor(0, Vector3({ lightColor[0],lightColor[1],lightColor[2] }));
-
 			player_->Update();
 			light->Update();
 			EnemyManager::Update();
@@ -197,31 +227,198 @@ void GameScene::Update()
 				player_->SetMapData(&objects);
 			}
 
-			if (player_->GetClear())
+			if (player_->IsClear())
 			{
-				scene_ = Scene::Result;
+				sceneChange = true;
+			}
+
+			if (player_->IsDaed())
+			{
+				sceneChange = true;
 			}
 		}
-		break;
-	case GameScene::Scene::Result:
-		if (Input::TriggerKey(DIK_SPACE))
+
+		if (sceneChange)
 		{
-			scene_ = Scene::Title;
+			if (frame < endFrame)
+			{
+				frame++;
+
+				float f = Easing::easeOutBounce((float)frame / endFrame);
+
+				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+			}
+			else if (frame >= endFrame + 5)
+			{
+				frame = 120;
+
+				if (player_->IsClear())
+				{
+					scene_ = Scene::Result;
+				}
+				else
+				{
+					scene_ = Scene::GameOver;
+				}
+				sceneStart = true;
+
+				sceneChange = false;
+
+				MapLoad();
+
+				player_->SetMapData(&objects);
+				EnemyManager::SetMapData(&objects);
+				player_->Update();
+				EnemyManager::Update();
+			}
+			else
+			{
+				frame++;
+			}
+
+			sceneSprite->Update();
 		}
 
+		for (std::unique_ptr<Object3d>& obj : objects)
+		{
+			obj->Update();
+		}
+
+		goalObj_->Update();
+		break;
+	case Scene::Result:
+		if (sceneStart)
+		{
+			frame--;
+			float f = (float)frame / endFrame;
+
+			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+			if (frame <= 0)
+			{
+				sceneStart = false;
+				frame = 0;
+			}
+			sceneSprite->Update();
+		}
+		else
+		{
+			if (Input::IsLinkGamePad())
+			{
+				if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+				{
+					sceneChange = true;
+				}
+			}
+			else if (Input::TriggerKey(DIK_SPACE))
+			{
+				sceneChange = true;
+			}
+		}
+		if (sceneChange)
+		{
+			if (frame < endFrame)
+			{
+				frame++;
+
+				float f = Easing::easeOutBounce((float)frame / endFrame);
+
+				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+			}
+			else if (frame >= endFrame + 5)
+			{
+				frame = 120;
+
+				scene_ = Scene::Title;
+
+				sceneStart = true;
+
+				sceneChange = false;
+
+				player_->Reset();
+
+				EnemyManager::Clear();
+			}
+			else
+			{
+				frame++;
+			}
+
+			sceneSprite->Update();
+		}
+		break;
+	case Scene::GameOver:
+		if (sceneStart)
+		{
+			frame--;
+			float f = (float)frame / endFrame;
+
+			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+			if (frame <= 0)
+			{
+				sceneStart = false;
+				frame = 0;
+			}
+			sceneSprite->Update();
+		}
+		else
+		{
+			if (Input::IsLinkGamePad())
+			{
+				if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+				{
+					sceneChange = true;
+				}
+			}
+			else if (Input::TriggerKey(DIK_SPACE))
+			{
+				sceneChange = true;
+			}
+		}
+		if (sceneChange)
+		{
+			if (frame < endFrame)
+			{
+				frame++;
+
+				float f = Easing::easeOutBounce((float)frame / endFrame);
+
+				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+			}
+			else if (frame >= endFrame + 5)
+			{
+				frame = 120;
+
+				scene_ = Scene::Title;
+				sceneStart = true;
+
+				sceneChange = false;
+
+				player_->Reset();
+
+				EnemyManager::Clear();
+			}
+			else
+			{
+				frame++;
+			}
+
+			sceneSprite->Update();
+		}
 		break;
 	default:
 		break;
 	}
 
-	for (std::unique_ptr<Object3d>& obj : objects)
-	{
-		obj->SetShininess(shininess);
+	ImGui::Begin("Scene");
 
-		obj->Update();
-	}
+	ImGui::Text("%d",scene_);
 
-	goalObj_->Update();
+	ImGui::End();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -252,6 +449,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 		ParticleManager::PreDraw(dxCommon->GetCommandList());
 		player_->ParticleDraw();
+		EnemyManager::ParticleDraw();
 		ParticleManager::PostDraw();
 
 		SpriteCommon::PreDraw();
@@ -262,6 +460,19 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	case GameScene::Scene::Result:
 		SpriteCommon::PreDraw();
 		spaceSprite->Draw();
+
+		clearSprite->Draw();
+
+		sceneSprite->Draw();
+		SpriteCommon::PostDraw();
+		break;
+	case GameScene::Scene::GameOver:
+		SpriteCommon::PreDraw();
+		spaceSprite->Draw();
+
+		overSprite->Draw();
+
+		sceneSprite->Draw();
 		SpriteCommon::PostDraw();
 		break;
 	default:
@@ -285,6 +496,10 @@ void GameScene::MapLoad()
 {
 	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load("Resources/level.json"));
+
+	objects.clear();
+
+	EnemyManager::Clear();
 	for (auto& objectData : levelData->objects)
 	{
 		if (objectData.tagName=="Map")
