@@ -192,7 +192,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		gameScene->Draw(dxCommon.get());
 
-		imguiManager::Draw();
+		//imguiManager::Draw();
 
 		dxCommon->PostDrow();
 

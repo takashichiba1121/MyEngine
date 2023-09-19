@@ -115,6 +115,42 @@ void GameScene::Initialize()
 	EnemyManager::Initialize();
 
 	EnemyManager::SetPlayer(player_.get());
+
+	GroundModel_.reset(Model::LoadFormOBJ("Ground",true));
+
+	GroundObj_ = std::make_unique<Object3d>();
+
+	GroundObj_->Initialize();
+
+	GroundObj_->SetModel(GroundModel_.get());
+
+	GroundObj_->SetPosition({ 0,-10,0 });
+
+	GroundObj_->SetScale({500,500,500});
+
+	GroundObj_->SetRot({0,3.14f,0});
+
+	GroundObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+
+	GroundObj_->Update();
+
+	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle", true));
+
+	skyObj_ = std::make_unique<Object3d>();
+
+	skyObj_->Initialize();
+
+	skyObj_->SetModel(skyModel_.get());
+
+	skyObj_->SetPosition({ 0,0,0 });
+
+	skyObj_->SetScale({ 200,200,200 });
+
+	skyObj_->SetRot({ 1.57f,0,0 });
+
+	skyObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+
+	skyObj_->Update();
 }
 
 void GameScene::Update()
@@ -286,6 +322,8 @@ void GameScene::Update()
 		}
 
 		goalObj_->Update();
+
+		GroundObj_->Update();
 		break;
 	case Scene::Result:
 		if (sceneStart)
@@ -414,6 +452,8 @@ void GameScene::Update()
 		break;
 	}
 
+	skyObj_->Update();
+
 	ImGui::Begin("Scene");
 
 	ImGui::Text("%d",scene_);
@@ -426,6 +466,10 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	switch (scene_)
 	{
 	case GameScene::Scene::Title:
+		Object3d::PreDraw(dxCommon->GetCommandList());
+		skyObj_->Draw();
+		Object3d::PostDraw();
+
 		SpriteCommon::PreDraw();
 		spaceSprite->Draw();
 		TitleSprite->Draw();
@@ -434,6 +478,11 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		break;
 	case GameScene::Scene::Game:
 		Object3d::PreDraw(dxCommon->GetCommandList());
+		
+		skyObj_->Draw();
+
+		GroundObj_->Draw();
+
 		for (uint32_t i = 0; i < objects.size(); i++)
 		{
 			objects[i]->Draw();
@@ -458,6 +507,10 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		SpriteCommon::PostDraw();
 		break;
 	case GameScene::Scene::Result:
+		Object3d::PreDraw(dxCommon->GetCommandList());
+		skyObj_->Draw();
+		Object3d::PostDraw();
+
 		SpriteCommon::PreDraw();
 		spaceSprite->Draw();
 
@@ -467,6 +520,10 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		SpriteCommon::PostDraw();
 		break;
 	case GameScene::Scene::GameOver:
+		Object3d::PreDraw(dxCommon->GetCommandList());
+		skyObj_->Draw();
+		Object3d::PostDraw();
+
 		SpriteCommon::PreDraw();
 		spaceSprite->Draw();
 

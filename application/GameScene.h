@@ -96,5 +96,13 @@ private:
 	std::unique_ptr<Sprite> clearSprite;
 
 	#pragma endregion
+
+	std::unique_ptr<Model> GroundModel_;
+
+	std::unique_ptr<Object3d> GroundObj_;
+
+	std::unique_ptr<Model> skyModel_;
+
+	std::unique_ptr<Object3d> skyObj_;
 };
 
