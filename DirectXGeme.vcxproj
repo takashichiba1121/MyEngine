@@ -125,6 +125,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\audio\Audio.cpp" />
     <ClCompile Include="engine\base\DirectXCommon.cpp" />
     <ClCompile Include="engine\2d\imguiManager.cpp" />
+    <ClCompile Include="engine\base\Framework.cpp" />
+    <ClCompile Include="engine\base\MyGame.cpp" />
     <ClCompile Include="engine\Collider\Collider.cpp" />
     <ClCompile Include="engine\io\input.cpp" />
     <ClCompile Include="engine\main.cpp" />
@@ -165,6 +167,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\audio\Audio.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
     <ClInclude Include="engine\2d\imguiManager.h" />
+    <ClInclude Include="engine\base\Framework.h" />
+    <ClInclude Include="engine\base\MyGame.h" />
     <ClInclude Include="engine\Collider\Collider.h" />
     <ClInclude Include="engine\io\input.h" />
     <ClInclude Include="engine\Math\Easing.h" />

@@ -73,7 +73,7 @@ private:
 
 	const float fallAcceleration_ = 0.03f;
 
-	const float StartJumpSpeed_ = -0.5;
+	const float StartJumpSpeed_ = -0.7f;
 
 	bool onGround_;
 
@@ -82,13 +82,13 @@ private:
 	Vector3 spawnPosition_ = { 0,0,0 };
 
 	Vector3 goalPosition_ = { 0,0,0 };
-
+	
 	Vector3 goalScale_ = { 0,0,0 };
 
 	bool isClear = false;
 
 	//プレイヤーから見たカメラの位置
-	const Vector3 cameraPos = { 0.0f,40.0f,-20.0f };
+	const Vector3 cameraPos = { 0.0f,40.0f,-40.0f };
 
 	const float cameraSpeed = 0.1f;
 

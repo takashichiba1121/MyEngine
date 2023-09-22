@@ -51,7 +51,6 @@ private:
 
 	uint32_t texHandle=0;
 
-	std::map<std::string, Model*> models;
 	std::vector<std::unique_ptr<Object3d>> objects;
 
 	std::unique_ptr<Object3d> goalObj_;

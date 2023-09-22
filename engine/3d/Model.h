@@ -13,8 +13,7 @@
 #include"Vector3.h"
 #include"Vector4.h"
 #include"Matrix4.h"
-#include<unordered_map>
-
+#include<map>
 //3Dモデル
 class Model 
 {
@@ -55,16 +54,16 @@ public:
 			alpha = 1.0f;
 		}
 	};
-public:
+public://メンバ関数
 	//OBJファイルから3Dモデルを読み込む
 	static Model* LoadFormOBJ(const std::string& modelname, bool smoothing);
-	/// <summary>
-	/// マテリアルの読み込み
-	/// </summary>
-	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { Model::sDevice = device; }
+
+	static void SetModel(std::string str, Model* model);
+
+	static Model* GetModel(std::string str);
 
 	//各種バッファの生成
 	void CreateBuffers();
@@ -85,15 +84,23 @@ public:
 
 	std::vector<VertexPosNormalUv> GetVertices() {return vertices_; }
 
+
 private://非公開のメンバ関数
 	//OBJファイルから3Dモデルを読み込む(非公開)
 	void LoadFromOBJInternal(const std::string& modelname, bool smoothing);
 	
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 
+	/// <summary>
+/// マテリアルの読み込み
+/// </summary>
+	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
+
 private:
 	//デバイス
 	static ID3D12Device* sDevice;
+
+	static std::map<std::string, Model*> models;
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
 	// 頂点バッファビュー

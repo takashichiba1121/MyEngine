@@ -191,9 +191,6 @@
     <ClCompile Include="engine\3d\ParticleManager.cpp">
       <Filter>engin\ソースファイル\3d</Filter>
     </ClCompile>
-    <ClCompile Include="engine\main.cpp">
-      <Filter>application</Filter>
-    </ClCompile>
     <ClCompile Include="engine\Math\Easing.cpp">
       <Filter>engin\ソースファイル\Math</Filter>
     </ClCompile>
@@ -211,6 +208,15 @@
     </ClCompile>
     <ClCompile Include="application\EnemyBullet.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\base\MyGame.cpp">
+      <Filter>engin\ソースファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\main.cpp">
+      <Filter>engin\ソースファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\base\Framework.cpp">
+      <Filter>engin\ソースファイル\base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -324,6 +330,12 @@
     </ClInclude>
     <ClInclude Include="application\EnemyBullet .h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\base\MyGame.h">
+      <Filter>engin\ヘッダーファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\base\Framework.h">
+      <Filter>engin\ヘッダーファイル\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

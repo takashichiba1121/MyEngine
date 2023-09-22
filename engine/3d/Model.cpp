@@ -1,10 +1,13 @@
 #include "Model.h"
 #include"Texture.h"
+#include<unordered_map>
 
 using namespace std;
 
 //Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
 ID3D12Device* Model::sDevice = nullptr;
+
+map<string, Model*> Model::models;
 
 Model* Model::LoadFormOBJ(const std::string& modelname,bool smoothing)
 {
@@ -92,6 +95,14 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
 	textureIndex_=Texture::LoadTexture(wfilepath);
+}
+void Model::SetModel(const std::string str, Model* model)
+{
+	models.insert(std::make_pair(str,model));
+}
+Model* Model::GetModel(std::string str)
+{
+	return models[str];
 }
 void Model::CreateBuffers()
 {

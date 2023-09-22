@@ -25,11 +25,11 @@ void GameScene::Initialize()
 
 	goalModel.reset(Model::LoadFormOBJ("Goal", true));
 
-	models.insert(std::make_pair("PlayerBullet",bulletModel.get()));
+	Model::SetModel("PlayerBullet",bulletModel.get());
 
-	models.insert(std::make_pair("Map",mapModel.get()));
+	Model::SetModel("Map",mapModel.get());
 
-	models.insert(std::make_pair("Goal", goalModel.get()));
+	Model::SetModel("Goal", goalModel.get());
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
@@ -45,7 +45,7 @@ void GameScene::Initialize()
 
 	player_ = std::make_unique<Player>();
 
-	player_->Initialize(models["PlayerBullet"]);
+	player_->Initialize(Model::GetModel("PlayerBullet"));
 
 	goalObj_= std::make_unique<Object3d>();
 
@@ -564,7 +564,7 @@ void GameScene::MapLoad()
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			newObject->Initialize();
-			newObject->SetModel(models[objectData.fileName]);
+			newObject->SetModel(Model::GetModel(objectData.fileName));
 
 			assert(newObject);
 
@@ -591,7 +591,7 @@ void GameScene::MapLoad()
 			player_->SetGoal(objectData.trans,objectData.scale);
 
 			//モデルを指定して3Dオブジェクトを生成
-			goalObj_->SetModel(models[objectData.fileName]);
+			goalObj_->SetModel(Model::GetModel(objectData.fileName));
 
 			// 座標
 			goalObj_->SetPosition({ objectData.trans });
@@ -614,7 +614,7 @@ void GameScene::MapLoad()
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(models["PlayerBullet"], { objectData.trans }, player_->GetObj());
+			enemy->Initialize(Model::GetModel("PlayerBullet"), { objectData.trans }, player_->GetObj());
 
 			enemy->Update();
 

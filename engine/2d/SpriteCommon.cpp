@@ -195,8 +195,8 @@ void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 	//’l‚ð‘‚«ž‚Þ‚ÆŽ©“®“I‚É“]‘—‚³‚ê‚é
 	sMatProjection= Matrix4Math::identity();
 
-	sMatProjection.m[0][0] = 2.0f / sDxCommon->getWinApp()->window_width;
-	sMatProjection.m[1][1] = -2.0f / sDxCommon->getWinApp()->window_height;
+	sMatProjection.m[0][0] = 2.0f / WinApp::window_width;
+	sMatProjection.m[1][1] = -2.0f / WinApp::window_height;
 	sMatProjection.m[3][0] = -1.0f;
 	sMatProjection.m[3][1] = 1.0f;
 }
