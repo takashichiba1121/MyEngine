@@ -4,23 +4,14 @@
 #pragma comment(lib,"dxguid.lib")
 #pragma comment (lib, "xinput.lib")
 
-Microsoft::WRL::ComPtr<IDirectInputDevice8> Input::sKeyboard;
+ Input* Input::Instance()
+ {
+	 static Input instance;
 
-Microsoft::WRL::ComPtr<IDirectInput8> Input::sDirectInput;
+	 return &instance;
+ }
 
- BYTE Input::sKey[256];
-
- BYTE Input::sKeyPre[256];
-
- WinApp* Input::sWinApp;
-
- XINPUT_STATE Input::sGamePad;
-
- XINPUT_STATE Input::sOldGamePad;
-
- DWORD Input::isLinkGamePad;
-
-void Input::Initialize(WinApp* WinApp)
+ void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
 	sWinApp = WinApp;
@@ -43,6 +34,10 @@ void Input::Initialize(WinApp* WinApp)
 	result = sKeyboard->SetCooperativeLevel(
 		WinApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result)); 
+
+	isLinkGamePad = XInputGetState(
+		0,//複数つながれてるときの選択
+		&sGamePad);//この変数に入力状況が格納される
 }
 
 void Input::Update()

@@ -61,10 +61,6 @@ public://メンバ関数
 	//setter
 	static void SetDevice(ID3D12Device* device) { Model::sDevice = device; }
 
-	static void SetModel(std::string str, Model* model);
-
-	static Model* GetModel(std::string str);
-
 	//各種バッファの生成
 	void CreateBuffers();
 
@@ -99,8 +95,6 @@ private://非公開のメンバ関数
 private:
 	//デバイス
 	static ID3D12Device* sDevice;
-
-	static std::map<std::string, Model*> models;
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
 	// 頂点バッファビュー

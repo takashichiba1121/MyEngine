@@ -7,6 +7,7 @@
 #include"input.h"
 #include<time.h>
 #include"Easing.h"
+#include"SceneManager.h"
 
 GameScene::GameScene()
 {
@@ -25,27 +26,40 @@ void GameScene::Initialize()
 
 	goalModel.reset(Model::LoadFormOBJ("Goal", true));
 
-	Model::SetModel("PlayerBullet",bulletModel.get());
+	models.insert(std::make_pair("PlayerBullet", bulletModel.get()));
 
-	Model::SetModel("Map",mapModel.get());
+	models.insert(std::make_pair("Map", mapModel.get()));
 
-	Model::SetModel("Goal", goalModel.get());
+	models.insert(std::make_pair("Goal", goalModel.get()));
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
+	spaceTexHandle = Texture::Instance()->LoadTexture(L"Resources/spaceKey.png");
+
+	aTexHandle = Texture::Instance()->LoadTexture(L"Resources/Abotton.png");
+
+	padSousaTexHandle=Texture::Instance()->LoadTexture(L"Resources/KyeSousa.png");
+
+	keySousaTexHandle=Texture::Instance()->LoadTexture(L"Resources/PadSousa.png");
+
 	spaceSprite = std::make_unique<Sprite>();
 
-	spaceSprite->Initialize(Texture::LoadTexture(L"Resources/spaceKey.png"));
+	player_ = std::make_unique<Player>();
 
-	spaceSprite->SetPosition({ 640.0f,540.0f });
+	if (Input::Instance()->IsLinkGamePad())
+	{
+		spaceSprite->Initialize(aTexHandle);
+	}
+	else
+	{
+		spaceSprite->Initialize(spaceTexHandle);
+	}
+
+	spaceSprite->SetPosition({ 640.0f,500.0f });
 
 	spaceSprite->SetAnchorPoint({ 0.5f,0.5f });
 
 	spaceSprite->Update();
-
-	player_ = std::make_unique<Player>();
-
-	player_->Initialize(Model::GetModel("PlayerBullet"));
 
 	goalObj_= std::make_unique<Object3d>();
 
@@ -71,7 +85,7 @@ void GameScene::Initialize()
 
 	sceneSprite = std::make_unique<Sprite>();
 
-	sceneSprite->Initialize(Texture::LoadTexture(L"Resources/scene.png"));
+	sceneSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/scene.png"));
 
 	sceneSprite->SetAnchorPoint({0,0});
 
@@ -81,9 +95,28 @@ void GameScene::Initialize()
 
 	sceneSprite->Update();
 
+	sousaSprite = std::make_unique<Sprite>();
+
+	if (Input::Instance()->IsLinkGamePad())
+	{
+		sousaSprite->Initialize(padSousaTexHandle);
+	}
+	else
+	{
+		sousaSprite->Initialize(keySousaTexHandle);
+	}
+
+	sousaSprite->SetAnchorPoint({ 0.0f,0.5f });
+
+	sousaSprite->SetScale({ 300,300 });
+
+	sousaSprite->SetPosition({50,360 });
+
+	sousaSprite->Update();
+
 	overSprite = std::make_unique<Sprite>();
 
-	overSprite->Initialize(Texture::LoadTexture(L"Resources/GameOver.png"));
+	overSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/GameOver.png"));
 
 	overSprite->SetPosition({ 640,230 });
 
@@ -93,7 +126,7 @@ void GameScene::Initialize()
 
 	clearSprite = std::make_unique<Sprite>();
 
-	clearSprite->Initialize(Texture::LoadTexture(L"Resources/Clear.png"));
+	clearSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/Clear.png"));
 
 	clearSprite->SetPosition({ 640,230 });
 
@@ -101,20 +134,19 @@ void GameScene::Initialize()
 
 	clearSprite->Update();
 
-	TitleSprite = std::make_unique<Sprite>();
+	titleSprite = std::make_unique<Sprite>();
 
-	TitleSprite->Initialize(Texture::LoadTexture(L"Resources/Title.png"));
+	titleSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/Title.png"));
 
-	TitleSprite->SetPosition({640,230 });
+	titleSprite->SetPosition({ 640,600 });
 
-	TitleSprite->SetAnchorPoint({ 0.5f,0.5f });
+	titleSprite->SetAnchorPoint({ 0.5f,0.5f });
 
-	TitleSprite->Update();
+	titleSprite->Update();
+
 	light->Update();
 
 	EnemyManager::Initialize();
-
-	EnemyManager::SetPlayer(player_.get());
 
 	GroundModel_.reset(Model::LoadFormOBJ("Ground",true));
 
@@ -151,6 +183,26 @@ void GameScene::Initialize()
 	skyObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 
 	skyObj_->Update();
+
+	frame = 120;
+
+	scene_ = Scene::Game;
+
+	sceneStart = true;
+
+	sceneChange = false;
+
+	player_->Initialize(models["PlayerBullet"]);
+
+	MapLoad();
+
+	player_->SetMapData(&objects);
+
+	EnemyManager::SetMapData(&objects);
+
+	EnemyManager::SetPlayer(player_.get());
+	//player_->Update();
+	//EnemyManager::Update();
 }
 
 void GameScene::Update()
@@ -159,80 +211,16 @@ void GameScene::Update()
 
  	switch (scene_)
 	{
-	case Scene::Title:
-
-		if (sceneStart)
+	case Scene::Game:
+		if (Input::Instance()->IsLinkGamePad())
 		{
-			frame--;
-			float f = (float)frame / endFrame;
-
-			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			if (frame <= 0)
-			{
-				sceneStart = false;
-				frame = 0;
-			}
-			sceneSprite->Update();
+			sousaSprite->SetTexture(padSousaTexHandle);
 		}
 		else
 		{
-			if (Input::IsLinkGamePad())
-			{
-				if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
-				{
-					sceneChange = true;
-				}
-			}
-			else if (Input::TriggerKey(DIK_SPACE))
-			{
-				sceneChange = true;
-			}
+			sousaSprite->SetTexture(keySousaTexHandle);
 		}
-		if (sceneChange)
-		{
-			if (frame < endFrame)
-			{
-				frame++;
 
-				float f = Easing::easeOutBounce((float)frame / endFrame);
-
-				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			}
-			else if (frame >= endFrame+5)
-			{
-				frame = 120;
-
-				scene_ = Scene::Game;
-				
-				sceneStart = true;
-
-				sceneChange = false;
-
-				MapLoad();
-
-				player_->SetMapData(&objects);
-				EnemyManager::SetMapData(&objects);
-				player_->Update();
-				EnemyManager::Update();
-			}
-			else
-			{
-				frame++;
-			}
-		}
-		sceneSprite->Update();
-
-		ImGui::Begin("Partcle");
-
-		ImGui::Text("%d", frame);
-
-		ImGui::Text("%f", sceneSprite->GetPosition().y);
-
-		ImGui::End();
-		break;
-	case Scene::Game:
 		if (sceneStart)
 		{
 			frame--;
@@ -253,7 +241,7 @@ void GameScene::Update()
 			light->Update();
 			EnemyManager::Update();
 
-			if (Input::TriggerKey(DIK_0)) 
+			if (Input::Instance()->TriggerKey(DIK_0))
 			{
 				objects.clear();
 				MapLoad();
@@ -300,13 +288,6 @@ void GameScene::Update()
 				sceneStart = true;
 
 				sceneChange = false;
-
-				MapLoad();
-
-				player_->SetMapData(&objects);
-				EnemyManager::SetMapData(&objects);
-				player_->Update();
-				EnemyManager::Update();
 			}
 			else
 			{
@@ -342,14 +323,14 @@ void GameScene::Update()
 		}
 		else
 		{
-			if (Input::IsLinkGamePad())
+			if (Input::Instance()->IsLinkGamePad())
 			{
-				if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+				if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
 				{
 					sceneChange = true;
 				}
 			}
-			else if (Input::TriggerKey(DIK_SPACE))
+			else if (Input::Instance()->TriggerKey(DIK_SPACE))
 			{
 				sceneChange = true;
 			}
@@ -369,7 +350,7 @@ void GameScene::Update()
 			{
 				frame = 120;
 
-				scene_ = Scene::Title;
+				SceneManager::Instance()->ChangeScene("TITLE");
 
 				sceneStart = true;
 
@@ -404,14 +385,14 @@ void GameScene::Update()
 		}
 		else
 		{
-			if (Input::IsLinkGamePad())
+			if (Input::Instance()->IsLinkGamePad())
 			{
-				if (Input::PadTriggerKey(XINPUT_GAMEPAD_A))
+				if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
 				{
 					sceneChange = true;
 				}
 			}
-			else if (Input::TriggerKey(DIK_SPACE))
+			else if (Input::Instance()->TriggerKey(DIK_SPACE))
 			{
 				sceneChange = true;
 			}
@@ -431,7 +412,8 @@ void GameScene::Update()
 			{
 				frame = 120;
 
-				scene_ = Scene::Title;
+				SceneManager::Instance()->ChangeScene("TITLE");
+
 				sceneStart = true;
 
 				sceneChange = false;
@@ -465,17 +447,6 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 {
 	switch (scene_)
 	{
-	case GameScene::Scene::Title:
-		Object3d::PreDraw(dxCommon->GetCommandList());
-		skyObj_->Draw();
-		Object3d::PostDraw();
-
-		SpriteCommon::PreDraw();
-		spaceSprite->Draw();
-		TitleSprite->Draw();
-		sceneSprite->Draw();
-		SpriteCommon::PostDraw();
-		break;
 	case GameScene::Scene::Game:
 		Object3d::PreDraw(dxCommon->GetCommandList());
 		
@@ -501,52 +472,42 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		EnemyManager::ParticleDraw();
 		ParticleManager::PostDraw();
 
-		SpriteCommon::PreDraw();
-
+		SpriteCommon::Instance()->PreDraw();
+		sousaSprite->Draw();
 		sceneSprite->Draw();
-		SpriteCommon::PostDraw();
+		SpriteCommon::Instance()->PostDraw();
 		break;
 	case GameScene::Scene::Result:
 		Object3d::PreDraw(dxCommon->GetCommandList());
 		skyObj_->Draw();
 		Object3d::PostDraw();
 
-		SpriteCommon::PreDraw();
+		SpriteCommon::Instance()->PreDraw();
 		spaceSprite->Draw();
-
 		clearSprite->Draw();
-
+		titleSprite->Draw();
 		sceneSprite->Draw();
-		SpriteCommon::PostDraw();
+		SpriteCommon::Instance()->PostDraw();
 		break;
 	case GameScene::Scene::GameOver:
 		Object3d::PreDraw(dxCommon->GetCommandList());
 		skyObj_->Draw();
 		Object3d::PostDraw();
 
-		SpriteCommon::PreDraw();
+		SpriteCommon::Instance()->PreDraw();
 		spaceSprite->Draw();
-
 		overSprite->Draw();
-
+		titleSprite->Draw();
 		sceneSprite->Draw();
-		SpriteCommon::PostDraw();
+		SpriteCommon::Instance()->PostDraw();
 		break;
 	default:
 		break;
 	}
 }
 
-void GameScene::PostEffectDraw(DirectXCommon* dxCommon)
+void GameScene::Finalize()
 {
-
-	Object3d::PreDraw(dxCommon->GetCommandList());
-
-	Object3d::PostDraw();
-
-	ParticleManager::PreDraw(dxCommon->GetCommandList());
-	//pMan->Draw();
-	ParticleManager::PostDraw();
 }
 
 void GameScene::MapLoad()
@@ -564,7 +525,7 @@ void GameScene::MapLoad()
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			newObject->Initialize();
-			newObject->SetModel(Model::GetModel(objectData.fileName));
+			newObject->SetModel(models[objectData.fileName]);
 
 			assert(newObject);
 
@@ -591,7 +552,7 @@ void GameScene::MapLoad()
 			player_->SetGoal(objectData.trans,objectData.scale);
 
 			//モデルを指定して3Dオブジェクトを生成
-			goalObj_->SetModel(Model::GetModel(objectData.fileName));
+			goalObj_->SetModel(models[objectData.fileName]);
 
 			// 座標
 			goalObj_->SetPosition({ objectData.trans });
@@ -614,7 +575,7 @@ void GameScene::MapLoad()
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(Model::GetModel("PlayerBullet"), { objectData.trans }, player_->GetObj());
+			enemy->Initialize(models ["PlayerBullet"], { objectData.trans }, player_->GetObj());
 
 			enemy->Update();
 

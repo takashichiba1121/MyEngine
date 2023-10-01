@@ -8,10 +8,10 @@ using namespace std;
 
 DirectXCommon* Sprite::sDxCommon;
 
-void Sprite::StaticInitialize()
+void Sprite::StaticInitialize(DirectXCommon* dxCommon)
 {
 
-	sDxCommon = SpriteCommon::GetDxCommon();
+	sDxCommon=dxCommon;
 }
 
 void Sprite::Initialize(uint32_t textureIndex)
@@ -125,7 +125,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 	//値を書き込むと自動的に転送される
 	constMapTransform_->mat = Matrix4Math::identity();
 
-	constMapTransform_->mat = SpriteCommon::GetMatProjection();
+	constMapTransform_->mat = SpriteCommon::Instance()->GetMatProjection();
 
 	assert(SUCCEEDED(result));
 
@@ -135,14 +135,19 @@ void Sprite::Initialize(uint32_t textureIndex)
 		AdjustTextureSize();
 		scale_ = textureSize_;
 	}
+}
 
-
+void Sprite::SetTexture(uint32_t texHandle)
+{
+	textureIndex_ = texHandle;
+	AdjustTextureSize();
+	scale_ = textureSize_;
 }
 
 void Sprite::AdjustTextureSize()
 {
 
-	ID3D12Resource* textureBuffer = Texture::sTexBuffuers[textureIndex_].Get();
+	ID3D12Resource* textureBuffer = Texture::Instance()->texBuffuers[textureIndex_].Get();
 	//指定番号の画像が読み込み済みなら
 	assert(textureBuffer);
 
@@ -155,7 +160,7 @@ void Sprite::AdjustTextureSize()
 
 void Sprite::Update()
 {
-	ID3D12Resource* textureBuffer = Texture::sTexBuffuers[textureIndex_].Get();
+	ID3D12Resource* textureBuffer = Texture::Instance()->texBuffuers[textureIndex_].Get();
 	//指定番号の画像が読み込み済みなら
 	if (textureBuffer)
 	{
@@ -212,7 +217,7 @@ void Sprite::Update()
 
 	matWorld = matRot* matTrans;//ワールド行列に回転を反映
 	//行列の計算
-	constMapTransform_->mat = matWorld * SpriteCommon::GetMatProjection();
+	constMapTransform_->mat = matWorld * SpriteCommon::Instance()->GetMatProjection();
 }
 
 void Sprite::Draw()
@@ -232,7 +237,7 @@ void Sprite::Draw()
 
 	//画像描画
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 	uint32_t incrementSize = sDxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureIndex_);
 	sDxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);

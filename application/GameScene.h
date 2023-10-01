@@ -6,7 +6,8 @@
 #include"LightGroup.h"
 #include"Player.h"
 #include"EnemyManager.h"
-class GameScene
+#include"BaseScene.h"
+class GameScene:public BaseScene
 {
 	enum class Scene {
 		Title,
@@ -20,21 +21,18 @@ public: // メンバ関数
 
 	~GameScene();
 
-	void Initialize();
+	void Initialize() override;
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(DirectXCommon* dxCommon);
+	void Draw(DirectXCommon* dxCommon) override;
 
-	/// <summary>
-/// 描画
-/// </summary>
-	void PostEffectDraw(DirectXCommon* dxCommon);
+	void Finalize() override;
 
 	/// <summary>
 	/// マップデータのロード
@@ -43,6 +41,8 @@ public: // メンバ関数
 
 	void Collision();
 private:
+	std::map<std::string, Model*> models;
+
 	std::unique_ptr <Model> mapModel;
 	std::unique_ptr <Model> goalModel;
 	std::unique_ptr <Model> bulletModel;
@@ -85,14 +85,22 @@ private:
 
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite;
-	//シーン遷移用のスプライト
-	std::unique_ptr<Sprite> TitleSprite;
 
 	std::unique_ptr<Sprite> spaceSprite;
+
+	uint32_t spaceTexHandle;
+	uint32_t aTexHandle;
+
+	uint32_t padSousaTexHandle;
+	uint32_t keySousaTexHandle;
 
 	std::unique_ptr<Sprite> overSprite;
 
 	std::unique_ptr<Sprite> clearSprite;
+
+	std::unique_ptr<Sprite> titleSprite;
+
+	std::unique_ptr<Sprite> sousaSprite;
 
 	#pragma endregion
 

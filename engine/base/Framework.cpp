@@ -23,13 +23,13 @@ void Framework::Initialize()
 
 	//DirectX初期化処理　ここから
 
-	Input::Initialize(winApp_.get());
+	Input::Instance()->Initialize(winApp_.get());
 
-	SpriteCommon::Initialize(dxCommon_.get());
+	SpriteCommon::Instance()->Initialize(dxCommon_.get());
 
-	Texture::Initialize(dxCommon_.get());
+	Texture::Instance()->Initialize(dxCommon_.get());
 
-	Sprite::StaticInitialize();
+	Sprite::StaticInitialize(dxCommon_.get());
 
 	Model::SetDevice(dxCommon_->GetDevice());
 
@@ -50,16 +50,22 @@ void Framework::Initialize()
 
 void Framework::Finalize()
 {
-	Texture::Finalize();
+	SceneManager::Instance()->Finalize();
+
+	sceneFactory_ = nullptr;
+
+	Texture::Instance()->Finalize();
 
 	imguiManager::Finalize();
 
-	SpriteCommon::Finalize();
+	SpriteCommon::Instance()->Finalize();
 
 	Object3d::Finalize();
 	assimpObject3d::Finalize();
 
 	ParticleManager::Finalize();
+
+	dxCommon_ = nullptr;
 
 	winApp_->Finalize();
 }
@@ -69,7 +75,9 @@ void Framework::Update()
 	endRequst_ = winApp_->ProcessMessage();
 
 	//入力の更新
-	Input::Update();
+	Input::Instance()->Update();
+
+	SceneManager::Instance()->Update();
 }
 
 void Framework::Run()
@@ -92,7 +100,6 @@ void Framework::Run()
 		imGui.End();
 
 		//描画コマンドここから
-
 		Draw();
 
 		//描画コマンドここまで

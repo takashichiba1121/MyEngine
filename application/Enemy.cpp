@@ -61,8 +61,6 @@ void Enemy::Attack()
 		//’e‚Ì“o˜^‚·‚é
 		EnemyManager::AddBullet(std::move(newBullet));
 	}
-
-	ImGui::Text("%d",attackTimer_);
 }
 
 void Enemy::Draw()

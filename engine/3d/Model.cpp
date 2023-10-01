@@ -7,8 +7,6 @@ using namespace std;
 //静的メンバ変数の実体
 ID3D12Device* Model::sDevice = nullptr;
 
-map<string, Model*> Model::models;
-
 Model* Model::LoadFormOBJ(const std::string& modelname,bool smoothing)
 {
 	//新たなModel型のインスタンスをnewする
@@ -94,15 +92,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	wchar_t wfilepath[128];
 	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
-	textureIndex_=Texture::LoadTexture(wfilepath);
-}
-void Model::SetModel(const std::string str, Model* model)
-{
-	models.insert(std::make_pair(str,model));
-}
-Model* Model::GetModel(std::string str)
-{
-	return models[str];
+	textureIndex_=Texture::Instance()->LoadTexture(wfilepath);
 }
 void Model::CreateBuffers()
 {
@@ -200,13 +190,13 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 	cmdList->IASetIndexBuffer(&ibView_);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::sDescHeap.Get()};
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureIndex_);
 	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
@@ -222,13 +212,13 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 	cmdList->IASetIndexBuffer(&ibView_);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::sDescHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::sDescHeap->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureHandle);
 	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);

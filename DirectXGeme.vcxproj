@@ -109,12 +109,14 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="application\BaseScene.cpp" />
     <ClCompile Include="application\Enemy.cpp" />
     <ClCompile Include="application\EnemyBullet.cpp" />
     <ClCompile Include="application\EnemyManager.cpp" />
     <ClCompile Include="application\PlayerBullet.cpp" />
     <ClCompile Include="application\GameScene.cpp" />
     <ClCompile Include="application\Player.cpp" />
+    <ClCompile Include="application\TitileScene.cpp" />
     <ClCompile Include="engine\3d\assimpLoader.cpp" />
     <ClCompile Include="engine\3d\assimpModel.cpp" />
     <ClCompile Include="engine\3d\assimpObject3d.cpp" />
@@ -127,6 +129,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\2d\imguiManager.cpp" />
     <ClCompile Include="engine\base\Framework.cpp" />
     <ClCompile Include="engine\base\MyGame.cpp" />
+    <ClCompile Include="engine\base\SceneManager.cpp" />
     <ClCompile Include="engine\Collider\Collider.cpp" />
     <ClCompile Include="engine\io\input.cpp" />
     <ClCompile Include="engine\main.cpp" />
@@ -148,14 +151,17 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\Math\Vector3.cpp" />
     <ClCompile Include="engine\Math\Vector4.cpp" />
     <ClCompile Include="engine\base\WinApp.cpp" />
+    <ClCompile Include="SceneFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="application\BaseScene.h" />
     <ClInclude Include="application\Enemy.h" />
     <ClInclude Include="application\EnemyBullet .h" />
     <ClInclude Include="application\EnemyManager.h" />
     <ClInclude Include="application\PlayerBullet.h" />
     <ClInclude Include="application\GameScene.h" />
     <ClInclude Include="application\Player.h" />
+    <ClInclude Include="application\TitileScene.h" />
     <ClInclude Include="engine\3d\assimpLoader.h" />
     <ClInclude Include="engine\3d\assimpModel.h" />
     <ClInclude Include="engine\3d\assimpObject3d.h" />
@@ -165,10 +171,13 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\3d\ParticleManager.h" />
     <ClInclude Include="engine\3d\PointLight.h" />
     <ClInclude Include="engine\audio\Audio.h" />
+    <ClInclude Include="engine\base\AbstractSceneFactory.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
     <ClInclude Include="engine\2d\imguiManager.h" />
     <ClInclude Include="engine\base\Framework.h" />
     <ClInclude Include="engine\base\MyGame.h" />
+    <ClInclude Include="engine\base\SceneFactory.h" />
+    <ClInclude Include="engine\base\SceneManager.h" />
     <ClInclude Include="engine\Collider\Collider.h" />
     <ClInclude Include="engine\io\input.h" />
     <ClInclude Include="engine\Math\Easing.h" />

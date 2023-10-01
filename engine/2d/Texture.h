@@ -13,24 +13,36 @@
 #include "WinApp.h"
 class Texture
 {
-public:
-	static const size_t sSpriteSRVCount = 2056;
-	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> sDescHeap;			//デスクリプタヒープ
-	static std::array< Microsoft::WRL::ComPtr<ID3D12Resource>, sSpriteSRVCount >sTexBuffuers;	//テクスチャバッファ
-	static D3D12_RESOURCE_DESC sTextureResourceDesc;
-	static DirectXCommon* sDxCommon_;
-	static uint32_t sSrvIncrementIndex;
-public:
-	static uint32_t LoadTexture(const wchar_t* fileName = L"NULL");
-	static void Initialize(DirectXCommon* DxCommon);
-	static void CreateSRV(ID3D12Resource* texBuff);
+#pragma region Singleton
+private:
+	Texture() {};
 
-	static void ExcuteComandList();
+	~Texture() {};
+public:
+	Texture(const Texture& carManager) = delete;
+
+	Texture& operator=(const Texture& carManager) = delete;
+
+	static Texture* Instance();
+#pragma endregion
+public:
+	const size_t spriteSRVCount = 2056;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;			//デスクリプタヒープ
+	std::array< Microsoft::WRL::ComPtr<ID3D12Resource>,2056 >texBuffuers;	//テクスチャバッファ
+	D3D12_RESOURCE_DESC textureResourceDesc;
+	DirectXCommon* dxCommon_;
+	uint32_t srvIncrementIndex;
+public:
+	uint32_t LoadTexture(const wchar_t* fileName = L"NULL");
+	void Initialize(DirectXCommon* DxCommon);
+	void CreateSRV(ID3D12Resource* texBuff);
+
+	void ExcuteComandList();
 
 	[[nodiscard]]
-	static ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
+	ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
 		ID3D12GraphicsCommandList* commandList);
 
-	static void Finalize();
+	void Finalize();
 };
 

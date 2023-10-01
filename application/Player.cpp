@@ -26,7 +26,7 @@ void Player::Initialize(Model* bulletModel)
 
 	paMan_->Initialize();
 
-	paMan_->SetTextureHandle(Texture::LoadTexture(L"Resources/effect4.png"));
+	paMan_->SetTextureHandle(Texture::Instance()->LoadTexture(L"Resources/effect4.png"));
 
 	obj_->Update();
 
@@ -95,12 +95,12 @@ void Player::Update()
 
 void Player::Move()
 {
-	if (Input::IsLinkGamePad())
+	if (Input::Instance()->Instance()->IsLinkGamePad())
 	{
 
-		move_ += {Input::GetPadStick(PadStick::LX) / 5, 0, Input::GetPadStick(PadStick::LY) / 5};
+		move_ += {Input::Instance()->Instance()->GetPadStick(PadStick::LX) / 5, 0, Input::Instance()->Instance()->GetPadStick(PadStick::LY) / 5};
 
-		if (Input::PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
+		if (Input::Instance()->Instance()->PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
 		{
 			fallSpeed_ = StartJumpSpeed_;
 			onGround_ = true;
@@ -132,23 +132,23 @@ void Player::Move()
 	}
 	else
 	{
-		if (Input::PushKey(DIK_W))
+		if (Input::Instance()->Instance()->PushKey(DIK_W))
 		{
 			move_ += {0, 0, 0.2f};
 		}
-		if (Input::PushKey(DIK_A))
+		if (Input::Instance()->Instance()->PushKey(DIK_A))
 		{
 			move_ += {-0.2f, 0, 0};
 		}
-		if (Input::PushKey(DIK_S))
+		if (Input::Instance()->Instance()->PushKey(DIK_S))
 		{
 			move_ += {0, 0, -0.2f};
 		}
-		if (Input::PushKey(DIK_D))
+		if (Input::Instance()->PushKey(DIK_D))
 		{
 			move_ += {0.2f, 0, 0};
 		}
-		if (Input::TriggerKey(DIK_SPACE) && onGround_ == false)
+		if (Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false)
 		{
 			fallSpeed_ = StartJumpSpeed_;
 			onGround_ = true;
@@ -214,10 +214,10 @@ void Player::Move()
 
 void Player::Attack()
 {
-	if (Input::IsLinkGamePad())
+	if (Input::Instance()->IsLinkGamePad())
 	{
 
-		if (Input::GetPadStick(PadStick::RT)>=0.5&&Input::GetOldPadStick(PadStick::RT)<0.5)
+		if (Input::Instance()->GetPadStick(PadStick::RT)>=0.5&&Input::Instance()->GetOldPadStick(PadStick::RT)<0.5)
 		{
 			//’e‚Ì‘¬“x
 			const float kBulletSpeed = 0.5f;
@@ -239,7 +239,7 @@ void Player::Attack()
 		}
 
 	}
-	else if (Input::TriggerKey(DIK_Z))
+	else if (Input::Instance()->TriggerKey(DIK_Z))
 	{
 		//’e‚Ì‘¬“x
 		const float kBulletSpeed = 0.5f;
@@ -531,4 +531,6 @@ void Player::SetSpawn(Vector3 spawnPosition)
 	Object3d::SetTarget(spawnPosition_);
 
 	Object3d::SetEye(spawnPosition_ + cameraPos);
+
+	obj_->Update();
 }

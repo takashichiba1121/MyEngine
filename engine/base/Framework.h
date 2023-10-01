@@ -2,6 +2,8 @@
 #include"WinApp.h"
 #include"DirectXCommon.h"
 #include<memory>
+#include"SceneManager.h"
+#include"SceneFactory.h"
 class Framework
 {
 public:
@@ -22,11 +24,15 @@ public:
 	virtual DirectXCommon* GetDxCommon() {return dxCommon_.get() ; }
 
 	void Run();
-private:
+protected:
+	SceneManager* sceneManager_ = nullptr;
+
 	bool endRequst_ = false;
 
 	std::unique_ptr<WinApp> winApp_;
 
 	std::unique_ptr<DirectXCommon> dxCommon_=nullptr;
+
+	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 };
 

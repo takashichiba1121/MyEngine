@@ -32,7 +32,7 @@ class Sprite
 {
 public:
 
-	void static StaticInitialize();
+	void static StaticInitialize(DirectXCommon* dxCommon);
 
 	//初期化
 	void Initialize(uint32_t textureIndex = UINT32_MAX);
@@ -82,6 +82,8 @@ public:
 	void SetLeftTop_(const Vector2& textureLeftTop_) { this->textureLeftTop_ = textureLeftTop_; }
 
 	Vector2 GetLeftTop_() const { return anchorPoint_; }
+
+	void SetTexture(uint32_t texHandole);
 
 private:
 	//テクスチャサイズをイメージに合わせる

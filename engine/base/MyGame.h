@@ -15,7 +15,5 @@ public:
 	void Draw() override;
 
 private:
-
-	std::unique_ptr<GameScene> gameScene;
 };
 

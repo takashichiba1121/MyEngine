@@ -14,27 +14,39 @@
 
 class SpriteCommon
 {
+#pragma region Singleton
+private:
+	SpriteCommon() {};
+
+	~SpriteCommon() {};
+public:
+	SpriteCommon(const SpriteCommon& carManager) = delete;
+
+	SpriteCommon& operator=(const SpriteCommon& carManager) = delete;
+
+	static SpriteCommon* Instance();
+#pragma endregion
 public:
 	//èâä˙âª
-	static void Initialize(DirectXCommon* DXCommon);
+	void Initialize(DirectXCommon* DXCommon);
 
-	static DirectXCommon* GetDxCommon() {return sDxCommon ; }
+	DirectXCommon* GetDxCommon() { return dxCommon; }
 
-	static ID3D12PipelineState* GetPipelineState() { return sPipelineState.Get(); }
-	static ID3D12RootSignature* GetRootSignature() { return sRootSignature.Get(); }
-	static Matrix4 GetMatProjection() { return sMatProjection; }
+	ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
+	ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
+	Matrix4 GetMatProjection() { return matProjection; }
 
-	static void PreDraw();
+	void PreDraw();
 
-	static void PostDraw();
+	void PostDraw();
 
-	static void Finalize();
+	void Finalize();
 private:
-	static DirectXCommon* sDxCommon;
+	DirectXCommon* dxCommon;
 
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelineState;
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootSignature;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-	static Matrix4 sMatProjection;
+	Matrix4 matProjection;
 };
 

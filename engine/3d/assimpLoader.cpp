@@ -117,7 +117,7 @@ uint32_t AssimpLoader::LoadTexture(const std::string filename, const string& dir
 	wchar_t wfilepath[128];
 	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
 
-	return Texture::LoadTexture(wfilepath);
+	return Texture::Instance()->LoadTexture(wfilepath);
 }
 
 AssimpModel::Material AssimpLoader::LoadMaterial(const aiMaterial* material, const string& directoryPath)
