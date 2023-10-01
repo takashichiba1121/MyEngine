@@ -307,6 +307,15 @@ void GameScene::Update()
 		GroundObj_->Update();
 		break;
 	case Scene::Result:
+		if (Input::Instance()->IsLinkGamePad())
+		{
+			spaceSprite->SetTexture(aTexHandle);
+		}
+		else
+		{
+			spaceSprite->SetTexture(spaceTexHandle);
+		}
+
 		if (sceneStart)
 		{
 			frame--;
@@ -367,8 +376,19 @@ void GameScene::Update()
 
 			sceneSprite->Update();
 		}
+
+		spaceSprite->Update();
 		break;
 	case Scene::GameOver:
+		if (Input::Instance()->IsLinkGamePad())
+		{
+			spaceSprite->SetTexture(aTexHandle);
+		}
+		else
+		{
+			spaceSprite->SetTexture(spaceTexHandle);
+		}
+
 		if (sceneStart)
 		{
 			frame--;
@@ -429,6 +449,7 @@ void GameScene::Update()
 
 			sceneSprite->Update();
 		}
+		spaceSprite->Update();
 		break;
 	default:
 		break;
