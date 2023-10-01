@@ -12,15 +12,26 @@ Texture* Texture::Instance()
 	return &instance;
 }
 
-uint32_t Texture::LoadTexture(const wchar_t* fileName)
+uint32_t Texture::LoadTexture(const std::string fileName)
 {
 	DirectX::TexMetadata metadata{};
 	DirectX::ScratchImage scratchImg{};
 	DirectX::ScratchImage mipChain{};
 
+	for (int32_t i=0;i<=spriteSRVCount;i++)
+	{
+		if (fileName==textureName[i])
+		{
+			return i;
+		}
+	}
+	//ユニコード文字列に変換する
+	wchar_t wfilepath[128];
+	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, fileName.c_str(), -1, wfilepath, _countof(wfilepath));
+
 	HRESULT result;
 	result = LoadFromWICFile(
-		fileName,
+		wfilepath,
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
@@ -63,6 +74,7 @@ uint32_t Texture::LoadTexture(const wchar_t* fileName)
 		//まだテクスチャ情報が割り当てられていないところにテクスチャ情報を入れる
 		if (!texBuffuers[i]) {
 			texBuffuers[i] = texBuff;
+			textureName[i] = fileName;
 			break;
 		}
 	}

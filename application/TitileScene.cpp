@@ -13,9 +13,9 @@ void TitileScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	spaceTexHandle = Texture::Instance()->LoadTexture(L"Resources/spaceKey.png");
+	spaceTexHandle = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
 
-	aTexHandle = Texture::Instance()->LoadTexture(L"Resources/Abotton.png");
+	aTexHandle = Texture::Instance()->LoadTexture("Resources/Abotton.png");
 
 	spaceSprite = std::make_unique<Sprite>();
 
@@ -36,7 +36,7 @@ void TitileScene::Initialize()
 
 	sceneSprite = std::make_unique<Sprite>();
 
-	sceneSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/scene.png"));
+	sceneSprite->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
 
 	sceneSprite->SetAnchorPoint({ 0,0 });
 
@@ -48,7 +48,7 @@ void TitileScene::Initialize()
 
 	titleSprite = std::make_unique<Sprite>();
 
-	titleSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/Titlerogo.png"));
+	titleSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Titlerogo.png"));
 
 	titleSprite->SetPosition({ 640,230 });
 
@@ -58,7 +58,7 @@ void TitileScene::Initialize()
 
 	startSprite = std::make_unique<Sprite>();
 
-	startSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/Start.png"));
+	startSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Start.png"));
 
 	startSprite->SetPosition({ 640,600 });
 

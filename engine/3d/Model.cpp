@@ -88,11 +88,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	//ファイルパスを結合
 	string filepath = directoryPath + filename;
 
-	//ユニコード文字列に変換する
-	wchar_t wfilepath[128];
-	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
-
-	textureIndex_=Texture::Instance()->LoadTexture(wfilepath);
+	textureIndex_=Texture::Instance()->LoadTexture(filepath);
 }
 void Model::CreateBuffers()
 {

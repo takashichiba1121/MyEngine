@@ -26,7 +26,7 @@ void Player::Initialize(Model* bulletModel)
 
 	paMan_->Initialize();
 
-	paMan_->SetTextureHandle(Texture::Instance()->LoadTexture(L"Resources/effect4.png"));
+	paMan_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
 
 	obj_->Update();
 

@@ -113,11 +113,7 @@ uint32_t AssimpLoader::LoadTexture(const std::string filename, const string& dir
 	//ファイルパスを結合
 	string filepath = directoryPath + filename;
 
-	//ユニコード文字列に変換する
-	wchar_t wfilepath[128];
-	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(), -1, wfilepath, _countof(wfilepath));
-
-	return Texture::Instance()->LoadTexture(wfilepath);
+	return Texture::Instance()->LoadTexture(filepath);
 }
 
 AssimpModel::Material AssimpLoader::LoadMaterial(const aiMaterial* material, const string& directoryPath)

@@ -34,13 +34,13 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	spaceTexHandle = Texture::Instance()->LoadTexture(L"Resources/spaceKey.png");
+	spaceTexHandle = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
 
-	aTexHandle = Texture::Instance()->LoadTexture(L"Resources/Abotton.png");
+	aTexHandle = Texture::Instance()->LoadTexture("Resources/Abotton.png");
 
-	padSousaTexHandle=Texture::Instance()->LoadTexture(L"Resources/KyeSousa.png");
+	padSousaTexHandle=Texture::Instance()->LoadTexture("Resources/KyeSousa.png");
 
-	keySousaTexHandle=Texture::Instance()->LoadTexture(L"Resources/PadSousa.png");
+	keySousaTexHandle=Texture::Instance()->LoadTexture("Resources/PadSousa.png");
 
 	spaceSprite = std::make_unique<Sprite>();
 
@@ -85,7 +85,7 @@ void GameScene::Initialize()
 
 	sceneSprite = std::make_unique<Sprite>();
 
-	sceneSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/scene.png"));
+	sceneSprite->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
 
 	sceneSprite->SetAnchorPoint({0,0});
 
@@ -116,7 +116,7 @@ void GameScene::Initialize()
 
 	overSprite = std::make_unique<Sprite>();
 
-	overSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/GameOver.png"));
+	overSprite->Initialize(Texture::Instance()->LoadTexture("Resources/GameOver.png"));
 
 	overSprite->SetPosition({ 640,230 });
 
@@ -126,7 +126,7 @@ void GameScene::Initialize()
 
 	clearSprite = std::make_unique<Sprite>();
 
-	clearSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/Clear.png"));
+	clearSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Clear.png"));
 
 	clearSprite->SetPosition({ 640,230 });
 
@@ -136,7 +136,7 @@ void GameScene::Initialize()
 
 	titleSprite = std::make_unique<Sprite>();
 
-	titleSprite->Initialize(Texture::Instance()->LoadTexture(L"Resources/Title.png"));
+	titleSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Title.png"));
 
 	titleSprite->SetPosition({ 640,600 });
 
