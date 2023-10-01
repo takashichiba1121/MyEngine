@@ -44,7 +44,7 @@ void WinApp::Initialize()
 
 	//ウインドウオブジェクトの生成
 	hwnd_ = CreateWindow(w_.lpszClassName,//クラス名
-		L"DirectXGame",//タイトルバーの文字
+		L"ハコニワ",//タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,//標準的なウインドウスタイル
 		CW_USEDEFAULT,//表示X座標（OSに任せる）
 		CW_USEDEFAULT,//表示Y座標（OSに任せる）
