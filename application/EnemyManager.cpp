@@ -4,15 +4,12 @@
 #include<math.h>
 #include<imgui.h>
 
-std::list<std::unique_ptr<Enemy>> EnemyManager::Enemys_;
+EnemyManager* EnemyManager::Instance()
+{
+	static EnemyManager instance;
 
-std::list<std::unique_ptr<EnemyBullet>> EnemyManager::bullets_;
-
-std::vector<std::unique_ptr<Object3d>>* EnemyManager::objects_;
-
-std::unique_ptr<ParticleManager> EnemyManager::particle_;
-
-Player* EnemyManager::player_ = nullptr;
+	return &instance;
+}
 
 void EnemyManager::Initialize()
 {
@@ -110,6 +107,14 @@ void EnemyManager::Update()
 void EnemyManager::ParticleDraw()
 {
 	particle_->Draw();
+}
+
+void EnemyManager::ObjectUpdate()
+{
+	for (std::unique_ptr<Enemy>& enemy : Enemys_)
+	{
+		enemy->ObjectUpdate();
+	}
 }
 
 void EnemyManager::Draw()

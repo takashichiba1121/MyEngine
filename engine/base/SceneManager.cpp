@@ -45,5 +45,7 @@ void SceneManager::Draw(DirectXCommon* dxCommon)
 
 void SceneManager::Finalize()
 {
+	scene_->Finalize();
+
 	scene_=nullptr;
 }

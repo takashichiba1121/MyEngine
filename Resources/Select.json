@@ -42,9 +42,9 @@
             "name": "立方体",
             "transform": {
                 "translation": [
-                    -52.0,
-                    10.0,
-                    5.0
+                    -46.74740982055664,
+                    0.0,
+                    7.0
                 ],
                 "rotation": [
                     0.0,
@@ -71,7 +71,7 @@
                     2.0
                 ]
             },
-            "Tag_name": "Goal"
+            "Tag_name": "Stage3"
         },
         {
             "type": "MESH",
@@ -79,7 +79,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    -10.0,
+                    0.0,
                     1.0
                 ],
                 "rotation": [
@@ -114,9 +114,9 @@
             "name": "Cube.001",
             "transform": {
                 "translation": [
-                    -35.0,
+                    -38.0,
                     0.0,
-                    1.0
+                    1.5
                 ],
                 "rotation": [
                     0.0,
@@ -124,9 +124,9 @@
                     0.0
                 ],
                 "scaling": [
+                    17.0,
                     20.0,
-                    20.0,
-                    1.0
+                    1.5
                 ]
             },
             "file_name": "Map",
@@ -151,8 +151,8 @@
             "transform": {
                 "translation": [
                     -45.0,
-                    10.0,
-                    3.0
+                    0.0,
+                    4.5
                 ],
                 "rotation": [
                     0.0,
@@ -161,8 +161,8 @@
                 ],
                 "scaling": [
                     10.0,
-                    10.0,
-                    1.0
+                    20.0,
+                    1.5
                 ]
             },
             "file_name": "Map",
@@ -183,17 +183,17 @@
         },
         {
             "type": "MESH",
-            "name": "NURBSパス",
+            "name": "立方体.002",
             "transform": {
                 "translation": [
-                    -25.0,
-                    10.0,
-                    3.0
+                    -15.0,
+                    0.0,
+                    1.0
                 ],
                 "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
+                    0.0,
+                    -0.0,
+                    0.0
                 ],
                 "scaling": [
                     1.0,
@@ -201,7 +201,7 @@
                     1.0
                 ]
             },
-            "file_name": "Enemy",
+            "file_name": "Goal",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -215,21 +215,21 @@
                     2.0
                 ]
             },
-            "Tag_name": "Enemy"
+            "Tag_name": "Stage1"
         },
         {
             "type": "MESH",
-            "name": "NURBSパス.001",
+            "name": "立方体.003",
             "transform": {
                 "translation": [
-                    -48.0,
-                    -10.0,
-                    3.0
+                    -27.0,
+                    0.0,
+                    4.0
                 ],
                 "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
+                    0.0,
+                    -0.0,
+                    0.0
                 ],
                 "scaling": [
                     1.0,
@@ -237,7 +237,7 @@
                     1.0
                 ]
             },
-            "file_name": "Enemy",
+            "file_name": "Goal",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -251,43 +251,7 @@
                     2.0
                 ]
             },
-            "Tag_name": "Enemy"
-        },
-        {
-            "type": "MESH",
-            "name": "NURBSパス.002",
-            "transform": {
-                "translation": [
-                    -48.0,
-                    10.0,
-                    5.0
-                ],
-                "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "Enemy",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Enemy"
+            "Tag_name": "Stage2"
         }
     ]
 }

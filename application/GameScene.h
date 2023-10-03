@@ -9,12 +9,6 @@
 #include"BaseScene.h"
 class GameScene:public BaseScene
 {
-	enum class Scene {
-		Title,
-		Game,
-		Result,
-		GameOver,
-	};
 
 public: // メンバ関数
 	GameScene();
@@ -37,7 +31,7 @@ public: // メンバ関数
 	/// <summary>
 	/// マップデータのロード
 	/// </summary>
-	void MapLoad();
+	void MapLoad(std::string mapfullpath);
 
 	void Collision();
 private:
@@ -56,6 +50,17 @@ private:
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
 
+	std::unique_ptr<Object3d> stage1Obj_;
+	std::unique_ptr<Object3d> stage2Obj_;
+	std::unique_ptr<Object3d> stage3Obj_;
+
+	bool isNext_=false;
+	bool isStage1 = false;
+	bool isStage2 = false;
+	bool isStage3 = false;
+
+	bool isGoal=false;
+
 	float ambientColor[3] = {1,1,1};
 
 	//光線方向初期化
@@ -63,15 +68,23 @@ private:
 	float lightColor[3] = { 1,1,1 };
 	float lightAtten[3] = { 0.3f,0.1f,0.1f };
 
+	const Vector3 cameraPos = { 0.0f,40.0f,-40.0f };
+
 	std::unique_ptr<Player> player_;
 
-	#pragma region シーン遷移用変数群
+	bool isClear_=false;
 
-	Scene scene_ = Scene::Title;
+	#pragma region シーン遷移用変数
 
 	bool sceneStart = true;
 
 	bool sceneChange = false;
+
+	bool IsCameraSet = true;
+
+	Vector3 cameraStart = {0.0,0.0,0.0};
+
+	Vector3 cameraEnd = { 0.0,0.0,0.0 };
 
 	const uint32_t endFrame=120;
 
@@ -86,19 +99,8 @@ private:
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite;
 
-	std::unique_ptr<Sprite> spaceSprite;
-
-	uint32_t spaceTexHandle;
-	uint32_t aTexHandle;
-
 	uint32_t padSousaTexHandle;
 	uint32_t keySousaTexHandle;
-
-	std::unique_ptr<Sprite> overSprite;
-
-	std::unique_ptr<Sprite> clearSprite;
-
-	std::unique_ptr<Sprite> titleSprite;
 
 	std::unique_ptr<Sprite> sousaSprite;
 
@@ -111,5 +113,7 @@ private:
 	std::unique_ptr<Model> skyModel_;
 
 	std::unique_ptr<Object3d> skyObj_;
+
+	std::string mapName;
 };
 

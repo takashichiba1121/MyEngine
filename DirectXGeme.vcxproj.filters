@@ -197,9 +197,6 @@
     <ClCompile Include="engine\Math\Easing.cpp">
       <Filter>engin\ソースファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="application\Player.cpp">
-      <Filter>application\ソース ファイル\player</Filter>
-    </ClCompile>
     <ClCompile Include="application\PlayerBullet.cpp">
       <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
@@ -232,6 +229,15 @@
     </ClCompile>
     <ClCompile Include="SceneFactory.cpp">
       <Filter>engin\ソースファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="application\ResultScene.cpp">
+      <Filter>application\ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="application\GameOverScene.cpp">
+      <Filter>application\ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Player.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +372,12 @@
     </ClInclude>
     <ClInclude Include="engine\base\SceneFactory.h">
       <Filter>engin\ヘッダーファイル\base\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="application\GameOverScene.h">
+      <Filter>application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="application\ResultScene.h">
+      <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

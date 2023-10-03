@@ -19,9 +19,19 @@ public:
 	void Update();
 
 	/// <summary>
+	/// 入力は受け付けないがアップデートはする(カメラ座標のみを動かすときなどに使う)
+	/// </summary>
+	void ObjectUpdate() {obj_->Update(); }
+
+	/// <summary>
 	/// 動き全般の処理
 	/// </summary>
 	void Move();
+
+	/// <summary>
+	/// 終了処理
+	/// </summary>
+	void Finalize();
 
 	/// <summary>
 	/// 攻撃全般
@@ -49,11 +59,9 @@ public:
 
 	void EnemyCollision();
 
-	void SetGoal(Vector3 goalPosition, Vector3 goalScale);
-
 	void SetSpawn(Vector3 spawnPosition);
 
-	bool IsClear() { return isClear; }
+	void SetCameraPos(const Vector3 cameraPos) {cameraPos_=cameraPos ; }
 
 	Object3d* GetObj() { return obj_.get(); }
 
@@ -85,10 +93,8 @@ private:
 	
 	Vector3 goalScale_ = { 0,0,0 };
 
-	bool isClear = false;
-
 	//プレイヤーから見たカメラの位置
-	const Vector3 cameraPos = { 0.0f,40.0f,-40.0f };
+	Vector3 cameraPos_ = { 0.0f,40.0f,-40.0f };
 
 	const float cameraSpeed = 0.1f;
 

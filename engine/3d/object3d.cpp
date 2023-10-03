@@ -397,7 +397,9 @@ bool Object3d::Initialize()
 		//	IID_PPV_ARGS(&constBuffB1));
 		assert(SUCCEEDED(result));
 	}
-	result = constBuffB2_->Map(0, nullptr, (void**)&ConstMapPolygon_);
+	ConstMapPolygon_ = {0.0f,1.0f,0.0f,0.0f};
+
+	
 	return true;
 }
 
@@ -429,7 +431,6 @@ void Object3d::Update()
 	// 定数バッファへデータ転送
 	ConstBufferDataB0* constMap = nullptr;
 	result = constBuffB0_->Map(0, nullptr, (void**)&constMap);
-	/*constMap->color = color;*/
 	constMap->viewproj = sMatView * sMatProjection;	// 行列の合成
 	constMap->world = matWorld_;
 	constMap->cameraPos = sEye;
@@ -437,6 +438,14 @@ void Object3d::Update()
 	constMap->alpha = alpha_;
 	constBuffB0_->Unmap(0, nullptr);
 
+	ConstBufferPolygonExplosion* constMap2=nullptr;
+
+	result = constBuffB2_->Map(0, nullptr, (void**)&constMap2);
+	constMap2->_Destruction= ConstMapPolygon_._Destruction;	// 行列の合成
+	constMap2->_PositionFactor= ConstMapPolygon_._PositionFactor;
+	constMap2->_RotationFactor= ConstMapPolygon_._RotationFactor;
+	constMap2->_ScaleFactor= ConstMapPolygon_._ScaleFactor;
+	constBuffB2_->Unmap(0, nullptr);
 }
 
 void Object3d::Draw()

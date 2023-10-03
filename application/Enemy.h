@@ -18,6 +18,11 @@ public:
 	void Update();
 
 	/// <summary>
+/// 入力は受け付けないがアップデートはする(カメラ座標のみを動かすときなどに使う)
+/// </summary>
+	void ObjectUpdate() { obj_->Update(); }
+
+	/// <summary>
 	/// 攻撃全般
 	/// </summary>
 	void Attack();

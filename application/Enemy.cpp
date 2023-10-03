@@ -59,7 +59,7 @@ void Enemy::Attack()
 		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
 
 		//’e‚Ì“o˜^‚·‚é
-		EnemyManager::AddBullet(std::move(newBullet));
+		EnemyManager::Instance()->AddBullet(std::move(newBullet));
 	}
 }
 

@@ -5,41 +5,59 @@
 #include"Player.h"
 class EnemyManager
 {
+#pragma region Singleton
+private:
+	EnemyManager() {};
+
+	~EnemyManager() {};
+public:
+	EnemyManager(const EnemyManager& carManager) = delete;
+
+	EnemyManager& operator=(const EnemyManager& carManager) = delete;
+
+	static EnemyManager* Instance();
+#pragma endregion
+
 public:
 
-	static void Initialize();
+	void Initialize();
 
-	static void Update();
+	void Update();
 
-	static void Draw();
+	/// <summary>
+	/// 入力は受け付けないがアップデートはする(カメラ座標を動かすときなどに使う)
+	/// </summary>
+	void ObjectUpdate();
 
-	static void ParticleDraw();
+	void Draw();
 
-	static void AddBullet(std::unique_ptr<EnemyBullet> newBullet);
+	void ParticleDraw();
 
-	static std::list<std::unique_ptr<Enemy>>& GetEnemys() { return Enemys_; }
+	void AddBullet(std::unique_ptr<EnemyBullet> newBullet);
 
-	static std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+	std::list<std::unique_ptr<Enemy>>& GetEnemys() { return Enemys_; }
 
-	static void AddEnemy(std::unique_ptr<Enemy> newEnemy);
+	std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
-	static void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
+	void AddEnemy(std::unique_ptr<Enemy> newEnemy);
 
-	static void Fin();
+	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
-	static void Collision();
+	void Fin();
 
-	static void Clear();
+	void Collision();
 
-	static void SetPlayer(Player* player) {player_=player ; }
+	void Clear();
+
+	void SetPlayer(Player* player) { player_ = player; }
 private:
-	static std::list<std::unique_ptr<Enemy>> Enemys_;
+	std::list<std::unique_ptr<Enemy>> Enemys_;
 
-	static std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 
-	static std::vector<std::unique_ptr<Object3d>>* objects_;
+	std::vector<std::unique_ptr<Object3d>>* objects_;
 
-	static std::unique_ptr<ParticleManager> particle_;
+	std::unique_ptr<ParticleManager> particle_;
 
-	static Player* player_;
+	Player* player_;
 };

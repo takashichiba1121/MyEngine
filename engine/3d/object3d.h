@@ -200,9 +200,9 @@ public: // メンバ関数
 	//setter
 	void SetModel(Model* model) { this->model_ = model; }
 
-	const ConstBufferPolygonExplosion GetPolygonExplosion() { return *ConstMapPolygon_; }
+	const ConstBufferPolygonExplosion GetPolygonExplosion() { return ConstMapPolygon_; }
 
-	void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { *ConstMapPolygon_ = polygonExplosion; }
+	void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { ConstMapPolygon_ = polygonExplosion; }
 
 	Matrix4 GetMatWorld() { return matWorld_; }
 
@@ -227,7 +227,7 @@ private: // メンバ変数
 	// 親オブジェクト
 	Object3d* parent_ = nullptr;
 
-	ConstBufferPolygonExplosion* ConstMapPolygon_ ;
+	ConstBufferPolygonExplosion ConstMapPolygon_ ;
 
 	//モデル
 	Model* model_ = nullptr;

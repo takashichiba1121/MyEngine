@@ -1,4 +1,4 @@
-#include "TitileScene.h"
+#include "ResultScene.h"
 #include"DirectXCommon.h"
 #include"levelLoad.h"
 #include"Collider.h"
@@ -8,7 +8,7 @@
 #include<time.h>
 #include"Easing.h"
 #include"Framework.h"
-void TitileScene::Initialize()
+void ResultScene::Initialize()
 {
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
@@ -17,22 +17,22 @@ void TitileScene::Initialize()
 
 	aTexHandle = Texture::Instance()->LoadTexture("Resources/Abotton.png");
 
-	spaceSprite = std::make_unique<Sprite>();
+	buttonSprite = std::make_unique<Sprite>();
 
 	if (Input::Instance()->IsLinkGamePad())
 	{
-		spaceSprite->Initialize(aTexHandle);
+		buttonSprite->Initialize(aTexHandle);
 	}
 	else
 	{
-		spaceSprite->Initialize(spaceTexHandle);
+		buttonSprite->Initialize(spaceTexHandle);
 	}
 
-	spaceSprite->SetPosition({ 640.0f,515.0f });
+	buttonSprite->SetPosition({ 640.0f,515.0f });
 
-	spaceSprite->SetAnchorPoint({ 0.5f,0.5f });
+	buttonSprite->SetAnchorPoint({ 0.5f,0.5f });
 
-	spaceSprite->Update();
+	buttonSprite->Update();
 
 	sceneSprite = std::make_unique<Sprite>();
 
@@ -46,25 +46,25 @@ void TitileScene::Initialize()
 
 	sceneSprite->Update();
 
+	resultSprite = std::make_unique<Sprite>();
+
+	resultSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Clear.png"));
+
+	resultSprite->SetPosition({ 640,230 });
+
+	resultSprite->SetAnchorPoint({ 0.5f,0.5f });
+
+	resultSprite->Update();
+
 	titleSprite = std::make_unique<Sprite>();
 
-	titleSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Titlerogo.png"));
+	titleSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Title.png"));
 
-	titleSprite->SetPosition({ 640,230 });
+	titleSprite->SetPosition({ 640,600 });
 
 	titleSprite->SetAnchorPoint({ 0.5f,0.5f });
 
 	titleSprite->Update();
-
-	startSprite = std::make_unique<Sprite>();
-
-	startSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Start.png"));
-
-	startSprite->SetPosition({ 640,600 });
-
-	startSprite->SetAnchorPoint({ 0.5f,0.5f });
-
-	startSprite->Update();
 
 	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle", true));
 
@@ -87,11 +87,11 @@ void TitileScene::Initialize()
 	Object3d::SetLight(light.get());
 }
 
-void TitileScene::Finalize()
+void ResultScene::Finalize()
 {
 }
 
-void TitileScene::Update()
+void ResultScene::Update()
 {
 	if (sceneStart)
 	{
@@ -111,7 +111,7 @@ void TitileScene::Update()
 	{
 		if (Input::Instance()->IsLinkGamePad())
 		{
-			spaceSprite->SetTexture(aTexHandle);
+			buttonSprite->SetTexture(aTexHandle);
 			if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
 			{
 				sceneChange = true;
@@ -119,7 +119,7 @@ void TitileScene::Update()
 		}
 		else
 		{
-			spaceSprite->SetTexture(spaceTexHandle);
+			buttonSprite->SetTexture(spaceTexHandle);
 			if (Input::Instance()->TriggerKey(DIK_SPACE))
 			{
 				sceneChange = true;
@@ -145,7 +145,7 @@ void TitileScene::Update()
 
 			sceneChange = false;
 
-			SceneManager::Instance()->ChangeScene("GAME");
+			SceneManager::Instance()->ChangeScene("TITLE");
 		}
 		else
 		{
@@ -154,7 +154,7 @@ void TitileScene::Update()
 	}
 	sceneSprite->Update();
 
-	spaceSprite->Update();
+	buttonSprite->Update();
 
 	ImGui::Begin("Partcle");
 
@@ -165,16 +165,16 @@ void TitileScene::Update()
 	ImGui::End();
 }
 
-void TitileScene::Draw(DirectXCommon* dxCommon)
+void ResultScene::Draw(DirectXCommon* dxCommon)
 {
 	Object3d::PreDraw(dxCommon->GetCommandList());
 	skyObj_->Draw();
 	Object3d::PostDraw();
 
 	SpriteCommon::Instance()->PreDraw();
-	spaceSprite->Draw();
-	startSprite->Draw();
+	buttonSprite->Draw();
 	titleSprite->Draw();
+	resultSprite->Draw();
 	sceneSprite->Draw();
 	SpriteCommon::Instance()->PostDraw();
 }

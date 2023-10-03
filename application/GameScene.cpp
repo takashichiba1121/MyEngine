@@ -15,7 +15,6 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	EnemyManager::Fin();
 }
 
 void GameScene::Initialize()
@@ -34,64 +33,47 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	spaceTexHandle = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
+	padSousaTexHandle = Texture::Instance()->LoadTexture("Resources/KyeSousa.png");
 
-	aTexHandle = Texture::Instance()->LoadTexture("Resources/Abotton.png");
-
-	padSousaTexHandle=Texture::Instance()->LoadTexture("Resources/KyeSousa.png");
-
-	keySousaTexHandle=Texture::Instance()->LoadTexture("Resources/PadSousa.png");
-
-	spaceSprite = std::make_unique<Sprite>();
+	keySousaTexHandle = Texture::Instance()->LoadTexture("Resources/PadSousa.png");
 
 	player_ = std::make_unique<Player>();
 
-	if (Input::Instance()->IsLinkGamePad())
-	{
-		spaceSprite->Initialize(aTexHandle);
-	}
-	else
-	{
-		spaceSprite->Initialize(spaceTexHandle);
-	}
-
-	spaceSprite->SetPosition({ 640.0f,500.0f });
-
-	spaceSprite->SetAnchorPoint({ 0.5f,0.5f });
-
-	spaceSprite->Update();
-
-	goalObj_= std::make_unique<Object3d>();
+	goalObj_ = std::make_unique<Object3d>();
 
 	goalObj_->Initialize();
+
+	stage1Obj_ = std::make_unique<Object3d>();
+
+	stage1Obj_->Initialize();
+
+	stage2Obj_ = std::make_unique<Object3d>();
+
+	stage2Obj_->Initialize();
+
+	stage3Obj_ = std::make_unique<Object3d>();
+
+	stage3Obj_->Initialize();
 
 	light.reset(LightGroup::Create());
 
 	Object3d::SetLight(light.get());
 
-	//light->SetDirLightActive(0, false);
-
-	light->SetDirLightDir(0, { 0,-1,1 });
-
-	light->SetDirLightColor(0, { 1,1,1 });
+	light->SetDirLightDir(0, { 0,-1,0 });
 
 	light->SetDirLightActive(1, false);
 
 	light->SetDirLightActive(2, false);
 
-	//light->SetPointActive(0, true);
-
-	//light->SetPointPos(0,{0.5f,1.0f,0.0f});
-
 	sceneSprite = std::make_unique<Sprite>();
 
 	sceneSprite->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
 
-	sceneSprite->SetAnchorPoint({0,0});
+	sceneSprite->SetAnchorPoint({ 0,0 });
 
-	sceneSprite->SetScale({1280,720});
+	sceneSprite->SetScale({ 1280,720 });
 
-	sceneSprite->SetPosition({0,float(startSpriteY)});
+	sceneSprite->SetPosition({ 0,float(startSpriteY) });
 
 	sceneSprite->Update();
 
@@ -110,45 +92,15 @@ void GameScene::Initialize()
 
 	sousaSprite->SetScale({ 300,300 });
 
-	sousaSprite->SetPosition({50,360 });
+	sousaSprite->SetPosition({ 50,360 });
 
 	sousaSprite->Update();
 
-	overSprite = std::make_unique<Sprite>();
-
-	overSprite->Initialize(Texture::Instance()->LoadTexture("Resources/GameOver.png"));
-
-	overSprite->SetPosition({ 640,230 });
-
-	overSprite->SetAnchorPoint({ 0.5f,0.5f });
-
-	overSprite->Update();
-
-	clearSprite = std::make_unique<Sprite>();
-
-	clearSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Clear.png"));
-
-	clearSprite->SetPosition({ 640,230 });
-
-	clearSprite->SetAnchorPoint({ 0.5f,0.5f });
-
-	clearSprite->Update();
-
-	titleSprite = std::make_unique<Sprite>();
-
-	titleSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Title.png"));
-
-	titleSprite->SetPosition({ 640,600 });
-
-	titleSprite->SetAnchorPoint({ 0.5f,0.5f });
-
-	titleSprite->Update();
-
 	light->Update();
 
-	EnemyManager::Initialize();
+	EnemyManager::Instance()->Initialize();
 
-	GroundModel_.reset(Model::LoadFormOBJ("Ground",true));
+	GroundModel_.reset(Model::LoadFormOBJ("Ground", true));
 
 	GroundObj_ = std::make_unique<Object3d>();
 
@@ -158,11 +110,9 @@ void GameScene::Initialize()
 
 	GroundObj_->SetPosition({ 0,-10,0 });
 
-	GroundObj_->SetScale({500,500,500});
+	GroundObj_->SetScale({ 500,500,500 });
 
-	GroundObj_->SetRot({0,3.14f,0});
-
-	GroundObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+	GroundObj_->SetRot({ 0,3.14f,0 });
 
 	GroundObj_->Update();
 
@@ -180,13 +130,9 @@ void GameScene::Initialize()
 
 	skyObj_->SetRot({ 1.57f,0,0 });
 
-	skyObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
-
 	skyObj_->Update();
 
 	frame = 120;
-
-	scene_ = Scene::Game;
 
 	sceneStart = true;
 
@@ -194,354 +140,299 @@ void GameScene::Initialize()
 
 	player_->Initialize(models["PlayerBullet"]);
 
-	MapLoad();
+	MapLoad("Resources/Select.json");
 
 	player_->SetMapData(&objects);
 
-	EnemyManager::SetMapData(&objects);
+	EnemyManager::Instance()->SetMapData(&objects);
 
-	EnemyManager::SetPlayer(player_.get());
-	//player_->Update();
-	//EnemyManager::Update();
+	EnemyManager::Instance()->SetPlayer(player_.get());
+	player_->ObjectUpdate();
+	EnemyManager::Instance()->Update();
+
+
 }
 
 void GameScene::Update()
 {
 	srand((unsigned int)time(NULL));
 
- 	switch (scene_)
+	if (Input::Instance()->IsLinkGamePad())
 	{
-	case Scene::Game:
-		if (Input::Instance()->IsLinkGamePad())
+		sousaSprite->SetTexture(padSousaTexHandle);
+	}
+	else
+	{
+		sousaSprite->SetTexture(keySousaTexHandle);
+	}
+
+	if (sceneStart)
+	{
+		frame--;
+		float f = (float)frame / endFrame;
+
+		sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+		if (frame <= 0)
 		{
-			sousaSprite->SetTexture(padSousaTexHandle);
+			sceneStart = false;
+			frame = 0;
+		}
+		sceneSprite->Update();
+	}
+	else if (IsCameraSet)
+	{
+		frame++;
+		float f = (float)frame / endFrame;
+
+		Vector3 traget = ((cameraEnd - cameraStart) * f) + cameraStart;
+
+		Object3d::SetTarget(traget);
+
+		Object3d::SetEye(traget + cameraPos);
+
+		if (frame >= endFrame)
+		{
+			IsCameraSet = false;
+			frame = 0;
+		}
+
+		player_->ObjectUpdate();
+		EnemyManager::Instance()->ObjectUpdate();
+	}
+	else if (sceneChange==false)
+	{
+		player_->Update();
+		light->Update();
+		EnemyManager::Instance()->Update();
+
+		Cube A, B;
+
+		A.Pos = player_->GetObj()->GetPosition();
+
+		A.scale = player_->GetObj()->GetScale();
+
+		if (mapName != "Resources/Select.json")
+		{
+			B.Pos = goalObj_->GetPosition();
+
+			B.scale = goalObj_->GetScale();
+
+			if (Collider::CubeAndCube(A, B))
+			{
+				isClear_ = true;
+				sceneChange = true;
+				frame = 0;
+			}
 		}
 		else
 		{
-			sousaSprite->SetTexture(keySousaTexHandle);
-		}
 
-		if (sceneStart)
-		{
-			frame--;
-			float f = (float)frame / endFrame;
+			B.Pos = stage1Obj_->GetPosition();
 
-			sceneSprite->SetPosition({ 0,((endSpriteY- startSpriteY) * f) + startSpriteY });
+			B.scale = stage1Obj_->GetScale();
 
-			if (frame <=0)
+			if (Collider::CubeAndCube(A, B))
 			{
-				sceneStart = false;
+				isNext_ = true;
+				isStage1 = true;
+				sceneChange = true;
 				frame = 0;
 			}
-			sceneSprite->Update();
-		}
-		else if(player_->IsDaed()==false&&player_->IsClear()==false)
-		{
-			player_->Update();
-			light->Update();
-			EnemyManager::Update();
 
-			if (Input::Instance()->TriggerKey(DIK_0))
+			B.Pos = stage2Obj_->GetPosition();
+
+			B.scale = stage2Obj_->GetScale();
+
+			if (Collider::CubeAndCube(A, B))
 			{
-				objects.clear();
-				MapLoad();
-
-				EnemyManager::SetMapData(&objects);
-
-				player_->SetMapData(&objects);
+				isNext_ = true;
+				isStage1 = true;
+				sceneChange = true;
+				frame = 0;
 			}
 
-			if (player_->IsClear())
-			{
-				sceneChange = true;
-			}
+			B.Pos = stage3Obj_->GetPosition();
 
-			if (player_->IsDaed())
+			B.scale = stage3Obj_->GetScale();
+
+			if (Collider::CubeAndCube(A, B))
 			{
+				isNext_ = true;
+				isStage1 = true;
 				sceneChange = true;
+				frame = 0;
 			}
 		}
-
-		if (sceneChange)
+		if (player_->IsDaed())
 		{
-			if (frame < endFrame)
+			sceneChange = true;
+			frame = 0;
+		}
+	}
+	else
+	{
+		if (frame < endFrame)
+		{
+			frame++;
+
+			float f = Easing::easeOutBounce((float)frame / endFrame);
+
+			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+
+		}
+		else if (frame >= endFrame + 5)
+		{
+			frame = 120;
+			if (mapName != "Resources/Select.json")
 			{
-				frame++;
-
-				float f = Easing::easeOutBounce((float)frame / endFrame);
-
-				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			}
-			else if (frame >= endFrame + 5)
-			{
-				frame = 120;
-
-				if (player_->IsClear())
+				if (isClear_)
 				{
-					scene_ = Scene::Result;
+					SceneManager::Instance()->ChangeScene("RESULT");
+				}
+				else if (player_->IsDaed())
+				{
+					SceneManager::Instance()->ChangeScene("GAMEOVER");
+				}
+			}
+			else
+			{
+				if (isStage1 == true)
+				{
+					MapLoad("Resources/Stage1.json");
+
+					player_->SetMapData(&objects);
+
+					EnemyManager::Instance()->SetMapData(&objects);
+
+					EnemyManager::Instance()->SetPlayer(player_.get());
+					//player_->Update();
+					EnemyManager::Instance()->Update();
+
+					IsCameraSet = true;
+
+					sceneStart = true;
+				}
+				else if (isStage2 == true)
+				{
+					MapLoad("Resources/Stage1.json");
+
+					player_->SetMapData(&objects);
+
+					EnemyManager::Instance()->SetMapData(&objects);
+
+					EnemyManager::Instance()->SetPlayer(player_.get());
+					//player_->Update();
+					EnemyManager::Instance()->Update();
+
+					IsCameraSet = true;
+
+					sceneStart = true;
 				}
 				else
 				{
-					scene_ = Scene::GameOver;
-				}
-				sceneStart = true;
+					MapLoad("Resources/Stage1.json");
 
-				sceneChange = false;
-			}
-			else
-			{
-				frame++;
-			}
+					player_->SetMapData(&objects);
 
-			sceneSprite->Update();
-		}
+					EnemyManager::Instance()->SetMapData(&objects);
 
-		for (std::unique_ptr<Object3d>& obj : objects)
-		{
-			obj->Update();
-		}
+					EnemyManager::Instance()->SetPlayer(player_.get());
+					//player_->Update();
+					EnemyManager::Instance()->Update();
 
-		goalObj_->Update();
+					IsCameraSet = true;
 
-		GroundObj_->Update();
-		break;
-	case Scene::Result:
-		if (Input::Instance()->IsLinkGamePad())
-		{
-			spaceSprite->SetTexture(aTexHandle);
-		}
-		else
-		{
-			spaceSprite->SetTexture(spaceTexHandle);
-		}
-
-		if (sceneStart)
-		{
-			frame--;
-			float f = (float)frame / endFrame;
-
-			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			if (frame <= 0)
-			{
-				sceneStart = false;
-				frame = 0;
-			}
-			sceneSprite->Update();
-		}
-		else
-		{
-			if (Input::Instance()->IsLinkGamePad())
-			{
-				if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
-				{
-					sceneChange = true;
+					sceneStart = true;
 				}
 			}
-			else if (Input::Instance()->TriggerKey(DIK_SPACE))
-			{
-				sceneChange = true;
-			}
-		}
-		if (sceneChange)
-		{
-			if (frame < endFrame)
-			{
-				frame++;
-
-				float f = Easing::easeOutBounce((float)frame / endFrame);
-
-				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			}
-			else if (frame >= endFrame + 5)
-			{
-				frame = 120;
-
-				SceneManager::Instance()->ChangeScene("TITLE");
-
-				sceneStart = true;
-
-				sceneChange = false;
-
-				player_->Reset();
-
-				EnemyManager::Clear();
-			}
-			else
-			{
-				frame++;
-			}
-
-			sceneSprite->Update();
-		}
-
-		spaceSprite->Update();
-		break;
-	case Scene::GameOver:
-		if (Input::Instance()->IsLinkGamePad())
-		{
-			spaceSprite->SetTexture(aTexHandle);
+			sceneChange = false;
 		}
 		else
 		{
-			spaceSprite->SetTexture(spaceTexHandle);
+			frame++;
 		}
 
-		if (sceneStart)
-		{
-			frame--;
-			float f = (float)frame / endFrame;
-
-			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			if (frame <= 0)
-			{
-				sceneStart = false;
-				frame = 0;
-			}
-			sceneSprite->Update();
-		}
-		else
-		{
-			if (Input::Instance()->IsLinkGamePad())
-			{
-				if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
-				{
-					sceneChange = true;
-				}
-			}
-			else if (Input::Instance()->TriggerKey(DIK_SPACE))
-			{
-				sceneChange = true;
-			}
-		}
-		if (sceneChange)
-		{
-			if (frame < endFrame)
-			{
-				frame++;
-
-				float f = Easing::easeOutBounce((float)frame / endFrame);
-
-				sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
-
-			}
-			else if (frame >= endFrame + 5)
-			{
-				frame = 120;
-
-				SceneManager::Instance()->ChangeScene("TITLE");
-
-				sceneStart = true;
-
-				sceneChange = false;
-
-				player_->Reset();
-
-				EnemyManager::Clear();
-			}
-			else
-			{
-				frame++;
-			}
-
-			sceneSprite->Update();
-		}
-		spaceSprite->Update();
-		break;
-	default:
-		break;
+		sceneSprite->Update();
 	}
 
+	for (std::unique_ptr<Object3d>& obj : objects)
+	{
+		obj->Update();
+	}
+
+	goalObj_->Update();
+
+	stage1Obj_->Update();
+
+	stage2Obj_->Update();
+
+	stage3Obj_->Update();
+
+	GroundObj_->Update();
+
 	skyObj_->Update();
-
-	ImGui::Begin("Scene");
-
-	ImGui::Text("%d",scene_);
-
-	ImGui::End();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
 {
-	switch (scene_)
+	Object3d::PreDraw(dxCommon->GetCommandList());
+
+	skyObj_->Draw();
+
+	GroundObj_->Draw();
+
+	for (uint32_t i = 0; i < objects.size(); i++)
 	{
-	case GameScene::Scene::Game:
-		Object3d::PreDraw(dxCommon->GetCommandList());
-		
-		skyObj_->Draw();
-
-		GroundObj_->Draw();
-
-		for (uint32_t i = 0; i < objects.size(); i++)
-		{
-			objects[i]->Draw();
-		}
-
-		EnemyManager::Draw();
-
-		player_->Draw();
-
-		goalObj_->Draw();
-
-		Object3d::PostDraw();
-
-		ParticleManager::PreDraw(dxCommon->GetCommandList());
-		player_->ParticleDraw();
-		EnemyManager::ParticleDraw();
-		ParticleManager::PostDraw();
-
-		SpriteCommon::Instance()->PreDraw();
-		sousaSprite->Draw();
-		sceneSprite->Draw();
-		SpriteCommon::Instance()->PostDraw();
-		break;
-	case GameScene::Scene::Result:
-		Object3d::PreDraw(dxCommon->GetCommandList());
-		skyObj_->Draw();
-		Object3d::PostDraw();
-
-		SpriteCommon::Instance()->PreDraw();
-		spaceSprite->Draw();
-		clearSprite->Draw();
-		titleSprite->Draw();
-		sceneSprite->Draw();
-		SpriteCommon::Instance()->PostDraw();
-		break;
-	case GameScene::Scene::GameOver:
-		Object3d::PreDraw(dxCommon->GetCommandList());
-		skyObj_->Draw();
-		Object3d::PostDraw();
-
-		SpriteCommon::Instance()->PreDraw();
-		spaceSprite->Draw();
-		overSprite->Draw();
-		titleSprite->Draw();
-		sceneSprite->Draw();
-		SpriteCommon::Instance()->PostDraw();
-		break;
-	default:
-		break;
+		objects[i]->Draw();
 	}
+
+	EnemyManager::Instance()->Draw();
+
+	player_->Draw();
+	if (mapName == "Resources/Select.json")
+	{
+		stage1Obj_->Draw();
+		stage2Obj_->Draw();
+		stage3Obj_->Draw();
+	}
+	else
+	{
+		goalObj_->Draw();
+	}
+
+	Object3d::PostDraw();
+
+	ParticleManager::PreDraw(dxCommon->GetCommandList());
+	player_->ParticleDraw();
+	EnemyManager::Instance()->ParticleDraw();
+	ParticleManager::PostDraw();
+
+	SpriteCommon::Instance()->PreDraw();
+	sousaSprite->Draw();
+	sceneSprite->Draw();
+	SpriteCommon::Instance()->PostDraw();
 }
 
 void GameScene::Finalize()
 {
+	EnemyManager::Instance()->Fin();
 }
 
-void GameScene::MapLoad()
+void GameScene::MapLoad(std::string mapFullpath)
 {
 	std::unique_ptr<LevelData> levelData;
-	levelData.reset(LevelLoad::Load("Resources/level.json"));
+	levelData.reset(LevelLoad::Load(mapFullpath));
 
 	objects.clear();
 
-	EnemyManager::Clear();
+	EnemyManager::Instance()->Clear();
+
+	mapName = mapFullpath;
+
 	for (auto& objectData : levelData->objects)
 	{
-		if (objectData.tagName=="Map")
+		if (objectData.tagName == "Map")
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
@@ -559,18 +450,18 @@ void GameScene::MapLoad()
 			// 座標
 			newObject->SetScale({ objectData.scale });
 
-			newObject->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
-
 			// 配列に登録
 			objects.push_back(std::move(newObject));
 		}
 		if (objectData.tagName == "Spawn")
 		{
 			player_->SetSpawn(objectData.trans);
+
+			cameraEnd = objectData.trans;
 		}
 		if (objectData.tagName == "Goal")
 		{
-			player_->SetGoal(objectData.trans,objectData.scale);
+			//player_->SetGoal(objectData.trans, objectData.scale);
 
 			//モデルを指定して3Dオブジェクトを生成
 			goalObj_->SetModel(models[objectData.fileName]);
@@ -584,23 +475,91 @@ void GameScene::MapLoad()
 			// 座標
 			goalObj_->SetScale({ objectData.scale });
 
-			goalObj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
-
 			goalObj_->Setalpha(0.3f);
 
 			goalObj_->Update();
+
+			Object3d::SetEye(objectData.trans + cameraPos);
+
+			Object3d::SetTarget(objectData.trans);
+
+			isGoal = true;
+
+			cameraStart = objectData.trans;
 		}
-		if (objectData.tagName=="Enemy")
+		if (objectData.tagName == "Enemy")
 		{
 			std::unique_ptr<Enemy> enemy;
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(models ["PlayerBullet"], { objectData.trans }, player_->GetObj());
+			enemy->Initialize(models["PlayerBullet"], { objectData.trans }, player_->GetObj());
 
 			enemy->Update();
 
-			EnemyManager::AddEnemy(std::move(enemy));
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
+		if (objectData.tagName == "Stage1")
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			stage1Obj_->SetModel(models[objectData.fileName]);
+
+			// 座標
+			stage1Obj_->SetPosition({ objectData.trans });
+
+			// 回転角
+			stage1Obj_->SetRot({ objectData.rot });
+
+			// 座標
+			stage1Obj_->SetScale({ objectData.scale });
+
+			stage1Obj_->Setalpha(0.3f);
+
+			stage1Obj_->Update();
+		}
+		if (objectData.tagName == "Stage2")
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			stage2Obj_->SetModel(models[objectData.fileName]);
+
+			// 座標
+			stage2Obj_->SetPosition({ objectData.trans });
+
+			// 回転角
+			stage2Obj_->SetRot({ objectData.rot });
+
+			// 座標
+			stage2Obj_->SetScale({ objectData.scale });
+
+			stage2Obj_->Setalpha(0.3f);
+
+			stage2Obj_->Update();
+		}
+		if (objectData.tagName == "Stage3")
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			stage3Obj_->SetModel(models[objectData.fileName]);
+
+			// 座標
+			stage3Obj_->SetPosition({ objectData.trans });
+
+			// 回転角
+			stage3Obj_->SetRot({ objectData.rot });
+
+			// 座標
+			stage3Obj_->SetScale({ objectData.scale });
+
+			stage3Obj_->Setalpha(0.3f);
+
+			stage3Obj_->Update();
+		}
+	}
+	if (isGoal == false)
+	{
+		Object3d::SetEye(player_->GetObj()->GetPosition() + cameraPos);
+
+		Object3d::SetTarget(player_->GetObj()->GetPosition());
+
+		IsCameraSet = false;
 	}
 }

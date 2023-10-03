@@ -1,6 +1,7 @@
 #include "MyGame.h"
 #include"TitileScene.h"
 #include"SceneFactory.h"
+#include"imguiManager.h"
 
 
 using namespace std;
@@ -25,8 +26,6 @@ void MyGame::Finalize()
 void MyGame::Update()
 {
 	Framework::Update();
-
-	//gameScene->Update();
 }
 
 void MyGame::Draw()
@@ -35,5 +34,9 @@ void MyGame::Draw()
 
 	SceneManager::Instance()->Draw(dxCommon_.get());
 
+	imguiManager::Draw();
+
 	Framework::GetDxCommon()->PostDrow();
+
+	
 }

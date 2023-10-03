@@ -113,9 +113,11 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="application\Enemy.cpp" />
     <ClCompile Include="application\EnemyBullet.cpp" />
     <ClCompile Include="application\EnemyManager.cpp" />
+    <ClCompile Include="application\GameOverScene.cpp" />
     <ClCompile Include="application\PlayerBullet.cpp" />
     <ClCompile Include="application\GameScene.cpp" />
     <ClCompile Include="application\Player.cpp" />
+    <ClCompile Include="application\ResultScene.cpp" />
     <ClCompile Include="application\TitileScene.cpp" />
     <ClCompile Include="engine\3d\assimpLoader.cpp" />
     <ClCompile Include="engine\3d\assimpModel.cpp" />
@@ -158,9 +160,11 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="application\Enemy.h" />
     <ClInclude Include="application\EnemyBullet .h" />
     <ClInclude Include="application\EnemyManager.h" />
+    <ClInclude Include="application\GameOverScene.h" />
     <ClInclude Include="application\PlayerBullet.h" />
     <ClInclude Include="application\GameScene.h" />
     <ClInclude Include="application\Player.h" />
+    <ClInclude Include="application\ResultScene.h" />
     <ClInclude Include="application\TitileScene.h" />
     <ClInclude Include="engine\3d\assimpLoader.h" />
     <ClInclude Include="engine\3d\assimpModel.h" />

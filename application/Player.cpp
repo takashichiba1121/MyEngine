@@ -64,25 +64,9 @@ void Player::Update()
 
 	Object3d::SetTarget(Object3d::GetTarget() + ((obj_->GetPosition() - Object3d::GetTarget()) * cameraSpeed));
 
-	Object3d::SetEye(Object3d::GetTarget() + cameraPos);
+	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 
 	paMan_->Update();
-
-	Cube A, B;
-
-	A.Pos = obj_->GetPosition();
-
-	A.scale = obj_->GetScale();
-
-	B.Pos = goalPosition_;
-
-	B.scale = goalScale_;
-
-	if (Collider::CubeAndCube(A, B))
-	{
-		isClear = true;
-		paMan_->Clear();
-	}
 
 	ImGui::Begin("Player");
 
@@ -212,6 +196,11 @@ void Player::Move()
 	obj_->SetPosition(move_);
 }
 
+void Player::Finalize()
+{
+	paMan_->Clear();
+}
+
 void Player::Attack()
 {
 	if (Input::Instance()->IsLinkGamePad())
@@ -295,8 +284,6 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	assert(objects);
 
 	objects_ = objects;
-
-	isClear = false;
 }
 
 Vector3 Player::MapCollision()
@@ -415,7 +402,7 @@ Vector3 Player::MapCollision()
 
 void Player::EnemyCollision()
 {
-	for (std::unique_ptr<Enemy>& enemy:EnemyManager::GetEnemys())
+	for (std::unique_ptr<Enemy>& enemy:EnemyManager::Instance()->GetEnemys())
 	{
 
 		Cube enemyCube, playerCube;
@@ -471,7 +458,7 @@ void Player::EnemyCollision()
 		}
 	}
 
-	for (std::unique_ptr<EnemyBullet>& bullet : EnemyManager::GetBullets())
+	for (std::unique_ptr<EnemyBullet>& bullet : EnemyManager::Instance()->GetBullets())
 	{
 		Cube bulletCube, playerCube;
 		bulletCube.Pos =bullet->GetPosition();
@@ -516,21 +503,18 @@ void Player::EnemyCollision()
 	}
 }
 
-void Player::SetGoal(Vector3 goalPosition, Vector3 goalScale)
-{
-	goalPosition_ = goalPosition;
-
-	goalScale_ = goalScale;
-}
+//void Player::SetGoal(Vector3 goalPosition, Vector3 goalScale)
+//{
+//	goalPosition_ = goalPosition;
+//
+//	goalScale_ = goalScale;
+//}
 
 void Player::SetSpawn(Vector3 spawnPosition)
 {
 	spawnPosition_ = spawnPosition;
 
 	obj_->SetPosition(spawnPosition_);
-	Object3d::SetTarget(spawnPosition_);
-
-	Object3d::SetEye(spawnPosition_ + cameraPos);
 
 	obj_->Update();
 }
