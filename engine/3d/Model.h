@@ -98,11 +98,11 @@ private:
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
 	// 頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView_;
+	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 	// インデックスバッファ
 	ComPtr<ID3D12Resource> indexBuff_;
 	// インデックスバッファビュー
-	D3D12_INDEX_BUFFER_VIEW ibView_;
+	D3D12_INDEX_BUFFER_VIEW ibView_ = {};
 	// 頂点データ配列
 	std::vector<VertexPosNormalUv> vertices_;
 	// 頂点インデックス配列
@@ -116,5 +116,5 @@ private:
 	// 定数バッファ(マテリアル)
 	ComPtr<ID3D12Resource> constBuffB1_;
 
-	uint32_t textureIndex_;
+	uint32_t textureIndex_=0;
 };

@@ -42,11 +42,11 @@ public:
 
 	void Finalize();
 private:
-	DirectXCommon* dxCommon;
+	DirectXCommon* dxCommon=nullptr;
 
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-	Matrix4 matProjection;
+	Matrix4 matProjection=Matrix4Math::identity();
 };
 

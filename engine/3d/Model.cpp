@@ -83,8 +83,6 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 
 void Model::LoadTexture(const std::string& directoryPath, const std::string& filename)
 {
-	HRESULT result = S_FALSE;
-
 	//ファイルパスを結合
 	string filepath = directoryPath + filename;
 
@@ -256,10 +254,10 @@ void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 		if (key == "mtllib")
 		{
 			//マテリアルファイル名読み込み
-			string filename;
-			line_stream >> filename;
+			string materialFilename;
+			line_stream >> materialFilename;
 			//マテリアル読み込み
-			LoadMaterial(directoryPath, filename);
+			LoadMaterial(directoryPath, materialFilename);
 		}
 
 		//先頭文字列がvなら頂点座標
@@ -314,9 +312,12 @@ void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 				index_stream >> indexNormal;
 				//頂点データの追加
 				VertexPosNormalUv vertex{};
-				vertex.pos = positions[indexPosition - 1];
-				vertex.normal = normals[indexNormal - 1];
-				vertex.uv = texcodes[indexTexcord - 1];
+				indexPosition--;
+				indexNormal--;
+				indexTexcord--;
+				vertex.pos = positions[indexPosition];
+				vertex.normal = normals[indexNormal];
+				vertex.uv = texcodes[indexTexcord];
 				vertices_.emplace_back(vertex);
 				smoothDate[indexPosition].emplace_back(static_cast<unsigned short>(vertices_.size() - 1));
 				//インデックスデータの追加

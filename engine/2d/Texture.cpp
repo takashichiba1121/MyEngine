@@ -27,7 +27,7 @@ uint32_t Texture::LoadTexture(const std::string fileName)
 	}
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];
-	uint32_t iBufferSize = MultiByteToWideChar(CP_ACP, 0, fileName.c_str(), -1, wfilepath, _countof(wfilepath));
+	MultiByteToWideChar(CP_ACP, 0, fileName.c_str(), -1, wfilepath, _countof(wfilepath));
 
 	HRESULT result;
 	result = LoadFromWICFile(
@@ -55,9 +55,9 @@ uint32_t Texture::LoadTexture(const std::string fileName)
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureResourceDesc.Format = metadata.format;
 	textureResourceDesc.Width = metadata.width;	// 幅
-	textureResourceDesc.Height = (uint32_t)metadata.height;	// 高さ
-	textureResourceDesc.DepthOrArraySize = (uint32_t)metadata.arraySize;
-	textureResourceDesc.MipLevels = (uint32_t)metadata.mipLevels;
+	textureResourceDesc.Height = (UINT16)metadata.height;	// 高さ
+	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
 	textureResourceDesc.SampleDesc.Count = 1;
 	result = dxCommon_->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
@@ -152,9 +152,12 @@ void Texture::ExcuteComandList()
 	if (test != dxCommon_->GetFenceValue())
 	{
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-		dxCommon_->GetFence()->SetEventOnCompletion(dxCommon_->GetFenceValue(), event);
-		WaitForSingleObject(event, INFINITE);
-		CloseHandle(event);
+		if (event!=0)
+		{
+			dxCommon_->GetFence()->SetEventOnCompletion(dxCommon_->GetFenceValue(), event);
+			WaitForSingleObject(event, INFINITE);
+			CloseHandle(event);
+		}
 	}
 
 	HRESULT result;

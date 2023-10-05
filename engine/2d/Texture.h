@@ -2,7 +2,10 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <dxgi1_6.h>
+#pragma warning(push)
 #include<DirectXTex.h>
+#pragma warning(disable:26813)
+#pragma warning(pop)
 #include<wrl.h>
 #include<array>
 #include<string>
@@ -30,9 +33,9 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;			//デスクリプタヒープ
 	std::array< Microsoft::WRL::ComPtr<ID3D12Resource>,2056 >texBuffuers;	//テクスチャバッファ
 	std::string textureName[2056];
-	D3D12_RESOURCE_DESC textureResourceDesc;
-	DirectXCommon* dxCommon_;
-	uint32_t srvIncrementIndex;
+	D3D12_RESOURCE_DESC textureResourceDesc = {};
+	DirectXCommon* dxCommon_=nullptr;
+	uint32_t srvIncrementIndex=0;
 public:
 	uint32_t LoadTexture(const std::string fileName = "NULL");
 	void Initialize(DirectXCommon* DxCommon);

@@ -55,9 +55,9 @@ private:
 
 	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 
-	std::vector<std::unique_ptr<Object3d>>* objects_;
+	std::vector<std::unique_ptr<Object3d>>* objects_=nullptr;
 
 	std::unique_ptr<ParticleManager> particle_;
 
-	Player* player_;
+	Player* player_=nullptr;
 };

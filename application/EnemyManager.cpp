@@ -38,8 +38,6 @@ void EnemyManager::Update()
 
 				//XYZ‚ÌL‚ª‚é‹——£
 				const float rnd_pos = 0.1f;
-				//Y•ûŒü‚É‚ÍÅ’áŒÀ‚Ì”ò‚Ô‹——£
-				const float constPosY = 1;
 				Vector3 pos{};
 				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);

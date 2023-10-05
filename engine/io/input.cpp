@@ -14,7 +14,7 @@ Input* Input::Instance()
 void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
-	sWinApp = WinApp;
+	winApp = WinApp;
 
 	HRESULT result;
 
@@ -37,44 +37,44 @@ void Input::Initialize(WinApp* WinApp)
 
 	isLinkGamePad = XInputGetState(
 		0,//複数つながれてるときの選択
-		&sGamePad);//この変数に入力状況が格納される
+		&gamePad);//この変数に入力状況が格納される
 }
 
 void Input::Update()
 {
 	//前回のキー入力を保存
-	memcpy(sKeyPre, sKey, sizeof(sKey));
+	memcpy(keyPre, key, sizeof(key));
 
 	//キーボード情報の取得開始
 	sKeyboard->Acquire();
 	//全キーの入力状態を取得する
-	sKeyboard->GetDeviceState(sizeof(sKey), sKey);
+	sKeyboard->GetDeviceState(sizeof(key), key);
 
 	Updatekeypad();
 
-	if (abs(sGamePad.Gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(gamePad.Gamepad.sThumbLX) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		sGamePad.Gamepad.sThumbLX = 0;
+		gamePad.Gamepad.sThumbLX = 0;
 	}
-	if (abs(sGamePad.Gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	if (abs(gamePad.Gamepad.sThumbLY) < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		sGamePad.Gamepad.sThumbLY = 0;
+		gamePad.Gamepad.sThumbLY = 0;
 	}
-	if (abs(sGamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+	if (abs(gamePad.Gamepad.sThumbRX) < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 	{
-		sGamePad.Gamepad.sThumbRX = 0;
+		gamePad.Gamepad.sThumbRX = 0;
 	}
-	if (abs(sGamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+	if (abs(gamePad.Gamepad.sThumbRY) < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 	{
-		sGamePad.Gamepad.sThumbRY = 0;
+		gamePad.Gamepad.sThumbRY = 0;
 	}
-	if (sGamePad.Gamepad.bLeftTrigger < XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	if (gamePad.Gamepad.bLeftTrigger < XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
-		sGamePad.Gamepad.bLeftTrigger = 0;
+		gamePad.Gamepad.bLeftTrigger = 0;
 	}
-	if (sGamePad.Gamepad.bRightTrigger < XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	if (gamePad.Gamepad.bRightTrigger < XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
-		sGamePad.Gamepad.bRightTrigger = 0;
+		gamePad.Gamepad.bRightTrigger = 0;
 	}
 
 
@@ -83,7 +83,7 @@ void Input::Update()
 bool Input::PushKey(BYTE keyNumber)
 {
 	//指定キーを押していればtrueを返す
-	if (sKey[keyNumber]) {
+	if (key[keyNumber]) {
 		return true;
 	}
 	//そうでなければfalse返す
@@ -93,7 +93,7 @@ bool Input::PushKey(BYTE keyNumber)
 bool Input::TriggerKey(BYTE keyNumber)
 {
 	//指定キーを押していればtrueを返す
-	if (sKey[keyNumber] && sKeyPre[keyNumber] == 0) {
+	if (key[keyNumber] && keyPre[keyNumber] == 0) {
 		return true;
 	}
 	//そうでなければfalse返す
@@ -104,11 +104,11 @@ bool Input::TriggerKey(BYTE keyNumber)
 
 void Input::Updatekeypad()
 {
-	sOldGamePad = sGamePad;
+	oldGamePad = gamePad;
 
 	isLinkGamePad = XInputGetState(
 		0,//複数つながれてるときの選択
-		&sGamePad);//この変数に入力状況が格納される
+		&gamePad);//この変数に入力状況が格納される
 }
 
 bool Input::IsLinkGamePad()
@@ -122,12 +122,12 @@ bool Input::IsLinkGamePad()
 
 bool Input::PadTriggerKey(uint32_t button)
 {
-	return ((sGamePad.Gamepad.wButtons & button) == button && (sOldGamePad.Gamepad.wButtons & button) != button);
+	return ((gamePad.Gamepad.wButtons & button) == button && (oldGamePad.Gamepad.wButtons & button) != button);
 }
 
 bool Input::PadPushKey(uint32_t button)
 {
-	return sGamePad.Gamepad.wButtons & button;
+	return gamePad.Gamepad.wButtons & button;
 }
 
 float Input::GetPadStick(PadStick Stick)
@@ -135,17 +135,17 @@ float Input::GetPadStick(PadStick Stick)
 	switch (Stick)
 	{
 	case PadStick::LT:
-		return (float)sGamePad.Gamepad.bLeftTrigger / 255;
+		return (float)gamePad.Gamepad.bLeftTrigger / 255;
 	case PadStick::RT:
-		return (float)sGamePad.Gamepad.bRightTrigger / 255;
+		return (float)gamePad.Gamepad.bRightTrigger / 255;
 	case PadStick::LX:
-		return (float)sGamePad.Gamepad.sThumbLX / SHRT_MAX;
+		return (float)gamePad.Gamepad.sThumbLX / SHRT_MAX;
 	case PadStick::LY:
-		return (float)sGamePad.Gamepad.sThumbLY / SHRT_MAX;
+		return (float)gamePad.Gamepad.sThumbLY / SHRT_MAX;
 	case PadStick::RX:
-		return (float)sGamePad.Gamepad.sThumbRX / SHRT_MAX;
+		return (float)gamePad.Gamepad.sThumbRX / SHRT_MAX;
 	case PadStick::RY:
-		return (float)sGamePad.Gamepad.sThumbRY / SHRT_MAX;
+		return (float)gamePad.Gamepad.sThumbRY / SHRT_MAX;
 	default:
 		return 0;
 	}
@@ -156,17 +156,17 @@ float Input::GetOldPadStick(PadStick Stick)
 	switch (Stick)
 	{
 	case PadStick::LT:
-		return (float)sOldGamePad.Gamepad.bLeftTrigger / 255;
+		return (float)oldGamePad.Gamepad.bLeftTrigger / 255;
 	case PadStick::RT:
-		return (float)sOldGamePad.Gamepad.bRightTrigger / 255;
+		return (float)oldGamePad.Gamepad.bRightTrigger / 255;
 	case PadStick::LX:
-		return (float)sOldGamePad.Gamepad.sThumbLX / SHRT_MAX;
+		return (float)oldGamePad.Gamepad.sThumbLX / SHRT_MAX;
 	case PadStick::LY:
-		return (float)sOldGamePad.Gamepad.sThumbLY / SHRT_MAX;
+		return (float)oldGamePad.Gamepad.sThumbLY / SHRT_MAX;
 	case PadStick::RX:
-		return (float)sOldGamePad.Gamepad.sThumbRX / SHRT_MAX;
+		return (float)oldGamePad.Gamepad.sThumbRX / SHRT_MAX;
 	case PadStick::RY:
-		return (float)sOldGamePad.Gamepad.sThumbRY / SHRT_MAX;
+		return (float)oldGamePad.Gamepad.sThumbRY / SHRT_MAX;
 	default:
 		return 0;
 	}

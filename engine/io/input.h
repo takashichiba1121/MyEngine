@@ -61,12 +61,12 @@ private://メイン変数
 
 	ComPtr<IDirectInput8> sDirectInput;
 
-	BYTE sKey[256];
+	BYTE key[256] = {};
 
-	BYTE sKeyPre[256];
+	BYTE keyPre[256] = {};
 
 	//WindowAPI
-	WinApp* sWinApp;
+	WinApp* winApp=nullptr;
 
 public://メンバ関数(ゲームパッド)
 	/// <summary>
@@ -76,9 +76,9 @@ public://メンバ関数(ゲームパッド)
 
 	bool IsLinkGamePad();
 
-	XINPUT_STATE GetPad() { return sGamePad; }
+	XINPUT_STATE GetPad() { return gamePad; }
 
-	XINPUT_STATE GetOldPad() { return sOldGamePad; }
+	XINPUT_STATE GetOldPad() { return oldGamePad; }
 
 	/// <summary>
 	/// コントローラーのボタンの入力した瞬間
@@ -100,9 +100,9 @@ public://メンバ関数(ゲームパッド)
 
 private://メンバ変数(ゲームパッド)
 
-	XINPUT_STATE sGamePad;
+	XINPUT_STATE gamePad = {};
 
-	XINPUT_STATE sOldGamePad;
+	XINPUT_STATE oldGamePad = {};
 
-	DWORD isLinkGamePad;
+	DWORD isLinkGamePad = 0;
 };

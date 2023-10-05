@@ -263,7 +263,7 @@ void DirectXCommon::PreDraw()
 	//2.描画先の変更
 	// レンダーターゲットビューのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap_->GetCPUDescriptorHandleForHeapStart();
-	rtvHandle.ptr += bbIndex * device_->GetDescriptorHandleIncrementSize(rtvHeapDesc_.Type);
+	rtvHandle.ptr += (SIZE_T)bbIndex * device_->GetDescriptorHandleIncrementSize(rtvHeapDesc_.Type);
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap_->GetCPUDescriptorHandleForHeapStart();
 	commandList_->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
@@ -298,7 +298,7 @@ void DirectXCommon::PreDraw()
 void DirectXCommon::PostDrow()
 {
 	//バックバッファの番号を取得（２つなので０番か１番）
-	uint32_t bbIndex = swapChain_->GetCurrentBackBufferIndex();
+	//uint32_t bbIndex = swapChain_->GetCurrentBackBufferIndex();
 
 	// 5.リソースバリアを戻す
 	barrierDesc_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;//描画状態から
@@ -319,9 +319,12 @@ void DirectXCommon::PostDrow()
 	commandQueue_->Signal(fence_.Get(), ++fenceVal_);
 	if (fence_->GetCompletedValue() != fenceVal_) {
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-		fence_->SetEventOnCompletion(fenceVal_, event);
-		WaitForSingleObject(event, INFINITE);
-		CloseHandle(event);
+		if (event != 0)
+		{
+			fence_->SetEventOnCompletion(fenceVal_, event);
+			WaitForSingleObject(event, INFINITE);
+			CloseHandle(event);
+		}
 	}
 
 	//FPS固定
