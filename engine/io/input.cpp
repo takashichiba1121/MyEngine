@@ -4,14 +4,14 @@
 #pragma comment(lib,"dxguid.lib")
 #pragma comment (lib, "xinput.lib")
 
- Input* Input::Instance()
- {
-	 static Input instance;
+Input* Input::Instance()
+{
+	static Input instance;
 
-	 return &instance;
- }
+	return &instance;
+}
 
- void Input::Initialize(WinApp* WinApp)
+void Input::Initialize(WinApp* WinApp)
 {
 	//借りてきたWinAppのインスタンスを記録
 	sWinApp = WinApp;
@@ -33,7 +33,7 @@
 	//排他制御レベルのセット
 	result = sKeyboard->SetCooperativeLevel(
 		WinApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result)); 
+	assert(SUCCEEDED(result));
 
 	isLinkGamePad = XInputGetState(
 		0,//複数つながれてるときの選択
@@ -93,7 +93,7 @@ bool Input::PushKey(BYTE keyNumber)
 bool Input::TriggerKey(BYTE keyNumber)
 {
 	//指定キーを押していればtrueを返す
-	if (sKey[keyNumber]&&sKeyPre[keyNumber]==0) {
+	if (sKey[keyNumber] && sKeyPre[keyNumber] == 0) {
 		return true;
 	}
 	//そうでなければfalse返す
@@ -106,14 +106,14 @@ void Input::Updatekeypad()
 {
 	sOldGamePad = sGamePad;
 
-	isLinkGamePad=XInputGetState(
+	isLinkGamePad = XInputGetState(
 		0,//複数つながれてるときの選択
 		&sGamePad);//この変数に入力状況が格納される
 }
 
 bool Input::IsLinkGamePad()
 {
-	if (isLinkGamePad== ERROR_SUCCESS)
+	if (isLinkGamePad == ERROR_SUCCESS)
 	{
 		return true;
 	}
@@ -136,27 +136,19 @@ float Input::GetPadStick(PadStick Stick)
 	{
 	case PadStick::LT:
 		return (float)sGamePad.Gamepad.bLeftTrigger / 255;
-		break;
 	case PadStick::RT:
 		return (float)sGamePad.Gamepad.bRightTrigger / 255;
-		break;
 	case PadStick::LX:
 		return (float)sGamePad.Gamepad.sThumbLX / SHRT_MAX;
-		break;
 	case PadStick::LY:
 		return (float)sGamePad.Gamepad.sThumbLY / SHRT_MAX;
-		break;
 	case PadStick::RX:
 		return (float)sGamePad.Gamepad.sThumbRX / SHRT_MAX;
-		break;
 	case PadStick::RY:
 		return (float)sGamePad.Gamepad.sThumbRY / SHRT_MAX;
-		break;
 	default:
 		return 0;
-		break;
 	}
-	return 0;
 }
 
 float Input::GetOldPadStick(PadStick Stick)
@@ -165,25 +157,17 @@ float Input::GetOldPadStick(PadStick Stick)
 	{
 	case PadStick::LT:
 		return (float)sOldGamePad.Gamepad.bLeftTrigger / 255;
-		break;
 	case PadStick::RT:
 		return (float)sOldGamePad.Gamepad.bRightTrigger / 255;
-		break;
 	case PadStick::LX:
 		return (float)sOldGamePad.Gamepad.sThumbLX / SHRT_MAX;
-		break;
 	case PadStick::LY:
 		return (float)sOldGamePad.Gamepad.sThumbLY / SHRT_MAX;
-		break;
 	case PadStick::RX:
 		return (float)sOldGamePad.Gamepad.sThumbRX / SHRT_MAX;
-		break;
 	case PadStick::RY:
 		return (float)sOldGamePad.Gamepad.sThumbRY / SHRT_MAX;
-		break;
 	default:
 		return 0;
-		break;
 	}
-	return 0;
 }

@@ -57,7 +57,7 @@ private:
 
     uint32_t textureHandle;
     
-    PostEffectCommon* PECommon;
+    PostEffectCommon* PECommon_;
 
     float weights[8];
 };

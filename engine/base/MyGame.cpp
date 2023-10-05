@@ -10,8 +10,6 @@ void MyGame::Initialize()
 {
 	Framework::Initialize();
 
-	BaseScene* scene = new TitileScene();
-
 	sceneFactory_ = std::make_unique<SceneFactory>();
 	SceneManager::Instance()->SetSceneFactory(sceneFactory_.get());
 

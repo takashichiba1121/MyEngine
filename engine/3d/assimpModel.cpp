@@ -55,7 +55,7 @@ void AssimpModel::CreateBuffers()
 			IID_PPV_ARGS(&mesh->indexBuff));
 
 		// インデックスバッファへのデータ転送
-		unsigned short* indexMap = nullptr;
+		size_t* indexMap = nullptr;
 		result = mesh->indexBuff->Map(0, nullptr, (void**)&indexMap);
 		if (SUCCEEDED(result)) {
 

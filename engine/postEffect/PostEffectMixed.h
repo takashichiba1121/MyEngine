@@ -53,8 +53,8 @@ private:
     Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
     Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-    uint32_t textureHandle;
+    uint32_t textureHandle_;
     
-    PostEffectCommon* PECommon;
+    PostEffectCommon* PECommon_;
 };
 

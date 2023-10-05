@@ -21,7 +21,7 @@ AssimpModel* AssimpLoader::Load(const std::string& modelname)
 
 	Assimp::Importer importer;
 
-	uint32_t flag = 0;
+	int32_t flag = 0;
 	flag =
 		aiProcess_Triangulate | //三角面化
 		aiProcess_CalcTangentSpace | //接線ベクトル生成
@@ -73,8 +73,8 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 		aiVector3D* position = &(src->mVertices[i]);
 		aiVector3D* normal=&(src->mNormals[i]);
 		aiVector3D* uv = (src->HasTextureCoords(0)) ? &(src->mTextureCoords[0][i]) : &zero3D;
-		aiVector3D* tangent = (src->HasTangentsAndBitangents()) ? &(src->mTangents[i]) : &zero3D;
-		aiColor4D* color = (src->HasVertexColors(0)) ? &(src->mColors[0][i]) : &zeroColor;
+		//aiVector3D* tangent = (src->HasTangentsAndBitangents()) ? &(src->mTangents[i]) : &zero3D;
+		//aiColor4D* color = (src->HasVertexColors(0)) ? &(src->mColors[0][i]) : &zeroColor;
 
 		AssimpModel::VertexPosNormalUv vertex = {};
 
@@ -108,8 +108,6 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 
 uint32_t AssimpLoader::LoadTexture(const std::string filename, const string& directoryPath)
 {
-	HRESULT result = S_FALSE;
-
 	//ファイルパスを結合
 	string filepath = directoryPath + filename;
 

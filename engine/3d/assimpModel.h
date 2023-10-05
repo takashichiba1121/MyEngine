@@ -58,7 +58,7 @@ public:
 
 	struct Mesh {
 		std::vector<VertexPosNormalUv> vertexs;
-		std::vector<unsigned short> indices;
+		std::vector<size_t> indices;
 		Material materials;
 
 		// 頂点バッファ

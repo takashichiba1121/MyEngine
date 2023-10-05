@@ -10,7 +10,7 @@ const float PostEffectMultiRenderTarget::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f 
 
 void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 {
-	this->PECommon = PECommon;
+	this->PECommon_ = PECommon;
 
 	HRESULT result;
 
@@ -28,7 +28,7 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 		CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
 
-		result = this->PECommon->device->CreateCommittedResource(
+		result = this->PECommon_->device->CreateCommittedResource(
 			&heapProp,
 			D3D12_HEAP_FLAG_NONE,
 			&texresDesc,
@@ -56,7 +56,7 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 		//	delete[] img;
 		//}
 	}
-	textureHandle = this->PECommon->CreateDescHeapSRV(texBuff.Get());
+	textureHandle = this->PECommon_->CreateDescHeapSRV(texBuff.Get());
 
 	//RTV用のデスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
@@ -65,7 +65,7 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 	rtvDescHeapDesc.NumDescriptors = 1;
 
 	//RTV用のデスクリプタヒープを生成
-	result = this->PECommon->device->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
+	result = this->PECommon_->device->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
 	assert(SUCCEEDED(result));
 	//レンダーターゲットビューも設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
@@ -73,7 +73,7 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	//デスクリプタヒープにRTVを作成
-	this->PECommon->device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
+	this->PECommon_->device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, descHeapRTV->GetCPUDescriptorHandleForHeapStart());
 
 	//深度バッファ
 	CD3DX12_RESOURCE_DESC depthResDesc =
@@ -89,7 +89,7 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 
 	CD3DX12_CLEAR_VALUE CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
 
-	result = this->PECommon->device->CreateCommittedResource(
+	result = this->PECommon_->device->CreateCommittedResource(
 		&HEAP_PROPERTIES,
 		D3D12_HEAP_FLAG_NONE,
 		&depthResDesc,
@@ -103,13 +103,13 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 	DescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	DescHeapDesc.NumDescriptors = 1;
 	//DSV用デスクリプタヒープの作成
-	result = this->PECommon->device->CreateDescriptorHeap(&DescHeapDesc, IID_PPV_ARGS(&descHeapDSV));
+	result = this->PECommon_->device->CreateDescriptorHeap(&DescHeapDesc, IID_PPV_ARGS(&descHeapDSV));
 	assert(SUCCEEDED(result));
 
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	this->PECommon->device->CreateDepthStencilView(depthBuff.Get(),
+	this->PECommon_->device->CreateDepthStencilView(depthBuff.Get(),
 		&dsvDesc,
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
 
@@ -146,7 +146,7 @@ void PostEffectMultiRenderTarget::Initialize(PostEffectCommon* PECommon)
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	//頂点バッファの生成
-	result = this->PECommon->device->CreateCommittedResource(
+	result = this->PECommon_->device->CreateCommittedResource(
 		&heapProp, //ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, //リソース設定
@@ -335,7 +335,7 @@ void PostEffectMultiRenderTarget::CreatGraphicsPipelineState()
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
-	result = this->PECommon->device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	result = this->PECommon_->device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 	//rootSigBlob->Release();
@@ -343,7 +343,7 @@ void PostEffectMultiRenderTarget::CreatGraphicsPipelineState()
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
 	//パイプランスステートの生成
-	result = this->PECommon->device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = this->PECommon_->device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 }
 
@@ -389,7 +389,7 @@ void PostEffectMultiRenderTarget::Draw()
 	commandList->SetGraphicsRootSignature(rootSignature.Get());
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon->descHeapSRV.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon_->descHeapSRV.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//プリミティブ形状の設定コマンド
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -398,8 +398,8 @@ void PostEffectMultiRenderTarget::Draw()
 
 	//画像描画
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = this->PECommon->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
-	UINT incrementSize = this->PECommon->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = this->PECommon_->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
+	UINT incrementSize = this->PECommon_->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += incrementSize * textureHandle;
 	commandList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 
@@ -414,7 +414,7 @@ void PostEffectMultiRenderTarget::NormalDraw()
 	commandList->SetGraphicsRootSignature(rootSignature.Get());
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon->descHeapSRV.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { this->PECommon_->descHeapSRV.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	//プリミティブ形状の設定コマンド
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -423,8 +423,8 @@ void PostEffectMultiRenderTarget::NormalDraw()
 
 	//画像描画
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = this->PECommon->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
-	UINT incrementSize = this->PECommon->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = this->PECommon_->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
+	UINT incrementSize = this->PECommon_->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += incrementSize * textureHandle;
 	commandList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
 

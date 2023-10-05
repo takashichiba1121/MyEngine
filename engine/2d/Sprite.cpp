@@ -19,7 +19,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 
 	HRESULT result;
 
-	Vertex vertices_[4] = {
+	Vertex vertices[4] = {
 		{{  0.0f,100.0f,0.0f},{0.0f,1.0f}},
 		{{  0.0f,  0.0f,0.0f},{0.0f,0.0f}},
 		{{100.0f,100.0f,0.0f},{1.0f,1.0f}},
@@ -27,7 +27,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 	};
 	for (uint32_t i = 0; i < 4; i++)
 	{
-		vertices_[i] = vertices_[i];
+		vertices_[i] = vertices[i];
 	}
 
 	//頂点データ全体のサイズ=頂点データ一つ分のサイズ*頂点データの要素数

@@ -79,7 +79,7 @@ public:
 
 	Vector2 GetSize() const { return textureSize_; }
 
-	void SetLeftTop_(const Vector2& textureLeftTop_) { this->textureLeftTop_ = textureLeftTop_; }
+	void SetLeftTop_(const Vector2& textureLeftTop) { this->textureLeftTop_ = textureLeftTop; }
 
 	Vector2 GetLeftTop_() const { return anchorPoint_; }
 
