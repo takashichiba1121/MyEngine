@@ -2,10 +2,7 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <dxgi1_6.h>
-#pragma warning(push)
 #include<DirectXTex.h>
-#pragma warning(disable:26813)
-#pragma warning(pop)
 #include<wrl.h>
 #include<array>
 #include<string>

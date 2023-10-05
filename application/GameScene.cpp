@@ -380,7 +380,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	skyObj_->Draw();
 
-	GroundObj_->Draw();
+	//GroundObj_->Draw();
 
 	for (uint32_t i = 0; i < objects.size(); i++)
 	{

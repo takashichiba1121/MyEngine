@@ -1,10 +1,6 @@
 ﻿#include "Object3d.h"
 #include <d3dcompiler.h>
-#include <DirectXTex.h>
-#include <fstream>
-#include <sstream>
 #include <string>
-#include <vector>
 using namespace std;
 
 
@@ -499,64 +495,3 @@ Matrix4 Object3d::GetMatViewPro()
 
 	return sMatView * sMatProjection;
 }
-
-//void Object3d::LoadMaterial(const std::string& directoryPath, const std::string& filename)
-//{
-//	//ファイルストリーム
-//	std::ifstream file;
-//	//マテリアルファイルを開く
-//	file.open(directoryPath + filename);
-//	//ファイルオープン失敗をチェック
-//	if (file.fail()) {
-//		assert(0);
-//	}
-//
-//	//1行ずつ読み込む
-//	string line;
-//	while (getline(file, line)) {
-//
-//		//1行分の文字列をストリームに変換
-//		std::istringstream line_stream(line);
-//		//半角スペース区切りで行の先頭文字列を取得
-//		string key;
-//		getline(line_stream, key, ' ');
-//
-//		//先頭のタブ文字は無視する
-//		if (key[0] == '\t') {
-//			key.erase(key.begin());	//先頭の文字を削除
-//		}
-//		//先頭文字がnewmtlならマテリアル名
-//		if (key == "newmtl") {
-//			//マテリアル名読み込み
-//			line_stream >> material.name;
-//		}
-//		//先頭文字がKaならアンビエント色
-//		if (key == "Ka") {
-//			line_stream >> material.ambient.x;
-//			line_stream >> material.ambient.y;
-//			line_stream >> material.ambient.z;
-//		}
-//		//先頭文字がKdならディフューズ色
-//		if (key == "Kd") {
-//			line_stream >> material.diffuse.x;
-//			line_stream >> material.diffuse.y;
-//			line_stream >> material.diffuse.z;
-//		}
-//		//先頭文字列がKsならスペキュラー色
-//		if (key == "Ks") {
-//			line_stream >> material.specular.x;
-//			line_stream >> material.specular.y;
-//			line_stream >> material.specular.z;
-//		}
-//		//先頭文字列がmap_Kdならテクスチャファイル名
-//		if (key == "map_Kd") {
-//			//テクスチャのファイル名読み込み
-//			line_stream >> material.textureFilename;
-//			//テクスチャ読み込み
-//			LoadTexture(directoryPath, material.textureFilename);
-//		}
-//	}
-//	//ファイルを閉じる
-//	file.close();
-//}
-

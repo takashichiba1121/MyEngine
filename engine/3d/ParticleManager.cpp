@@ -187,18 +187,6 @@ void ParticleManager::InitializeGraphicsPipeline()
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;//加算
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;//ソースの値を100%使う
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;//デストの値を0%使う
-	////加算合成
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;//加算
-	//blenddesc.SrcBlend = D3D12_BLEND_ONE;//ソースの値を100%使う
-	//blenddesc.DestBlend = D3D12_BLEND_ONE;//デストの値を100%使う
-	////減算合成
-	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;//デストからソースを減算
-	//blenddesc.SrcBlend = D3D12_BLEND_ONE;//ソースの値を100%使う
-	//blenddesc.DestBlend = D3D12_BLEND_ONE;//デストの値を100%使う
-	////色反転
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;//加算
-	//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;//1.0f-デストカラーの値
-	//blenddesc.DestBlend = D3D12_BLEND_ZERO;//使わない
 	//半透明合成
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;//加算
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;//ソースのアルファ値
