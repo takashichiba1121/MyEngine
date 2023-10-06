@@ -8,27 +8,27 @@ public:
 	static void StaticInitialize(WinApp* winApp, DirectXCommon* dxCommon);
 
 	/// <summary>
-	/// I—¹
+	/// çµ‚äº†
 	/// </summary>
 	static void Finalize();
 
 	/// <summary>
-	/// ImGuió•tŠJn
+	/// ImGuiå—ä»˜é–‹å§‹
 	/// </summary>
 	void Begin();
 
 	/// <summary>
-	/// ImGuió•tI—¹
+	/// ImGuiå—ä»˜çµ‚äº†
 	/// </summary>
 	void End();
 
 	/// <summary>
-	/// ‰æ–Ê‚Ö‚Ì•`‰æ
+	/// ç”»é¢ã¸ã®æç”»
 	/// </summary>
 	static void Draw();
 
 private:
-	//SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	//SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> sSrvHeap;
 
 	static DirectXCommon* sDxCommon;

@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include"WinApp.h"
 #include"DirectXCommon.h"
 #include<memory>
@@ -9,7 +9,7 @@ class Framework
 public:
 	virtual ~Framework() = default;
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual void Initialize();
 
 	virtual void Finalize();
@@ -18,13 +18,13 @@ public:
 
 	virtual void Draw()=0;
 
-	//I—¹ƒtƒ‰ƒO‚Ìƒ`ƒFƒbƒN
+	//çµ‚äº†ãƒ•ãƒ©ã‚°ã®ãƒã‚§ãƒƒã‚¯
 	virtual bool IsEndRequst() { return endRequst_; }
 
 	virtual DirectXCommon* GetDxCommon() {return dxCommon_.get() ; }
 
 	void Run();
-protected:
+protected: 
 	SceneManager* sceneManager_ = nullptr;
 
 	bool endRequst_ = false;

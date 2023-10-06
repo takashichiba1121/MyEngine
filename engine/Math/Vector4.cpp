@@ -1,7 +1,7 @@
 #include"Vector4.h"
 #include<cmath>
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-//—ëƒxƒNƒgƒ‹‚Æ‚·‚é
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//é›¶ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
 Vector4::Vector4()
 	:x(0), y(0), z(0)
 {
@@ -9,9 +9,9 @@ Vector4::Vector4()
 Vector4::Vector4(float x, float y, float z,float w)
 	: x(x), y(y), z(z),w(w)
 {
-}//x¬•ªA‚™¬•ªA‚š¬•ª‚ğw’è‚µ‚Ä‚Ì¶¬ 
+}//xæˆåˆ†ã€ï½™æˆåˆ†ã€ï½šæˆåˆ†ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ 
 
-//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Vector4 Vector4::operator+() const
 {
 	return *this;
@@ -21,7 +21,7 @@ Vector4 Vector4::operator-() const
 	return Vector4(-x, -y, -z,-w);
 }
 
-//‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+//ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Vector4& Vector4::operator+=(const Vector4& v)
 {
 	x += v.x;
@@ -55,8 +55,8 @@ Vector4& Vector4::operator/=(float s)
 	return *this;
 }
 
-//“ñ€‰‰ZqƒI[ƒo[ƒ[ƒh
-//‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ß‚ÉAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+//äºŒé …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+//ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã«ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const Vector4 operator+(const Vector4& v1, const Vector4& v2)
 {
 	Vector4 temp(v1);

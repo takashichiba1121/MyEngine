@@ -434,23 +434,23 @@ void GameScene::MapLoad(std::string mapFullpath)
 	{
 		if (objectData.tagName == "Map")
 		{
-			//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+			//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			newObject->Initialize();
 			newObject->SetModel(models[objectData.fileName]);
 
 			assert(newObject);
 
-			// À•W
+			// åº§æ¨™
 			newObject->SetPosition({ objectData.trans });
 
-			// ‰ñ“]Šp
+			// å›è»¢è§’
 			newObject->SetRot({ objectData.rot });
 
-			// À•W
+			// åº§æ¨™
 			newObject->SetScale({ objectData.scale });
 
-			// ”z—ñ‚É“o˜^
+			// é…åˆ—ã«ç™»éŒ²
 			objects.push_back(std::move(newObject));
 		}
 		if (objectData.tagName == "Spawn")
@@ -463,16 +463,16 @@ void GameScene::MapLoad(std::string mapFullpath)
 		{
 			//player_->SetGoal(objectData.trans, objectData.scale);
 
-			//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+			//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 			goalObj_->SetModel(models[objectData.fileName]);
 
-			// À•W
+			// åº§æ¨™
 			goalObj_->SetPosition({ objectData.trans });
 
-			// ‰ñ“]Šp
+			// å›è»¢è§’
 			goalObj_->SetRot({ objectData.rot });
 
-			// À•W
+			// åº§æ¨™
 			goalObj_->SetScale({ objectData.scale });
 
 			goalObj_->Setalpha(0.3f);
@@ -501,16 +501,16 @@ void GameScene::MapLoad(std::string mapFullpath)
 		}
 		if (objectData.tagName == "Stage1")
 		{
-			//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+			//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 			stage1Obj_->SetModel(models[objectData.fileName]);
 
-			// À•W
+			// åº§æ¨™
 			stage1Obj_->SetPosition({ objectData.trans });
 
-			// ‰ñ“]Šp
+			// å›è»¢è§’
 			stage1Obj_->SetRot({ objectData.rot });
 
-			// À•W
+			// åº§æ¨™
 			stage1Obj_->SetScale({ objectData.scale });
 
 			stage1Obj_->Setalpha(0.3f);
@@ -519,16 +519,16 @@ void GameScene::MapLoad(std::string mapFullpath)
 		}
 		if (objectData.tagName == "Stage2")
 		{
-			//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+			//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 			stage2Obj_->SetModel(models[objectData.fileName]);
 
-			// À•W
+			// åº§æ¨™
 			stage2Obj_->SetPosition({ objectData.trans });
 
-			// ‰ñ“]Šp
+			// å›è»¢è§’
 			stage2Obj_->SetRot({ objectData.rot });
 
-			// À•W
+			// åº§æ¨™
 			stage2Obj_->SetScale({ objectData.scale });
 
 			stage2Obj_->Setalpha(0.3f);
@@ -537,16 +537,16 @@ void GameScene::MapLoad(std::string mapFullpath)
 		}
 		if (objectData.tagName == "Stage3")
 		{
-			//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğ¶¬
+			//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 			stage3Obj_->SetModel(models[objectData.fileName]);
 
-			// À•W
+			// åº§æ¨™
 			stage3Obj_->SetPosition({ objectData.trans });
 
-			// ‰ñ“]Šp
+			// å›è»¢è§’
 			stage3Obj_->SetRot({ objectData.rot });
 
-			// À•W
+			// åº§æ¨™
 			stage3Obj_->SetScale({ objectData.scale });
 
 			stage3Obj_->Setalpha(0.3f);

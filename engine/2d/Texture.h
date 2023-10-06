@@ -27,8 +27,8 @@ public:
 #pragma endregion
 public:
 	const size_t spriteSRVCount = 2056;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;			//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
-	std::array< Microsoft::WRL::ComPtr<ID3D12Resource>,2056 >texBuffuers;	//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;			//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
+	std::array< Microsoft::WRL::ComPtr<ID3D12Resource>,2056 >texBuffuers;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	std::string textureName[2056];
 	D3D12_RESOURCE_DESC textureResourceDesc = {};
 	DirectXCommon* dxCommon_=nullptr;

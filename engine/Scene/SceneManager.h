@@ -14,16 +14,16 @@ private:
 public:
 	SceneManager(const SceneManager& carManager) = delete;
 
-	SceneManager& operator=(const SceneManager& carManager) = delete;
+	SceneManager& operator=(const SceneManager& carManager) = delete; 
 
 	static SceneManager* Instance();
 #pragma endregion
 public:
 
 	/// <summary>
-	/// Ÿ‚ÌƒV[ƒ“—\–ñ
+	/// æ¬¡ã®ã‚·ãƒ¼ãƒ³äºˆç´„
 	/// </summary>
-	/// <param name="sceneName">ƒV[ƒ“–¼</param>
+	/// <param name="sceneName">ã‚·ãƒ¼ãƒ³å</param>
 	void ChangeScene(const std::string& sceneName);
 
 	void Update();

@@ -6,7 +6,7 @@ public:
 
     void StaticInitialize(DirectXCommon* dxCommon);
 
-    uint32_t CreateDescHeapSRV(ID3D12Resource* texBuff);
+    uint32_t CreateDescHeapSRV(ID3D12Resource* texBuff); 
 
     ID3D12Device* device;
 

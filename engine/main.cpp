@@ -1,4 +1,4 @@
-#include"Framework.h"
+ #include"Framework.h"
 #include"MyGame.h"
 #include<dxgidebug.h>
 
@@ -8,7 +8,7 @@ struct D3DResouceLeakChecker
 {
 	~D3DResouceLeakChecker()
 	{
-		// ƒŠƒ\[ƒXƒŠ[ƒNƒ`ƒFƒbƒN
+		// ãƒªã‚½ãƒ¼ã‚¹ãƒªãƒ¼ã‚¯ãƒã‚§ãƒƒã‚¯
 		Microsoft::WRL::ComPtr<IDXGIDebug1>debug;
 		if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
 			debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
@@ -18,7 +18,7 @@ struct D3DResouceLeakChecker
 	}
 };
 
-//windowsƒAƒvƒŠ‚ÌƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒgimainŠÖ”j
+//windowsã‚¢ãƒ—ãƒªã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆï¼ˆmainé–¢æ•°ï¼‰
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	D3DResouceLeakChecker memoryLeak;

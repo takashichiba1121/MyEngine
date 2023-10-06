@@ -1,4 +1,4 @@
-#include "assimpLoader.h"
+ #include "assimpLoader.h"
 #include<assimp/Importer.hpp>
 #include<assimp/postprocess.h>
 #include<assimp/cimport.h>
@@ -12,32 +12,32 @@ using namespace std;
 
 AssimpModel* AssimpLoader::Load(const std::string& modelname)
 {
-	// ƒ‚ƒfƒ‹‚Æ“¯‚¶–¼‘O‚ÌƒtƒHƒ‹ƒ_‚©‚ç“Ç‚Ýž‚Þ
+	// ãƒ¢ãƒ‡ãƒ«ã¨åŒã˜åå‰ã®ãƒ•ã‚©ãƒ«ãƒ€ã‹ã‚‰èª­ã¿è¾¼ã‚€
 	const string directoryPath = "Resources/" + modelname + "/";
-	// Šg’£Žq.fbx‚ð•t‰Á
+	// æ‹¡å¼µå­.fbxã‚’ä»˜åŠ 
 	const string fileName = modelname + ".fbx";
-	// ˜AŒ‹‚µ‚Äƒtƒ‹ƒpƒX‚ð“¾‚é
+	// é€£çµã—ã¦ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’å¾—ã‚‹
 	const string fullpath = directoryPath + fileName;
 
 	Assimp::Importer importer;
 
 	int32_t flag = 0;
 	flag =
-		aiProcess_Triangulate | //ŽOŠp–Ê‰»
-		aiProcess_CalcTangentSpace | //ÚüƒxƒNƒgƒ‹¶¬
-		aiProcess_GenSmoothNormals | //ƒXƒ€[ƒWƒ“ƒOƒxƒNƒgƒ‹¶¬
-		aiProcess_GenUVCoords | //”ñƒ}ƒbƒsƒ“ƒO‚ð“KØ‚ÈUVÀ•W‚É•ÏŠ·
-		aiProcess_RemoveRedundantMaterials | //ç’·‚Èƒ}ƒeƒŠƒAƒ‹‚ðíœ
-		aiProcess_OptimizeMeshes | //ƒƒbƒVƒ…”‚ðÅ“K‰»
-		aiProcess_MakeLeftHanded | //ƒm[ƒh‚ð¶ŽèÀ•WŒn‚É
-		aiProcess_GenBoundingBoxes | //AABB‚ð¶¬
-		aiProcess_JoinIdenticalVertices |//ƒCƒ“ƒfƒbƒNƒX‚ð¶¬
-		aiProcess_FlipUVs|//uv‚Ìy‚ðƒ}ƒCƒiƒX‚É‚·‚é(ƒI[ƒvƒ“GL—p‚Ì‚ðDirectX12—p‚É)
-		aiProcess_LimitBoneWeights;//Še’¸“_‚ª‰e‹¿‚ðŽó‚¯‚éƒ{[ƒ“‚ð4‚É§ŒÀ
+		aiProcess_Triangulate | //ä¸‰è§’é¢åŒ–
+		aiProcess_CalcTangentSpace | //æŽ¥ç·šãƒ™ã‚¯ãƒˆãƒ«ç”Ÿæˆ
+		aiProcess_GenSmoothNormals | //ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ãƒ™ã‚¯ãƒˆãƒ«ç”Ÿæˆ
+		aiProcess_GenUVCoords | //éžãƒžãƒƒãƒ”ãƒ³ã‚°ã‚’é©åˆ‡ãªUVåº§æ¨™ã«å¤‰æ›
+		aiProcess_RemoveRedundantMaterials | //å†—é•·ãªãƒžãƒ†ãƒªã‚¢ãƒ«ã‚’å‰Šé™¤
+		aiProcess_OptimizeMeshes | //ãƒ¡ãƒƒã‚·ãƒ¥æ•°ã‚’æœ€é©åŒ–
+		aiProcess_MakeLeftHanded | //ãƒŽãƒ¼ãƒ‰ã‚’å·¦æ‰‹åº§æ¨™ç³»ã«
+		aiProcess_GenBoundingBoxes | //AABBã‚’ç”Ÿæˆ
+		aiProcess_JoinIdenticalVertices |//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç”Ÿæˆ
+		aiProcess_FlipUVs|//uvã®yã‚’ãƒžã‚¤ãƒŠã‚¹ã«ã™ã‚‹(ã‚ªãƒ¼ãƒ—ãƒ³GLç”¨ã®ã‚’DirectX12ç”¨ã«)
+		aiProcess_LimitBoneWeights;//å„é ‚ç‚¹ãŒå½±éŸ¿ã‚’å—ã‘ã‚‹ãƒœãƒ¼ãƒ³ã‚’4ã«åˆ¶é™
 
 	const aiScene* scene = importer.ReadFile(fullpath.c_str(), flag);
 
-	// ƒtƒ@ƒCƒ‹–¼‚ðŽw’è‚µ‚ÄFBXƒtƒ@ƒCƒ‹‚ð“Ç‚Ýž‚Þ
+	// ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦FBXãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	if (!scene) {
 		assert(0);
 	}
@@ -53,7 +53,7 @@ AssimpModel* AssimpLoader::Load(const std::string& modelname)
 		model->SetMesh(std::move(mesh));
 	}
 	
-	// FBXƒV[ƒ“‰ð•ú
+	// FBXã‚·ãƒ¼ãƒ³è§£æ”¾
 	//aiReleaseImport(scene);
 
 	return model;
@@ -108,7 +108,7 @@ AssimpModel::Mesh* AssimpLoader::LoadMesh(const aiMesh* src, const aiScene* scen
 
 uint32_t AssimpLoader::LoadTexture(const std::string filename, const string& directoryPath)
 {
-	//ƒtƒ@ƒCƒ‹ƒpƒX‚ðŒ‹‡
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’çµåˆ
 	string filepath = directoryPath + filename;
 
 	return Texture::Instance()->LoadTexture(filepath);

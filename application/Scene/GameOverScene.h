@@ -33,7 +33,7 @@ private:
 	uint32_t frame = endFrame;
 
 	//シーン遷移のスプライトの開始地点
-	const float startSpriteY = -720;
+	const float startSpriteY = -720; 
 
 	//シーン遷移のスプライトの終了地点
 	const uint32_t endSpriteY = 0;

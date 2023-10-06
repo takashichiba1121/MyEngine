@@ -22,7 +22,7 @@ namespace Matrix4Math
 	Vector3 transform(const Vector3& v, const Matrix4& m);
 
 	Matrix4 MakeInverse(const Matrix4& matrix4);
-
+	 
 	Matrix4 ViewMat(const Vector3& eye, const Vector3& target, const Vector3& up);
 
 	Matrix4 ProjectionMat(float fovAngleY, float aspectRatio, float nearZ, float farZ);

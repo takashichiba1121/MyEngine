@@ -8,14 +8,14 @@ public:
     void Initialize(PostEffectCommon* PECommon);
 
     /// <summary>
-    /// ƒpƒCƒvƒ‰ƒCƒ“¶¬
+    /// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
     /// </summary>
-    void CreatGraphicsPipelineState();
+    void CreatGraphicsPipelineState(); 
 
     /// <summary>
-    /// ƒV[ƒ“•`‰æ‘Oˆ—
+    /// ã‚·ãƒ¼ãƒ³æç”»å‰å‡¦ç†
     /// </summary>
-    /// <param name="cmdList">ƒRƒ}ƒ“ƒhƒŠƒXƒg</param>
+    /// <param name="cmdList">ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ</param>
     void PreDrawScene(ID3D12GraphicsCommandList* cmdList);
 
     void Draw();
@@ -23,14 +23,14 @@ public:
     void NormalDraw();
 
     /// <summary>
-    /// ƒV[ƒ“•`‰æŒãˆ—
+    /// ã‚·ãƒ¼ãƒ³æç”»å¾Œå‡¦ç†
     /// </summary>
-    /// <param name="cmdList">ƒRƒ}ƒ“ƒhˆ—</param>
+    /// <param name="cmdList">ã‚³ãƒãƒ³ãƒ‰å‡¦ç†</param>
     void PostDrawScene();
 
     uint32_t GettextureHandle() { return textureHandle; }
 
-private://Ã“Iƒƒ“ƒo•Ï”
+private://é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
     static const float clearColor[4];
 
 private:
@@ -41,17 +41,17 @@ private:
 
     Vertex* vertMap = nullptr;
 
-    Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;	//’¸“_ƒoƒbƒtƒ@
+    Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 
-    //’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+    //é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
     D3D12_VERTEX_BUFFER_VIEW vbView{};
 
     Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
-    //[“xƒoƒbƒtƒ@
+    //æ·±åº¦ãƒãƒƒãƒ•ã‚¡
     Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff;
-    //RTV—p‚ÌƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+    //RTVç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapRTV;
-    //DSV—p‚ÌƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+    //DSVç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 
     Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;

@@ -22,7 +22,7 @@ void GameOverScene::Initialize()
 	if (Input::Instance()->IsLinkGamePad())
 	{
 		buttonSprite->Initialize(aTexHandle);
-	}
+	} 
 	else
 	{
 		buttonSprite->Initialize(spaceTexHandle);

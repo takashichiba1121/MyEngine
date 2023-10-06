@@ -35,7 +35,7 @@ void Player::Initialize(Model* bulletModel)
 
 void Player::Update()
 {
-	//ƒfƒXƒtƒ‰ƒO‚Ì—§‚Á‚½’e‚ğíœ
+	//ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°ã®ç«‹ã£ãŸå¼¾ã‚’å‰Šé™¤
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
 		return bullet->IsDead();
 		});
@@ -91,13 +91,13 @@ void Player::Move()
 
 			for (int i = 0; i < 10; i++)
 			{
-				//Á‚¦‚é‚Ü‚Å‚ÌŠÔ
+				//æ¶ˆãˆã‚‹ã¾ã§ã®æ™‚é–“
 				const uint32_t rnd_life = 10;
-				//Å’áŒÀ‚Ìƒ‰ƒCƒt
+				//æœ€ä½é™ã®ãƒ©ã‚¤ãƒ•
 				const uint32_t constlife = 60;
 				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
 
-				//XYZ‚ÌL‚ª‚é‹——£
+				//XYZã®åºƒãŒã‚‹è·é›¢
 				const float rnd_pos = 0.1f;
 				Vector3 pos{};
 				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
@@ -106,7 +106,7 @@ void Player::Move()
 
 				//pos.normalize();
 
-				//’Ç‰Á
+				//è¿½åŠ 
 				paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
 			}
 		}
@@ -137,13 +137,13 @@ void Player::Move()
 
 			for (int i = 0; i < 10; i++)
 			{
-				//Á‚¦‚é‚Ü‚Å‚ÌŠÔ
+				//æ¶ˆãˆã‚‹ã¾ã§ã®æ™‚é–“
 				const uint32_t rnd_life = 10;
-				//Å’áŒÀ‚Ìƒ‰ƒCƒt
+				//æœ€ä½é™ã®ãƒ©ã‚¤ãƒ•
 				const uint32_t constlife = 60;
 				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
 
-				//XYZ‚ÌL‚ª‚é‹——£
+				//XYZã®åºƒãŒã‚‹è·é›¢
 				const float rnd_pos = 0.1f;
 				Vector3 pos{};
 				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
@@ -152,7 +152,7 @@ void Player::Move()
 
 				//pos.normalize();
 
-				//’Ç‰Á
+				//è¿½åŠ 
 				paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
 			}
 		}
@@ -204,7 +204,7 @@ void Player::Attack()
 
 		if (Input::Instance()->GetPadStick(PadStick::RT)>=0.5&&Input::Instance()->GetOldPadStick(PadStick::RT)<0.5)
 		{
-			//’e‚Ì‘¬“x
+			//å¼¾ã®é€Ÿåº¦
 			const float kBulletSpeed = 0.5f;
 			Vector3 velocity(0, 0, kBulletSpeed);
 			velocity = Matrix4Math::transform(velocity, obj_->GetMatWorld());
@@ -215,18 +215,18 @@ void Player::Attack()
 			}
 			velocity *= kBulletSpeed;
 
-			//’e‚Ì¶¬‚µA‰Šú‰»
+			//å¼¾ã®ç”Ÿæˆã—ã€åˆæœŸåŒ–
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
 			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
 
-			//’e‚Ì“o˜^‚·‚é
+			//å¼¾ã®ç™»éŒ²ã™ã‚‹
 			bullets_.push_back(std::move(newBullet));
 		}
 
 	}
 	else if (Input::Instance()->TriggerKey(DIK_Z))
 	{
-		//’e‚Ì‘¬“x
+		//å¼¾ã®é€Ÿåº¦
 		const float kBulletSpeed = 0.5f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
@@ -237,11 +237,11 @@ void Player::Attack()
 		}
 		velocity *= kBulletSpeed;
 
-		//’e‚Ì¶¬‚µA‰Šú‰»
+		//å¼¾ã®ç”Ÿæˆã—ã€åˆæœŸåŒ–
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
 		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
 
-		//’e‚Ì“o˜^‚·‚é
+		//å¼¾ã®ç™»éŒ²ã™ã‚‹
 		bullets_.push_back(std::move(newBullet));
 	}
 }
@@ -430,13 +430,13 @@ void Player::EnemyCollision()
 
 				for (int i = 0; i < 10; i++)
 				{
-					//Á‚¦‚é‚Ü‚Å‚ÌŠÔ
+					//æ¶ˆãˆã‚‹ã¾ã§ã®æ™‚é–“
 					const uint32_t rnd_life = 10;
-					//Å’áŒÀ‚Ìƒ‰ƒCƒt
+					//æœ€ä½é™ã®ãƒ©ã‚¤ãƒ•
 					const uint32_t constlife = 60;
 					uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
 
-					//XYZ‚ÌL‚ª‚é‹——£
+					//XYZã®åºƒãŒã‚‹è·é›¢
 					const float rnd_pos = 0.1f;
 					Vector3 pos{};
 					pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
@@ -445,7 +445,7 @@ void Player::EnemyCollision()
 
 					//pos.normalize();
 
-					//’Ç‰Á
+					//è¿½åŠ 
 					paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
 				}
 			}
@@ -470,13 +470,13 @@ void Player::EnemyCollision()
 
 				for (int i = 0; i < 10; i++)
 				{
-					//Á‚¦‚é‚Ü‚Å‚ÌŠÔ
+					//æ¶ˆãˆã‚‹ã¾ã§ã®æ™‚é–“
 					const uint32_t rnd_life = 10;
-					//Å’áŒÀ‚Ìƒ‰ƒCƒt
+					//æœ€ä½é™ã®ãƒ©ã‚¤ãƒ•
 					const uint32_t constlife = 60;
 					uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
 
-					//XYZ‚ÌL‚ª‚é‹——£
+					//XYZã®åºƒãŒã‚‹è·é›¢
 					const float rnd_pos = 0.1f;
 					Vector3 pos{};
 					pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
@@ -485,7 +485,7 @@ void Player::EnemyCollision()
 
 					//pos.normalize();
 
-					//’Ç‰Á
+					//è¿½åŠ 
 					paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
 				}
 			}

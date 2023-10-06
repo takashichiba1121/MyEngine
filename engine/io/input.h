@@ -1,5 +1,5 @@
 #pragma once
-#define DIRECTINPUT_VERSION 0x0800 //DirectInput‚Ìƒo[ƒWƒ‡ƒ“w’è
+#define DIRECTINPUT_VERSION 0x0800 //DirectInputã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®š
 #include<dinput.h>
 #include<windows.h>
 #include<wrl.h>
@@ -15,9 +15,9 @@ enum class PadStick
 	LY,
 	RX,
 	RY,
-};
+}; 
 
-//“ü—Í
+//å…¥åŠ›
 class Input
 {
 #pragma region Singleton
@@ -36,27 +36,27 @@ public:
 
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-public://ƒƒ“ƒoŠÖ”
+public://ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(WinApp* winApp);
-	//XV
+	//æ›´æ–°
 	void Update();
 
 	/// <summary>
-	/// ƒL[‚Ì‰Ÿ‰º‚ğƒ`ƒFƒbƒN
+	/// ã‚­ãƒ¼ã®æŠ¼ä¸‹ã‚’ãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	///<param name="keynumber">ƒL[”Ô†(DIK_0“™)</param>
-	/// <returns>‰Ÿ‚³‚ê‚Ä‚¢‚é‚©</returns>
+	///<param name="keynumber">ã‚­ãƒ¼ç•ªå·(DIK_0ç­‰)</param>
+	/// <returns>æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹</returns>
 	bool PushKey(BYTE keyNumber);
 	/// <summary>
-	/// ƒL[‚ÌƒgƒŠƒK[‚ğƒ`ƒFƒbƒN
+	/// ã‚­ãƒ¼ã®ãƒˆãƒªã‚¬ãƒ¼ã‚’ãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	///<param name="keynumber">ƒL[”Ô†(DIK_0“™)</param>
-	/// <returns>ƒgƒŠƒK[‚©</returns>
+	///<param name="keynumber">ã‚­ãƒ¼ç•ªå·(DIK_0ç­‰)</param>
+	/// <returns>ãƒˆãƒªã‚¬ãƒ¼ã‹</returns>
 	bool TriggerKey(BYTE keyNumber);
-private://ƒƒCƒ“•Ï”
-	//ƒL[ƒ{[ƒhƒfƒoƒCƒX
+private://ãƒ¡ã‚¤ãƒ³å¤‰æ•°
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<IDirectInputDevice8> sKeyboard;
 
 	ComPtr<IDirectInput8> sDirectInput;
@@ -68,9 +68,9 @@ private://ƒƒCƒ“•Ï”
 	//WindowAPI
 	WinApp* winApp=nullptr;
 
-public://ƒƒ“ƒoŠÖ”(ƒQ[ƒ€ƒpƒbƒh)
+public://ãƒ¡ãƒ³ãƒé–¢æ•°(ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰)
 	/// <summary>
-	/// ƒRƒ“ƒgƒ[ƒ‰[‚Ìó‹µ‚Ìæ“¾i–ˆƒtƒŒ[ƒ€‚·‚éj
+	/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®çŠ¶æ³ã®å–å¾—ï¼ˆæ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã™ã‚‹ï¼‰
 	/// </summary>
 	void Updatekeypad();
 
@@ -81,24 +81,24 @@ public://ƒƒ“ƒoŠÖ”(ƒQ[ƒ€ƒpƒbƒh)
 	XINPUT_STATE GetOldPad() { return oldGamePad; }
 
 	/// <summary>
-	/// ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒ{ƒ^ƒ“‚Ì“ü—Í‚µ‚½uŠÔ
+	/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒœã‚¿ãƒ³ã®å…¥åŠ›ã—ãŸç¬é–“
 	/// </summary>
-	/// ///<param name="button">ƒ{ƒ^ƒ“‚Ìí—Ş(XINPUT_GAMEPAD_‚Ån‚Ü‚é’è”‚Åw’è)</param>
-	/// <returns>‰Ÿ‚³‚ê‚Ä‚é‚©H</returns>
+	/// ///<param name="button">ãƒœã‚¿ãƒ³ã®ç¨®é¡(XINPUT_GAMEPAD_ã§å§‹ã¾ã‚‹å®šæ•°ã§æŒ‡å®š)</param>
+	/// <returns>æŠ¼ã•ã‚Œã¦ã‚‹ã‹ï¼Ÿ</returns>
 	bool PadTriggerKey(uint32_t button);
 
 	/// <summary>
-/// ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒ{ƒ^ƒ“‚Ì“ü—Íó‹µ
+/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒœã‚¿ãƒ³ã®å…¥åŠ›çŠ¶æ³
 /// </summary>
-/// ///<param name="button">ƒ{ƒ^ƒ“‚Ìí—Ş(XINPUT_GAMEPAD_‚Ån‚Ü‚é’è”‚Åw’è)</param>
-/// <returns>‰Ÿ‚³‚ê‚Ä‚é‚©H</returns>
+/// ///<param name="button">ãƒœã‚¿ãƒ³ã®ç¨®é¡(XINPUT_GAMEPAD_ã§å§‹ã¾ã‚‹å®šæ•°ã§æŒ‡å®š)</param>
+/// <returns>æŠ¼ã•ã‚Œã¦ã‚‹ã‹ï¼Ÿ</returns>
 	bool PadPushKey(uint32_t button);
 
 	float GetPadStick(PadStick Stick);
 
 	float GetOldPadStick(PadStick Stick);
 
-private://ƒƒ“ƒo•Ï”(ƒQ[ƒ€ƒpƒbƒh)
+private://ãƒ¡ãƒ³ãƒå¤‰æ•°(ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰)
 
 	XINPUT_STATE gamePad = {};
 

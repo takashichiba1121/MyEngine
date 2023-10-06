@@ -11,25 +11,25 @@ SceneManager* SceneManager::Instance()
 void SceneManager::ChangeScene(const std::string& sceneName)
 {
 	assert(sceneFactory_);
-	assert(nextScene_==nullptr);
+	assert(nextScene_ == nullptr);
 
-	//ŽŸ‚ÌƒV[ƒ“‚ð¶¬
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆ
 	nextScene_.reset(sceneFactory_->CreateScene(sceneName));
 }
 
 void SceneManager::Update()
 {
-	if (nextScene_)
+	if ( nextScene_ )
 	{
-		if (scene_)
+		if ( scene_ )
 		{
 			scene_->Finalize();
 			scene_ = nullptr;
 		}
 
-		//ƒV[ƒ“‚ÌØ‚è‘Ö‚¦
+		//ã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆ
 
-		scene_ =std::move(nextScene_);
+		scene_ = std::move(nextScene_);
 
 		nextScene_ = nullptr;
 
@@ -47,5 +47,5 @@ void SceneManager::Finalize()
 {
 	scene_->Finalize();
 
-	scene_=nullptr;
+	scene_ = nullptr;
 }

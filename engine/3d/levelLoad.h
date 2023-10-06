@@ -24,5 +24,5 @@ struct LevelData
 class LevelLoad
 {
 public:
-	static LevelData* Load(const std::string fullpath);
+	static LevelData* Load(const std::string fullpath); 
 };

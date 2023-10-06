@@ -13,6 +13,7 @@ void Enemy::Initialize(Model* bulletModel,Vector3 position, Object3d* playerObj)
 	obj_->SetModel(model.get());
 
 	obj_->SetPosition(position);
+	
 
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 
@@ -43,7 +44,7 @@ void Enemy::Attack()
 	{
 		attackTimer_ = kAttackTime;
 
-		//’e‚Ì‘¬“x
+		//å¼¾ã®é€Ÿåº¦
 		const float kBulletSpeed = 0.5f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = Matrix4Math::transform(velocity, obj_->GetMatWorld());
@@ -54,11 +55,11 @@ void Enemy::Attack()
 		}
 		velocity *= kBulletSpeed;
 
-		//’e‚Ì¶¬‚µA‰Šú‰»
+		//å¼¾ã®ç”Ÿæˆã—ã€åˆæœŸåŒ–
 		std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
 
-		//’e‚Ì“o˜^‚·‚é
+		//å¼¾ã®ç™»éŒ²ã™ã‚‹
 		EnemyManager::Instance()->AddBullet(std::move(newBullet));
 	}
 }

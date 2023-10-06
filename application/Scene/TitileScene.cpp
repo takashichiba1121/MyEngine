@@ -23,7 +23,7 @@ void TitileScene::Initialize()
 	{
 		spaceSprite->Initialize(aTexHandle);
 	}
-	else
+	else 
 	{
 		spaceSprite->Initialize(spaceTexHandle);
 	}

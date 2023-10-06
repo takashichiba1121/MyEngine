@@ -1,21 +1,21 @@
-#include "Model.h"
+ #include "Model.h"
 #include"Texture.h"
 #include<unordered_map>
 
 using namespace std;
 
-//Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
+//é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å®Ÿä½“
 ID3D12Device* Model::sDevice = nullptr;
 
 Model* Model::LoadFormOBJ(const std::string& modelname,bool smoothing)
 {
-	//V‚½‚ÈModelŒ^‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğnew‚·‚é
+	//æ–°ãŸãªModelå‹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’newã™ã‚‹
 	Model* model = new Model();
 
-	//“Ç‚İ‚İ
+	//èª­ã¿è¾¼ã¿
 	model->LoadFromOBJInternal(modelname,smoothing);
 	
-	//ƒoƒbƒtƒ@¶¬
+	//ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	model->CreateBuffers();
 
 	return model;
@@ -23,67 +23,67 @@ Model* Model::LoadFormOBJ(const std::string& modelname,bool smoothing)
 
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
-	//ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	std::ifstream file;
-	//ƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	file.open(directoryPath + filename);
-	//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
 	if (file.fail()) {
 		assert(0);
 	}
 
-	//1s‚¸‚Â“Ç‚İ‚Ş
+	//1è¡Œãšã¤èª­ã¿è¾¼ã‚€
 	string line;
 	while (getline(file, line)) {
 
-		//1s•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·
+		//1è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›
 		std::istringstream line_stream(line);
-		//”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ìæ“ª•¶š—ñ‚ğæ“¾
+		//åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®å…ˆé ­æ–‡å­—åˆ—ã‚’å–å¾—
 		string key;
 		getline(line_stream, key, ' ');
 
-		//æ“ª‚Ìƒ^ƒu•¶š‚Í–³‹‚·‚é
+		//å…ˆé ­ã®ã‚¿ãƒ–æ–‡å­—ã¯ç„¡è¦–ã™ã‚‹
 		if (key[0] == '\t') {
-			key.erase(key.begin());	//æ“ª‚Ì•¶š‚ğíœ
+			key.erase(key.begin());	//å…ˆé ­ã®æ–‡å­—ã‚’å‰Šé™¤
 		}
-		//æ“ª•¶š‚ªnewmtl‚È‚çƒ}ƒeƒŠƒAƒ‹–¼
+		//å…ˆé ­æ–‡å­—ãŒnewmtlãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«å
 		if (key == "newmtl") {
-			//ƒ}ƒeƒŠƒAƒ‹–¼“Ç‚İ‚İ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«åèª­ã¿è¾¼ã¿
 			line_stream >> material.name;
 		}
-		//æ“ª•¶š‚ªKa‚È‚çƒAƒ“ƒrƒGƒ“ƒgF
+		//å…ˆé ­æ–‡å­—ãŒKaãªã‚‰ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆè‰²
 		if (key == "Ka") {
 			line_stream >> material.ambient.x;
 			line_stream >> material.ambient.y;
 			line_stream >> material.ambient.z;
 		}
-		//æ“ª•¶š‚ªKd‚È‚çƒfƒBƒtƒ…[ƒYF
+		//å…ˆé ­æ–‡å­—ãŒKdãªã‚‰ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		if (key == "Kd") {
 			line_stream >> material.diffuse.x;
 			line_stream >> material.diffuse.y;
 			line_stream >> material.diffuse.z;
 		}
-		//æ“ª•¶š—ñ‚ªKs‚È‚çƒXƒyƒLƒ…ƒ‰[F
+		//å…ˆé ­æ–‡å­—åˆ—ãŒKsãªã‚‰ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
 		if (key == "Ks") {
 			line_stream >> material.specular.x;
 			line_stream >> material.specular.y;
 			line_stream >> material.specular.z;
 		}
-		//æ“ª•¶š—ñ‚ªmap_Kd‚È‚çƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
+		//å…ˆé ­æ–‡å­—åˆ—ãŒmap_Kdãªã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
 		if (key == "map_Kd") {
-			//ƒeƒNƒXƒ`ƒƒ‚Ìƒtƒ@ƒCƒ‹–¼“Ç‚İ‚İ
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚¡ã‚¤ãƒ«åèª­ã¿è¾¼ã¿
 			line_stream >> material.textureFilename;
-			//ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 			LoadTexture(directoryPath, material.textureFilename);
 		}
 	}
-	//ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 }
 
 void Model::LoadTexture(const std::string& directoryPath, const std::string& filename)
 {
-	//ƒtƒ@ƒCƒ‹ƒpƒX‚ğŒ‹‡
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’çµåˆ
 	string filepath = directoryPath + filename;
 
 	textureIndex_=Texture::Instance()->LoadTexture(filepath);
@@ -94,18 +94,18 @@ void Model::CreateBuffers()
 
 	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPosNormalUv) * vertices_.size());
 
-	// ƒq[ƒvƒvƒƒpƒeƒB
+	// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// ƒŠƒ\[ƒXİ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
 
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
 
-	// ’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
 	VertexPosNormalUv* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
@@ -114,7 +114,7 @@ void Model::CreateBuffers()
 		vertBuff_->Unmap(0, nullptr);
 	}
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	/*vbView.SizeInBytes = sizeof(vertices);*/
 	vbView_.SizeInBytes = sizeVB;
@@ -122,41 +122,41 @@ void Model::CreateBuffers()
 
 	/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
 	uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * indices_.size());
-	// ƒŠƒ\[ƒXİ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	resourceDesc.Width = sizeIB;
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&indexBuff_));
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
 	unsigned short* indexMap = nullptr;
 	result = indexBuff_->Map(0, nullptr, (void**)&indexMap);
 	if (SUCCEEDED(result)) {
 
-		// ‘SƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚Ä
+		// å…¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦
 		//for (int i = 0; i < _countof(indices); i++)
 		//{
-		//	indexMap[i] = indices[i];	// ƒCƒ“ƒfƒbƒNƒX‚ğƒRƒs[
+		//	indexMap[i] = indices[i];	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚³ãƒ”ãƒ¼
 		//}
 		std::copy(indices_.begin(), indices_.end(), indexMap);
 
 		indexBuff_->Unmap(0, nullptr);
 	}
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	ibView_.BufferLocation = indexBuff_->GetGPUVirtualAddress();
 	ibView_.Format = DXGI_FORMAT_R16_UINT;
 	/*ibView.SizeInBytes = sizeof(indices);*/
 	ibView_.SizeInBytes = sizeIB;
 
-	// ƒq[ƒvƒvƒƒpƒeƒB
+	// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 	CD3DX12_HEAP_PROPERTIES heapPropsB1 = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// ƒŠƒ\[ƒXİ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	CD3DX12_RESOURCE_DESC resourceDescB1 =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB1) + 0xff) & ~0xff);
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = sDevice->CreateCommittedResource(
 		&heapPropsB1,
 		D3D12_HEAP_FLAG_NONE,
@@ -164,7 +164,7 @@ void Model::CreateBuffers()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuffB1_));
-	// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	ConstBufferDataB1* constMap1 = nullptr;
 	result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
 	if (SUCCEEDED(result)) {
@@ -178,139 +178,139 @@ void Model::CreateBuffers()
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial)
 {
-	// ’¸“_ƒoƒbƒtƒ@‚Ìİ’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetVertexBuffers(0, 1, &vbView_);
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìİ’è
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetIndexBuffer(&ibView_);
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get()};
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-	// ’è”ƒoƒbƒtƒ@ƒrƒ…[‚ğƒZƒbƒg
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
-	//SRVƒq[ƒv‚Ìæ“ªƒnƒ“ƒhƒ‹‚ğæ“¾iSRV‚ğw‚µ‚Ä‚¢‚é‚Í‚¸j
+	//SRVãƒ’ãƒ¼ãƒ—ã®å…ˆé ­ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ï¼ˆSRVã‚’æŒ‡ã—ã¦ã„ã‚‹ã¯ãšï¼‰
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureIndex_);
 	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
-	// •`‰æƒRƒ}ƒ“ƒh
+	// æç”»ã‚³ãƒãƒ³ãƒ‰
 	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
 }
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial, uint32_t textureHandle)
 {
-	// ’¸“_ƒoƒbƒtƒ@‚Ìİ’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetVertexBuffers(0, 1, &vbView_);
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìİ’è
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetIndexBuffer(&ibView_);
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—
 	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-	// ’è”ƒoƒbƒtƒ@ƒrƒ…[‚ğƒZƒbƒg
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
-	//SRVƒq[ƒv‚Ìæ“ªƒnƒ“ƒhƒ‹‚ğæ“¾iSRV‚ğw‚µ‚Ä‚¢‚é‚Í‚¸j
+	//SRVãƒ’ãƒ¼ãƒ—ã®å…ˆé ­ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ï¼ˆSRVã‚’æŒ‡ã—ã¦ã„ã‚‹ã¯ãšï¼‰
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureHandle);
 	cmdList->SetGraphicsRootDescriptorTable(4, srvGpuHandle);
-	// •`‰æƒRƒ}ƒ“ƒh
+	// æç”»ã‚³ãƒãƒ³ãƒ‰
 	cmdList->DrawIndexedInstanced((uint32_t)indices_.size(), 1, 0, 0, 0);
 }
 
 void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 {
-	//oBJƒtƒ@ƒCƒ‹‚©‚çƒf[ƒ^‚ğ“Ç‚İ‚Ş
-		//ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+	//oBJãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	std::ifstream file;
-	//.objƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//.objãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	/*file.open("Resources/triangle_tex/triangle_tex.obj");*/
 	//const string modelname = "cube";
 	const string filename = modelname + ".obj";//"triangle_mat.obj"
 	const string directoryPath = "Resources/" + modelname + "/";//"Resources/triangle_mat/triangle_mat.obj"
 	file.open(directoryPath + filename);
-	//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
 	assert(!file.fail());
-	vector<Vector3>positions;	//’¸“_À•W
-	vector<Vector3>normals;	//–@üƒxƒNƒgƒ‹
-	vector<Vector2>texcodes;	//ƒeƒNƒXƒ`ƒƒ
+	vector<Vector3>positions;	//é ‚ç‚¹åº§æ¨™
+	vector<Vector3>normals;	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+	vector<Vector2>texcodes;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 
-	//’¸“_–@üƒXƒ€[ƒWƒ“ƒO—pƒf[ƒ^
+	//é ‚ç‚¹æ³•ç·šã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ç”¨ãƒ‡ãƒ¼ã‚¿
 	std::unordered_map<unsigned short, std::vector<unsigned short>> smoothDate;
-	//1s‚¸‚Â“Ç‚İ‚Ş
+	//1è¡Œãšã¤èª­ã¿è¾¼ã‚€
 	string line;
 	while (getline(file, line)) {
 
-		//‚Ps•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·‚µ‚Ä‰ğÍ‚µ‚â‚·‚­‚·‚é
+		//ï¼‘è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›ã—ã¦è§£æã—ã‚„ã™ãã™ã‚‹
 		std::istringstream line_stream(line);
 
-		//”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ìæ“ª•¶š—ñ‚ğæ“¾
+		//åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®å…ˆé ­æ–‡å­—åˆ—ã‚’å–å¾—
 		string key;
 		getline(line_stream, key, ' ');
 
-		//æ“ª•¶š‚ªmtllib‚È‚çƒ}ƒeƒŠƒAƒ‹
+		//å…ˆé ­æ–‡å­—ãŒmtllibãªã‚‰ãƒãƒ†ãƒªã‚¢ãƒ«
 		if (key == "mtllib")
 		{
-			//ƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹–¼“Ç‚İ‚İ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«åèª­ã¿è¾¼ã¿
 			string materialFilename;
 			line_stream >> materialFilename;
-			//ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
+			//ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿
 			LoadMaterial(directoryPath, materialFilename);
 		}
 
-		//æ“ª•¶š—ñ‚ªv‚È‚ç’¸“_À•W
+		//å…ˆé ­æ–‡å­—åˆ—ãŒvãªã‚‰é ‚ç‚¹åº§æ¨™
 		if (key == "v") {
-			//X,Y,ZÀ•W“Ç‚İ‚İ
+			//X,Y,Zåº§æ¨™èª­ã¿è¾¼ã¿
 			Vector3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
-			//À•Wƒf[ƒ^‚É“ü—Í
+			//åº§æ¨™ãƒ‡ãƒ¼ã‚¿ã«å…¥åŠ›
 			positions.emplace_back(position);
-			//’¸“_ƒf[ƒ^‚É’Ç‰Á
+			//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
 			/*VertexPosNormalUv vertex{};
 			vertex.pos = position;
 			vertices.emplace_back(vertex);*/
 		}
-		//æ“ª•¶š—ñ‚ªvt‚È‚çƒeƒNƒXƒ`ƒƒ
+		//å…ˆé ­æ–‡å­—åˆ—ãŒvtãªã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		if (key == "vt") {
-			//U.V¬•ª“Ç‚İ‚İ
+			//U.Væˆåˆ†èª­ã¿è¾¼ã¿
 			Vector2 texcord{};
 			line_stream >> texcord.x;
 			line_stream >> texcord.y;
-			//V•ûŒü”½“]
+			//Væ–¹å‘åè»¢
 			texcord.y = 1.0f - texcord.y;
-			//ƒeƒNƒXƒ`ƒƒÀ•Wƒf[ƒ^‚É’Ç‰Á
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
 			texcodes.emplace_back(texcord);
 		}
-		//æ“ª•¶š—ñ‚ªvn‚È‚ç–@üƒxƒNƒgƒ‹
+		//å…ˆé ­æ–‡å­—åˆ—ãŒvnãªã‚‰æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 		if (key == "vn") {
-			//X,Y,Z¬•ª“Ç‚İ‚İ
+			//X,Y,Zæˆåˆ†èª­ã¿è¾¼ã¿
 			Vector3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;
-			//–@üƒxƒNƒgƒ‹ƒf[ƒ^‚É’Ç‰Á
+			//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
 			normals.emplace_back(normal);
 		}
 
-		//æ“ª•¶š—ñ‚ªf‚È‚çƒ|ƒŠƒSƒ“iOŠpŒ`j
+		//å…ˆé ­æ–‡å­—åˆ—ãŒfãªã‚‰ãƒãƒªã‚´ãƒ³ï¼ˆä¸‰è§’å½¢ï¼‰
 		if (key == "f") {
-			//”¼ŠpƒXƒy[ƒX‹æØ‚è‚Ås‚Ì‘±‚«‚ğ“Ç‚İ‚Ş
+			//åŠè§’ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§è¡Œã®ç¶šãã‚’èª­ã¿è¾¼ã‚€
 			string index_string;
 			while (getline(line_stream, index_string, ' ')) {
-				//’¸“_ƒCƒ“ƒfƒbƒNƒX‚PŒÂ•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€ƒ“•ÏŠ·‚µ‚Ä‰ğÍ‚µ‚â‚·‚­‚·‚é
+				//é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‘å€‹åˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ãƒ³å¤‰æ›ã—ã¦è§£æã—ã‚„ã™ãã™ã‚‹
 				std::istringstream index_stream(index_string);
 				unsigned short indexPosition, indexNormal, indexTexcord;
 				index_stream >> indexPosition;
-				//’Ç‰Á
+				//è¿½åŠ 
 				index_stream.seekg(1, ios_base::cur);
 				index_stream >> indexTexcord;
 				index_stream.seekg(1, ios_base::cur);
 				index_stream >> indexNormal;
-				//’¸“_ƒf[ƒ^‚Ì’Ç‰Á
+				//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
 				VertexPosNormalUv vertex{};
 				indexPosition--;
 				indexNormal--;
@@ -320,31 +320,31 @@ void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 				vertex.uv = texcodes[indexTexcord];
 				vertices_.emplace_back(vertex);
 				smoothDate[indexPosition].emplace_back(static_cast<unsigned short>(vertices_.size() - 1));
-				//ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì’Ç‰Á
+				//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
 				indices_.emplace_back((unsigned short)indices_.size());
 
-				////’¸“_ƒCƒ“ƒfƒbƒNƒX‚É’Ç‰Á
+				////é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«è¿½åŠ 
 				//indices.emplace_back(indexPosition - 1);
 
 			}
 		}
 	}
-	//ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 	if (smoothing == true)
 	{
 		auto itr = smoothDate.begin();
 		for (; itr != smoothDate.end(); ++itr) {
-			//Še–Ê—p‚Ì‹¤’Ê’¸“_ƒRƒŒƒNƒVƒ‡ƒ“
+			//å„é¢ç”¨ã®å…±é€šé ‚ç‚¹ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 			std::vector<unsigned short>& v = itr->second;
-			//‘S’¸“_‚Ì–@ü‚ğ•½‹Ï‚·‚é
+			//å…¨é ‚ç‚¹ã®æ³•ç·šã‚’å¹³å‡ã™ã‚‹
 			Vector3 normal = {0,0,0};
 			for (unsigned short index : v) {
 				normal += {vertices_[index].normal.x, vertices_[index].normal.y, vertices_[index].normal.z};
 			}
 			normal=(normal / (float)v.size());
 			normal = normal.normalize();
-			//‹¤’Ê–@ü‚ğg—p‚·‚é‘S‚Ä‚Ì’¸“_ƒf[ƒ^‚É‘‚«‚Ş
+			//å…±é€šæ³•ç·šã‚’ä½¿ç”¨ã™ã‚‹å…¨ã¦ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«æ›¸ãè¾¼ã‚€
 			for (unsigned short index : v) {
 				vertices_[index].normal = { normal.x,normal.y,normal.z };
 			}

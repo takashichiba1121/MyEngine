@@ -18,10 +18,10 @@ void Framework::Initialize()
 	winApp_ = std::make_unique<WinApp>();
 	winApp_->Initialize();
 
-	dxCommon_ = std::make_unique<DirectXCommon>();
+	dxCommon_ = std::make_unique<DirectXCommon>(); 
 	dxCommon_->Initialize(winApp_.get());
 
-	//DirectX‰Šú‰»ˆ—@‚±‚±‚©‚ç
+	//DirectXåˆæœŸåŒ–å‡¦ç†ã€€ã“ã“ã‹ã‚‰
 
 	Input::Instance()->Initialize(winApp_.get());
 
@@ -74,7 +74,7 @@ void Framework::Update()
 {
 	endRequst_ = winApp_->ProcessMessage();
 
-	//“ü—Í‚ÌXV
+	//å…¥åŠ›ã®æ›´æ–°
 	Input::Instance()->Update();
 
 	SceneManager::Instance()->Update();
@@ -85,26 +85,26 @@ void Framework::Run()
 	Initialize();
 
 
-	//ƒQ[ƒ€ƒ‹[ƒv
+	//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (true) {
 
-		//~ƒ{ƒ^ƒ“‚ÅI—¹ƒƒbƒZ[ƒW‚ª‚«‚½‚çƒQ[ƒ€ƒ‹[ƒv‚ğ”²‚¯‚é
+		//Ã—ãƒœã‚¿ãƒ³ã§çµ‚äº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒããŸã‚‰ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 		if (IsEndRequst()) {
 			break;
 		}
-		//DirectX–ˆƒtƒŒ[ƒ€ˆ—@‚±‚±‚©‚ç
+		//DirectXæ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†ã€€ã“ã“ã‹ã‚‰
 		imguiManager imGui;
 
 		imGui.Begin();
 		Update();
 		imGui.End();
 
-		//•`‰æƒRƒ}ƒ“ƒh‚±‚±‚©‚ç
+		//æç”»ã‚³ãƒãƒ³ãƒ‰ã“ã“ã‹ã‚‰
 		Draw();
 
-		//•`‰æƒRƒ}ƒ“ƒh‚±‚±‚Ü‚Å
+		//æç”»ã‚³ãƒãƒ³ãƒ‰ã“ã“ã¾ã§
 
-		//DirectX–ˆƒtƒŒ[ƒ€ˆ—@‚±‚±‚Ü‚Å
+		//DirectXæ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†ã€€ã“ã“ã¾ã§
 
 	}
 

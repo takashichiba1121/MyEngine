@@ -10,15 +10,15 @@ public:
 	virtual void Finalize()=0;
 
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	virtual void Update()=0;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	virtual void Draw(DirectXCommon* dxCommon)=0;
 
-
+	 
 };
 

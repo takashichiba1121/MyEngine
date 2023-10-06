@@ -1,4 +1,4 @@
-#include "Easing.h"
+ #include "Easing.h"
 #include<math.h>
 
 float Easing::easeOutBounce(float x)

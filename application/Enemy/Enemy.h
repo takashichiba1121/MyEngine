@@ -6,29 +6,29 @@ class Enemy
 {
 public:
 	///<summary>
-	///‰Šú‰»‘S”Ê
+	///åˆæœŸåŒ–å…¨èˆ¬
 	///</summary>
-	///<param name="model">ƒ‚ƒfƒ‹</param>
-	///<param name="bulletModel">’e‚Ìƒ‚ƒfƒ‹</param>
-	///<param name="position">ˆÊ’u</param>
+	///<param name="model">ãƒ¢ãƒ‡ãƒ«</param>
+	///<param name="bulletModel">å¼¾ã®ãƒ¢ãƒ‡ãƒ«</param>
+	///<param name="position">ä½ç½®</param>
 	void Initialize(Model* bulletModel, Vector3 position,Object3d* playerObj);
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-/// “ü—Í‚Íó‚¯•t‚¯‚È‚¢‚ªƒAƒbƒvƒf[ƒg‚Í‚·‚é(ƒJƒƒ‰À•W‚Ì‚İ‚ğ“®‚©‚·‚Æ‚«‚È‚Ç‚Ég‚¤)
+/// å…¥åŠ›ã¯å—ã‘ä»˜ã‘ãªã„ãŒã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã¯ã™ã‚‹(ã‚«ãƒ¡ãƒ©åº§æ¨™ã®ã¿ã‚’å‹•ã‹ã™ã¨ããªã©ã«ä½¿ã†)
 /// </summary>
 	void ObjectUpdate() { obj_->Update(); }
 
 	/// <summary>
-	/// UŒ‚‘S”Ê
+	/// æ”»æ’ƒå…¨èˆ¬
 	/// </summary>
 	void Attack();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
@@ -48,7 +48,7 @@ private:
 
 	bool isDaed_=false;
 
-	//UŒ‚ŠÔŠu
+	//æ”»æ’ƒé–“éš”
 	static const uint32_t kAttackTime = 300;
 
 	uint32_t attackTimer_ = kAttackTime;

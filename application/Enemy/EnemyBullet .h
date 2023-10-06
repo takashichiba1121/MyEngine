@@ -6,29 +6,29 @@ class EnemyBullet
 public:
 	
 	///<summary>
-	///‰Šú‰»ˆ—
+	///åˆæœŸåŒ–å‡¦ç†
 	///</summary>
-	///<param name="model">ƒ‚ƒfƒ‹</param>
-	///<param name="velocity">‘¬“x</param>
-	///<param name="position">‰ŠúˆÊ’u</param>
+	///<param name="model">ãƒ¢ãƒ‡ãƒ«</param>
+	///<param name="velocity">é€Ÿåº¦</param>
+	///<param name="position">åˆæœŸä½ç½®</param>
 	void Initialize(Model* model,Vector2 velocity,Vector3 position);
 	///<summary>
-	///–ˆƒtƒŒ[ƒ€ˆ—
+	///æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	///</summary>
 	void Update();
 
 	///<summary>
-	///•`‰æ
+	///æç”»
 	///</summary>
 	void Draw();
 	
 	///<summary>
-	///Õ“Ë‚ðŒŸo‚µ‚½‚çŒÄ‚Ño‚³‚ê‚½‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+	///è¡çªã‚’æ¤œå‡ºã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚ŒãŸã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	///</summary>
 	void OnCollision();
 
 /// <summary>
-/// Á‚¦‚é‚×‚«‚©
+/// æ¶ˆãˆã‚‹ã¹ãã‹
 /// </summary>
 	bool IsDead() {return isDead_ ; }
 
@@ -40,12 +40,12 @@ private:
 
 	std::unique_ptr<Object3d> obj_;
 
-	//‘¬“x
+	//é€Ÿåº¦
 	Vector2 velocity_;
-	//Žõ–½<frm>
+	//å¯¿å‘½<frm>
 	static const uint32_t kLifeTime = 60;
-	//ƒfƒXƒ^ƒCƒ}[
+	//ãƒ‡ã‚¹ã‚¿ã‚¤ãƒžãƒ¼
 	uint32_t deathTimer_ = kLifeTime;
-	//ƒfƒXƒtƒ‰ƒO
+	//ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°
 	bool isDead_ = false;
 };

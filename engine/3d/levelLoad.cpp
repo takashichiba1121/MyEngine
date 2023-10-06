@@ -1,82 +1,82 @@
-#include "levelLoad.h"
+ #include "levelLoad.h"
 #include<fstream>
 
 LevelData* LevelLoad::Load(const std::string fullpath)
 {
-	//ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	std::ifstream file;
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	file.open(fullpath);
-	//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğƒ`ƒFƒbƒN
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’ãƒã‚§ãƒƒã‚¯
 	if (file.fail()) {
 		assert(0);
 	}
-	//JSON•¶š—ñ‚©‚ç‰ğ“€‚µ‚½ƒf[ƒ^
+	//JSONæ–‡å­—åˆ—ã‹ã‚‰è§£å‡ã—ãŸãƒ‡ãƒ¼ã‚¿
 	nlohmann::json deserialized;
 
-	//‰ğ“€
+	//è§£å‡
 	file >> deserialized;
 
-	//³‚µ‚¢ƒŒƒxƒ‹ƒf[ƒ^ƒtƒ@ƒCƒ‹‚©ƒ`ƒFƒbƒN
+	//æ­£ã—ã„ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‹ãƒã‚§ãƒƒã‚¯
 	assert(deserialized.is_object());
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
 
-	//"name"‚ğ•¶š—ñ‚Æ‚µ‚Äæ“¾
+	//"name"ã‚’æ–‡å­—åˆ—ã¨ã—ã¦å–å¾—
 	std::string name =
 		deserialized["name"].get<std::string>();
-	//³‚µ‚¢ƒŒƒxƒ‹ƒf[ƒ^ƒtƒ@ƒCƒ‹‚©ƒ`ƒFƒbƒN
+	//æ­£ã—ã„ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‹ãƒã‚§ãƒƒã‚¯
 	assert(name.compare("scene") == 0);
 	
 	LevelData* levelData = new LevelData();
 
-	//"objects"‚Ì‘SƒIƒuƒWƒFƒNƒg‚ğ‘–¸
+	//"objects"ã®å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’èµ°æŸ»
 	for (nlohmann::json& object : deserialized["objects"]) {
 		assert(object.contains("type"));
 
-		//í•Ê‚ğæ“¾
+		//ç¨®åˆ¥ã‚’å–å¾—
 		std::string type = object["type"].get < std::string>();
 
 		//MESH
 		if (type.compare("MESH") == 0)
 		{
-			//—v‘f’Ç‰Á
+			//è¦ç´ è¿½åŠ 
 			levelData->objects.emplace_back(LevelData::ObjectData{});
-			//¡’Ç‰Á‚µ‚½—v‘f‚ÌQÆ‚ğ“¾‚é
+			//ä»Šè¿½åŠ ã—ãŸè¦ç´ ã®å‚ç…§ã‚’å¾—ã‚‹
 			LevelData::ObjectData& objectData = levelData->objects.back();
 
 			if (object.contains("file_name")) {
-				//ƒtƒ@ƒCƒ‹–¼
+				//ãƒ•ã‚¡ã‚¤ãƒ«å
 				objectData.fileName = object["file_name"];
 			}
 			if (object.contains("Tag_name")) {
-				//ƒtƒ@ƒCƒ‹–¼
+				//ãƒ•ã‚¡ã‚¤ãƒ«å
 				objectData.tagName = object["Tag_name"];
 			}
 			nlohmann::json& transform = object["transform"];
 
 			if (object.contains("colider")) {
-				//“–‚½‚è”»’è
+				//å½“ãŸã‚Šåˆ¤å®š
 				nlohmann::json& collision = object["colider"];
 
-				//“–‚½‚è”»’è‚ÌƒTƒCƒY
+				//å½“ãŸã‚Šåˆ¤å®šã®ã‚µã‚¤ã‚º
 				objectData.size.x = (float)collision["size"][1];
 				objectData.size.y = (float)collision["size"][2];
 				objectData.size.z = (float)collision["size"][0];
-				//“–‚½‚è”»’è‚Ì’†S
+				//å½“ãŸã‚Šåˆ¤å®šã®ä¸­å¿ƒ
 				objectData.center.x = (float)collision["center"][1];
 				objectData.center.y = (float)collision["center"][2];
 				objectData.center.z = (float)collision["center"][0];
 			}
-			//•½sˆÚ“®
+			//å¹³è¡Œç§»å‹•
 			objectData.trans.x = (float)transform["translation"][1];
 			objectData.trans.y = (float)transform["translation"][2];
 			objectData.trans.z = -(float)transform["translation"][0];
-			//‰ñ“]Šp
+			//å›è»¢è§’
 			objectData.rot.x = -(float)transform["rotation"][1];
 			objectData.rot.y = -(float)transform["rotation"][2];
 			objectData.rot.z = (float)transform["rotation"][0];
-			//ƒXƒP[ƒ‹
+			//ã‚¹ã‚±ãƒ¼ãƒ«
 			objectData.scale.x = (float)transform["scaling"][1];
 			objectData.scale.y = (float)transform["scaling"][2];
 			objectData.scale.z = (float)transform["scaling"][0];

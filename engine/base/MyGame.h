@@ -5,7 +5,7 @@
 class MyGame : public Framework
 {
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
 
 	void Finalize() override;
@@ -17,3 +17,4 @@ public:
 private:
 };
 
+ 

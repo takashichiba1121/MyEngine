@@ -1,4 +1,4 @@
-#include"Collider.h"
+ #include"Collider.h"
 #include"object3d.h"
 #include<array>
 

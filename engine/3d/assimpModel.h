@@ -17,36 +17,36 @@
 class AssimpModel
 {
 private:
-	// Microsoft::WRL::‚ğÈ—ª
+	// Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌB1
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“B1
 	struct ConstBufferDataB1
 	{
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒgŒW”
-		float pad1;			//ƒpƒfƒBƒ“ƒO
-		Vector3 diffuse;	//ƒfƒBƒtƒ…[ƒYŒW”
-		float pad2;			//ƒpƒfƒBƒ“ƒO
-		Vector3 specular;	//ƒXƒyƒLƒ…ƒ‰[ŒW”
-		float alpha;		//ƒAƒ‹ƒtƒ@
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆä¿‚æ•°
+		float pad1;			//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 diffuse;	//ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºä¿‚æ•°
+		float pad2;			//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ä¿‚æ•°
+		float alpha;		//ã‚¢ãƒ«ãƒ•ã‚¡
 	};
-	// ’¸“_ƒf[ƒ^\‘¢‘Ì
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct VertexPosNormalUv
 	{
-		Vector3 pos; // xyzÀ•W
-		Vector3 normal; // –@üƒxƒNƒgƒ‹
-		Vector2 uv;  // uvÀ•W
+		Vector3 pos; // xyzåº§æ¨™
+		Vector3 normal; // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		Vector2 uv;  // uvåº§æ¨™
 	};
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒãƒ†ãƒªã‚¢ãƒ«
 	struct Material {
-		std::string name;	//ƒ}ƒeƒŠƒAƒ‹–¼
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-		Vector3 diffuse;	//ƒfƒBƒtƒ…[ƒY‰e‹¿“x
-		Vector3 specular;	//ƒXƒyƒLƒ…ƒ‰[‰e‹¿“x
-		float alpha;		//ƒAƒ‹ƒtƒ@
-		uint32_t  texHandle;	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		std::string name;	//ãƒãƒ†ãƒªã‚¢ãƒ«å
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+		Vector3 diffuse;	//ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+		Vector3 specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼å½±éŸ¿åº¦
+		float alpha;		//ã‚¢ãƒ«ãƒ•ã‚¡
+		uint32_t  texHandle;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Material() {
 			ambient = { 0.3f,0.3f,0.3f };
 			diffuse = { 0.0f,0.0f,0.0f };
@@ -61,15 +61,15 @@ public:
 		std::vector<size_t> indices;
 		Material materials;
 
-		// ’¸“_ƒoƒbƒtƒ@
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> vertBuff;
-		// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 		D3D12_VERTEX_BUFFER_VIEW vbView;
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> indexBuff;
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 		D3D12_INDEX_BUFFER_VIEW ibView;
-		// ’è”ƒoƒbƒtƒ@(ƒ}ƒeƒŠƒAƒ‹)
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡(ãƒãƒ†ãƒªã‚¢ãƒ«)
 		ComPtr<ID3D12Resource> constBuffB1;
 	};
 public:
@@ -77,7 +77,7 @@ public:
 	~AssimpModel();
 	void CreateBuffers();
 
-	//OBJƒtƒ@ƒCƒ‹‚©‚ç3Dƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
+	//OBJãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰3Dãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	static AssimpModel* LoadFormFBX(const std::string& modelname);
 
 	//setter
@@ -90,12 +90,12 @@ public:
 private:
 	std::vector<std::unique_ptr<AssimpModel::Mesh>> meshs_;
 
-	//ƒfƒoƒCƒX
+	//ãƒ‡ãƒã‚¤ã‚¹
 	static ID3D12Device* sDevice;
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_;
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_;
-	// ’è”ƒoƒbƒtƒ@(ƒ}ƒeƒŠƒAƒ‹)
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡(ãƒãƒ†ãƒªã‚¢ãƒ«)
 	ComPtr<ID3D12Resource> constBuffB1_;
 };

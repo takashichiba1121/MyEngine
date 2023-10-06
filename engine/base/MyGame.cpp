@@ -24,7 +24,7 @@ void MyGame::Finalize()
 void MyGame::Update()
 {
 	Framework::Update();
-}
+} 
 
 void MyGame::Draw()
 {

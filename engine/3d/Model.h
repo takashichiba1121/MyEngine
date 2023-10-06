@@ -14,39 +14,39 @@
 #include"Vector4.h"
 #include"Matrix4.h"
 #include<map>
-//3Dƒ‚ƒfƒ‹
+//3Dãƒ¢ãƒ‡ãƒ«
 class Model 
 {
 private:
-	// Microsoft::WRL::‚ğÈ—ª
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// Microsoft::WRL::ã‚’çœç•¥
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>; 
 public:
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌB1
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“B1
 	struct ConstBufferDataB1
 	{
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒgŒW”
-		float pad1;			//ƒpƒfƒBƒ“ƒO
-		Vector3 diffuse;	//ƒfƒBƒtƒ…[ƒYŒW”
-		float pad2;			//ƒpƒfƒBƒ“ƒO
-		Vector3 specular;	//ƒXƒyƒLƒ…ƒ‰[ŒW”
-		float alpha;		//ƒAƒ‹ƒtƒ@
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆä¿‚æ•°
+		float pad1;			//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 diffuse;	//ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºä¿‚æ•°
+		float pad2;			//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
+		Vector3 specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ä¿‚æ•°
+		float alpha;		//ã‚¢ãƒ«ãƒ•ã‚¡
 	};
-	// ’¸“_ƒf[ƒ^\‘¢‘Ì
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct VertexPosNormalUv
 	{
-		Vector3 pos; // xyzÀ•W
-		Vector3 normal; // –@üƒxƒNƒgƒ‹
-		Vector2 uv;  // uvÀ•W
+		Vector3 pos; // xyzåº§æ¨™
+		Vector3 normal; // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		Vector2 uv;  // uvåº§æ¨™
 	};
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒãƒ†ãƒªã‚¢ãƒ«
 	struct Material {
-		std::string name;	//ƒ}ƒeƒŠƒAƒ‹–¼
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-		Vector3 diffuse;	//ƒfƒBƒtƒ…[ƒY‰e‹¿“x
-		Vector3 specular;	//ƒXƒyƒLƒ…ƒ‰[‰e‹¿“x
-		float alpha;		//ƒAƒ‹ƒtƒ@
-		std::string textureFilename;	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		std::string name;	//ãƒãƒ†ãƒªã‚¢ãƒ«å
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+		Vector3 diffuse;	//ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+		Vector3 specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼å½±éŸ¿åº¦
+		float alpha;		//ã‚¢ãƒ«ãƒ•ã‚¡
+		std::string textureFilename;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Material() {
 			ambient = { 0.3f,0.3f,0.3f };
 			diffuse = { 0.0f,0.0f,0.0f };
@@ -54,66 +54,66 @@ public:
 			alpha = 1.0f;
 		}
 	};
-public://ƒƒ“ƒoŠÖ”
-	//OBJƒtƒ@ƒCƒ‹‚©‚ç3Dƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş
+public://ãƒ¡ãƒ³ãƒé–¢æ•°
+	//OBJãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰3Dãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€
 	static Model* LoadFormOBJ(const std::string& modelname, bool smoothing);
 
 	//setter
 	static void SetDevice(ID3D12Device* device) { Model::sDevice = device; }
 
-	//Šeíƒoƒbƒtƒ@‚Ì¶¬
+	//å„ç¨®ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	void CreateBuffers();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
-	/// <param name="cmdlist">•`‰æƒRƒ}ƒ“ƒhƒŠƒXƒg</param>
-	/// <param name="rootParamIndexMaterial">ƒ}ƒeƒŠƒAƒ‹—pƒ‹[ƒgƒpƒ‰ƒ[ƒ^”Ô†</param>
+	/// <param name="cmdlist">æç”»ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ</param>
+	/// <param name="rootParamIndexMaterial">ãƒãƒ†ãƒªã‚¢ãƒ«ç”¨ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç•ªå·</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
 	/// <summary>
-/// ‰æ‘œw’è•`‰æ
+/// ç”»åƒæŒ‡å®šæç”»
 /// </summary>
-/// <param name="cmdlist">•`‰æƒRƒ}ƒ“ƒhƒŠƒXƒg</param>
-/// <param name="rootParamIndexMaterial">ƒ}ƒeƒŠƒAƒ‹—pƒ‹[ƒgƒpƒ‰ƒ[ƒ^”Ô†</param>
+/// <param name="cmdlist">æç”»ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ</param>
+/// <param name="rootParamIndexMaterial">ãƒãƒ†ãƒªã‚¢ãƒ«ç”¨ãƒ«ãƒ¼ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ç•ªå·</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial,uint32_t TextureHandle);
 
 	std::vector<VertexPosNormalUv> GetVertices() {return vertices_; }
 
 
-private://”ñŒöŠJ‚Ìƒƒ“ƒoŠÖ”
-	//OBJƒtƒ@ƒCƒ‹‚©‚ç3Dƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Ş(”ñŒöŠJ)
+private://éå…¬é–‹ã®ãƒ¡ãƒ³ãƒé–¢æ•°
+	//OBJãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰3Dãƒ¢ãƒ‡ãƒ«ã‚’èª­ã¿è¾¼ã‚€(éå…¬é–‹)
 	void LoadFromOBJInternal(const std::string& modelname, bool smoothing);
 	
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
-/// ƒ}ƒeƒŠƒAƒ‹‚Ì“Ç‚İ‚İ
+/// ãƒãƒ†ãƒªã‚¢ãƒ«ã®èª­ã¿è¾¼ã¿
 /// </summary>
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 private:
-	//ƒfƒoƒCƒX
+	//ãƒ‡ãƒã‚¤ã‚¹
 	static ID3D12Device* sDevice;
-	// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> vertBuff_;
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> indexBuff_;
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_INDEX_BUFFER_VIEW ibView_ = {};
-	// ’¸“_ƒf[ƒ^”z—ñ
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿é…åˆ—
 	std::vector<VertexPosNormalUv> vertices_;
-	// ’¸“_ƒCƒ“ƒfƒbƒNƒX”z—ñ
+	// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 	std::vector<unsigned short>indices_;
-	//ƒ}ƒeƒŠƒAƒ‹
+	//ãƒãƒ†ãƒªã‚¢ãƒ«
 	Material material;
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_;
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_;
-	// ’è”ƒoƒbƒtƒ@(ƒ}ƒeƒŠƒAƒ‹)
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡(ãƒãƒ†ãƒªã‚¢ãƒ«)
 	ComPtr<ID3D12Resource> constBuffB1_;
 
 	uint32_t textureIndex_=0;

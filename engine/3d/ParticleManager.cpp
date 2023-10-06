@@ -1,4 +1,4 @@
-﻿#include "ParticleManager.h"
+ #include "ParticleManager.h"
 #include "DirectXCommon.h"
 #include "Model.h"
 #include <algorithm>

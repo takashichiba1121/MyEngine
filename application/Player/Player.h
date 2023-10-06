@@ -8,43 +8,43 @@ class Player
 {
 public:
 	/// <summary>
-	/// ‰Šú‰»‘S”Ê
+	/// åˆæœŸåŒ–å…¨èˆ¬
 	/// </summary>
-	/// <param name="model">ƒ‚ƒfƒ‹</param>
-	/// <param name="bulletModel">’e‚Ìƒ‚ƒfƒ‹</param>
+	/// <param name="model">ãƒ¢ãƒ‡ãƒ«</param>
+	/// <param name="bulletModel">å¼¾ã®ãƒ¢ãƒ‡ãƒ«</param>
 	void Initialize(Model* bulletModel);
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// “ü—Í‚ÍŽó‚¯•t‚¯‚È‚¢‚ªƒAƒbƒvƒf[ƒg‚Í‚·‚é(ƒJƒƒ‰À•W‚Ì‚Ý‚ð“®‚©‚·‚Æ‚«‚È‚Ç‚ÉŽg‚¤)
+	/// å…¥åŠ›ã¯å—ã‘ä»˜ã‘ãªã„ãŒã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã¯ã™ã‚‹(ã‚«ãƒ¡ãƒ©åº§æ¨™ã®ã¿ã‚’å‹•ã‹ã™ã¨ããªã©ã«ä½¿ã†)
 	/// </summary>
 	void ObjectUpdate() {obj_->Update(); }
 
 	/// <summary>
-	/// “®‚«‘S”Ê‚Ìˆ—
+	/// å‹•ãå…¨èˆ¬ã®å‡¦ç†
 	/// </summary>
-	void Move();
+	void Move(); 
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†å‡¦ç†
 	/// </summary>
 	void Finalize();
 
 	/// <summary>
-	/// UŒ‚‘S”Ê
+	/// æ”»æ’ƒå…¨èˆ¬
 	/// </summary>
 	void Attack();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ
+	/// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æç”»
 	/// </summary>
 	void ParticleDraw();
 
@@ -53,7 +53,7 @@ public:
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
 	/// <summary>
-	/// json‚©‚ç“Ç‚ÝŽæ‚Á‚½’nŒ`ƒf[ƒ^‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
+	/// jsonã‹ã‚‰èª­ã¿å–ã£ãŸåœ°å½¢ãƒ‡ãƒ¼ã‚¿ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
 	Vector3 MapCollision();
 
@@ -93,7 +93,7 @@ private:
 	
 	Vector3 goalScale_ = { 0,0,0 };
 
-	//ƒvƒŒƒCƒ„[‚©‚çŒ©‚½ƒJƒƒ‰‚ÌˆÊ’u
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰è¦‹ãŸã‚«ãƒ¡ãƒ©ã®ä½ç½®
 	Vector3 cameraPos_ = { 0.0f,40.0f,-40.0f };
 
 	const float cameraSpeed = 0.1f;

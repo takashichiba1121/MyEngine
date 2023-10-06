@@ -3,7 +3,7 @@
 #include"DirectXCommon.h"
 class PointLight
 {
-private: // ƒGƒCƒŠƒAƒX
+private: // ã‚¨ã‚¤ãƒªã‚¢ã‚¹
 public:
 	struct  ConstBufferData
 	{
@@ -22,7 +22,7 @@ private:
 
 	Vector3 lightAtten_ = { 1.0f,1.0f,1.0f };
 
-	//—LŒøƒtƒ‰ƒO
+	//æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	bool active_ = false;
 public:
 
@@ -39,15 +39,15 @@ public:
 	Vector3 GetLightColor() { return lightColor_; }
 
 	/// <summary>
-	/// —LŒøƒtƒ‰ƒO‚ðƒZƒbƒg
+	/// æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
 	/// </summary>
-	/// <param name="active">—LŒøƒtƒ‰ƒO</param>
+	/// <param name="active">æœ‰åŠ¹ãƒ•ãƒ©ã‚°</param>
 	inline void SetActive(bool active) { this->active_ = active; }
 
 	/// <summary>
-	/// —LŒøƒ`ƒFƒbƒN
+	/// æœ‰åŠ¹ãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	/// <returns>—LŒøƒtƒ‰ƒO</returns>
+	/// <returns>æœ‰åŠ¹ãƒ•ãƒ©ã‚°</returns>
 	inline bool IsActive() { return active_; }
 
 };

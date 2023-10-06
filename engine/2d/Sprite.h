@@ -8,24 +8,24 @@
 
 struct Vertex
 {
-	Vector3 pos;    //xyzÀ•W
-	Vector2 uv;     //uvÀ•W
+	Vector3 pos;    //xyzåº§æ¨™
+	Vector2 uv;     //uvåº§æ¨™
 };
 
-//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ìiƒ}ƒeƒŠƒAƒ‹j
+//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ï¼ˆãƒãƒ†ãƒªã‚¢ãƒ«ï¼‰
 struct ConstBufferDataMaterial {
-	Vector4 color;//FiRGBAj
+	Vector4 color;//è‰²ï¼ˆRGBAï¼‰
 };
-//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ìis—ñj
+//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ï¼ˆè¡Œåˆ—ï¼‰
 struct ConstBufferDateTransform {
 	Matrix4 mat;
 };
 
 enum VertexNumber {
-	LB,//¶‰º
-	LT,//¶ã
-	RB,//‰E‰º
-	RT,//‰Eã
+	LB,//å·¦ä¸‹
+	LT,//å·¦ä¸Š
+	RB,//å³ä¸‹
+	RT,//å³ä¸Š
 };
 
 class Sprite
@@ -34,7 +34,7 @@ public:
 
 	void static StaticInitialize(DirectXCommon* dxCommon);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(uint32_t textureIndex = UINT32_MAX);
 
 	void Update();
@@ -86,7 +86,7 @@ public:
 	void SetTexture(uint32_t texHandole);
 
 private:
-	//ƒeƒNƒXƒ`ƒƒƒTƒCƒY‚ğƒCƒ[ƒW‚É‡‚í‚¹‚é
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚ºã‚’ã‚¤ãƒ¡ãƒ¼ã‚¸ã«åˆã‚ã›ã‚‹
 	void AdjustTextureSize();
 
 protected:
@@ -94,9 +94,9 @@ protected:
 
 	Vertex* vertMap_ = nullptr;
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;	//’¸“_ƒoƒbƒtƒ@
+	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 
-	//’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 
 	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
@@ -121,16 +121,16 @@ protected:
 
 	Vector2 anchorPoint_ = { 0.0f,0.0f };
 
-	//¶‰EƒtƒŠƒbƒv
+	//å·¦å³ãƒ•ãƒªãƒƒãƒ—
 	bool isFlipX_ = false;
-	//ã‰ºƒtƒŠƒbƒv
+	//ä¸Šä¸‹ãƒ•ãƒªãƒƒãƒ—
 	bool isFlipY_ = false;
 
 	bool isInvisible_ = false;
 
-	//ƒeƒNƒXƒ`ƒƒ¶ãÀ•W
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£å·¦ä¸Šåº§æ¨™
 	Vector2 textureLeftTop_ = {0.0f,0.0f};
-	//ƒeƒNƒXƒ`ƒƒØ‚èo‚µƒTƒCƒY
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ‡ã‚Šå‡ºã—ã‚µã‚¤ã‚º
 	Vector2 textureSize_ = {100.0f,100.0f};
 
 protected:

@@ -30,13 +30,13 @@ void EnemyManager::Update()
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				//Á‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
+				//æ¶ˆãˆã‚‹ã¾ã§ã®æ™‚é–“
 				const uint32_t rnd_life = 10;
-				//Å’áŒÀ‚Ìƒ‰ƒCƒt
+				//æœ€ä½Žé™ã®ãƒ©ã‚¤ãƒ•
 				const uint32_t constlife = 60;
 				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
 
-				//XYZ‚ÌL‚ª‚é‹——£
+				//XYZã®åºƒãŒã‚‹è·é›¢
 				const float rnd_pos = 0.1f;
 				Vector3 pos{};
 				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
@@ -45,7 +45,7 @@ void EnemyManager::Update()
 
 				//pos.normalize();
 
-				//’Ç‰Á
+				//è¿½åŠ 
 				particle_->Add(life, enemy->GetObj()->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
 			}
 		}

@@ -1,4 +1,4 @@
-#include"LightGroup.h"
+ #include"LightGroup.h"
 #include<assert.h>
 #include <d3dx12.h>
 #include"Vector3.h"
@@ -7,10 +7,10 @@ ID3D12Device* LightGroup::sDevice = nullptr;
 
 void LightGroup::StaticInitialize(ID3D12Device* device)
 {
-	//Ä‰Šú‰»ƒ`ƒFƒbƒN
+	//å†åˆæœŸåŒ–ãƒã‚§ãƒƒã‚¯
 	assert(!LightGroup::sDevice);
 
-	//nullptrƒ`ƒFƒbƒN
+	//nullptrãƒã‚§ãƒƒã‚¯
 	assert(device);
 
 	LightGroup::sDevice = device;
@@ -18,10 +18,10 @@ void LightGroup::StaticInitialize(ID3D12Device* device)
 
 LightGroup* LightGroup::Create()
 {
-	//ƒ‰ƒCƒg‚ÌƒIƒuƒWƒFƒNƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð¶¬
+	//ãƒ©ã‚¤ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	LightGroup* instance = new LightGroup();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	instance->Initialize();
 
 	return instance;
@@ -29,30 +29,30 @@ LightGroup* LightGroup::Create()
 
 void LightGroup::Initialize()
 {
-	//ƒ‰ƒCƒg‚Ì•W€Ý’è
+	//ãƒ©ã‚¤ãƒˆã®æ¨™æº–è¨­å®š
 	DefaultLightSetting();
 
 	HRESULT result;
-	// ƒq[ƒvƒvƒƒpƒeƒB
+	// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// ƒŠƒ\[ƒXÝ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	CD3DX12_RESOURCE_DESC resourceDesc =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(constBuff_) + 0xff) & ~0xff);
 
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = sDevice->CreateCommittedResource(
-		&heapProps, // ƒAƒbƒvƒ[ƒh‰Â”\
+		&heapProps, // ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰å¯èƒ½
 		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result));
 
-	//’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	TransferConstBuffer();
 }
 
 void LightGroup::Update()
 {
-	//’l‚ÌXV‚ª‚ ‚Á‚½Žž‚¾‚¯’è”ƒoƒbƒtƒ@‚É“]‘—‚·‚é
+	//å€¤ã®æ›´æ–°ãŒã‚ã£ãŸæ™‚ã ã‘å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è»¢é€ã™ã‚‹
 	if (dirty_)
 	{
 		TransferConstBuffer();
@@ -62,7 +62,7 @@ void LightGroup::Update()
 
 void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
 {
-	//’è”ƒoƒbƒtƒ@ƒrƒ…[‚ðƒZƒbƒg
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex,
 		constBuff_->GetGPUVirtualAddress());
 }
@@ -71,7 +71,7 @@ void  LightGroup::TransferConstBuffer()
 {
 	HRESULT result;
 
-	// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	constMap->ambientColor = ambientColor_;

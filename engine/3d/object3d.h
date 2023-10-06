@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Model.h"
 #include"LightGroup.h"
@@ -19,7 +19,7 @@ public: // サブクラス
 	{
 		Vector3 pos; // xyz座標
 		Vector3 normal; // 法線ベクトル
-		Vector2 uv;  // uv座標
+		Vector2 uv;  // uv座標 
 	};
 
 	// 定数バッファ用データ構造体B0

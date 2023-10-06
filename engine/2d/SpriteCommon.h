@@ -27,7 +27,7 @@ public:
 	static SpriteCommon* Instance();
 #pragma endregion
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(DirectXCommon* DXCommon);
 
 	DirectXCommon* GetDxCommon() { return dxCommon; }

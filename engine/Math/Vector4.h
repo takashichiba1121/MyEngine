@@ -3,28 +3,28 @@
 class Vector4
 {
 public:
-	float x; //x¬•ª
-	float y; //y¬•ª
-	float z; //z¬•ª
+	float x; //xæˆåˆ†
+	float y; //yæˆåˆ†
+	float z; //zæˆåˆ†
 	float w;
 
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Vector4(); //—ëƒxƒNƒgƒ‹‚Æ‚·‚é
-	Vector4(float x, float y, float z,float w);//x¬•ªA‚™¬•ªA‚š¬•ª‚ğw’è‚µ‚Ä‚Ì¶¬ 
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Vector4(); //é›¶ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
+	Vector4(float x, float y, float z,float w);//xæˆåˆ†ã€ï½™æˆåˆ†ã€ï½šæˆåˆ†ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ 
 
-	//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector4 operator+() const;
 	Vector4 operator-() const;
 
-	//‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	//ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector4& operator+=(const Vector4& v);
 	Vector4& operator-=(const Vector4& v);
 	Vector4& operator*=(float s);
-	Vector4& operator/=(float s);
+	Vector4& operator/=(float s); 
 };
-//“ñ€‰‰ZqƒI[ƒo[ƒ[ƒh
-	//‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ß‚ÉAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+//äºŒé …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+	//ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã«ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const Vector4 operator+(const Vector4& v1, const Vector4& v2);
 const Vector4 operator-(const Vector4& v1, const Vector4& v2);
 const Vector4 operator*(const Vector4& v, float s);

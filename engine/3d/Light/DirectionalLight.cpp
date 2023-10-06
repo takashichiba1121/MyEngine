@@ -13,3 +13,4 @@ void DirectionalLight::SetLightColor(const Vector3& lightColor)
 {
 	lightColor_ = lightColor;
 }
+ 

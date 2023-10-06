@@ -6,7 +6,7 @@
 
 BaseScene* SceneFactory::CreateScene(const std::string& sceneName)
 {
-	//Ÿ‚ÌƒV[ƒ“‚ğ¶¬
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆ
 	BaseScene* newScene = nullptr;
 
 	if (sceneName=="TITLE")
@@ -20,7 +20,7 @@ BaseScene* SceneFactory::CreateScene(const std::string& sceneName)
 	else if (sceneName == "GAMEOVER")
 	{
 		newScene = new GameOverScene();
-	}
+	} 
 	else if (sceneName == "RESULT")
 	{
 		newScene = new ResultScene();

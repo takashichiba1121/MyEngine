@@ -6,3 +6,4 @@ namespace Easing
 
 	float easeOutSine(float x);
 }
+ 

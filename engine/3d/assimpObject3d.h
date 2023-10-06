@@ -10,40 +10,40 @@
 
 
 /// <summary>
-/// 3DƒIƒuƒWƒFƒNƒg
+/// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 /// </summary>
 class assimpObject3d
 {
 
-	private: // ƒGƒCƒŠƒAƒX
-		// Microsoft::WRL::‚ğÈ—ª
+	private: // ã‚¨ã‚¤ãƒªã‚¢ã‚¹
+		// Microsoft::WRL::ã‚’çœç•¥
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	public: // ƒTƒuƒNƒ‰ƒX
-		// ’¸“_ƒf[ƒ^\‘¢‘Ì
+	public: // ã‚µãƒ–ã‚¯ãƒ©ã‚¹
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct VertexPosNormalUv
 		{
-			Vector3 pos; // xyzÀ•W
-			Vector3 normal; // –@üƒxƒNƒgƒ‹
-			Vector2 uv;  // uvÀ•W
+			Vector3 pos; // xyzåº§æ¨™
+			Vector3 normal; // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+			Vector2 uv;  // uvåº§æ¨™
 		};
 
-		// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌB0
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“B0
 		struct ConstBufferDataB0
 		{
-			//XMFLOAT4 color;	// F (RGBA)
-			Matrix4 mat;	// ‚R‚c•ÏŠ·s—ñ
+			//XMFLOAT4 color;	// è‰² (RGBA)
+			Matrix4 mat;	// ï¼“ï¼¤å¤‰æ›è¡Œåˆ—
 		};
 
-		//ƒ}ƒeƒŠƒAƒ‹
+		//ãƒãƒ†ãƒªã‚¢ãƒ«
 		struct Material {
-			std::string name;	//ƒ}ƒeƒŠƒAƒ‹–¼
-			Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-			Vector3 diffuse;	//ƒfƒBƒtƒ…[ƒY‰e‹¿“x
-			Vector3 specular;	//ƒXƒyƒLƒ…ƒ‰[‰e‹¿“x
-			float alpha;		//ƒAƒ‹ƒtƒ@
-			std::string textureFilename;	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-			//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+			std::string name;	//ãƒãƒ†ãƒªã‚¢ãƒ«å
+			Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+			Vector3 diffuse;	//ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+			Vector3 specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼å½±éŸ¿åº¦
+			float alpha;		//ã‚¢ãƒ«ãƒ•ã‚¡
+			std::string textureFilename;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+			//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 			Material() {
 				ambient = { 0.3f,0.3f,0.3f };
 				diffuse = { 0.0f,0.0f,0.0f };
@@ -51,7 +51,7 @@ class assimpObject3d
 				alpha = 1.0f;
 			}
 		};
-		// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct ConstBufferPolygonExplosion
 		{
 			float _Destruction = 0.0f;
@@ -61,140 +61,140 @@ class assimpObject3d
 			float _AlphaFactor = 1.0f;
 		};
 
-	public: // Ã“Iƒƒ“ƒoŠÖ”
+	public: // é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 		/// <summary>
-		/// Ã“I‰Šú‰»
+		/// é™çš„åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="device">ƒfƒoƒCƒX</param>
-		/// <param name="window_width">‰æ–Ê•</param>
-		/// <param name="window_height">‰æ–Ê‚‚³</param>
+		/// <param name="device">ãƒ‡ãƒã‚¤ã‚¹</param>
+		/// <param name="window_width">ç”»é¢å¹…</param>
+		/// <param name="window_height">ç”»é¢é«˜ã•</param>
 		static void StaticInitialize(ID3D12Device* device, uint32_t window_width, uint32_t window_height);
 
 		/// <summary>
-		/// •`‰æ‘Oˆ—
+		/// æç”»å‰å‡¦ç†
 		/// </summary>
-		/// <param name="cmdList">•`‰æƒRƒ}ƒ“ƒhƒŠƒXƒg</param>
+		/// <param name="cmdList">æç”»ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ</param>
 		static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
 		/// <summary>
-		/// •`‰æŒãˆ—
+		/// æç”»å¾Œå‡¦ç†
 		/// </summary>
 		static void PostDraw();
 
 		/// <summary>
-		/// ‹“_À•W‚Ìæ“¾
+		/// è¦–ç‚¹åº§æ¨™ã®å–å¾—
 		/// </summary>
-		/// <returns>À•W</returns>
+		/// <returns>åº§æ¨™</returns>
 		static const Vector3& GetEye() { return sEye; }
 
 		/// <summary>
-		/// ‹“_À•W‚Ìİ’è
+		/// è¦–ç‚¹åº§æ¨™ã®è¨­å®š
 		/// </summary>
-		/// <param name="position">À•W</param>
+		/// <param name="position">åº§æ¨™</param>
 		static void SetEye(Vector3 eye);
 
 		/// <summary>
-		/// ’‹“_À•W‚Ìæ“¾
+		/// æ³¨è¦–ç‚¹åº§æ¨™ã®å–å¾—
 		/// </summary>
-		/// <returns>À•W</returns>
+		/// <returns>åº§æ¨™</returns>
 		static const Vector3& GetTarget() { return sTarget; }
 
 		/// <summary>
-		/// ’‹“_À•W‚Ìİ’è
+		/// æ³¨è¦–ç‚¹åº§æ¨™ã®è¨­å®š
 		/// </summary>
-		/// <param name="position">À•W</param>
+		/// <param name="position">åº§æ¨™</param>
 		static void SetTarget(Vector3 target);
 
 		static Matrix4 GetMatViewPro();
 
 		static void Finalize();
 
-	private: // Ã“Iƒƒ“ƒo•Ï”
-		// ƒfƒoƒCƒX
+	private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
+		// ãƒ‡ãƒã‚¤ã‚¹
 		static ID3D12Device* sDevice;
-		// ƒRƒ}ƒ“ƒhƒŠƒXƒg
+		// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 		static ID3D12GraphicsCommandList* sCmdList;
-		// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		static ComPtr<ID3D12RootSignature> sRootsignature;
-		// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
+		// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		static ComPtr<ID3D12PipelineState> sPipelinestate;
-		// ƒrƒ…[s—ñ
+		// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 		static Matrix4 sMatView;
-		// Ë‰es—ñ
+		// å°„å½±è¡Œåˆ—
 		static Matrix4 sMatProjection;
-		// ‹“_À•W
+		// è¦–ç‚¹åº§æ¨™
 		static Vector3 sEye;
-		// ’‹“_À•W
+		// æ³¨è¦–ç‚¹åº§æ¨™
 		static Vector3 sTarget;
-		// ã•ûŒüƒxƒNƒgƒ‹
+		// ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 		static Vector3 sUp;
 
-	private:// Ã“Iƒƒ“ƒoŠÖ”
+	private:// é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 
 		/// <summary>
-		/// ƒJƒƒ‰‰Šú‰»
+		/// ã‚«ãƒ¡ãƒ©åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="window_width">‰æ–Ê‰¡•</param>
-		/// <param name="window_height">‰æ–Êc•</param>
+		/// <param name="window_width">ç”»é¢æ¨ªå¹…</param>
+		/// <param name="window_height">ç”»é¢ç¸¦å¹…</param>
 		static void InitializeCamera(uint32_t window_width, uint32_t window_height);
 
 		/// <summary>
-		/// ƒOƒ‰ƒtƒBƒbƒNƒpƒCƒvƒ‰ƒCƒ“¶¬
+		/// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
 		/// </summary>
-		/// <returns>¬”Û</returns>
+		/// <returns>æˆå¦</returns>
 		static void InitializeGraphicsPipeline();
 
 		/// <summary>
-		/// ƒrƒ…[s—ñ‚ğXV
+		/// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
 		/// </summary>
 		static void UpdateViewMatrix();
 
-	public: // ƒƒ“ƒoŠÖ”
+	public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 		bool Initialize();
 		/// <summary>
-		/// –ˆƒtƒŒ[ƒ€ˆ—
+		/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 		/// </summary>
 		void Update();
 
 		/// <summary>
-		/// •`‰æ
+		/// æç”»
 		/// </summary>
 		void Draw();
 
 		/// <summary>
-		/// À•W‚Ìæ“¾
+		/// åº§æ¨™ã®å–å¾—
 		/// </summary>
-		/// <returns>À•W</returns>
+		/// <returns>åº§æ¨™</returns>
 		const Vector3& GetPosition() const { return position_; }
 
 		/// <summary>
-		/// À•W‚Ìİ’è
+		/// åº§æ¨™ã®è¨­å®š
 		/// </summary>
-		/// <param name="position">À•W</param>
+		/// <param name="position">åº§æ¨™</param>
 		void SetPosition(const Vector3& position) { this->position_ = position; }
 
 		/// <summary>
-		/// À•W‚Ìæ“¾
+		/// åº§æ¨™ã®å–å¾—
 		/// </summary>
-		/// <returns>À•W</returns>
+		/// <returns>åº§æ¨™</returns>
 		const Vector3& GetScale() const { return scale_; }
 
 		/// <summary>
-		/// À•W‚Ìİ’è
+		/// åº§æ¨™ã®è¨­å®š
 		/// </summary>
-		/// <param name="position">À•W</param>
+		/// <param name="position">åº§æ¨™</param>
 		void SetScale(const Vector3& scale) { this->scale_ = scale; }
 
 		/// <summary>
-		/// À•W‚Ìæ“¾
+		/// åº§æ¨™ã®å–å¾—
 		/// </summary>
-		/// <returns>À•W</returns>
+		/// <returns>åº§æ¨™</returns>
 		const Vector3& GetRot() const { return rotation_; }
 
 		/// <summary>
-		/// À•W‚Ìİ’è
+		/// åº§æ¨™ã®è¨­å®š
 		/// </summary>
-		/// <param name="position">À•W</param>
+		/// <param name="position">åº§æ¨™</param>
 		void SetRot(const Vector3& rot) { this->rotation_ = rot; }
 
 		//setter
@@ -204,26 +204,26 @@ class assimpObject3d
 
 		const void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { *ConstMapPolygon_ = polygonExplosion; }
 
-	private: // ƒƒ“ƒo•Ï”
-		ComPtr<ID3D12Resource> constBuffB0_; // ’è”ƒoƒbƒtƒ@
-		ComPtr<ID3D12Resource> constBuffB1_; // ’è”ƒoƒbƒtƒ@
-		ComPtr<ID3D12Resource> constBuffB2_; // ’è”ƒoƒbƒtƒ@
-		//// F
+	private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
+		ComPtr<ID3D12Resource> constBuffB0_; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
+		ComPtr<ID3D12Resource> constBuffB1_; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
+		ComPtr<ID3D12Resource> constBuffB2_; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
+		//// è‰²
 		//Vector4 color = { 1,1,1,1 };
-		// ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+		// ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 		Vector3 scale_ = { 1,1,1 };
-		// X,Y,Z²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
+		// X,Y,Zè»¸å›ã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’
 		Vector3 rotation_ = { 0,0,0 };
-		// ƒ[ƒJƒ‹À•W
+		// ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™
 		Vector3 position_ = { 0,0,0 };
-		// ƒ[ƒJƒ‹ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+		// ãƒ­ãƒ¼ã‚«ãƒ«ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 		Matrix4 matWorld_;
-		// eƒIƒuƒWƒFƒNƒg
+		// è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		assimpObject3d* parent_ = nullptr;
 
 		ConstBufferPolygonExplosion* ConstMapPolygon_;
 
-		//ƒ‚ƒfƒ‹
+		//ãƒ¢ãƒ‡ãƒ«
 		AssimpModel* model_ = nullptr;
 
 

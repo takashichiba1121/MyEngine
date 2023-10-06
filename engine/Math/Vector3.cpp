@@ -1,7 +1,7 @@
-#include"vector3.h"
+ #include"vector3.h"
 #include<cmath>
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-//—ëƒxƒNƒgƒ‹‚Æ‚·‚é
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//é›¶ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
 Vector3::Vector3()
 	:x(0), y(0), z(0)
 {
@@ -9,9 +9,9 @@ Vector3::Vector3()
 Vector3::Vector3(float x, float y, float z)
 	: x(x), y(y), z(z)
 {
-}//x¬•ªA‚™¬•ªA‚š¬•ª‚ğw’è‚µ‚Ä‚Ì¶¬ 
+}//xæˆåˆ†ã€ï½™æˆåˆ†ã€ï½šæˆåˆ†ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ 
 
-//ƒƒ“ƒoŠÖ”
+//ãƒ¡ãƒ³ãƒé–¢æ•°
 float Vector3::length() const
 {
 	return sqrt(x * x + y * y + z * z);
@@ -24,7 +24,7 @@ Vector3& Vector3::normalize()
 		return *this /= len;
 	}
 	return *this;
-}
+} 
 float Vector3::dot(const Vector3& v) const
 {
 	return v.x * x + v.y * y + v.z * z;
@@ -38,7 +38,7 @@ Vector3 Vector3::cross(const Vector3& v) const
 	return c;
 }
 
-//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Vector3 Vector3::operator+() const
 {
 	return *this;
@@ -48,7 +48,7 @@ Vector3 Vector3::operator-() const
 	return Vector3(-x, -y, -z);
 }
 
-//‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+//ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Vector3& Vector3::operator+=(const Vector3& v)
 {
 	x += v.x;
@@ -78,8 +78,8 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
-//“ñ€‰‰ZqƒI[ƒo[ƒ[ƒh
-//‚¢‚ë‚ñ‚Èˆø”‚Ìƒpƒ^[ƒ“‚É‘Î‰(ˆø”‚Ì‡˜)‚·‚é‚½‚ß‚ÉAˆÈ‰º‚Ì‚æ‚¤‚É€”õ‚µ‚Ä‚¢‚é
+//äºŒé …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+//ã„ã‚ã‚“ãªå¼•æ•°ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œ(å¼•æ•°ã®é †åº)ã™ã‚‹ãŸã‚ã«ã€ä»¥ä¸‹ã®ã‚ˆã†ã«æº–å‚™ã—ã¦ã„ã‚‹
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)
 {
 	Vector3 temp(v1);

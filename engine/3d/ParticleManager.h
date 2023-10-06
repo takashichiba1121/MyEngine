@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -22,7 +22,7 @@ public: // サブクラス
 	//	Vector3 normal; // 法線ベクトル
 	//	vextor2 uv;  // uv座標
 	//};
-
+	 
 	// 頂点データ構造体
 	struct VertexPos
 	{

@@ -1,8 +1,8 @@
-#include "assimpModel.h"
+ #include "assimpModel.h"
 #include"assimpLoader.h"
 #include"Texture.h"
 
-//Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
+//é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å®Ÿä½“
 ID3D12Device* AssimpModel::sDevice= nullptr;
 
 AssimpModel::~AssimpModel()
@@ -18,18 +18,18 @@ void AssimpModel::CreateBuffers()
 
 		uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPosNormalUv) * mesh->vertexs.size());
 
-		// ƒq[ƒvƒvƒƒpƒeƒB
+		// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		// ƒŠƒ\[ƒXİ’è
+		// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 		CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
 
-		// ’¸“_ƒoƒbƒtƒ@¶¬
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		result = sDevice->CreateCommittedResource(
 			&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 			IID_PPV_ARGS(&mesh->vertBuff));
 		assert(SUCCEEDED(result));
 
-		// ’¸“_ƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
 		VertexPosNormalUv* vertMap = nullptr;
 		result = mesh->vertBuff->Map(0, nullptr, (void**)&vertMap);
 		if (SUCCEEDED(result)) {
@@ -38,7 +38,7 @@ void AssimpModel::CreateBuffers()
 			mesh->vertBuff->Unmap(0, nullptr);
 		}
 
-		// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		mesh->vbView.BufferLocation = mesh->vertBuff->GetGPUVirtualAddress();
 		/*vbView.SizeInBytes = sizeof(vertices);*/
 		mesh->vbView.SizeInBytes = sizeVB;
@@ -46,41 +46,41 @@ void AssimpModel::CreateBuffers()
 
 		/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
 		uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * mesh->indices.size());
-		// ƒŠƒ\[ƒXİ’è
+		// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 		resourceDesc.Width = sizeIB;
 
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		result = sDevice->CreateCommittedResource(
 			&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 			IID_PPV_ARGS(&mesh->indexBuff));
 
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ö‚Ìƒf[ƒ^“]‘—
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒ‡ãƒ¼ã‚¿è»¢é€
 		size_t* indexMap = nullptr;
 		result = mesh->indexBuff->Map(0, nullptr, (void**)&indexMap);
 		if (SUCCEEDED(result)) {
 
-			// ‘SƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚Ä
+			// å…¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦
 			//for (int i = 0; i < _countof(indices); i++)
 			//{
-			//	indexMap[i] = indices[i];	// ƒCƒ“ƒfƒbƒNƒX‚ğƒRƒs[
+			//	indexMap[i] = indices[i];	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚³ãƒ”ãƒ¼
 			//}
 			std::copy(mesh->indices.begin(), mesh->indices.end(), indexMap);
 
 			mesh->indexBuff->Unmap(0, nullptr);
 		}
 
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		mesh->ibView.BufferLocation = mesh->indexBuff->GetGPUVirtualAddress();
 		mesh->ibView.Format = DXGI_FORMAT_R16_UINT;
 		/*ibView.SizeInBytes = sizeof(indices);*/
 		mesh->ibView.SizeInBytes = sizeIB;
 
-		// ƒq[ƒvƒvƒƒpƒeƒB
+		// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 		CD3DX12_HEAP_PROPERTIES heapPropsB1 = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		// ƒŠƒ\[ƒXİ’è
+		// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 		CD3DX12_RESOURCE_DESC resourceDescB1 =
 			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB1) + 0xff) & ~0xff);
-		// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 		result = sDevice->CreateCommittedResource(
 			&heapPropsB1,
 			D3D12_HEAP_FLAG_NONE,
@@ -88,7 +88,7 @@ void AssimpModel::CreateBuffers()
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
 			IID_PPV_ARGS(&constBuffB1_));
-		// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 		ConstBufferDataB1* constMap1 = nullptr;
 		result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
 		if (SUCCEEDED(result)) {
@@ -116,23 +116,23 @@ void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamInd
 {
 	for (std::unique_ptr<AssimpModel::Mesh>& mesh: meshs_) 
 	{
-		// ’¸“_ƒoƒbƒtƒ@‚Ìİ’è
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 		cmdList->IASetVertexBuffers(0, 1, &mesh->vbView);
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìİ’è
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 		cmdList->IASetIndexBuffer(&mesh->ibView);
 
-		// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ
+		// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—
 		ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-		// ’è”ƒoƒbƒtƒ@ƒrƒ…[‚ğƒZƒbƒg
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 		cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
-		//SRVƒq[ƒv‚Ìæ“ªƒnƒ“ƒhƒ‹‚ğæ“¾iSRV‚ğw‚µ‚Ä‚¢‚é‚Í‚¸j
+		//SRVãƒ’ãƒ¼ãƒ—ã®å…ˆé ­ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ï¼ˆSRVã‚’æŒ‡ã—ã¦ã„ã‚‹ã¯ãšï¼‰
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 		uint32_t incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		srvGpuHandle.ptr += incrementSize * mesh->materials.texHandle;
 		cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);
-		// •`‰æƒRƒ}ƒ“ƒh
+		// æç”»ã‚³ãƒãƒ³ãƒ‰
 		cmdList->DrawIndexedInstanced((uint32_t)mesh->indices.size(), 1, 0, 0, 0);
 	}
 }

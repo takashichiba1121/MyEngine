@@ -2,30 +2,30 @@
 #include<Windows.h>
 class WinApp
 {
-public://Ã“Iƒƒ“ƒoŠÖ”
+public://é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-public://ƒƒ“ƒoŠÖ”
-	//‰Šú‰»
+public://ãƒ¡ãƒ³ãƒé–¢æ•°
+	//åˆæœŸåŒ–
 	void Initialize();
 
 	void Finalize();
 
-	//ƒƒbƒZ[ƒW‚Ìˆ—
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†
 	bool ProcessMessage();
 
 	//getter
 	HWND GetHwnd() const { return hwnd_; }
 
 	HINSTANCE GetInstance() const { return w_.hInstance; }
-public://’è”
-//ƒEƒBƒ“ƒhƒE‰¡•
+public://å®šæ•°
+//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
 	static const int window_width = 1280;
-	//ƒEƒBƒ“ƒhƒEc•
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹… 
 	static const int window_height = 720;
 private:
-	//ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 	HWND hwnd_ = nullptr;
-	//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ìİ’è
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	WNDCLASSEX w_{};
 
 };

@@ -22,7 +22,7 @@ private:
 
 	static AssimpModel::Material LoadMaterial(const aiMaterial* material, const std::string& directoryPath);
 
-	static void LodeNode(aiNode* node, const aiScene* scene, const std::string& directoryPath, std::vector<std::unique_ptr<AssimpModel::Mesh>>* meshs);
+	static void LodeNode(aiNode* node, const aiScene* scene, const std::string& directoryPath, std::vector<std::unique_ptr<AssimpModel::Mesh>>* meshs); 
 private:
 };
 

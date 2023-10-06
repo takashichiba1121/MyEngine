@@ -1,4 +1,4 @@
-#include "input.h"
+ #include "input.h"
 #include<cassert>
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -13,41 +13,41 @@ Input* Input::Instance()
 
 void Input::Initialize(WinApp* WinApp)
 {
-	//Ø‚è‚Ä‚«‚½WinApp‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‹L˜^
+	//å€Ÿã‚Šã¦ããŸWinAppã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¨˜éŒ²
 	winApp = WinApp;
 
 	HRESULT result;
 
-	//DirectInput‚Ì‰Šú‰»
+	//DirectInputã®åˆæœŸåŒ–
 	result = DirectInput8Create(
 		WinApp->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&sDirectInput, nullptr);
 	assert(SUCCEEDED(result));
-	//ƒL[ƒ{[ƒhƒfƒoƒCƒX‚Ì¶¬
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 	/*ComPtr<IDirectInputDevice8> keyboard = nullptr;*/
 	result = sDirectInput->CreateDevice(GUID_SysKeyboard, &sKeyboard, NULL);
 	assert(SUCCEEDED(result));
-	//“ü—Íƒf[ƒ^Œ`®‚ÌƒZƒbƒg
-	result = sKeyboard->SetDataFormat(&c_dfDIKeyboard);//•W€Œ`®
+	//å…¥åŠ›ãƒ‡ãƒ¼ã‚¿å½¢å¼ã®ã‚»ãƒƒãƒˆ
+	result = sKeyboard->SetDataFormat(&c_dfDIKeyboard);//æ¨™æº–å½¢å¼
 	assert(SUCCEEDED(result));
-	//”r‘¼§ŒäƒŒƒxƒ‹‚ÌƒZƒbƒg
+	//æ’ä»–åˆ¶å¾¡ãƒ¬ãƒ™ãƒ«ã®ã‚»ãƒƒãƒˆ
 	result = sKeyboard->SetCooperativeLevel(
 		WinApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 
 	isLinkGamePad = XInputGetState(
-		0,//•¡”‚Â‚È‚ª‚ê‚Ä‚é‚Æ‚«‚Ì‘I‘ğ
-		&gamePad);//‚±‚Ì•Ï”‚É“ü—Íó‹µ‚ªŠi”[‚³‚ê‚é
+		0,//è¤‡æ•°ã¤ãªãŒã‚Œã¦ã‚‹ã¨ãã®é¸æŠ
+		&gamePad);//ã“ã®å¤‰æ•°ã«å…¥åŠ›çŠ¶æ³ãŒæ ¼ç´ã•ã‚Œã‚‹
 }
 
 void Input::Update()
 {
-	//‘O‰ñ‚ÌƒL[“ü—Í‚ğ•Û‘¶
+	//å‰å›ã®ã‚­ãƒ¼å…¥åŠ›ã‚’ä¿å­˜
 	memcpy(keyPre, key, sizeof(key));
 
-	//ƒL[ƒ{[ƒhî•ñ‚Ìæ“¾ŠJn
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã®å–å¾—é–‹å§‹
 	sKeyboard->Acquire();
-	//‘SƒL[‚Ì“ü—Íó‘Ô‚ğæ“¾‚·‚é
+	//å…¨ã‚­ãƒ¼ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
 	sKeyboard->GetDeviceState(sizeof(key), key);
 
 	Updatekeypad();
@@ -82,33 +82,33 @@ void Input::Update()
 
 bool Input::PushKey(BYTE keyNumber)
 {
-	//w’èƒL[‚ğ‰Ÿ‚µ‚Ä‚¢‚ê‚Îtrue‚ğ•Ô‚·
+	//æŒ‡å®šã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ã„ã‚Œã°trueã‚’è¿”ã™
 	if (key[keyNumber]) {
 		return true;
 	}
-	//‚»‚¤‚Å‚È‚¯‚ê‚Îfalse•Ô‚·
+	//ãã†ã§ãªã‘ã‚Œã°falseè¿”ã™
 	return false;
 }
 
 bool Input::TriggerKey(BYTE keyNumber)
 {
-	//w’èƒL[‚ğ‰Ÿ‚µ‚Ä‚¢‚ê‚Îtrue‚ğ•Ô‚·
+	//æŒ‡å®šã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ã„ã‚Œã°trueã‚’è¿”ã™
 	if (key[keyNumber] && keyPre[keyNumber] == 0) {
 		return true;
 	}
-	//‚»‚¤‚Å‚È‚¯‚ê‚Îfalse•Ô‚·
+	//ãã†ã§ãªã‘ã‚Œã°falseè¿”ã™
 	return false;
 }
 
-//ƒQ[ƒ€ƒpƒbƒh
+//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 
 void Input::Updatekeypad()
 {
 	oldGamePad = gamePad;
 
 	isLinkGamePad = XInputGetState(
-		0,//•¡”‚Â‚È‚ª‚ê‚Ä‚é‚Æ‚«‚Ì‘I‘ğ
-		&gamePad);//‚±‚Ì•Ï”‚É“ü—Íó‹µ‚ªŠi”[‚³‚ê‚é
+		0,//è¤‡æ•°ã¤ãªãŒã‚Œã¦ã‚‹ã¨ãã®é¸æŠ
+		&gamePad);//ã“ã®å¤‰æ•°ã«å…¥åŠ›çŠ¶æ³ãŒæ ¼ç´ã•ã‚Œã‚‹
 }
 
 bool Input::IsLinkGamePad()
