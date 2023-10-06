@@ -10,30 +10,28 @@
 class GameScene:public BaseScene
 {
 
-public: // ƒƒ“ƒoŠÖ”
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 	GameScene();
 
 	~GameScene();
 
 	void Initialize() override;
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update() override;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw(DirectXCommon* dxCommon) override;
 
 	void Finalize() override;
 
 	/// <summary>
-	/// ƒ}ƒbƒvƒf[ƒ^‚Ìƒ[ƒh
+	/// ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
 	/// </summary>
 	void MapLoad(std::string mapfullpath);
-
-	void Collision();
 private:
 	std::map<std::string, Model*> models;
 
@@ -63,7 +61,7 @@ private:
 
 	float ambientColor[3] = {1,1,1};
 
-	//Œõü•ûŒü‰Šú‰»
+	//å…‰ç·šæ–¹å‘åˆæœŸåŒ–
 	float lightPos[3] = { 0,0,0 };
 	float lightColor[3] = { 1,1,1 };
 	float lightAtten[3] = { 0.3f,0.1f,0.1f };
@@ -74,7 +72,7 @@ private:
 
 	bool isClear_=false;
 
-	#pragma region ƒV[ƒ“‘JˆÚ—p•Ï”
+	#pragma region ã‚·ãƒ¼ãƒ³é·ç§»ç”¨å¤‰æ•°
 
 	bool sceneStart = true;
 
@@ -90,13 +88,13 @@ private:
 
 	uint32_t frame =endFrame ;
 
-	//ƒV[ƒ“‘JˆÚ‚ÌƒXƒvƒ‰ƒCƒg‚ÌŠJn’n“_
+	//ã‚·ãƒ¼ãƒ³é·ç§»ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®é–‹å§‹åœ°ç‚¹
 	const float startSpriteY = -720;
 
-	//ƒV[ƒ“‘JˆÚ‚ÌƒXƒvƒ‰ƒCƒg‚ÌI—¹’n“_
+	//ã‚·ãƒ¼ãƒ³é·ç§»ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®çµ‚äº†åœ°ç‚¹
 	const uint32_t endSpriteY = 0;
 
-	//ƒV[ƒ“‘JˆÚ—p‚ÌƒXƒvƒ‰ƒCƒg
+	//ã‚·ãƒ¼ãƒ³é·ç§»ç”¨ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::unique_ptr<Sprite> sceneSprite;
 
 	uint32_t padSousaTexHandle;

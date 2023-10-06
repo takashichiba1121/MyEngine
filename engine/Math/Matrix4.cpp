@@ -141,7 +141,7 @@ Matrix4 Matrix4Math::MakeInverse(const Matrix4& matrix4)
 				continue;
 			}
 
-			float mul = -mat[i][n];
+			mul = -mat[i][n];
 
 			for (int j = 0; j < 8; j++) {
 				mat[i][j] += mat[n][j] * mul;

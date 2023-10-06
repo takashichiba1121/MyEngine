@@ -22,7 +22,7 @@ private:
 
 	uint32_t texHandle = 0;
 
-#pragma region ƒV[ƒ“‘JˆÚ—p•Ï”ŒQ
+#pragma region ã‚·ãƒ¼ãƒ³é·ç§»ç”¨é–¢æ•°
 
 	bool sceneStart = true;
 
@@ -32,18 +32,18 @@ private:
 
 	uint32_t frame = endFrame;
 
-	//ƒV[ƒ“‘JˆÚ‚ÌƒXƒvƒ‰ƒCƒg‚ÌŠJn’n“_
+	//ã‚·ãƒ¼ãƒ³é·ç§»ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®é–‹å§‹åœ°ç‚¹
 	const float startSpriteY = -720;
 
-	//ƒV[ƒ“‘JˆÚ‚ÌƒXƒvƒ‰ƒCƒg‚ÌI—¹’n“_
+	//ã‚·ãƒ¼ãƒ³é·ç§»ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®çµ‚äº†åœ°ç‚¹
 	const uint32_t endSpriteY = 0;
 
-	//ƒV[ƒ“‘JˆÚ—p‚ÌƒXƒvƒ‰ƒCƒg
+	//ã‚·ãƒ¼ãƒ³é·ç§»ç”¨ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::unique_ptr<Sprite> sceneSprite;
 
 #pragma endregion
 
-	//ƒV[ƒ“‘JˆÚ—p‚ÌƒXƒvƒ‰ƒCƒg
+	//ã‚·ãƒ¼ãƒ³é·ç§»ç”¨ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::unique_ptr<Sprite> gameOverSprite;
 
 	std::unique_ptr<Sprite> buttonSprite;

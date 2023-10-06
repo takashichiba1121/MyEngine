@@ -99,7 +99,7 @@
     <Filter Include="application\ソース ファイル\Enemy">
       <UniqueIdentifier>{e2361f19-de8c-4d49-a8df-07b730b76937}</UniqueIdentifier>
     </Filter>
-    <Filter Include="engin\ヘッダーファイル\base\Scene">
+    <Filter Include="engin\ヘッダーファイル\Scene">
       <UniqueIdentifier>{ccfc61bd-97c5-4fa3-9688-f609e1543eba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -179,13 +179,13 @@
     <ClCompile Include="engine\3d\levelLoad.cpp">
       <Filter>engin\ソースファイル\3d</Filter>
     </ClCompile>
-    <ClCompile Include="engine\3d\LightGroup.cpp">
+    <ClCompile Include="engine\3d\Light\LightGroup.cpp">
       <Filter>engin\ソースファイル\3d\Light</Filter>
     </ClCompile>
-    <ClCompile Include="engine\3d\DirectionalLight.cpp">
+    <ClCompile Include="engine\3d\Light\DirectionalLight.cpp">
       <Filter>engin\ソースファイル\3d\Light</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameScene.cpp">
+    <ClCompile Include="application\Scene\GameScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="engine\Collider\Collider.cpp">
@@ -197,16 +197,16 @@
     <ClCompile Include="engine\Math\Easing.cpp">
       <Filter>engin\ソースファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="application\PlayerBullet.cpp">
+    <ClCompile Include="application\Player\PlayerBullet.cpp">
       <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
-    <ClCompile Include="application\Enemy.cpp">
+    <ClCompile Include="application\Enemy\Enemy.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="application\EnemyManager.cpp">
+    <ClCompile Include="application\Enemy\EnemyManager.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="application\EnemyBullet.cpp">
+    <ClCompile Include="application\Enemy\EnemyBullet.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="engine\base\MyGame.cpp">
@@ -218,25 +218,25 @@
     <ClCompile Include="engine\base\Framework.cpp">
       <Filter>engin\ソースファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="application\TitileScene.cpp">
+    <ClCompile Include="application\Scene\TitileScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="application\BaseScene.cpp">
+    <ClCompile Include="application\Scene\BaseScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="engine\base\SceneManager.cpp">
+    <ClCompile Include="engine\Scene\SceneManager.cpp">
       <Filter>engin\ソースファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFactory.cpp">
+    <ClCompile Include="engine\Scene\SceneFactory.cpp">
       <Filter>engin\ソースファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="application\ResultScene.cpp">
+    <ClCompile Include="application\Scene\ResultScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameOverScene.cpp">
+    <ClCompile Include="application\Scene\GameOverScene.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="application\Player.cpp">
+    <ClCompile Include="application\Player\Player.cpp">
       <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -319,19 +319,19 @@
     <ClInclude Include="engine\3d\levelLoad.h">
       <Filter>engin\ヘッダーファイル\3d</Filter>
     </ClInclude>
-    <ClInclude Include="engine\3d\DirectionalLight.h">
+    <ClInclude Include="engine\3d\Light\DirectionalLight.h">
       <Filter>engin\ヘッダーファイル\3d\Light</Filter>
     </ClInclude>
-    <ClInclude Include="engine\3d\LightGroup.h">
+    <ClInclude Include="engine\3d\Light\LightGroup.h">
       <Filter>engin\ヘッダーファイル\3d\Light</Filter>
     </ClInclude>
-    <ClInclude Include="engine\3d\PointLight.h">
+    <ClInclude Include="engine\3d\Light\PointLight.h">
       <Filter>engin\ヘッダーファイル\3d\Light</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameScene.h">
+    <ClInclude Include="application\Scene\GameScene.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="application\Player.h">
+    <ClInclude Include="application\Player\Player.h">
       <Filter>application\ヘッダーファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="engine\Collider\Collider.h">
@@ -340,16 +340,16 @@
     <ClInclude Include="engine\Math\Easing.h">
       <Filter>engin\ヘッダーファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="application\PlayerBullet.h">
+    <ClInclude Include="application\Player\PlayerBullet.h">
       <Filter>application\ヘッダーファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="application\Enemy.h">
+    <ClInclude Include="application\Enemy\Enemy.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="application\EnemyManager.h">
+    <ClInclude Include="application\Enemy\EnemyManager.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="application\EnemyBullet .h">
+    <ClInclude Include="application\Enemy\EnemyBullet .h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="engine\base\MyGame.h">
@@ -358,25 +358,25 @@
     <ClInclude Include="engine\base\Framework.h">
       <Filter>engin\ヘッダーファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="application\TitileScene.h">
+    <ClInclude Include="application\Scene\TitileScene.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="application\BaseScene.h">
+    <ClInclude Include="application\Scene\BaseScene.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="engine\base\AbstractSceneFactory.h">
-      <Filter>engin\ヘッダーファイル\base\Scene</Filter>
+    <ClInclude Include="engine\Scene\AbstractSceneFactory.h">
+      <Filter>engin\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="engine\base\SceneManager.h">
-      <Filter>engin\ヘッダーファイル\base\Scene</Filter>
+    <ClInclude Include="engine\Scene\SceneManager.h">
+      <Filter>engin\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="engine\base\SceneFactory.h">
-      <Filter>engin\ヘッダーファイル\base\Scene</Filter>
+    <ClInclude Include="engine\Scene\SceneFactory.h">
+      <Filter>engin\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameOverScene.h">
+    <ClInclude Include="application\Scene\GameOverScene.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="application\ResultScene.h">
+    <ClInclude Include="application\Scene\ResultScene.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
