@@ -97,12 +97,12 @@ private:
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite;
 
+	#pragma endregion
+
 	uint32_t padSousaTexHandle;
 	uint32_t keySousaTexHandle;
 
 	std::unique_ptr<Sprite> sousaSprite;
-
-	#pragma endregion
 
 	std::unique_ptr<Model> GroundModel_;
 

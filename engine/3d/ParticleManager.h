@@ -44,7 +44,7 @@ public: // サブクラス
 	{
 		//座標
 		Vector3 position = {};
-		//速度
+		//方向
 		Vector3 velocity = {};
 		//加速度
 		Vector3 accel = {};

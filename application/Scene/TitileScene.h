@@ -57,5 +57,9 @@ private:
 	std::unique_ptr<Object3d> skyObj_;
 
 	std::unique_ptr<LightGroup> light;
+
+	std::unique_ptr<ParticleManager> particle;
+
+	uint32_t ParticleFlame=0;
 };
 

@@ -11,7 +11,9 @@
 void GameOverScene::Initialize()
 {
 
-	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
+	Object3d::SetEye({ 0.0f,0.0f,-200.0f });
+
+	Object3d::SetTarget({ 0.0f,0.0f,1.0f });
 
 	spaceTexHandle = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
 
@@ -85,6 +87,12 @@ void GameOverScene::Initialize()
 	light.reset(LightGroup::Create());
 
 	Object3d::SetLight(light.get());
+
+	particle = std::make_unique<ParticleManager>();
+
+	particle->Initialize();
+
+	particle->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
 }
 
 void GameOverScene::Finalize()
@@ -93,6 +101,38 @@ void GameOverScene::Finalize()
 
 void GameOverScene::Update()
 {
+	ParticleFlame++;
+	if ( ParticleFlame >= 30 )
+	{
+		ParticleFlame = 0;
+		for ( int i = 0; i < 2; i++ )
+		{
+			//消えるまでの時間
+			const float rnd_life = 300.0f;
+			//最低限のライフ
+			const float constlife = 100;
+			uint32_t life = static_cast< uint32_t >( rand() / RAND_MAX * rnd_life + constlife );
+
+			//XYZの広がる距離
+			const float rnd_pos = 28.0f;
+			Vector3 startPos{};
+			startPos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+			startPos.y = -8;
+			startPos.z = -180;
+
+
+			Vector3 accel = { 0,0,0 };
+
+			//消えるまでの時間
+			const float rndScale = 0.7f;
+			//最低限のライフ
+			const float constScale = 0.7f;
+			float scale = ( float ) rand() / RAND_MAX * rndScale + constScale;
+			//追加
+			particle->Add(life,startPos,{ 0,0.2f,0 },accel,scale,scale,{ 1,1,1,1 },{ 1,1,1,0 });
+		}
+	}
+
 	if (sceneStart)
 	{
 		frame--;
@@ -156,6 +196,8 @@ void GameOverScene::Update()
 
 	buttonSprite->Update();
 
+	particle->Update();
+
 	ImGui::Begin("Partcle");
 
 	ImGui::Text("%d", frame);
@@ -170,6 +212,12 @@ void GameOverScene::Draw(DirectXCommon* dxCommon)
 	Object3d::PreDraw(dxCommon->GetCommandList());
 	skyObj_->Draw();
 	Object3d::PostDraw();
+
+	ParticleManager::PreDraw(dxCommon->GetCommandList());
+
+	particle->Draw();
+
+	ParticleManager::PostDraw();
 
 	SpriteCommon::Instance()->PreDraw();
 	buttonSprite->Draw();

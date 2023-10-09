@@ -24,6 +24,11 @@ uint32_t Texture::LoadTexture(const std::string fileName)
 		{
 			return i;
 		}
+		//まだテクスチャ情報が割り当てられていないところにテクスチャ情報を入れる
+		if ( !texBuffuers[ i ] )
+		{
+			break;
+		}
 	}
 	//ユニコード文字列に変換する
 	wchar_t wfilepath[128];

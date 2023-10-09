@@ -33,9 +33,9 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	padSousaTexHandle = Texture::Instance()->LoadTexture("Resources/KyeSousa.png");
+	padSousaTexHandle = Texture::Instance()->LoadTexture("Resources/PadSousa.png");
 
-	keySousaTexHandle = Texture::Instance()->LoadTexture("Resources/PadSousa.png");
+	keySousaTexHandle = Texture::Instance()->LoadTexture("Resources/KeySousa.png");
 
 	player_ = std::make_unique<Player>();
 
@@ -59,7 +59,7 @@ void GameScene::Initialize()
 
 	Object3d::SetLight(light.get());
 
-	light->SetDirLightDir(0, { 0,-1,0 });
+	light->SetDirLightDir(0, { 0,-1,1 });
 
 	light->SetDirLightActive(1, false);
 
@@ -89,10 +89,8 @@ void GameScene::Initialize()
 	}
 
 	sousaSprite->SetAnchorPoint({ 0.0f,0.5f });
-
-	sousaSprite->SetScale({ 300,300 });
-
-	sousaSprite->SetPosition({ 50,360 });
+;
+	sousaSprite->SetPosition({ 25,645 });
 
 	sousaSprite->Update();
 
