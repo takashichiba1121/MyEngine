@@ -67,6 +67,21 @@ public:
 
 	bool IsDaed() { return isDaed_; }
 private:
+#pragma region パラメーター
+	float gravityAcceleration_ = 0.03f;
+
+	float StartJumpSpeed_ = -0.7f;
+
+	int32_t resetPoint_ = 0;
+
+	float kBulletSpeed_ = 0.5f;
+
+	int32_t bulletLife_ = 60;
+
+	int32_t maxHp_ = 1;
+
+#pragma endregion
+
 	std::unique_ptr<Model> model_;
 
 	Model* bulletModel_;
@@ -78,12 +93,6 @@ private:
 	Vector3 move_;
 
 	float fallSpeed_ = 0;
-
-	float gravityAcceleration_ = 0.03f;
-
-	float StartJumpSpeed_ = -0.7f;
-
-	int32_t resetPoint_=0;
 
 	bool onGround_;
 
@@ -106,10 +115,6 @@ private:
 
 	bool isDaed_ = false;
 
-    const uint32_t maxHp_ = 1;
-
 	uint32_t hp_ = maxHp_;
-
-	float kBulletSpeed_ = 0.5f;
 };
 

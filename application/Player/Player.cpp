@@ -74,6 +74,7 @@ void Player::Update()
 	ImGui::SliderFloat("StartJumpSpeed",&StartJumpSpeed_,-1.0f,0.0f,"%1.2f");
 	ImGui::SliderInt("resetPoint",&resetPoint_ ,-15,15);
 	ImGui::SliderFloat("kBulletSpeed",&kBulletSpeed_,0.0f,1.0f,"%1.2f");
+	ImGui::SliderInt("bulletLife",&bulletLife_,0,300);
 
 	ImGui::End();
 }
@@ -212,7 +213,7 @@ void Player::Attack()
 
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
+			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition(),bulletLife_);
 
 			//弾の登録する
 			bullets_.push_back(std::move(newBullet));
@@ -228,7 +229,7 @@ void Player::Attack()
 
 		//弾の生成し、初期化
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
+		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition(),bulletLife_);
 
 		//弾の登録する
 		bullets_.push_back(std::move(newBullet));

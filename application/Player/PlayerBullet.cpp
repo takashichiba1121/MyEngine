@@ -1,6 +1,6 @@
 #include"PlayerBullet.h"
 
-void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position)
+void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position,uint32_t life)
 {
 	obj_ = std::make_unique<Object3d>();
 
@@ -12,13 +12,15 @@ void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position)
 
 	obj_->SetPosition(position);
 
-	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+	//obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+
+	life_ = life;
 }
 
 void PlayerBullet::Update()
 {
 
-	if (--deathTimer_ <= 0) {
+	if (--life_ <= 0) {
 		isDead_ = true;
 	}
 

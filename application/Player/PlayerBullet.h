@@ -12,7 +12,7 @@ public:
 	///<param name="model">モデル</param>
 	///<param name="velocity">速度</param>
 	///<param name="position">初期位置</param>
-	void Initialize(Model* model,Vector2 velocity,Vector3 position);
+	void Initialize(Model* model,Vector2 velocity,Vector3 position,uint32_t life);
 	///<summary>
 	///毎フレーム処理
 	///</summary>
@@ -43,10 +43,8 @@ private:
 
 	//速度
 	Vector2 velocity_;
-	//寿命<frm>
-	static const uint32_t kLifeTime_ = 60;
 	//デスタイマー
-	uint32_t deathTimer_ = kLifeTime_;
+	uint32_t life_;
 	//デスフラグ
 	bool isDead_ = false;
 };
