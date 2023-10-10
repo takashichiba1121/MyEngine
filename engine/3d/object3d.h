@@ -204,6 +204,11 @@ public: // メンバ関数
 
 	void SetPolygonExplosion(const ConstBufferPolygonExplosion& polygonExplosion) { ConstMapPolygon_ = polygonExplosion; }
 
+	/// <summary>
+	/// ポリゴン爆散の進行具合
+	/// </summary>
+	void SetDestruction(float Destruction) {ConstMapPolygon_._Destruction=Destruction;}
+
 	Matrix4 GetMatWorld() { return matWorld_; }
 
 	void SetShininess(float shininess) {shininess_= shininess; }

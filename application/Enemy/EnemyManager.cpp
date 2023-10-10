@@ -22,36 +22,8 @@ void EnemyManager::Initialize()
 
 void EnemyManager::Update()
 {
-
-	for (std::unique_ptr<Enemy>& enemy : Enemys_)
-	{
-		if (enemy->IsDaed())
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				//消えるまでの時間
-				const uint32_t rnd_life = 10;
-				//最低限のライフ
-				const uint32_t constlife = 60;
-				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
-
-				//XYZの広がる距離
-				const float rnd_pos = 0.1f;
-				Vector3 pos{};
-				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
-				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-
-				//pos.normalize();
-
-				//追加
-				particle_->Add(life, enemy->GetObj()->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
-			}
-		}
-	}
-
 	Enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
-		return enemy->IsDaed();
+		return enemy->IsDelete();
 		});
 
 	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
