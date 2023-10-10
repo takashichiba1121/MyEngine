@@ -4,7 +4,7 @@
 #include"SpriteCommon.h"
 #include"Sprite.h"
 #include"Texture.h"
-#include"Audio.h"
+#include"Sound.h"
 #include"imguiManager.h"
 #include<imgui.h>
 #include"GameScene.h"
@@ -53,6 +53,8 @@ void Framework::Finalize()
 	SceneManager::Instance()->Finalize();
 
 	sceneFactory_ = nullptr;
+
+	Sound::StaticFinalize();
 
 	Texture::Instance()->Finalize();
 

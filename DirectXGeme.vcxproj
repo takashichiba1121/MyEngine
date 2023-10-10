@@ -128,7 +128,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\3d\levelLoad.cpp" />
     <ClCompile Include="engine\3d\Light\LightGroup.cpp" />
     <ClCompile Include="engine\3d\ParticleManager.cpp" />
-    <ClCompile Include="engine\audio\Audio.cpp" />
+    <ClCompile Include="engine\audio\Sound.cpp" />
     <ClCompile Include="engine\base\DirectXCommon.cpp" />
     <ClCompile Include="engine\2d\imguiManager.cpp" />
     <ClCompile Include="engine\base\Framework.cpp" />
@@ -176,7 +176,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\3d\Light\LightGroup.h" />
     <ClInclude Include="engine\3d\ParticleManager.h" />
     <ClInclude Include="engine\3d\Light\PointLight.h" />
-    <ClInclude Include="engine\audio\Audio.h" />
+    <ClInclude Include="engine\audio\Sound.h" />
     <ClInclude Include="engine\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
     <ClInclude Include="engine\2d\imguiManager.h" />

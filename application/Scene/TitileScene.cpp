@@ -93,10 +93,15 @@ void TitileScene::Initialize()
 	particles_->Initialize();
 
 	particles_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
+
+	bgm.Load("Resources/GameClear.wav");
+
+	bgm.Play(true,0.1f);
 }
 
 void TitileScene::Finalize()
 {
+	bgm.Stop();
 }
 
 void TitileScene::Update()

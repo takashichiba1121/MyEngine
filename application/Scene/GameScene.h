@@ -1,7 +1,7 @@
  #pragma once
 #include"object3d.h"
 #include"Sprite.h"
-#include"Audio.h"
+#include"Sound.h"
 #include"ParticleManager.h"
 #include"LightGroup.h"
 #include"Player.h"
