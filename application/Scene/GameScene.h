@@ -99,8 +99,8 @@ private:
 
 	#pragma endregion
 
-	uint32_t padSousaTexHandle_;
-	uint32_t keySousaTexHandle_;
+	uint32_t padSousaTexHandle_=0;
+	uint32_t keySousaTexHandle_=0;
 
 	std::unique_ptr<Sprite> sousaSprite_;
 
