@@ -21,7 +21,7 @@ public://定数
 //ウィンドウ横幅
 	static const int window_width = 1280;
 	//ウィンドウ縦幅
-	static const int window_height = 720;
+	static const int window_heigit = 720;
 private:
 	//ウィンドウハンドル
 	HWND hwnd = nullptr;

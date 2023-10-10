@@ -1,13 +1,6 @@
 #include "SpriteCommon.h"
 #include"Texture.h"
 
-DirectXCommon* SpriteCommon::dxCommon;
-
-Microsoft::WRL::ComPtr<ID3D12PipelineState> SpriteCommon::pipelineState;
-Microsoft::WRL::ComPtr<ID3D12RootSignature> SpriteCommon::rootSignature;
-
-Matrix4 SpriteCommon::matProjection;
-
 void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 {
 	HRESULT result;
@@ -196,7 +189,7 @@ void SpriteCommon::Initialize(DirectXCommon* DxCommon)
 	matProjection= Matrix4Math::identity();
 
 	matProjection.m[0][0] = 2.0f / dxCommon->getWinApp()->window_width;
-	matProjection.m[1][1] = -2.0f / dxCommon->getWinApp()->window_height;
+	matProjection.m[1][1] = -2.0f / dxCommon->getWinApp()->window_heigit;
 	matProjection.m[3][0] = -1.0f;
 	matProjection.m[3][1] = 1.0f;
 }
@@ -212,6 +205,6 @@ void SpriteCommon::PreDraw()
 	dxCommon->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
-void SpriteCommon::PostDraw()
+void SpriteCommon::PostDrow()
 {
 }

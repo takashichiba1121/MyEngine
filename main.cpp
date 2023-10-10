@@ -31,25 +31,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Input::Initialize(winApp);
 
-	SpriteCommon::Initialize(dxCommon);
+	SpriteCommon* spriteCommon = nullptr;
+	spriteCommon = new SpriteCommon;
+	spriteCommon->Initialize(dxCommon);
 
 	Texture::Initialize(dxCommon->GetDevice());
 
-	Sprite::StaticInitialize();
+	Sprite::StaticInitialize(spriteCommon);
 
 	Model::SetDevice(dxCommon->GetDevice());
 
-	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_heigit);
 
 	Sound::StaticInitialize();
 
 	imguiManager::StaticInitialize(winApp, dxCommon);
-
-	ParticleManager::StaticInitialize(dxCommon->GetDevice());
-
-	PostEffect* postEffect = new PostEffect;
-
-	postEffect->Initialize(dxCommon);
 
 	GameScene* gameScene = new GameScene;
 	gameScene->Initialize();
@@ -68,35 +64,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		gameScene->Update();
 
-		//postEffect->Update();
-
 		//描画コマンドここから
+		dxCommon->PreDraw();
 
-		postEffect->PreDrawScene(dxCommon->GetCommandList());
+		Object3d::PreDraw(dxCommon->GetCommandList());
 
-		gameScene->PostEffectDraw(dxCommon);
+		//gameScene->Draw();
 
-		postEffect->PostDrawScene();
+		Object3d::PostDraw();
+
+
+		spriteCommon->PreDraw();
+
+		//gameScene->SpriteDraw();
+
+		spriteCommon->PostDrow();
+
+		gameScene->PostEffectDraw();
 
 		//描画コマンドここまで
 
 		//imguiManager::Draw();
-		dxCommon->PreDraw();
 
-		postEffect->Draw();
-
-		gameScene->Draw(dxCommon);
-		
 		dxCommon->PostDrow();
-
-		//描画コマンドここまで
 
 		//DirectX毎フレーム処理　ここまで
 
 	}
-	delete postEffect;
 
 	delete gameScene;
+
+	delete spriteCommon;
 
 	imguiManager::Finalize();
 

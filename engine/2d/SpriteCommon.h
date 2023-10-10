@@ -16,23 +16,23 @@ class SpriteCommon
 {
 public:
 	//èâä˙âª
-	static void Initialize(DirectXCommon* DXCommon);
+	void Initialize(DirectXCommon* DXCommon);
 
-	static DirectXCommon* GetDxCommon() {return dxCommon ; }
+	DirectXCommon* GetDxCommon() {return dxCommon ; }
 
-	static ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
-	static ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
-	static Matrix4 GetMatProjection() { return matProjection; }
+	ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
+	ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
+	Matrix4 GetMatProjection() { return matProjection; }
 
-	static void PreDraw();
+	void PreDraw();
 
-	static void PostDraw();
+	void PostDrow();
 private:
-	static DirectXCommon* dxCommon;
+	DirectXCommon* dxCommon;
 
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-	static Matrix4 matProjection;
+	Matrix4 matProjection;
 };
 

@@ -123,9 +123,6 @@
     <ClCompile Include="engine\2d\PostEffect.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="engine\3d\ParticleManager.cpp">
-      <Filter>ソース ファイル\engine\3d</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -176,9 +173,6 @@
     <ClInclude Include="engine\2d\PostEffect.h">
       <Filter>ヘッダー ファイル\engine\2d</Filter>
     </ClInclude>
-    <ClInclude Include="engine\3d\ParticleManager.h">
-      <Filter>ヘッダー ファイル\engine\3d</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">
@@ -202,21 +196,6 @@
     <FxCompile Include="Resources\shaders\ObjGS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectTestPS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectTestVS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -226,12 +205,6 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Obj.hlsli">
-      <Filter>シェーダーファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\PostEffectTest.hlsli">
-      <Filter>シェーダーファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\Particle.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
