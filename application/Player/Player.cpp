@@ -274,6 +274,8 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	objects_ = objects;
 
 	paMan_->Clear();
+
+	bullets_.clear();
 }
 
 Vector3 Player::MapCollision()
