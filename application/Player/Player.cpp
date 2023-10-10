@@ -67,6 +67,16 @@ void Player::Update()
 	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 
 	paMan_->Update();
+
+	ImGui::Begin("player");
+
+	ImGui::SliderFloat("gravityAcceleration",&gravityAcceleration_,0.0f,0.1f,"%1.2f");
+	ImGui::SliderFloat("StartJumpSpeed",&StartJumpSpeed_,-1.0f,0.0f,"%1.2f");
+	ImGui::SliderInt("resetPoint",&resetPoint_ ,-15,15);
+	ImGui::SliderFloat("kBulletSpeed",&kBulletSpeed_,0.0f,1.0f,"%1.2f");
+	ImGui::SliderInt("bulletLife",&bulletLife_,0,300);
+
+	ImGui::End();
 }
 
 void Player::Move()
@@ -149,7 +159,7 @@ void Player::Move()
 			}
 		}
 	}
-	if (obj_->GetPosition().y <= -10)
+	if (obj_->GetPosition().y <= resetPoint_)
 	{
 		obj_->SetPosition(spawnPosition_);
 		fallSpeed_ = 0;
@@ -157,7 +167,7 @@ void Player::Move()
 
 	if (onGround_)
 	{
-		fallSpeed_ += fallAcceleration_;
+		fallSpeed_ += gravityAcceleration_;
 		move_.y -= fallSpeed_;
 	}
 
@@ -196,20 +206,14 @@ void Player::Attack()
 
 		if (Input::Instance()->GetPadStick(PadStick::RT)>=0.5&&Input::Instance()->GetOldPadStick(PadStick::RT)<0.5)
 		{
-			//弾の速度
-			const float kBulletSpeed = 0.5f;
-			Vector3 velocity(0, 0, kBulletSpeed);
+			Vector3 velocity(0, 0,1);
 			velocity = Matrix4Math::transform(velocity, obj_->GetMatWorld());
-			float len = sqrt(velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z);
-			if (len != 0)
-			{
-				velocity /= len;
-			}
-			velocity *= kBulletSpeed;
+			velocity.normalize();
+			velocity *= kBulletSpeed_;
 
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
+			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition(),bulletLife_);
 
 			//弾の登録する
 			bullets_.push_back(std::move(newBullet));
@@ -218,20 +222,14 @@ void Player::Attack()
 	}
 	else if (Input::Instance()->TriggerKey(DIK_Z))
 	{
-		//弾の速度
-		const float kBulletSpeed = 0.5f;
-		Vector3 velocity(0, 0, kBulletSpeed);
+		Vector3 velocity(0, 0, 1);
 		velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-		float len = sqrt(velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z);
-		if (len != 0)
-		{
-			velocity /= len;
-		}
-		velocity *= kBulletSpeed;
+		velocity.normalize();
+		velocity *= kBulletSpeed_;
 
 		//弾の生成し、初期化
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition());
+		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition(),bulletLife_);
 
 		//弾の登録する
 		bullets_.push_back(std::move(newBullet));
@@ -368,7 +366,7 @@ Vector3 Player::MapCollision()
 
 			if (Collider::QuadAndQuad(mapCube, objCube))
 			{
-				if (mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - fallAcceleration_)
+				if (mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_)
 				{
 					onGround_ = true;
 
