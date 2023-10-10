@@ -10,13 +10,13 @@
 
 void Player::Initialize(Model* bulletModel)
 {
-	model.reset(Model::LoadFormOBJ("player",true));
+	model_.reset(Model::LoadFormOBJ("player",true));
 
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
-	obj_->SetModel(model.get());
+	obj_->SetModel(model_.get());
 
 	obj_->SetPosition({ 5,5,5 });
 
@@ -41,7 +41,7 @@ void Player::Update()
 		});
 
 	move_ = { 0,0,0 };
-	if (hp > 0)
+	if (hp_ > 0)
 	{
 		Move();
 
@@ -62,19 +62,11 @@ void Player::Update()
 		bullet->Update();
 	}
 
-	Object3d::SetTarget(Object3d::GetTarget() + ((obj_->GetPosition() - Object3d::GetTarget()) * cameraSpeed));
+	Object3d::SetTarget(Object3d::GetTarget() + ((obj_->GetPosition() - Object3d::GetTarget()) * cameraSpeed_));
 
 	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 
 	paMan_->Update();
-
-	ImGui::Begin("Player");
-
-	ImGui::Text("HP:%d", hp);
-
-	ImGui::Text("KnockBack:%d", isKnockBack);
-
-	ImGui::End();
 }
 
 void Player::Move()
@@ -157,7 +149,7 @@ void Player::Move()
 			}
 		}
 	}
-	if (obj_->GetPosition().y <= -5)
+	if (obj_->GetPosition().y <= -10)
 	{
 		obj_->SetPosition(spawnPosition_);
 		fallSpeed_ = 0;
@@ -248,7 +240,7 @@ void Player::Attack()
 
 void Player::Draw()
 {
-	if (hp>0)
+	if (hp_>0)
 	{
 		obj_->Draw();
 	}
@@ -268,11 +260,11 @@ void Player::Reset()
 {
 	isDaed_ = false;
 
-	hp = maxHp;
+	hp_ = maxHp_;
 
 	bullets_.clear();
 
-	isKnockBack = false;
+	isKnockBack_ = false;
 }
 
 void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
@@ -280,6 +272,8 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	assert(objects);
 
 	objects_ = objects;
+
+	paMan_->Clear();
 }
 
 Vector3 Player::MapCollision()
@@ -422,11 +416,11 @@ void Player::EnemyCollision()
 
 		if (Collider::CubeAndCube(enemyCube, playerCube) == true)
 		{
-			if (isKnockBack == false)
+			if (isKnockBack_ == false)
 			{
-				hp--;
+				hp_--;
 
-				isKnockBack = true;
+				isKnockBack_ = true;
 
 				for (int i = 0; i < 10; i++)
 				{
@@ -462,11 +456,11 @@ void Player::EnemyCollision()
 
 		if (Collider::CubeAndCube(bulletCube, playerCube) == true)
 		{
-			if (isKnockBack == false)
+			if (isKnockBack_ == false)
 			{
-				hp--;
+				hp_--;
 
-				isKnockBack = true;
+				isKnockBack_ = true;
 
 				for (int i = 0; i < 10; i++)
 				{

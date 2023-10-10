@@ -8,7 +8,7 @@
                 "translation": [
                     -25.0,
                     0.0,
-                    -1.0
+                    18.0
                 ],
                 "rotation": [
                     0.0,
@@ -39,48 +39,12 @@
         },
         {
             "type": "MESH",
-            "name": "立方体",
-            "transform": {
-                "translation": [
-                    -75.0,
-                    0.0,
-                    7.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "Goal",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Stage3"
-        },
-        {
-            "type": "MESH",
             "name": "立方体.001",
             "transform": {
                 "translation": [
                     30.21966552734375,
                     0.0,
-                    1.0
+                    20.0
                 ],
                 "rotation": [
                     0.0,
@@ -116,7 +80,7 @@
                 "translation": [
                     -45.0,
                     0.0,
-                    1.5
+                    20.5
                 ],
                 "rotation": [
                     0.0,
@@ -152,7 +116,7 @@
                 "translation": [
                     -75.0,
                     0.0,
-                    4.5
+                    23.5
                 ],
                 "rotation": [
                     0.0,
@@ -188,7 +152,7 @@
                 "translation": [
                     17.0,
                     0.0,
-                    1.0
+                    22.0
                 ],
                 "rotation": [
                     0.0,
@@ -196,9 +160,9 @@
                     0.0
                 ],
                 "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
+                    3.0,
+                    3.0,
+                    3.0
                 ]
             },
             "file_name": "Goal",
@@ -216,42 +180,6 @@
                 ]
             },
             "Tag_name": "Stage1"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.003",
-            "transform": {
-                "translation": [
-                    -30.0,
-                    0.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "Goal",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Stage2"
         }
     ]
 }

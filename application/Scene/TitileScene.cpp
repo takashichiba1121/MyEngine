@@ -15,58 +15,58 @@ void TitileScene::Initialize()
 
 	Object3d::SetTarget({ 0.0f,0.0f,1.0f });
 
-	spaceTexHandle = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
+	keyTexHandle_ = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
 
-	aTexHandle = Texture::Instance()->LoadTexture("Resources/Abotton.png");
+	padTexHandle_ = Texture::Instance()->LoadTexture("Resources/Abotton.png");
 
-	spaceSprite = std::make_unique<Sprite>();
+	spaceSprite_ = std::make_unique<Sprite>();
 
 	if (Input::Instance()->IsLinkGamePad())
 	{
-		spaceSprite->Initialize(aTexHandle);
+		spaceSprite_->Initialize(padTexHandle_);
 	}
 	else 
 	{
-		spaceSprite->Initialize(spaceTexHandle);
+		spaceSprite_->Initialize(keyTexHandle_);
 	}
 
-	spaceSprite->SetPosition({ 640.0f,515.0f });
+	spaceSprite_->SetPosition({ 640.0f,515.0f });
 
-	spaceSprite->SetAnchorPoint({ 0.5f,0.5f });
+	spaceSprite_->SetAnchorPoint({ 0.5f,0.5f });
 
-	spaceSprite->Update();
+	spaceSprite_->Update();
 
-	sceneSprite = std::make_unique<Sprite>();
+	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
+	sceneSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
 
-	sceneSprite->SetAnchorPoint({ 0,0 });
+	sceneSprite_->SetAnchorPoint({ 0,0 });
 
-	sceneSprite->SetScale({ 1280,720 });
+	sceneSprite_->SetScale({ 1280,720 });
 
-	sceneSprite->SetPosition({ 0,float(startSpriteY) });
+	sceneSprite_->SetPosition({ 0,float(startSpriteY_) });
 
-	sceneSprite->Update();
+	sceneSprite_->Update();
 
-	titleSprite = std::make_unique<Sprite>();
+	titleSprite_ = std::make_unique<Sprite>();
 
-	titleSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Titlerogo.png"));
+	titleSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/Titlerogo.png"));
 
-	titleSprite->SetPosition({ 640,230 });
+	titleSprite_->SetPosition({ 640,230 });
 
-	titleSprite->SetAnchorPoint({ 0.5f,0.5f });
+	titleSprite_->SetAnchorPoint({ 0.5f,0.5f });
 
-	titleSprite->Update();
+	titleSprite_->Update();
 
-	startSprite = std::make_unique<Sprite>();
+	startSprite_ = std::make_unique<Sprite>();
 
-	startSprite->Initialize(Texture::Instance()->LoadTexture("Resources/Start.png"));
+	startSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/Start.png"));
 
-	startSprite->SetPosition({ 640,600 });
+	startSprite_->SetPosition({ 640,600 });
 
-	startSprite->SetAnchorPoint({ 0.5f,0.5f });
+	startSprite_->SetAnchorPoint({ 0.5f,0.5f });
 
-	startSprite->Update();
+	startSprite_->Update();
 
 	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle", true));
 
@@ -84,15 +84,15 @@ void TitileScene::Initialize()
 
 	skyObj_->Update();
 
-	light.reset(LightGroup::Create());
+	light_.reset(LightGroup::Create());
 
-	Object3d::SetLight(light.get());
+	Object3d::SetLight(light_.get());
 
-	particle = std::make_unique<ParticleManager>();
+	particles_ = std::make_unique<ParticleManager>();
 
-	particle->Initialize();
+	particles_->Initialize();
 
-	particle->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
+	particles_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
 }
 
 void TitileScene::Finalize()
@@ -101,10 +101,10 @@ void TitileScene::Finalize()
 
 void TitileScene::Update()
 {
-	ParticleFlame++;
-	if ( ParticleFlame >= 30 )
+	ParticleFlame_++;
+	if ( ParticleFlame_ >= 30 )
 	{
-		ParticleFlame = 0;
+		ParticleFlame_ = 0;
 		for ( int i = 0; i < 2; i++ )
 		{
 			//消えるまでの時間
@@ -129,83 +129,75 @@ void TitileScene::Update()
 			const float constScale = 0.7f;
 			float scale = ( float ) rand() / RAND_MAX * rndScale + constScale;
 			//追加
-			particle->Add(life,startPos,{ 0,0.2f,0 },accel,scale,scale,{ 1,1,1,1 },{ 1,1,1,0 });
+			particles_->Add(life,startPos,{ 0,0.2f,0 },accel,scale,scale,{ 1,1,1,1 },{ 1,1,1,0 });
 		}
 	}
 
 
-	if (sceneStart)
+	if (sceneStart_)
 	{
-		frame--;
-		float f = (float)frame / endFrame;
+		frame_--;
+		float f = (float)frame_ / endFrame_;
 
-		sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+		sceneSprite_->SetPosition({ 0,((endSpriteY_ - startSpriteY_) * f) + startSpriteY_ });
 
-		if (frame <= 0)
+		if (frame_ <= 0)
 		{
-			sceneStart = false;
-			frame = 0;
+			sceneStart_ = false;
+			frame_ = 0;
 		}
-		sceneSprite->Update();
+		sceneSprite_->Update();
 	}
 	else
 	{
 		if (Input::Instance()->IsLinkGamePad())
 		{
-			spaceSprite->SetTexture(aTexHandle);
+			spaceSprite_->SetTexture(padTexHandle_);
 			if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
 			{
-				sceneChange = true;
+				sceneChange_ = true;
 			}
 		}
 		else
 		{
-			spaceSprite->SetTexture(spaceTexHandle);
+			spaceSprite_->SetTexture(keyTexHandle_);
 			if (Input::Instance()->TriggerKey(DIK_SPACE))
 			{
-				sceneChange = true;
+				sceneChange_ = true;
 			}
 		}
 	}
-	if (sceneChange)
+	if (sceneChange_)
 	{
-		if (frame < endFrame)
+		if (frame_ < endFrame_)
 		{
-			frame++;
+			frame_++;
 
-			float f = Easing::easeOutBounce((float)frame / endFrame);
+			float f = Easing::easeOutBounce((float)frame_ / endFrame_);
 
-			sceneSprite->SetPosition({ 0,((endSpriteY - startSpriteY) * f) + startSpriteY });
+			sceneSprite_->SetPosition({ 0,((endSpriteY_ - startSpriteY_) * f) + startSpriteY_ });
 
 		}
-		else if (frame >= endFrame + 5)
+		else if (frame_ >= endFrame_ + 5)
 		{
-			frame = 120;
+			frame_ = 120;
 
-			sceneStart = true;
+			sceneStart_ = true;
 
-			sceneChange = false;
+			sceneChange_ = false;
 
 			SceneManager::Instance()->ChangeScene("GAME");
 		}
 		else
 		{
-			frame++;
+			frame_++;
 		}
 	}
-	sceneSprite->Update();
+	sceneSprite_->Update();
 
-	spaceSprite->Update();
+	spaceSprite_->Update();
 
-	particle->Update();
-
-	ImGui::Begin("Partcle");
-
-	ImGui::Text("%d", frame);
-
-	ImGui::Text("%f", sceneSprite->GetPosition().y);
-
-	ImGui::End();
+	particles_->Update();
 }
 
 void TitileScene::Draw(DirectXCommon* dxCommon)
@@ -216,14 +208,14 @@ void TitileScene::Draw(DirectXCommon* dxCommon)
 
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
 
-	particle->Draw();
+	particles_->Draw();
 
 	ParticleManager::PostDraw();
 
 	SpriteCommon::Instance()->PreDraw();
-	spaceSprite->Draw();
-	startSprite->Draw();
-	titleSprite->Draw();
-	sceneSprite->Draw();
+	spaceSprite_->Draw();
+	startSprite_->Draw();
+	titleSprite_->Draw();
+	sceneSprite_->Draw();
 	SpriteCommon::Instance()->PostDraw();
 }

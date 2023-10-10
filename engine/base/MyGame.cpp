@@ -32,8 +32,9 @@ void MyGame::Draw()
 
 	SceneManager::Instance()->Draw(dxCommon_.get());
 
+#ifdef _DEBUG
 	imguiManager::Draw();
-
+#endif
 	Framework::GetDxCommon()->PostDrow();
 
 	

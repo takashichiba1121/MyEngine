@@ -20,35 +20,35 @@ class TitileScene :public BaseScene
 
 private:
 
-	uint32_t texHandle = 0;
+	uint32_t texHandle_ = 0;
 
 #pragma region シーン遷移用変数群
 
-	bool sceneStart = true;
+	bool sceneStart_ = true;
 
-	bool sceneChange = false;
+	bool sceneChange_ = false;
 
-	const uint32_t endFrame = 120;
+	const uint32_t endFrame_ = 120;
 
-	uint32_t frame = endFrame;
+	uint32_t frame_ = endFrame_;
 
 	//シーン遷移のスプライトの開始地点
-	const float startSpriteY = -720;
+	const float startSpriteY_ = -720;
 
 	//シーン遷移のスプライトの終了地点
-	const uint32_t endSpriteY = 0;
+	const uint32_t endSpriteY_ = 0;
 
 	//シーン遷移用のスプライト
-	std::unique_ptr<Sprite> sceneSprite;
+	std::unique_ptr<Sprite> sceneSprite_;
 	//シーン遷移用のスプライト
-	std::unique_ptr<Sprite> titleSprite;
+	std::unique_ptr<Sprite> titleSprite_;
 
-	std::unique_ptr<Sprite> spaceSprite;
+	std::unique_ptr<Sprite> spaceSprite_;
 
-	std::unique_ptr<Sprite> startSprite;
+	std::unique_ptr<Sprite> startSprite_;
 
-	uint32_t spaceTexHandle;
-	uint32_t aTexHandle;
+	uint32_t keyTexHandle_;
+	uint32_t padTexHandle_;
 
 #pragma endregion
 
@@ -56,10 +56,10 @@ private:
 
 	std::unique_ptr<Object3d> skyObj_;
 
-	std::unique_ptr<LightGroup> light;
+	std::unique_ptr<LightGroup> light_;
 
-	std::unique_ptr<ParticleManager> particle;
+	std::unique_ptr<ParticleManager> particles_;
 
-	uint32_t ParticleFlame=0;
+	uint32_t ParticleFlame_=0;
 };
 

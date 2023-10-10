@@ -67,7 +67,7 @@ public:
 
 	bool IsDaed() { return isDaed_; }
 private:
-	std::unique_ptr<Model> model;
+	std::unique_ptr<Model> model_;
 
 	Model* bulletModel_;
 
@@ -96,16 +96,16 @@ private:
 	//プレイヤーから見たカメラの位置
 	Vector3 cameraPos_ = { 0.0f,40.0f,-40.0f };
 
-	const float cameraSpeed = 0.1f;
+	const float cameraSpeed_ = 0.1f;
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
-	bool isKnockBack = false;
+	bool isKnockBack_ = false;
 
 	bool isDaed_ = false;
 
-    const uint32_t maxHp = 1;
+    const uint32_t maxHp_ = 1;
 
-	uint32_t hp = maxHp;
+	uint32_t hp_ = maxHp_;
 };
 

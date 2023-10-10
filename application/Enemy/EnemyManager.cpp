@@ -22,7 +22,6 @@ void EnemyManager::Initialize()
 
 void EnemyManager::Update()
 {
-	ImGui::Begin("enemy");
 
 	for (std::unique_ptr<Enemy>& enemy : Enemys_)
 	{
@@ -88,8 +87,6 @@ void EnemyManager::Update()
 		enemy->SetIsAttack(distance<=25&&(playerYmax>=enemyYmin&& playerYmin <= enemyYmax));
 
 		enemy->Update();
-
-		ImGui::Text("%d", distance <= 30 && (playerYmax >= enemyYmin && playerYmin <= enemyYmax));
 	}
 
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
@@ -98,8 +95,6 @@ void EnemyManager::Update()
 	}
 
 	particle_->Update();
-
-	ImGui::End();
 }
 
 void EnemyManager::ParticleDraw()

@@ -40,7 +40,7 @@ public:
 
 	void SetIsAttack(bool isAttack) { isAttack_ = isAttack; }
 private:
-	std::unique_ptr<Model> model;
+	std::unique_ptr<Model> model_;
 
 	Model* bulletModel_;
 
@@ -49,9 +49,9 @@ private:
 	bool isDaed_=false;
 
 	//攻撃間隔
-	static const uint32_t kAttackTime = 300;
+	static const uint32_t kAttackTime_ = 300;
 
-	uint32_t attackTimer_ = kAttackTime;
+	uint32_t attackTimer_ = kAttackTime_;
 
 	Object3d* playerObj_;
 

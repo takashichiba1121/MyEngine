@@ -33,17 +33,17 @@ public: // メンバ関数
 	/// </summary>
 	void MapLoad(std::string mapfullpath);
 private:
-	std::map<std::string, Model*> models;
+	std::map<std::string, Model*> models_;
 
-	std::unique_ptr <Model> mapModel;
-	std::unique_ptr <Model> goalModel;
-	std::unique_ptr <Model> bulletModel;
+	std::unique_ptr <Model> mapModel_;
+	std::unique_ptr <Model> goalModel_;
+	std::unique_ptr <Model> bulletModel_;
 
-	std::unique_ptr<LightGroup> light;
+	std::unique_ptr<LightGroup> light_;
 
-	uint32_t texHandle=0;
+	uint32_t texHandle_=0;
 
-	std::vector<std::unique_ptr<Object3d>> objects;
+	std::vector<std::unique_ptr<Object3d>> objects_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
@@ -53,20 +53,20 @@ private:
 	std::unique_ptr<Object3d> stage3Obj_;
 
 	bool isNext_=false;
-	bool isStage1 = false;
-	bool isStage2 = false;
-	bool isStage3 = false;
+	bool isStage1_ = false;
+	bool isStage2_ = false;
+	bool isStage3_ = false;
 
-	bool isGoal=false;
+	bool isGoal_=false;
 
-	float ambientColor[3] = {1,1,1};
+	float ambientColor_[3] = {1,1,1};
 
 	//光線方向初期化
-	float lightPos[3] = { 0,0,0 };
-	float lightColor[3] = { 1,1,1 };
-	float lightAtten[3] = { 0.3f,0.1f,0.1f };
+	float lightPos_[3] = { 0,0,0 };
+	float lightColor_[3] = { 1,1,1 };
+	float lightAtten_[3] = { 0.3f,0.1f,0.1f };
 
-	const Vector3 cameraPos = { 0.0f,40.0f,-40.0f };
+	const Vector3 cameraPos_ = { 0.0f,40.0f,-40.0f };
 
 	std::unique_ptr<Player> player_;
 
@@ -74,35 +74,35 @@ private:
 
 	#pragma region シーン遷移用変数
 
-	bool sceneStart = true;
+	bool sceneStart_ = true;
 
-	bool sceneChange = false;
+	bool sceneChange_ = false;
 
-	bool IsCameraSet = true;
+	bool IsCameraSet_ = true;
 
-	Vector3 cameraStart = {0.0,0.0,0.0};
+	Vector3 cameraStart_ = {0.0,0.0,0.0};
 
-	Vector3 cameraEnd = { 0.0,0.0,0.0 };
+	Vector3 cameraEnd_ = { 0.0,0.0,0.0 };
 
-	const uint32_t endFrame=120;
+	const uint32_t endFrame_=120;
 
-	uint32_t frame =endFrame ;
+	uint32_t frame_ =endFrame_ ;
 
 	//シーン遷移のスプライトの開始地点
-	const float startSpriteY = -720;
+	const float startSpriteY_ = -720;
 
 	//シーン遷移のスプライトの終了地点
-	const uint32_t endSpriteY = 0;
+	const uint32_t endSpriteY_ = 0;
 
 	//シーン遷移用のスプライト
-	std::unique_ptr<Sprite> sceneSprite;
+	std::unique_ptr<Sprite> sceneSprite_;
 
 	#pragma endregion
 
-	uint32_t padSousaTexHandle;
-	uint32_t keySousaTexHandle;
+	uint32_t padSousaTexHandle_;
+	uint32_t keySousaTexHandle_;
 
-	std::unique_ptr<Sprite> sousaSprite;
+	std::unique_ptr<Sprite> sousaSprite_;
 
 	std::unique_ptr<Model> GroundModel_;
 
@@ -112,6 +112,6 @@ private:
 
 	std::unique_ptr<Object3d> skyObj_;
 
-	std::string mapName;
+	std::string mapName_;
 };
 

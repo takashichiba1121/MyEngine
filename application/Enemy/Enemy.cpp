@@ -4,13 +4,13 @@
 
 void Enemy::Initialize(Model* bulletModel,Vector3 position, Object3d* playerObj)
 {
-	model.reset(Model::LoadFormOBJ("enemy", true));
+	model_.reset(Model::LoadFormOBJ("enemy", true));
 
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
-	obj_->SetModel(model.get());
+	obj_->SetModel(model_.get());
 
 	obj_->SetPosition(position);
 	
@@ -42,7 +42,7 @@ void Enemy::Attack()
 
 	if (attackTimer_<=0&&isAttack_==true)
 	{
-		attackTimer_ = kAttackTime;
+		attackTimer_ = kAttackTime_;
 
 		//弾の速度
 		const float kBulletSpeed = 0.5f;

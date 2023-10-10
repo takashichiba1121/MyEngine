@@ -43,9 +43,9 @@ private:
 	//速度
 	Vector2 velocity_;
 	//寿命<frm>
-	static const uint32_t kLifeTime = 60;
+	static const uint32_t kLifeTime_ = 60;
 	//デスタイマー
-	uint32_t deathTimer_ = kLifeTime;
+	uint32_t deathTimer_ = kLifeTime_;
 	//デスフラグ
 	bool isDead_ = false;
 };
