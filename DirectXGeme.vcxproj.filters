@@ -349,7 +349,7 @@
     <ClInclude Include="application\Enemy\EnemyManager.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="application\Enemy\EnemyBullet .h">
+    <ClInclude Include="application\Enemy\EnemyBullet.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="engine\base\MyGame.h">

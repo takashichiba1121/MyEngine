@@ -160,7 +160,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
   <ItemGroup>
     <ClInclude Include="application\Scene\BaseScene.h" />
     <ClInclude Include="application\Enemy\Enemy.h" />
-    <ClInclude Include="application\Enemy\EnemyBullet .h" />
+    <ClInclude Include="application\Enemy\EnemyBullet.h" />
     <ClInclude Include="application\Enemy\EnemyManager.h" />
     <ClInclude Include="application\Scene\GameOverScene.h" />
     <ClInclude Include="application\Player\PlayerBullet.h" />

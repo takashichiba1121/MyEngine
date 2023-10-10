@@ -1,6 +1,6 @@
 #pragma once
 #include"Enemy.h"
-#include"EnemyBullet .h"
+#include"EnemyBullet.h"
 #include"ParticleManager.h"
 #include"Player.h"
 class EnemyManager
