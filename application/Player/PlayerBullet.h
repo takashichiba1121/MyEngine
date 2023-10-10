@@ -49,6 +49,4 @@ private:
 	uint32_t deathTimer_ = kLifeTime_;
 	//デスフラグ
 	bool isDead_ = false;
-
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 };

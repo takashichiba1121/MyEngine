@@ -79,9 +79,11 @@ private:
 
 	float fallSpeed_ = 0;
 
-	const float fallAcceleration_ = 0.03f;
+	float gravityAcceleration_ = 0.03f;
 
-	const float StartJumpSpeed_ = -0.7f;
+	float StartJumpSpeed_ = -0.7f;
+
+	int32_t resetPoint_=0;
 
 	bool onGround_;
 
@@ -107,5 +109,7 @@ private:
     const uint32_t maxHp_ = 1;
 
 	uint32_t hp_ = maxHp_;
+
+	float kBulletSpeed_ = 0.5f;
 };
 
