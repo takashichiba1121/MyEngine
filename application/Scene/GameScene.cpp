@@ -59,9 +59,7 @@ void GameScene::Initialize()
 
 	Object3d::SetLight(light_.get());
 
-	light_->SetDirLightDir(0, { 1,-1,-1 });
-
-	light_->SetDirLightColor(0,{0.8f,0.8f,1.0f});
+	light_->SetDirLightDir(0, { 1,-1,0 });
 
 	light_->SetDirLightActive(1, false);
 
