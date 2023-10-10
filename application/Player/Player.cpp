@@ -71,12 +71,12 @@ void Player::Update()
 
 void Player::Move()
 {
-	if (Input::Instance()->Instance()->IsLinkGamePad())
+	if (Input::Instance()->IsLinkGamePad())
 	{
 
-		move_ += {Input::Instance()->Instance()->GetPadStick(PadStick::LX) / 5, 0, Input::Instance()->Instance()->GetPadStick(PadStick::LY) / 5};
+		move_ += {Input::Instance()->GetPadStick(PadStick::LX) / 5, 0, Input::Instance()->GetPadStick(PadStick::LY) / 5};
 
-		if (Input::Instance()->Instance()->PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
+		if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
 		{
 			fallSpeed_ = StartJumpSpeed_;
 			onGround_ = true;
@@ -106,15 +106,15 @@ void Player::Move()
 	}
 	else
 	{
-		if (Input::Instance()->Instance()->PushKey(DIK_W))
+		if (Input::Instance()->PushKey(DIK_W))
 		{
 			move_ += {0, 0, 0.2f};
 		}
-		if (Input::Instance()->Instance()->PushKey(DIK_A))
+		if (Input::Instance()->PushKey(DIK_A))
 		{
 			move_ += {-0.2f, 0, 0};
 		}
-		if (Input::Instance()->Instance()->PushKey(DIK_S))
+		if (Input::Instance()->PushKey(DIK_S))
 		{
 			move_ += {0, 0, -0.2f};
 		}
