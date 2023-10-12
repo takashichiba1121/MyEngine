@@ -51,7 +51,7 @@ void main(triangle VSOutput IN[3], inout TriangleStream<GSOutput> triStream)
         VSOutput v = IN[i];
 
             // centerを起点に三角メッシュの大きさが変化
-            v.svpos.xyz = center + (v.svpos.xyz - center) * _ScaleFactor;
+            v.svpos.xyz = center + (v.svpos.xyz - center) *(_Destruction *_ScaleFactor+1);
 
             // centerを起点に、頂点が回転
             v.svpos.xyz = center + rotate(v.svpos.xyz - center, r3 * (_Destruction *_RotationFactor));

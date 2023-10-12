@@ -19,13 +19,13 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	bulletModel_.reset(Model::LoadFormOBJ("playerBullet", true));
+	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet", true));
 
 	mapModel_.reset(Model::LoadFormOBJ("Map", true));
 
 	goalModel_.reset(Model::LoadFormOBJ("Goal", true));
 
-	models_.insert(std::make_pair("PlayerBullet", bulletModel_.get()));
+	models_.insert(std::make_pair("enemyBullet", bulletModel_.get()));
 
 	models_.insert(std::make_pair("Map", mapModel_.get()));
 
@@ -136,7 +136,7 @@ void GameScene::Initialize()
 
 	sceneChange_ = false;
 
-	player_->Initialize(models_["PlayerBullet"]);
+	player_->Initialize();
 
 	MapLoad("Resources/Select.json");
 
@@ -498,7 +498,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(models_["PlayerBullet"], { objectData.trans }, player_->GetObj());
+			enemy->Initialize(models_["enemyBullet"], { objectData.trans }, player_->GetObj());
 
 			enemy->Update();
 

@@ -61,7 +61,5 @@ for (uint i = 0; i < DIR_LIGHT_NUM; i++)
 		shadecolor.rgb += atten * (diffuse + specular) * PointLights[i].lightcolor;
 	}
 }
-
-
 return target*shadecolor;
 }

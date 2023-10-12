@@ -8,9 +8,9 @@
 #include"EnemyManager.h"
 
 
-void Player::Initialize(Model* bulletModel)
+void Player::Initialize()
 {
-	model_.reset(Model::LoadFormOBJ("player",true));
+	model_.reset(Model::LoadFormOBJ("player",false));
 
 	obj_ = std::make_unique<Object3d>();
 
@@ -20,7 +20,7 @@ void Player::Initialize(Model* bulletModel)
 
 	obj_->SetPosition({ 5,5,5 });
 
-	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
+	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	paMan_ = std::make_unique<ParticleManager>();
 
@@ -30,7 +30,7 @@ void Player::Initialize(Model* bulletModel)
 
 	obj_->Update();
 
-	bulletModel_ = bulletModel;
+	bulletModel_.reset(Model::LoadFormOBJ("playerBullet",true));
 }
 
 void Player::Update()
@@ -41,19 +41,29 @@ void Player::Update()
 		});
 
 	move_ = { 0,0,0 };
-	if (hp_ > 0)
+	if (isDaed_==false)
 	{
 		Move();
 
-		obj_->Update();
-
 		Attack();
+
+		if (hp_<=0)
+		{
+			isDaed_ = true;
+		}
 	}
 	else
 	{
-		if (paMan_->GetParticlesListSize()==0)
+		ExplosionFrame++;
+
+		float a = ExplosionFrame / ExplosionMaxFrame;
+
+		obj_->SetDestruction(a);
+
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
+		if ( ExplosionFrame >= ExplosionMaxFrame )
 		{
-			isDaed_ = true;
+			isDelete_ = true;
 		}
 	}
 
@@ -66,6 +76,8 @@ void Player::Update()
 
 	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 
+	obj_->Update();
+
 	paMan_->Update();
 
 	ImGui::Begin("player");
@@ -75,6 +87,8 @@ void Player::Update()
 	ImGui::SliderInt("resetPoint",&resetPoint_ ,-15,15);
 	ImGui::SliderFloat("kBulletSpeed",&kBulletSpeed_,0.0f,1.0f,"%1.2f");
 	ImGui::SliderInt("bulletLife",&bulletLife_,0,300);
+
+	ImGui::SliderFloat3("camera",&cameraPos_.x,-100,100,"%3.0f");
 
 	ImGui::End();
 }
@@ -213,35 +227,34 @@ void Player::Attack()
 
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition(),bulletLife_);
+			newBullet->Initialize(bulletModel_.get(),{velocity.x,velocity.z},obj_->GetPosition(),bulletLife_);
 
 			//弾の登録する
 			bullets_.push_back(std::move(newBullet));
 		}
-
 	}
-	else if (Input::Instance()->TriggerKey(DIK_Z))
+	else
 	{
-		Vector3 velocity(0, 0, 1);
-		velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-		velocity.normalize();
-		velocity *= kBulletSpeed_;
+		if ( Input::Instance()->TriggerKey(DIK_Z) )
+		{
+			Vector3 velocity(0,0,1);
+			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
+			velocity.normalize();
+			velocity *= kBulletSpeed_;
 
-		//弾の生成し、初期化
-		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(bulletModel_, { velocity.x,velocity.z }, obj_->GetPosition(),bulletLife_);
+			//弾の生成し、初期化
+			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition(),bulletLife_);
 
-		//弾の登録する
-		bullets_.push_back(std::move(newBullet));
+			//弾の登録する
+			bullets_.push_back(std::move(newBullet));
+		}
 	}
 }
 
 void Player::Draw()
 {
-	if (hp_>0)
-	{
-		obj_->Draw();
-	}
+	obj_->Draw();
 
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
 	{
@@ -256,7 +269,7 @@ void Player::ParticleDraw()
 
 void Player::Reset()
 {
-	isDaed_ = false;
+	isDelete_ = false;
 
 	hp_ = maxHp_;
 

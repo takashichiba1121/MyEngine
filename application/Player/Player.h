@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="bulletModel">弾のモデル</param>
-	void Initialize(Model* bulletModel);
+	void Initialize();
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -65,7 +65,7 @@ public:
 
 	Object3d* GetObj() { return obj_.get(); }
 
-	bool IsDaed() { return isDaed_; }
+	bool IsDaed() { return isDelete_; }
 private:
 #pragma region パラメーター
 	float gravityAcceleration_ = 0.03f;
@@ -84,7 +84,7 @@ private:
 
 	std::unique_ptr<Model> model_;
 
-	Model* bulletModel_;
+	std::unique_ptr<Model> bulletModel_;
 
 	std::vector<std::unique_ptr<Object3d>>* objects_;
 
@@ -115,6 +115,12 @@ private:
 
 	bool isDaed_ = false;
 
+	bool isDelete_ = false;
+
 	uint32_t hp_ = maxHp_;
+
+	float ExplosionFrame = 0;
+
+	const float ExplosionMaxFrame = 60;
 };
 

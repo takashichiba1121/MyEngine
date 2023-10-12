@@ -15,7 +15,7 @@ void Enemy::Initialize(Model* bulletModel,Vector3 position,Object3d* playerObj)
 	obj_->SetPosition(position);
 
 
-	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,10.0f });
+	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	bulletModel_ = bulletModel;
 
@@ -40,7 +40,7 @@ void Enemy::Update()
 
 		obj_->SetDestruction(a);
 
-		//obj_->Setalpha(static_cast< float >( ExplosionFrame / ExplosionMaxFrame ));
+		obj_->Setalpha(static_cast< float >( (ExplosionMaxFrame-ExplosionFrame) / ExplosionMaxFrame ));
 		if ( ExplosionFrame >= ExplosionMaxFrame )
 		{
 			isDelete_ = true;
