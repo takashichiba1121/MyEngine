@@ -113,5 +113,7 @@ private:
 	std::unique_ptr<Object3d> skyObj_;
 
 	std::string mapName_;
+
+	Vector3 lightV = { -1,-1,1 };
 };
 

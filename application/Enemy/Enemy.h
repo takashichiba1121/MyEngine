@@ -15,14 +15,12 @@ public:
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update(float attackRange);
 
 	/// <summary>
 /// 入力は受け付けないがアップデートはする(カメラ座標のみを動かすときなどに使う)
 /// </summary>
-	void ObjectUpdate() {
-		obj_->Update();
-	}
+	void ObjectUpdate();
 
 /// <summary>
 /// 攻撃全般
@@ -52,6 +50,10 @@ private:
 
 	Model* bulletModel_;
 
+	std::unique_ptr<Model> circle_;
+
+	std::unique_ptr<Object3d> attackCircle_;
+
 	std::unique_ptr<Object3d> obj_;
 
 	bool isDaed_ = false;
@@ -70,4 +72,6 @@ private:
 	float ExplosionFrame=0;
 
 	const float ExplosionMaxFrame = 60;
+
+
 };

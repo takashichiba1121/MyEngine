@@ -5,6 +5,7 @@ cbuffer cbuff0 : register(b0) {
     float3 cameraPos;
     float shininess;//Œõ‘ò“x
     float alpha;
+    float3 color;
 };
 
 

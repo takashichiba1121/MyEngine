@@ -31,6 +31,7 @@ public: // サブクラス
 		Vector3 cameraPos;
 		float shininess;//光沢度
 		float alpha; //透明度
+		Vector3 color;
 	};
 	// 定数バッファ用データ構造体
 	struct ConstBufferPolygonExplosion
@@ -215,6 +216,8 @@ public: // メンバ関数
 
 	void Setalpha(float alpha) { alpha_=alpha; }
 
+	void SetColor(Vector3 color) {color_ = color;}
+
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0_; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1_; // 定数バッファ
@@ -238,9 +241,11 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 
 	//光沢度
-	float shininess_=4;
+	float shininess_=10;
 
 	float alpha_ = 1.0f;
+
+	Vector3 color_ = { 1,1,1 };
 };
 
 float ToRadian(float angle);

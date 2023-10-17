@@ -12,8 +12,6 @@ void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position,u
 
 	obj_->SetPosition(position);
 
-	//obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
-
 	life_ = life;
 }
 

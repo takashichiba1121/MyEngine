@@ -56,9 +56,9 @@ void EnemyManager::Update()
 
 		enemyYmin = enemyPos.y - enemyScale.y;
 
-		enemy->SetIsAttack(distance<=25&&(playerYmax>=enemyYmin&& playerYmin <= enemyYmax));
+		enemy->SetIsAttack(distance<=attackRange_&&(playerYmax>=enemyYmin&& playerYmin <= enemyYmax));
 
-		enemy->Update();
+		enemy->Update(attackRange_);
 	}
 
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets_)

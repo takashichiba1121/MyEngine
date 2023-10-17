@@ -8,6 +8,7 @@
 #include<time.h>
 #include"Easing.h"
 #include"SceneManager.h"
+#include"PlayerBulletManager.h"
 
 GameScene::GameScene()
 {
@@ -19,17 +20,17 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet", true));
+	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet",true));
 
-	mapModel_.reset(Model::LoadFormOBJ("Map", true));
+	mapModel_.reset(Model::LoadFormOBJ("Map",true));
 
-	goalModel_.reset(Model::LoadFormOBJ("Goal", true));
+	goalModel_.reset(Model::LoadFormOBJ("Goal",true));
 
-	models_.insert(std::make_pair("enemyBullet", bulletModel_.get()));
+	models_.insert(std::make_pair("enemyBullet",bulletModel_.get()));
 
-	models_.insert(std::make_pair("Map", mapModel_.get()));
+	models_.insert(std::make_pair("Map",mapModel_.get()));
 
-	models_.insert(std::make_pair("Goal", goalModel_.get()));
+	models_.insert(std::make_pair("Goal",goalModel_.get()));
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
@@ -59,11 +60,11 @@ void GameScene::Initialize()
 
 	Object3d::SetLight(light_.get());
 
-	light_->SetDirLightDir(0, { 1,-1,0 });
+	light_->SetDirLightDir(0,{ 0,-1,0 });
 
-	light_->SetDirLightActive(1, false);
+	light_->SetDirLightActive(1,false);
 
-	light_->SetDirLightActive(2, false);
+	light_->SetDirLightActive(2,false);
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
@@ -79,7 +80,7 @@ void GameScene::Initialize()
 
 	sousaSprite_ = std::make_unique<Sprite>();
 
-	if (Input::Instance()->IsLinkGamePad())
+	if ( Input::Instance()->IsLinkGamePad() )
 	{
 		sousaSprite_->Initialize(padSousaTexHandle_);
 	}
@@ -89,7 +90,7 @@ void GameScene::Initialize()
 	}
 
 	sousaSprite_->SetAnchorPoint({ 0.0f,0.5f });
-;
+	;
 	sousaSprite_->SetPosition({ 25,645 });
 
 	sousaSprite_->Update();
@@ -98,7 +99,7 @@ void GameScene::Initialize()
 
 	EnemyManager::Instance()->Initialize();
 
-	GroundModel_.reset(Model::LoadFormOBJ("Ground", true));
+	GroundModel_.reset(Model::LoadFormOBJ("Ground",true));
 
 	GroundObj_ = std::make_unique<Object3d>();
 
@@ -114,7 +115,7 @@ void GameScene::Initialize()
 
 	GroundObj_->Update();
 
-	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle", true));
+	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle",true));
 
 	skyObj_ = std::make_unique<Object3d>();
 
@@ -124,7 +125,7 @@ void GameScene::Initialize()
 
 	skyObj_->SetPosition({ 0,0,0 });
 
-	skyObj_->SetScale({ 200,200,200 });
+	skyObj_->SetScale({ 500,500,500 });
 
 	skyObj_->SetRot({ 1.57f,0,0 });
 
@@ -153,16 +154,27 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	if (Input::Instance()->TriggerKey(DIK_0))
+
+	ImGui::Begin("Scene");
+
+	ImGui::SliderFloat3("light",&lightV.x,-100,100,"%3.1f");
+
+	ImGui::End();
+
+	light_->SetDirLightDir(0,lightV);
+
+	light_->Update();
+
+	if ( Input::Instance()->TriggerKey(DIK_0) )
 	{
 		objects_.clear();
 
 		MapLoad(mapName_);
 	}
 
-	srand((unsigned int)time(NULL));
+	srand(( unsigned int ) time(NULL));
 
-	if (Input::Instance()->IsLinkGamePad())
+	if ( Input::Instance()->IsLinkGamePad() )
 	{
 		sousaSprite_->SetTexture(padSousaTexHandle_);
 	}
@@ -171,32 +183,32 @@ void GameScene::Update()
 		sousaSprite_->SetTexture(keySousaTexHandle_);
 	}
 
-	if (sceneStart_)
+	if ( sceneStart_ )
 	{
 		frame_--;
-		float f = (float)frame_ / endFrame_;
+		float f = ( float ) frame_ / endFrame_;
 
-		sceneSprite_->SetPosition({ 0,((endSpriteY_ - startSpriteY_) * f) + startSpriteY_ });
+		sceneSprite_->SetPosition({ 0,( ( endSpriteY_ - startSpriteY_ ) * f ) + startSpriteY_ });
 
-		if (frame_ <= 0)
+		if ( frame_ <= 0 )
 		{
 			sceneStart_ = false;
 			frame_ = 0;
 		}
 		sceneSprite_->Update();
 	}
-	else if (IsCameraSet_)
+	else if ( IsCameraSet_ )
 	{
 		frame_++;
-		float f = (float)frame_ / endFrame_;
+		float f = ( float ) frame_ / endFrame_;
 
-		Vector3 traget = ((cameraEnd_ - cameraStart_) * f) + cameraStart_;
+		Vector3 traget = ( ( cameraEnd_ - cameraStart_ ) * f ) + cameraStart_;
 
 		Object3d::SetTarget(traget);
 
 		Object3d::SetEye(traget + cameraPos_);
 
-		if (frame_ >= endFrame_)
+		if ( frame_ >= endFrame_ )
 		{
 			IsCameraSet_ = false;
 			frame_ = 0;
@@ -205,25 +217,24 @@ void GameScene::Update()
 		player_->ObjectUpdate();
 		EnemyManager::Instance()->ObjectUpdate();
 	}
-	else if (sceneChange_==false)
+	else if ( sceneChange_ == false )
 	{
 		player_->Update();
-		light_->Update();
 		EnemyManager::Instance()->Update();
 
-		Cube A, B;
+		Cube A,B;
 
 		A.Pos = player_->GetObj()->GetPosition();
 
 		A.scale = player_->GetObj()->GetScale();
 
-		if (mapName_ != "Resources/Select.json")
+		if ( mapName_ != "Resources/Select.json" )
 		{
 			B.Pos = goalObj_->GetPosition();
 
 			B.scale = goalObj_->GetScale();
 
-			if (Collider::CubeAndCube(A, B))
+			if ( Collider::CubeAndCube(A,B) )
 			{
 				isClear_ = true;
 				sceneChange_ = true;
@@ -237,7 +248,7 @@ void GameScene::Update()
 
 			B.scale = stage1Obj_->GetScale();
 
-			if (Collider::CubeAndCube(A, B))
+			if ( Collider::CubeAndCube(A,B) )
 			{
 				isNext_ = true;
 				isStage1_ = true;
@@ -249,7 +260,7 @@ void GameScene::Update()
 
 			B.scale = stage2Obj_->GetScale();
 
-			if (Collider::CubeAndCube(A, B))
+			if ( Collider::CubeAndCube(A,B) )
 			{
 				isNext_ = true;
 				isStage1_ = true;
@@ -261,7 +272,7 @@ void GameScene::Update()
 
 			B.scale = stage3Obj_->GetScale();
 
-			if (Collider::CubeAndCube(A, B))
+			if ( Collider::CubeAndCube(A,B) )
 			{
 				isNext_ = true;
 				isStage1_ = true;
@@ -269,7 +280,7 @@ void GameScene::Update()
 				frame_ = 0;
 			}
 		}
-		if (player_->IsDaed())
+		if ( player_->IsDaed() )
 		{
 			sceneChange_ = true;
 			frame_ = 0;
@@ -277,34 +288,34 @@ void GameScene::Update()
 	}
 	else
 	{
-		if (frame_ < endFrame_)
+		if ( frame_ < endFrame_ )
 		{
 			frame_++;
 
-			float f = Easing::easeOutBounce((float)frame_ / endFrame_);
+			float f = Easing::easeOutBounce(( float ) frame_ / endFrame_);
 
-			sceneSprite_->SetPosition({ 0,((endSpriteY_ - startSpriteY_) * f) + startSpriteY_ });
+			sceneSprite_->SetPosition({ 0,( ( endSpriteY_ - startSpriteY_ ) * f ) + startSpriteY_ });
 
 		}
-		else if (frame_ >= endFrame_ + 5)
+		else if ( frame_ >= endFrame_ + 5 )
 		{
 			frame_ = 120;
-			if (mapName_ != "Resources/Select.json")
+			if ( mapName_ != "Resources/Select.json" )
 			{
-				if (isClear_)
+				if ( isClear_ )
 				{
 					SceneManager::Instance()->ChangeScene("RESULT");
 				}
-				else if (player_->IsDaed())
+				else if ( player_->IsDaed() )
 				{
 					SceneManager::Instance()->ChangeScene("GAMEOVER");
 				}
 			}
 			else
 			{
-				if (isStage1_ == true)
+				if ( isStage1_ == true )
 				{
-					MapLoad("Resources/Stage1.json");
+					MapLoad("Resources/Stage2.json");
 
 					player_->SetMapData(&objects_);
 
@@ -318,7 +329,7 @@ void GameScene::Update()
 
 					sceneStart_ = true;
 				}
-				else if (isStage2_ == true)
+				else if ( isStage2_ == true )
 				{
 					MapLoad("Resources/Stage1.json");
 
@@ -361,10 +372,12 @@ void GameScene::Update()
 		sceneSprite_->Update();
 	}
 
-	for (std::unique_ptr<Object3d>& obj : objects_)
+	for ( std::unique_ptr<Object3d>& obj : objects_ )
 	{
 		obj->Update();
+
 	}
+
 
 	goalObj_->Update();
 
@@ -387,15 +400,15 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	//GroundObj_->Draw();
 
-	for (uint32_t i = 0; i < objects_.size(); i++)
+	for ( uint32_t i = 0; i < objects_.size(); i++ )
 	{
-		objects_[i]->Draw();
+		objects_[ i ]->Draw();
 	}
 
 	EnemyManager::Instance()->Draw();
 
 	player_->Draw();
-	if (mapName_ == "Resources/Select.json")
+	if ( mapName_ == "Resources/Select.json" )
 	{
 		stage1Obj_->Draw();
 		stage2Obj_->Draw();
@@ -422,6 +435,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 void GameScene::Finalize()
 {
 	EnemyManager::Instance()->Fin();
+
+	PlayerBulletManager::Instance()->Fin();
 }
 
 void GameScene::MapLoad(std::string mapFullpath)
@@ -435,14 +450,14 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 	mapName_ = mapFullpath;
 
-	for (auto& objectData : levelData->objects)
+	for ( auto& objectData : levelData->objects )
 	{
-		if (objectData.tagName == "Map")
+		if ( objectData.tagName == "Map" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			newObject->Initialize();
-			newObject->SetModel(models_[objectData.fileName]);
+			newObject->SetModel(models_[ objectData.fileName ]);
 
 			assert(newObject);
 
@@ -458,18 +473,18 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 配列に登録
 			objects_.push_back(std::move(newObject));
 		}
-		if (objectData.tagName == "Spawn")
+		if ( objectData.tagName == "Spawn" )
 		{
 			player_->SetSpawn(objectData.trans);
 
 			cameraEnd_ = objectData.trans;
 		}
-		if (objectData.tagName == "Goal")
+		if ( objectData.tagName == "Goal" )
 		{
 			//player_->SetGoal(objectData.trans, objectData.scale);
 
 			//モデルを指定して3Dオブジェクトを生成
-			goalObj_->SetModel(models_[objectData.fileName]);
+			goalObj_->SetModel(models_[ objectData.fileName ]);
 
 			// 座標
 			goalObj_->SetPosition({ objectData.trans });
@@ -492,22 +507,22 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			cameraStart_ = objectData.trans;
 		}
-		if (objectData.tagName == "Enemy")
+		if ( objectData.tagName == "Enemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(models_["enemyBullet"], { objectData.trans }, player_->GetObj());
+			enemy->Initialize(models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
-			enemy->Update();
+			enemy->Update(25);
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if (objectData.tagName == "Stage1")
+		if ( objectData.tagName == "Stage1" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			stage1Obj_->SetModel(models_[objectData.fileName]);
+			stage1Obj_->SetModel(models_[ objectData.fileName ]);
 
 			// 座標
 			stage1Obj_->SetPosition({ objectData.trans });
@@ -522,10 +537,10 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			stage1Obj_->Update();
 		}
-		if (objectData.tagName == "Stage2")
+		if ( objectData.tagName == "Stage2" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			stage2Obj_->SetModel(models_[objectData.fileName]);
+			stage2Obj_->SetModel(models_[ objectData.fileName ]);
 
 			// 座標
 			stage2Obj_->SetPosition({ objectData.trans });
@@ -540,10 +555,10 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			stage2Obj_->Update();
 		}
-		if (objectData.tagName == "Stage3")
+		if ( objectData.tagName == "Stage3" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			stage3Obj_->SetModel(models_[objectData.fileName]);
+			stage3Obj_->SetModel(models_[ objectData.fileName ]);
 
 			// 座標
 			stage3Obj_->SetPosition({ objectData.trans });
@@ -559,7 +574,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			stage3Obj_->Update();
 		}
 	}
-	if (isGoal_ == false)
+	if ( isGoal_ == false )
 	{
 		Object3d::SetEye(player_->GetObj()->GetPosition() + cameraPos_);
 

@@ -239,6 +239,9 @@
     <ClCompile Include="application\Player\Player.cpp">
       <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
+    <ClCompile Include="application\Player\PlayerBulletManager.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -378,6 +381,9 @@
     </ClInclude>
     <ClInclude Include="application\Scene\ResultScene.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Player\PlayerBulletManager.h">
+      <Filter>application\ヘッダーファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

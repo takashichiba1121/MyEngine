@@ -6,6 +6,7 @@
 #include"Easing.h"
 #include<math.h>
 #include"EnemyManager.h"
+#include"PlayerBulletManager.h"
 
 
 void Player::Initialize()
@@ -31,14 +32,12 @@ void Player::Initialize()
 	obj_->Update();
 
 	bulletModel_.reset(Model::LoadFormOBJ("playerBullet",true));
+	
+	PlayerBulletManager::Instance()->Initialize();
 }
 
 void Player::Update()
 {
-	//デスフラグの立った弾を削除
-	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
-		return bullet->IsDead();
-		});
 
 	move_ = { 0,0,0 };
 	if (isDaed_==false)
@@ -67,14 +66,11 @@ void Player::Update()
 		}
 	}
 
-	for (std::unique_ptr<PlayerBullet>& bullet:bullets_)
-	{
-		bullet->Update();
-	}
-
 	Object3d::SetTarget(Object3d::GetTarget() + ((obj_->GetPosition() - Object3d::GetTarget()) * cameraSpeed_));
 
 	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
+	
+	PlayerBulletManager::Instance()->Update();
 
 	obj_->Update();
 
@@ -98,7 +94,7 @@ void Player::Move()
 	if (Input::Instance()->IsLinkGamePad())
 	{
 
-		move_ += {Input::Instance()->GetPadStick(PadStick::LX) / 5, 0, Input::Instance()->GetPadStick(PadStick::LY) / 5};
+		move_ += {Input::Instance()->GetPadStick(PadStick::LX) / 4, 0, Input::Instance()->GetPadStick(PadStick::LY) / 4};
 
 		if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
 		{
@@ -132,19 +128,19 @@ void Player::Move()
 	{
 		if (Input::Instance()->PushKey(DIK_W))
 		{
-			move_ += {0, 0, 0.2f};
+			move_ += {0, 0, 0.25f};
 		}
 		if (Input::Instance()->PushKey(DIK_A))
 		{
-			move_ += {-0.2f, 0, 0};
+			move_ += {-0.25f, 0, 0};
 		}
 		if (Input::Instance()->PushKey(DIK_S))
 		{
-			move_ += {0, 0, -0.2f};
+			move_ += {0, 0, -0.25f};
 		}
 		if (Input::Instance()->PushKey(DIK_D))
 		{
-			move_ += {0.2f, 0, 0};
+			move_ += {0.25f, 0, 0};
 		}
 		if (Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false)
 		{
@@ -230,7 +226,7 @@ void Player::Attack()
 			newBullet->Initialize(bulletModel_.get(),{velocity.x,velocity.z},obj_->GetPosition(),bulletLife_);
 
 			//弾の登録する
-			bullets_.push_back(std::move(newBullet));
+			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
 		}
 	}
 	else
@@ -247,7 +243,7 @@ void Player::Attack()
 			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition(),bulletLife_);
 
 			//弾の登録する
-			bullets_.push_back(std::move(newBullet));
+			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
 		}
 	}
 }
@@ -256,10 +252,7 @@ void Player::Draw()
 {
 	obj_->Draw();
 
-	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
-	{
-		bullet->Draw();
-	}
+	PlayerBulletManager::Instance()->Draw();
 }
 
 void Player::ParticleDraw()
@@ -273,7 +266,7 @@ void Player::Reset()
 
 	hp_ = maxHp_;
 
-	bullets_.clear();
+	PlayerBulletManager::Instance()->Clear();
 
 	isKnockBack_ = false;
 }
@@ -286,7 +279,7 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 
 	paMan_->Clear();
 
-	bullets_.clear();
+	PlayerBulletManager::Instance()->Clear();
 }
 
 Vector3 Player::MapCollision()
@@ -328,33 +321,33 @@ Vector3 Player::MapCollision()
 				if (mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x)
 				{
 
-					pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x;
+					pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x+0.1f;
 
 					move_.x = 0;
 				}
 				else if (mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x)
 				{
-					pos.x = mapCube.Pos.x - (mapCube.scale.x + objCube.scale.x);
+					pos.x = mapCube.Pos.x - (mapCube.scale.x + objCube.scale.x)-0.1f;
 
 					move_.x = 0;
 				}
 				if (mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z)
 				{
 
-					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z;
+					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z+0.1f;
 
 					move_.z = 0;
 				}
 				else if (mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z)
 				{
-					pos.z = mapCube.Pos.z - (mapCube.scale.z + objCube.scale.z);
+					pos.z = mapCube.Pos.z - (mapCube.scale.z + objCube.scale.z)-0.1f;
 
 					move_.z = 0;
 				}
 			}
 		}
 
-		for (std::unique_ptr<PlayerBullet>& bullet:bullets_)
+		for (std::unique_ptr<PlayerBullet>& bullet: PlayerBulletManager::Instance()->GetBullets())
 		{
 			objCube.Pos = bullet->GetPosition();
 			objCube.scale = bullet->GetScale();
@@ -385,9 +378,17 @@ Vector3 Player::MapCollision()
 
 					Ground = true;
 				}
+				else if( mapCube.Pos.y - mapCube.scale.y >= objCube.Pos.y + objCube.scale.y - gravityAcceleration_ )
+				{
+					onGround_ = true;
+
+					Ground = true;
+				}
 				else
 				{
 					onGround_ = false;
+
+					fallSpeed_ = 0;
 
 					break;
 				}
@@ -413,7 +414,7 @@ void Player::EnemyCollision()
 		enemyCube.scale = enemy->GetObj()->GetScale();
 		playerCube.Pos = obj_->GetPosition() + move_;
 		playerCube.scale = obj_->GetScale();
-		for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
+		for (std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets())
 		{
 			Cube bulletCube;
 

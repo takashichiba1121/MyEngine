@@ -60,4 +60,6 @@ private:
 	std::unique_ptr<ParticleManager> particle_;
 
 	Player* player_=nullptr;
+
+	float attackRange_ = 15.0f;
 };

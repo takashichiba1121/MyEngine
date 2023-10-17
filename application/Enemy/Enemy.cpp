@@ -20,9 +20,33 @@ void Enemy::Initialize(Model* bulletModel,Vector3 position,Object3d* playerObj)
 	bulletModel_ = bulletModel;
 
 	playerObj_ = playerObj;
+
+	circle_.reset(Model::LoadFormOBJ("Circle",true));
+
+	attackCircle_= std::make_unique<Object3d>();
+
+	attackCircle_->Initialize();
+
+	attackCircle_->SetModel(circle_.get());
+
+	attackCircle_->SetPosition({position.x,position.y - obj_->GetScale().y+0.1f,position.z});
+
+	attackCircle_->SetScale({ 25,0,525 });
+
+	//attackCircle_->SetRot({ 3.14f,0,0 });
+
+	attackCircle_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
+
+	attackCircle_->SetColor({1,0,0});
+
+	attackCircle_->Setalpha(0.5f);
+
+	attackCircle_->Update();
+
+
 }
 
-void Enemy::Update()
+void Enemy::Update(float attackRange)
 {
 	if ( isDaed_ == false )
 	{
@@ -47,7 +71,18 @@ void Enemy::Update()
 		}
 	}
 
+	attackCircle_->Update();
+
 	obj_->Update();
+
+	attackCircle_->SetScale({ attackRange,0, attackRange});
+}
+
+void Enemy::ObjectUpdate()
+{
+	obj_->Update();
+
+	attackCircle_->Update();
 }
 
 void Enemy::Attack()
@@ -84,6 +119,11 @@ void Enemy::Attack()
 void Enemy::Draw()
 {
 	obj_->Draw();
+
+	if ( isDaed_==false)
+	{
+		attackCircle_->Draw();
+	}
 }
 
 void Enemy::OnCollision()

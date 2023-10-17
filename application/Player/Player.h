@@ -74,7 +74,7 @@ private:
 
 	int32_t resetPoint_ = 0;
 
-	float kBulletSpeed_ = 0.5f;
+	float kBulletSpeed_ = 1.0f;
 
 	int32_t bulletLife_ = 60;
 

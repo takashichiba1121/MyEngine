@@ -172,10 +172,10 @@ void LightGroup::DefaultLightSetting()
 	pointLight_[1].SetLightColor({ 0.0f,0.0f,0.0f });
 	pointLight_[1].SetLightAtten({ 1.0f,1.0f,1.0f });
 
-	pointLight_[1].SetActive(false);
-	pointLight_[1].SetLightPos({ 0.0f,0.0f,0.0f });
-	pointLight_[1].SetLightColor({ 0.0f,0.0f,0.0f });
-	pointLight_[1].SetLightAtten({ 1.0f,1.0f,1.0f });
+	pointLight_[2].SetActive(false);
+	pointLight_[2].SetLightPos({ 0.0f,0.0f,0.0f });
+	pointLight_[2].SetLightColor({ 0.0f,0.0f,0.0f });
+	pointLight_[2].SetLightAtten({ 1.0f,1.0f,1.0f });
 }
 
 void LightGroup::SetDirLightDir(uint32_t index, const Vector3& lightdir)
