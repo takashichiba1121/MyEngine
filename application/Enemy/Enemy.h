@@ -44,8 +44,6 @@ public:
 protected:
 	Model* model_;
 
-	Model* bulletModel_;
-
 	std::unique_ptr<Model> circle_;
 
 	std::unique_ptr<Object3d> attackCircle_;

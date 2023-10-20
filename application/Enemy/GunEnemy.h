@@ -16,7 +16,11 @@ public:
 /// </summary>
 	void Attack();
 
+	void SetBulletModel();
+
 private:
+	Model* bulletModel_;
+
 	const uint32_t kAttackTime_ = 120;
 };
 
