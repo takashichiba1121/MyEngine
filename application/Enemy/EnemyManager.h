@@ -61,5 +61,5 @@ private:
 
 	Player* player_=nullptr;
 
-	float attackRange_ = 15.0f;
+	float attackRange_ = 50.0f;
 };

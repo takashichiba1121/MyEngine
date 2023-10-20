@@ -2,18 +2,17 @@
 #include"EnemyManager.h"
 #include<imgui.h>
 
-void Enemy::Initialize(Model* bulletModel,Vector3 position,Object3d* playerObj)
+void Enemy::Initialize(Model* enemyModel,Model* bulletModel,Vector3 position,Object3d* playerObj)
 {
-	model_.reset(Model::LoadFormOBJ("enemy",true));
+	model_=enemyModel;
 
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
-	obj_->SetModel(model_.get());
+	obj_->SetModel(model_);
 
 	obj_->SetPosition(position);
-
 
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
@@ -23,21 +22,21 @@ void Enemy::Initialize(Model* bulletModel,Vector3 position,Object3d* playerObj)
 
 	circle_.reset(Model::LoadFormOBJ("Circle",true));
 
-	attackCircle_= std::make_unique<Object3d>();
+	attackCircle_ = std::make_unique<Object3d>();
 
 	attackCircle_->Initialize();
 
 	attackCircle_->SetModel(circle_.get());
 
-	attackCircle_->SetPosition({position.x,position.y - obj_->GetScale().y+0.1f,position.z});
+	attackCircle_->SetPosition({ position.x,position.y - obj_->GetScale().y + 0.1f,position.z });
 
-	attackCircle_->SetScale({ 25,0,525 });
+	attackCircle_->SetScale({ 25,0,25 });
 
 	//attackCircle_->SetRot({ 3.14f,0,0 });
 
 	attackCircle_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
-	attackCircle_->SetColor({1,0,0});
+	attackCircle_->SetColor({ 1,0,0 });
 
 	attackCircle_->Setalpha(0.5f);
 
@@ -50,21 +49,44 @@ void Enemy::Update(float attackRange)
 {
 	if ( isDaed_ == false )
 	{
-		Attack();
+		Move();
 
-		Vector3 frontVec = playerObj_->GetPosition() - obj_->GetPosition();
+		if ( isMove_ == false )
+		{
+			Vector3 playerPos,enemyPos,playerScale,enemyScale;
 
-		obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
+			playerPos = playerObj_->GetPosition();
+
+			enemyPos = obj_->GetPosition();
+
+			playerScale = playerObj_->GetScale();
+
+			enemyScale = obj_->GetScale();
+
+			float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
+
+			float playerYmax,playerYmin,enemyYmax,enemyYmin;
+
+			playerYmax = playerPos.y + playerScale.y;
+
+			playerYmin = playerPos.y - playerScale.y;
+
+			enemyYmax = enemyPos.y + enemyScale.y;
+
+			enemyYmin = enemyPos.y - enemyScale.y;
+
+			isMove_ = ( distance <= attackRange && ( playerYmax >= enemyYmin && playerYmin <= enemyYmax ) );
+		}
 	}
 	else
 	{
 		ExplosionFrame++;
 
-		float a = ExplosionFrame / ExplosionMaxFrame ;
+		float a = ExplosionFrame / ExplosionMaxFrame;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( (ExplosionMaxFrame-ExplosionFrame) / ExplosionMaxFrame ));
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
 		if ( ExplosionFrame >= ExplosionMaxFrame )
 		{
 			isDelete_ = true;
@@ -75,7 +97,50 @@ void Enemy::Update(float attackRange)
 
 	obj_->Update();
 
-	attackCircle_->SetScale({ attackRange,0, attackRange});
+	attackCircle_->SetScale({ attackRange,0, attackRange });
+}
+
+void Enemy::Move()
+{
+	if ( isMove_ )
+	{
+		if ( isAttack_ )
+		{
+			attackTimer_--;
+
+			
+
+			obj_->SetPosition(obj_->GetPosition()+attackVec*attackSpeed_);
+			if (attackTimer_<=0)
+			{
+				isAttack_ = false;
+
+				attackTimer_ = kAttackTimer_;
+			}
+		}
+		else
+		{
+			IntervalTimer_--;
+
+			if (IntervalTimer_<=kIntervalTime_ )
+			{
+				Vector3 frontVec = playerObj_->GetPosition() - obj_->GetPosition();
+
+				obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
+			}
+
+			if ( IntervalTimer_ <= 0 )
+			{
+				isAttack_ = true;
+
+				IntervalTimer_ = kIntervalTime_;
+
+				attackVec = playerObj_->GetPosition()-obj_->GetPosition();
+
+				attackVec.normalize();
+			}
+		}
+	}
 }
 
 void Enemy::ObjectUpdate()
@@ -85,45 +150,16 @@ void Enemy::ObjectUpdate()
 	attackCircle_->Update();
 }
 
-void Enemy::Attack()
-{
-	if ( attackTimer_ > 0 )
-	{
-		attackTimer_--;
-	}
-
-	if ( attackTimer_ <= 0 && isAttack_ == true )
-	{
-		attackTimer_ = kAttackTime_;
-
-		//弾の速度
-		const float kBulletSpeed = 0.5f;
-		Vector3 velocity(0,0,kBulletSpeed);
-		velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-		float len = sqrt(velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z);
-		if ( len != 0 )
-		{
-			velocity /= len;
-		}
-		velocity *= kBulletSpeed;
-
-		//弾の生成し、初期化
-		std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
-		newBullet->Initialize(bulletModel_,{ velocity.x,velocity.z },obj_->GetPosition());
-
-		//弾の登録する
-		EnemyManager::Instance()->AddBullet(std::move(newBullet));
-	}
-}
-
 void Enemy::Draw()
 {
 	obj_->Draw();
 
-	if ( isDaed_==false)
+#ifdef _DEBUG
+	if ( isDaed_ == false )
 	{
-		attackCircle_->Draw();
+		//attackCircle_->Draw();
 	}
+#endif
 }
 
 void Enemy::OnCollision()

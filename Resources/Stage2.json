@@ -44,7 +44,7 @@
                 "translation": [
                     -145.0,
                     170.0,
-                    41.0
+                    43.0
                 ],
                 "rotation": [
                     0.0,
@@ -150,9 +150,9 @@
             "name": "NURBSパス.002",
             "transform": {
                 "translation": [
-                    -124.0,
-                    10.0,
-                    41.0
+                    -141.04823303222656,
+                    0.0,
+                    43.0
                 ],
                 "rotation": [
                     90.00000762939453,
@@ -179,7 +179,7 @@
                     2.0
                 ]
             },
-            "Tag_name": "Enemy"
+            "Tag_name": "GunEnemy"
         },
         {
             "type": "MESH",
@@ -291,48 +291,12 @@
         },
         {
             "type": "MESH",
-            "name": "NURBSパス.001",
-            "transform": {
-                "translation": [
-                    -31.0,
-                    -11.0,
-                    21.0
-                ],
-                "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "Enemy",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Enemy"
-        },
-        {
-            "type": "MESH",
             "name": "Cube.005",
             "transform": {
                 "translation": [
                     -145.0,
                     19.822017669677734,
-                    30.0
+                    32.0
                 ],
                 "rotation": [
                     0.0,
@@ -368,7 +332,7 @@
                 "translation": [
                     -145.0,
                     80.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -404,7 +368,7 @@
                 "translation": [
                     -130.0,
                     90.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -440,7 +404,7 @@
                 "translation": [
                     -160.0,
                     90.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -476,7 +440,7 @@
                 "translation": [
                     -145.0,
                     105.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -512,7 +476,7 @@
                 "translation": [
                     -145.0,
                     120.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -548,7 +512,7 @@
                 "translation": [
                     -145.0,
                     145.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -584,7 +548,7 @@
                 "translation": [
                     -145.0,
                     170.0,
-                    38.0
+                    40.0
                 ],
                 "rotation": [
                     0.0,
@@ -612,6 +576,78 @@
                 ]
             },
             "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.001",
+            "transform": {
+                "translation": [
+                    -117.04823303222656,
+                    15.0,
+                    41.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Enemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.003",
+            "transform": {
+                "translation": [
+                    -117.04823303222656,
+                    -15.0,
+                    41.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Enemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Enemy"
         }
     ]
 }

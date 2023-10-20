@@ -408,53 +408,55 @@ void Player::EnemyCollision()
 {
 	for (std::unique_ptr<Enemy>& enemy:EnemyManager::Instance()->GetEnemys())
 	{
-
-		Cube enemyCube, playerCube;
-		enemyCube.Pos=enemy->GetObj()->GetPosition();
-		enemyCube.scale = enemy->GetObj()->GetScale();
-		playerCube.Pos = obj_->GetPosition() + move_;
-		playerCube.scale = obj_->GetScale();
-		for (std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets())
+		if ( enemy->IsDaed()==false)
 		{
-			Cube bulletCube;
-
-			bulletCube.Pos = bullet->GetPosition();
-			bulletCube.scale = bullet->GetScale();
-			if (Collider::CubeAndCube(enemyCube, bulletCube) == true)
+			Cube enemyCube,playerCube;
+			enemyCube.Pos = enemy->GetObj()->GetPosition();
+			enemyCube.scale = enemy->GetObj()->GetScale();
+			playerCube.Pos = obj_->GetPosition() + move_;
+			playerCube.scale = obj_->GetScale();
+			for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
 			{
-				bullet->OnCollision();
+				Cube bulletCube;
 
-				enemy->OnCollision();
-			}
-		}
-
-		if (Collider::CubeAndCube(enemyCube, playerCube) == true)
-		{
-			if (isKnockBack_ == false)
-			{
-				hp_--;
-
-				isKnockBack_ = true;
-
-				for (int i = 0; i < 10; i++)
+				bulletCube.Pos = bullet->GetPosition();
+				bulletCube.scale = bullet->GetScale();
+				if ( Collider::CubeAndCube(enemyCube,bulletCube) == true )
 				{
-					//消えるまでの時間
-					const uint32_t rnd_life = 10;
-					//最低限のライフ
-					const uint32_t constlife = 60;
-					uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+					bullet->OnCollision();
 
-					//XYZの広がる距離
-					const float rnd_pos = 0.1f;
-					Vector3 pos{};
-					pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-					pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
-					pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+					enemy->OnCollision();
+				}
+			}
 
-					//pos.normalize();
+			if ( Collider::CubeAndCube(enemyCube,playerCube) == true )
+			{
+				if ( isKnockBack_ == false )
+				{
+					hp_--;
 
-					//追加
-					paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+					isKnockBack_ = true;
+
+					for ( int i = 0; i < 10; i++ )
+					{
+						//消えるまでの時間
+						const uint32_t rnd_life = 10;
+						//最低限のライフ
+						const uint32_t constlife = 60;
+						uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+						//XYZの広がる距離
+						const float rnd_pos = 0.1f;
+						Vector3 pos{};
+						pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+						pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+						pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+						//pos.normalize();
+
+						//追加
+						paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+					}
 				}
 			}
 		}

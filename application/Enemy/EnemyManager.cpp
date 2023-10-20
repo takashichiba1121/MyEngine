@@ -34,30 +34,6 @@ void EnemyManager::Update()
 
 	for (std::unique_ptr<Enemy>& enemy : Enemys_)
 	{
-		Vector3 playerPos,enemyPos, playerScale, enemyScale;
-
-		playerPos = player_->GetObj()->GetPosition();
-
-		enemyPos = enemy->GetObj()->GetPosition();
-
-		playerScale = player_->GetObj()->GetScale();
-
-		enemyScale = enemy->GetObj()->GetScale();
-
-		float distance = static_cast<float>(sqrt(pow(playerPos.x - enemyPos.x, 2) + pow(playerPos.z - enemyPos.z, 2)));
-
-		float playerYmax, playerYmin, enemyYmax, enemyYmin;
-
-		playerYmax = playerPos.y + playerScale.y;
-
-		playerYmin = playerPos.y - playerScale.y;
-
-		enemyYmax = enemyPos.y + enemyScale.y;
-
-		enemyYmin = enemyPos.y - enemyScale.y;
-
-		enemy->SetIsAttack(distance<=attackRange_&&(playerYmax>=enemyYmin&& playerYmin <= enemyYmax));
-
 		enemy->Update(attackRange_);
 	}
 
@@ -67,6 +43,12 @@ void EnemyManager::Update()
 	}
 
 	particle_->Update();
+
+	ImGui::Begin("Eneny");
+
+	ImGui::Text("bullet%d",bullets_.size());
+
+	ImGui::End();
 }
 
 void EnemyManager::ParticleDraw()

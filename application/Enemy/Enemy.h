@@ -5,32 +5,32 @@
 class Enemy
 {
 public:
-	///<summary>
-	///初期化全般
-	///</summary>
-	///<param name="model">モデル</param>
-	///<param name="bulletModel">弾のモデル</param>
-	///<param name="position">位置</param>
-	void Initialize(Model* bulletModel,Vector3 position,Object3d* playerObj);
+	void Initialize(Model* EnemyModel,Model* bulletModel,Vector3 position,Object3d* playerObj);
+
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update(float attackRange);
+	virtual void Update(float attackRange);
+
+	/// <summary>
+	/// 動き全般
+	/// </summary>
+	virtual void Move();
 
 	/// <summary>
 /// 入力は受け付けないがアップデートはする(カメラ座標のみを動かすときなどに使う)
 /// </summary>
 	void ObjectUpdate();
 
-/// <summary>
-/// 攻撃全般
-/// </summary>
-	void Attack();
-
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	bool IsDaed()
+	{
+		return isDaed_;
+	}
 
 	bool IsDelete() {
 		return isDelete_;
@@ -41,12 +41,8 @@ public:
 	}
 
 	void OnCollision();
-
-	void SetIsAttack(bool isAttack) {
-		isAttack_ = isAttack;
-	}
-private:
-	std::unique_ptr<Model> model_;
+protected:
+	Model* model_;
 
 	Model* bulletModel_;
 
@@ -60,18 +56,28 @@ private:
 
 	bool isDelete_ = false;
 
-	//攻撃間隔
-	static const uint32_t kAttackTime_ = 300;
-
-	uint32_t attackTimer_ = kAttackTime_;
-
 	Object3d* playerObj_;
 
-	bool isAttack_ = false;
-
-	float ExplosionFrame=0;
+	float ExplosionFrame = 0;
 
 	const float ExplosionMaxFrame = 60;
 
+	float attackRange_ = 25.0f;
 
+			//攻撃間隔
+	const uint32_t kIntervalTime_ = 30;
+
+	uint32_t IntervalTimer_ = kIntervalTime_ / 2;
+
+	bool isMove_ = false;
+
+	bool isAttack_ = false;
+
+	uint32_t kAttackTimer_ = 120;
+
+	uint32_t attackTimer_ = kAttackTimer_;
+
+	Vector3 attackVec;
+
+	float attackSpeed_=0.3f;
 };

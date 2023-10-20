@@ -9,6 +9,7 @@
 #include"Easing.h"
 #include"SceneManager.h"
 #include"PlayerBulletManager.h"
+#include"GunEnemy.h"
 
 GameScene::GameScene()
 {
@@ -20,17 +21,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet",true));
-
-	mapModel_.reset(Model::LoadFormOBJ("Map",true));
-
-	goalModel_.reset(Model::LoadFormOBJ("Goal",true));
-
-	models_.insert(std::make_pair("enemyBullet",bulletModel_.get()));
-
-	models_.insert(std::make_pair("Map",mapModel_.get()));
-
-	models_.insert(std::make_pair("Goal",goalModel_.get()));
+	ModelLoad();
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
@@ -507,13 +498,25 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			cameraStart_ = objectData.trans;
 		}
+		if ( objectData.tagName == "GunEnemy" )
+		{
+			std::unique_ptr<Enemy> enemy;
+
+			enemy = std::make_unique<GunEnemy>();
+
+			enemy->Initialize(models_[ "Enemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+
+			enemy->Update(25);
+
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+		}
 		if ( objectData.tagName == "Enemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+			enemy->Initialize(models_["Enemy"],models_[ "enemyBullet" ],{objectData.trans},player_->GetObj());
 
 			enemy->Update(25);
 
@@ -582,4 +585,19 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 		IsCameraSet_ = false;
 	}
+}
+
+void GameScene::ModelLoad()
+{
+	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet",true));
+	models_.insert(std::make_pair("enemyBullet",bulletModel_.get()));
+
+	mapModel_.reset(Model::LoadFormOBJ("Map",true));
+	models_.insert(std::make_pair("Map",mapModel_.get()));
+
+	goalModel_.reset(Model::LoadFormOBJ("Goal",true));
+	models_.insert(std::make_pair("Goal",goalModel_.get()));
+
+	enemyModel_.reset(Model::LoadFormOBJ("enemy",true));
+	models_.insert(std::make_pair("Enemy",enemyModel_.get()));
 }

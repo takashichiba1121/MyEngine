@@ -1,6 +1,6 @@
 #include"EnemyBullet.h"
 
-void EnemyBullet::Initialize(Model* model, Vector2 velocity, Vector3 position)
+void EnemyBullet::Initialize(Model* model, Vector3 velocity, Vector3 position)
 {
 	obj_ = std::make_unique<Object3d>();
 
@@ -24,7 +24,7 @@ void EnemyBullet::Update()
 
 	Vector3 move = obj_->GetPosition();
 
-	move += {velocity_.x,0,velocity_.y};
+	move +=velocity_;
 
 	
 

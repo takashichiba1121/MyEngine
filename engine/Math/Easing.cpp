@@ -22,3 +22,7 @@ float Easing::easeOutBounce(float x)
 float Easing::easeOutSine(float x){
 return static_cast<float>(sin((x * 3.141592f) / 2));
 }
+
+float Easing::easeOutCubic(float x){
+return static_cast< float >( 1 - pow(1 - x, 3));
+}
