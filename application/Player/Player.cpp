@@ -289,13 +289,13 @@ Vector3 Player::MapCollision()
 	for (const std::unique_ptr<Object3d>& MapObj : *objects_)
 	{
 
-		Cube mapCube, objCube;
+		Collider::Cube mapCube, objCube;
 		mapCube.Pos = MapObj->GetPosition();
 		mapCube.scale = MapObj->GetScale();
 		objCube.Pos = obj_->GetPosition() + move_;
 		objCube.oldPos = obj_->GetPosition();
 		objCube.scale = obj_->GetScale();
-		if (Collider::CubeAndCube(mapCube, objCube) == true)
+		if (Collider::CubeAndCube(mapCube, objCube,Collider::Collsion) == true)
 		{
 			if (mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround_)
 			{
@@ -351,7 +351,7 @@ Vector3 Player::MapCollision()
 		{
 			objCube.Pos = bullet->GetPosition();
 			objCube.scale = bullet->GetScale();
-			if (Collider::CubeAndCube(mapCube, objCube) == true)
+			if (Collider::CubeAndCube(mapCube, objCube,Collider::Collsion) == true)
 			{
 				bullet->OnCollision();
 			}
@@ -363,14 +363,14 @@ Vector3 Player::MapCollision()
 		for (const std::unique_ptr<Object3d>& MapObj : *objects_)
 		{
 
-			Cube mapCube, objCube;
+			Collider::Cube mapCube, objCube;
 			mapCube.Pos = MapObj->GetPosition();
 			mapCube.scale = MapObj->GetScale();
 			objCube.Pos = obj_->GetPosition() + move_;
 			objCube.oldPos = obj_->GetPosition();
 			objCube.scale = obj_->GetScale();
 
-			if (Collider::QuadAndQuad(mapCube, objCube))
+			if (Collider::QuadAndQuad(mapCube, objCube,Collider::Collsion))
 			{
 				if (mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_)
 				{
@@ -410,18 +410,18 @@ void Player::EnemyCollision()
 	{
 		if ( enemy->IsDaed()==false)
 		{
-			Cube enemyCube,playerCube;
+			Collider::Cube enemyCube,playerCube;
 			enemyCube.Pos = enemy->GetObj()->GetPosition();
 			enemyCube.scale = enemy->GetObj()->GetScale();
 			playerCube.Pos = obj_->GetPosition() + move_;
 			playerCube.scale = obj_->GetScale();
 			for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
 			{
-				Cube bulletCube;
+				Collider::Cube bulletCube;
 
 				bulletCube.Pos = bullet->GetPosition();
 				bulletCube.scale = bullet->GetScale();
-				if ( Collider::CubeAndCube(enemyCube,bulletCube) == true )
+				if ( Collider::CubeAndCube(enemyCube,bulletCube,Collider::Collsion) == true )
 				{
 					bullet->OnCollision();
 
@@ -429,7 +429,7 @@ void Player::EnemyCollision()
 				}
 			}
 
-			if ( Collider::CubeAndCube(enemyCube,playerCube) == true )
+			if ( Collider::CubeAndCube(enemyCube,playerCube,Collider::Collsion) == true )
 			{
 				if ( isKnockBack_ == false )
 				{
@@ -464,13 +464,13 @@ void Player::EnemyCollision()
 
 	for (std::unique_ptr<EnemyBullet>& bullet : EnemyManager::Instance()->GetBullets())
 	{
-		Cube bulletCube, playerCube;
+		Collider::Cube bulletCube, playerCube;
 		bulletCube.Pos =bullet->GetPosition();
 		bulletCube.scale = bullet->GetScale();
 		playerCube.Pos = obj_->GetPosition() + move_;
 		playerCube.scale = obj_->GetScale();
 
-		if (Collider::CubeAndCube(bulletCube, playerCube) == true)
+		if (Collider::CubeAndCube(bulletCube, playerCube,Collider::Collsion) == true)
 		{
 			if (isKnockBack_ == false)
 			{

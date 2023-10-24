@@ -40,9 +40,13 @@ public:
 		return obj_.get();
 	}
 
+	bool IsAttack() {return isAttack_ ;}
+
 	void OnCollision();
 protected:
 	Model* model_;
+
+	Model* bulletModel_;
 
 	std::unique_ptr<Model> circle_;
 

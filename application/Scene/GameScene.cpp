@@ -213,7 +213,7 @@ void GameScene::Update()
 		player_->Update();
 		EnemyManager::Instance()->Update();
 
-		Cube A,B;
+		Collider::Cube A,B;
 
 		A.Pos = player_->GetObj()->GetPosition();
 
@@ -225,7 +225,7 @@ void GameScene::Update()
 
 			B.scale = goalObj_->GetScale();
 
-			if ( Collider::CubeAndCube(A,B) )
+			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
 				isClear_ = true;
 				sceneChange_ = true;
@@ -239,7 +239,7 @@ void GameScene::Update()
 
 			B.scale = stage1Obj_->GetScale();
 
-			if ( Collider::CubeAndCube(A,B) )
+			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
 				isNext_ = true;
 				isStage1_ = true;
@@ -251,7 +251,7 @@ void GameScene::Update()
 
 			B.scale = stage2Obj_->GetScale();
 
-			if ( Collider::CubeAndCube(A,B) )
+			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
 				isNext_ = true;
 				isStage1_ = true;
@@ -263,7 +263,7 @@ void GameScene::Update()
 
 			B.scale = stage3Obj_->GetScale();
 
-			if ( Collider::CubeAndCube(A,B) )
+			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
 				isNext_ = true;
 				isStage1_ = true;

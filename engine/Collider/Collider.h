@@ -1,16 +1,22 @@
 #pragma once
 #include"Vector3.h"
 
-struct  Cube
-{
-	Vector3 Pos;
-	Vector3 oldPos;
-	Vector3 scale;
-};
-
 namespace Collider
 {
-	bool CubeAndCube(Cube A,Cube B);
+	struct  Cube
+	{
+		Vector3 Pos;
+		Vector3 oldPos;
+		Vector3 scale;
+	};
 
-	bool QuadAndQuad(Cube A, Cube B);
+	enum Type
+	{
+		Collsion,
+		Inside,
+	};
+
+	bool CubeAndCube(Cube A,Cube B,Type type);
+
+	bool QuadAndQuad(Cube A, Cube B,Type type);
 } 

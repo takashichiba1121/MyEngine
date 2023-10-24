@@ -107,14 +107,27 @@ void EnemyManager::Collision()
 {
 	for (const std::unique_ptr<Object3d>& MapObj : *objects_)
 	{
-		Cube mapCube, objCube;
+		Collider::Cube mapCube, objCube;
 		mapCube.Pos = MapObj->GetPosition();
 		mapCube.scale = MapObj->GetScale();
+
+		for ( std::unique_ptr<Enemy>& enemy : Enemys_ )
+		{
+			if ( enemy->IsAttack() )
+			{
+				objCube.Pos = enemy->GetObj()->GetPosition();
+				objCube.scale = enemy->GetObj()->GetPosition();
+				if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Collsion))
+				{
+					//enemy->OnCollision();
+				}
+			}
+		}
 		for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
 		{
 			objCube.Pos = bullet->GetPosition();
 			objCube.scale = bullet->GetScale();
-			if (Collider::CubeAndCube(mapCube, objCube) == true)
+			if (Collider::CubeAndCube(mapCube, objCube,Collider::Collsion) == true)
 			{
 				bullet->OnCollision();
 			}
