@@ -121,8 +121,15 @@ void EnemyManager::Collision()
 				objCube.scale = enemy->GetObj()->GetScale();
 
 				Vector3 pos = enemy->GetObj()->GetPosition();
+
+				float mapYmax,enemyYmin;
+
+				mapYmax = mapCube.Pos.y + mapCube.scale.y;
+
+				enemyYmin = objCube.Pos.y - objCube.scale.y-1;
 				if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Type::Inside)==false&&
-					Collider::QuadAndQuad(mapCube,objCube,Collider::Type::Collsion))
+					Collider::QuadAndQuad(mapCube,objCube,Collider::Type::Collsion)&&
+					(mapYmax>=enemyYmin))
 				{
 					if ( mapCube.Pos.x + mapCube.scale.x < objCube.Pos.x + objCube.scale.x )
 					{

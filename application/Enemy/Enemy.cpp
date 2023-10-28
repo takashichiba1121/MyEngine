@@ -74,6 +74,13 @@ void Enemy::Update(float attackRange)
 		enemyYmin = enemyPos.y - enemyScale.y;
 
 		isMove_ = ( distance <= attackRange && ( playerPos.y == enemyPos.y ) );
+
+		if (isMove_==false )
+		{
+			isAttack_ = false;
+
+			attackTimer_ = kAttackTimer_;
+		}
 	}
 	else
 	{
