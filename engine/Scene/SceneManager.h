@@ -1,3 +1,6 @@
+/*
+* シーンの管理
+*/
 #pragma once
 #include"BaseScene.h"
 #include"DirectXCommon.h"

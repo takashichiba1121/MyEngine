@@ -11,19 +11,19 @@
 #include"DirectXCommon.h"
 #include<string>
 #include "WinApp.h"
-class Texture
+class TextureManager
 {
 #pragma region Singleton
 private:
-	Texture() {};
+	TextureManager() {};
 
-	~Texture() {};
+	~TextureManager() {};
 public:
-	Texture(const Texture& carManager) = delete;
+	TextureManager(const TextureManager& carManager) = delete;
 
-	Texture& operator=(const Texture& carManager) = delete;
+	TextureManager& operator=(const TextureManager& carManager) = delete;
 
-	static Texture* Instance();
+	static TextureManager* Instance();
 #pragma endregion
 public:
 	const size_t spriteSRVCount = 2056;

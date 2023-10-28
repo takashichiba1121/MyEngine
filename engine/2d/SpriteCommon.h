@@ -1,3 +1,6 @@
+/*
+* スプライトの共通部分
+*/
 #pragma once
 #include<d3dcompiler.h>
 #include <tchar.h>

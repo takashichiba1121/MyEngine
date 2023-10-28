@@ -4,7 +4,7 @@
 
 void Enemy::Initialize(Model* enemyModel,Model* bulletModel,Vector3 position,Object3d* playerObj)
 {
-	model_=enemyModel;
+	model_ = enemyModel;
 
 	obj_ = std::make_unique<Object3d>();
 
@@ -51,32 +51,29 @@ void Enemy::Update(float attackRange)
 	{
 		Move();
 
-		if ( isMove_ == false )
-		{
-			Vector3 playerPos,enemyPos,playerScale,enemyScale;
+		Vector3 playerPos,enemyPos,playerScale,enemyScale;
 
-			playerPos = playerObj_->GetPosition();
+		playerPos = playerObj_->GetPosition();
 
-			enemyPos = obj_->GetPosition();
+		enemyPos = obj_->GetPosition();
 
-			playerScale = playerObj_->GetScale();
+		playerScale = playerObj_->GetScale();
 
-			enemyScale = obj_->GetScale();
+		enemyScale = obj_->GetScale();
 
-			float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
+		float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
 
-			float playerYmax,playerYmin,enemyYmax,enemyYmin;
+		float playerYmax,playerYmin,enemyYmax,enemyYmin;
 
-			playerYmax = playerPos.y + playerScale.y;
+		playerYmax = playerPos.y + playerScale.y;
 
-			playerYmin = playerPos.y - playerScale.y;
+		playerYmin = playerPos.y - playerScale.y;
 
-			enemyYmax = enemyPos.y + enemyScale.y;
+		enemyYmax = enemyPos.y + enemyScale.y;
 
-			enemyYmin = enemyPos.y - enemyScale.y;
+		enemyYmin = enemyPos.y - enemyScale.y;
 
-			isMove_ = ( distance <= attackRange && ( playerYmax >= enemyYmin && playerYmin <= enemyYmax ) );
-		}
+		isMove_ = ( distance <= attackRange && ( playerPos.y == enemyPos.y ) );
 	}
 	else
 	{
@@ -108,10 +105,10 @@ void Enemy::Move()
 		{
 			attackTimer_--;
 
-			
 
-			obj_->SetPosition(obj_->GetPosition()+attackVec*attackSpeed_);
-			if (attackTimer_<=0)
+
+			obj_->SetPosition(obj_->GetPosition() + attackVec * attackSpeed_);
+			if ( attackTimer_ <= 0 )
 			{
 				isAttack_ = false;
 
@@ -122,7 +119,7 @@ void Enemy::Move()
 		{
 			IntervalTimer_--;
 
-			if (IntervalTimer_<=kIntervalTime_ )
+			if ( IntervalTimer_ <= kIntervalTime_ )
 			{
 				Vector3 frontVec = playerObj_->GetPosition() - obj_->GetPosition();
 
@@ -135,7 +132,9 @@ void Enemy::Move()
 
 				IntervalTimer_ = kIntervalTime_;
 
-				attackVec = playerObj_->GetPosition()-obj_->GetPosition();
+				attackVec = playerObj_->GetPosition() - obj_->GetPosition();
+
+				attackVec.y = 0;
 
 				attackVec.normalize();
 			}
@@ -165,4 +164,11 @@ void Enemy::Draw()
 void Enemy::OnCollision()
 {
 	isDaed_ = true;
+}
+
+void Enemy::AttackOff()
+{
+	isAttack_ = false;
+
+	attackTimer_ = kAttackTimer_;
 }

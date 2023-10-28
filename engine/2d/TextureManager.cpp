@@ -1,18 +1,18 @@
- #include "Texture.h"
+ #include"TextureManager.h"
 #include<string.h>
 #include<cassert>
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-Texture* Texture::Instance()
+TextureManager* TextureManager::Instance()
 {
-	static Texture instance;
+	static TextureManager instance;
 
 	return &instance;
 }
 
-uint32_t Texture::LoadTexture(const std::string fileName)
+uint32_t TextureManager::LoadTexture(const std::string fileName)
 {
 	DirectX::TexMetadata metadata{};
 	DirectX::ScratchImage scratchImg{};
@@ -94,7 +94,7 @@ uint32_t Texture::LoadTexture(const std::string fileName)
 }
 
 [[nodiscard]]
-ID3D12Resource* Texture::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
+ID3D12Resource* TextureManager::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages, ID3D12Device* device,
 	ID3D12GraphicsCommandList* commandList)
 {
 	HRESULT result;
@@ -137,7 +137,7 @@ ID3D12Resource* Texture::UploadTextureData(ID3D12Resource* texture, const Direct
 	return intermediateResource;
 }
 
-void Texture::ExcuteComandList()
+void TextureManager::ExcuteComandList()
 {
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
@@ -175,7 +175,7 @@ void Texture::ExcuteComandList()
 	assert(SUCCEEDED(result));
 }
 
-void Texture::Initialize(DirectXCommon* DxCommon)
+void TextureManager::Initialize(DirectXCommon* DxCommon)
 {
 	HRESULT result;
 	//デバイスのインスタンスを借りる
@@ -192,7 +192,7 @@ void Texture::Initialize(DirectXCommon* DxCommon)
 
 }
 
-void Texture::CreateSRV(ID3D12Resource* texBuff)
+void TextureManager::CreateSRV(ID3D12Resource* texBuff)
 {
 	// SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvCpuHandle = descHeap->GetCPUDescriptorHandleForHeapStart();
@@ -215,7 +215,7 @@ void Texture::CreateSRV(ID3D12Resource* texBuff)
 	dxCommon_->GetDevice()->
 		CreateShaderResourceView(texBuff, &srvDesc, srvCpuHandle);
 }
-void Texture::Finalize()
+void TextureManager::Finalize()
 {
 	descHeap = nullptr;
 	texBuffuers.fill(nullptr);

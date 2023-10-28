@@ -1,3 +1,6 @@
+/*
+* jsonからオブジェクトデータを読みとってまとめる。
+*/
 #pragma once
 #include"json.hpp"
 #include<d3d12.h>

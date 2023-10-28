@@ -2,7 +2,7 @@
 #include"DirectXCommon.h"
 #include"levelLoad.h"
 #include"Collider.h"
-#include"Texture.h"
+#include"TextureManager.h"
 #include<imgui.h>
 #include"input.h"
 #include<time.h>
@@ -25,9 +25,9 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	padSousaTexHandle_ = Texture::Instance()->LoadTexture("Resources/PadSousa.png");
+	padSousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/PadSousa.png");
 
-	keySousaTexHandle_ = Texture::Instance()->LoadTexture("Resources/KeySousa.png");
+	keySousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/KeySousa.png");
 
 	player_ = std::make_unique<Player>();
 
@@ -59,7 +59,7 @@ void GameScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 

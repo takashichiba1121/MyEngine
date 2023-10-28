@@ -1,3 +1,7 @@
+/*
+* 三次元ベクトル
+*/
+
 #pragma once
 
 class Vector3

@@ -1,3 +1,6 @@
+/*
+* FBXモデルデータ
+*/
 #pragma once
 #include <cassert>
 #include <string>
@@ -73,15 +76,16 @@ public:
 		ComPtr<ID3D12Resource> constBuffB1;
 	};
 public:
-
-	~AssimpModel();
-	void CreateBuffers();
-
 	//OBJファイルから3Dモデルを読み込む
 	static AssimpModel* LoadFormFBX(const std::string& modelname);
 
 	//setter
-	static void SetDevice(ID3D12Device* device) { sDevice = device; }
+	static void SetDevice(ID3D12Device* device) {
+		sDevice = device;
+	}
+
+	~AssimpModel();
+	void CreateBuffers();
 
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 

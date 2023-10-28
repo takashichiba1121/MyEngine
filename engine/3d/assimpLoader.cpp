@@ -5,7 +5,7 @@
 #include<d3d12.h>
 #include<filesystem>
 #include<assert.h>
-#include"Texture.h"
+#include"TextureManager.h"
 #include"assimpModel.h"
 
 using namespace std;
@@ -111,7 +111,7 @@ uint32_t AssimpLoader::LoadTexture(const std::string filename, const string& dir
 	//ファイルパスを結合
 	string filepath = directoryPath + filename;
 
-	return Texture::Instance()->LoadTexture(filepath);
+	return TextureManager::Instance()->LoadTexture(filepath);
 }
 
 AssimpModel::Material AssimpLoader::LoadMaterial(const aiMaterial* material, const string& directoryPath)

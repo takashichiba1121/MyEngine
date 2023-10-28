@@ -1,5 +1,5 @@
 #include "PlayerBulletManager.h"
-#include"Texture.h"
+#include"TextureManager.h"
 
 PlayerBulletManager* PlayerBulletManager::Instance()
 {
@@ -14,7 +14,7 @@ void PlayerBulletManager::Initialize()
 
 	particle_->Initialize();
 
-	particle_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
+	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
 }
 
 void PlayerBulletManager::Update()

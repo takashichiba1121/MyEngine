@@ -1,3 +1,6 @@
+/*
+* 平行光源
+*/
 #pragma once
 #include"Vector3.h"
 #include"DirectXCommon.h"

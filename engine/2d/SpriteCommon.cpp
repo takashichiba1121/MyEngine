@@ -1,5 +1,5 @@
 #include "SpriteCommon.h"
-#include"Texture.h"
+#include"TextureManager.h"
 
 SpriteCommon* SpriteCommon::Instance()
 {
@@ -208,7 +208,7 @@ void SpriteCommon::PreDraw()
 	dxCommon->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { TextureManager::Instance()->descHeap.Get() };
 	dxCommon->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 

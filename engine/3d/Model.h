@@ -1,3 +1,6 @@
+/*
+* objモデルクラス
+*/
 #pragma once
 #include <cassert>
 #include <string>

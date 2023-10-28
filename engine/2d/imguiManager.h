@@ -1,3 +1,6 @@
+/*
+* imguiの制御クラス
+*/
 #pragma once
 #include"WinApp.h"
 #include"DirectXCommon.h"

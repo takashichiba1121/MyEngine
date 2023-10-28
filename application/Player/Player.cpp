@@ -2,7 +2,7 @@
 #include"input.h"
 #include"Collider.h"
 #include<imgui.h>
-#include"Texture.h"
+#include"TextureManager.h"
 #include"Easing.h"
 #include<math.h>
 #include"EnemyManager.h"
@@ -27,7 +27,7 @@ void Player::Initialize()
 
 	paMan_->Initialize();
 
-	paMan_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
+	paMan_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
 
 	obj_->Update();
 

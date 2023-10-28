@@ -1,6 +1,6 @@
  #include "assimpModel.h"
 #include"assimpLoader.h"
-#include"Texture.h"
+#include"TextureManager.h"
 
 //静的メンバ変数の実体
 ID3D12Device* AssimpModel::sDevice= nullptr;
@@ -122,13 +122,13 @@ void AssimpModel::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamInd
 		cmdList->IASetIndexBuffer(&mesh->ibView);
 
 		// デスクリプタヒープの配列
-		ID3D12DescriptorHeap* ppHeaps[] = { Texture::Instance()->descHeap.Get() };
+		ID3D12DescriptorHeap* ppHeaps[] = { TextureManager::Instance()->descHeap.Get() };
 		cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 		// 定数バッファビューをセット
 		cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial, constBuffB1_->GetGPUVirtualAddress());
 		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
+		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = TextureManager::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 		uint32_t incrementSize = sDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		srvGpuHandle.ptr += incrementSize * mesh->materials.texHandle;
 		cmdList->SetGraphicsRootDescriptorTable(3, srvGpuHandle);

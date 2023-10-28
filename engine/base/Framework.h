@@ -1,4 +1,7 @@
- #pragma once
+/*
+* エンジン側の流れ
+*/
+#pragma once
 #include"WinApp.h"
 #include"DirectXCommon.h"
 #include<memory>

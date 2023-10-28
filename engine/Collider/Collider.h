@@ -1,3 +1,7 @@
+/*
+* 当たり判定の関数(適宜追加)
+*/
+
 #pragma once
 #include"Vector3.h"
 

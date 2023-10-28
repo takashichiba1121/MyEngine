@@ -2,7 +2,7 @@
 #include"DirectXCommon.h"
 #include"levelLoad.h"
 #include"Collider.h"
-#include"Texture.h"
+#include"TextureManager.h"
 #include<imgui.h>
 #include"input.h"
 #include<time.h>
@@ -15,9 +15,9 @@ void TitileScene::Initialize()
 
 	Object3d::SetTarget({ 0.0f,0.0f,1.0f });
 
-	keyTexHandle_ = Texture::Instance()->LoadTexture("Resources/spaceKey.png");
+	keyTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/spaceKey.png");
 
-	padTexHandle_ = Texture::Instance()->LoadTexture("Resources/Abotton.png");
+	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
 
 	spaceSprite_ = std::make_unique<Sprite>();
 
@@ -38,7 +38,7 @@ void TitileScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/scene.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 
@@ -50,7 +50,7 @@ void TitileScene::Initialize()
 
 	titleSprite_ = std::make_unique<Sprite>();
 
-	titleSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/Titlerogo.png"));
+	titleSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Titlerogo.png"));
 
 	titleSprite_->SetPosition({ 640,230 });
 
@@ -60,7 +60,7 @@ void TitileScene::Initialize()
 
 	startSprite_ = std::make_unique<Sprite>();
 
-	startSprite_->Initialize(Texture::Instance()->LoadTexture("Resources/Start.png"));
+	startSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Start.png"));
 
 	startSprite_->SetPosition({ 640,600 });
 
@@ -92,7 +92,7 @@ void TitileScene::Initialize()
 
 	particles_->Initialize();
 
-	particles_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
+	particles_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
 
 	bgm.Load("Resources/GameClear.wav");
 

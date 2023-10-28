@@ -1,3 +1,7 @@
+/*
+* ウィンドウ管理クラス
+*/
+
 #pragma once
 #include<Windows.h>
 class WinApp

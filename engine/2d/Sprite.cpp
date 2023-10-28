@@ -1,6 +1,6 @@
  #include "Sprite.h"
 #include<DirectXTex.h>
-#include"Texture.h"
+#include"TextureManager.h"
 
 
 using namespace DirectX;
@@ -147,7 +147,7 @@ void Sprite::SetTexture(uint32_t texHandle)
 void Sprite::AdjustTextureSize()
 {
 
-	ID3D12Resource* textureBuffer = Texture::Instance()->texBuffuers[textureIndex_].Get();
+	ID3D12Resource* textureBuffer = TextureManager::Instance()->texBuffuers[textureIndex_].Get();
 	//指定番号の画像が読み込み済みなら
 	assert(textureBuffer);
 
@@ -160,7 +160,7 @@ void Sprite::AdjustTextureSize()
 
 void Sprite::Update()
 {
-	ID3D12Resource* textureBuffer = Texture::Instance()->texBuffuers[textureIndex_].Get();
+	ID3D12Resource* textureBuffer = TextureManager::Instance()->texBuffuers[textureIndex_].Get();
 	//指定番号の画像が読み込み済みなら
 	if (textureBuffer)
 	{
@@ -237,7 +237,7 @@ void Sprite::Draw()
 
 	//画像描画
 	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = Texture::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = TextureManager::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
 	uint32_t incrementSize = sDxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += (SIZE_T)(incrementSize * textureIndex_);
 	sDxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);

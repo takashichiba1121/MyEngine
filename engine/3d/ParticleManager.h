@@ -1,3 +1,7 @@
+/*
+* 3Dパーティクルクラス(CPUパーティクル)
+*/
+
 #pragma once
 #include <string>
 #include <unordered_map>

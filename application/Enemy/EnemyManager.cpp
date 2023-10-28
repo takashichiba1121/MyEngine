@@ -1,6 +1,6 @@
 #include"EnemyManager.h"
 #include"Collider.h"
-#include"Texture.h"
+#include"TextureManager.h"
 #include<math.h>
 #include<imgui.h>
 
@@ -17,27 +17,29 @@ void EnemyManager::Initialize()
 
 	particle_->Initialize();
 
-	particle_->SetTextureHandle(Texture::Instance()->LoadTexture("Resources/effect4.png"));
+	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
 }
 
 void EnemyManager::Update()
 {
-	Enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
-		return enemy->IsDelete();
+	Enemys_.remove_if([ ] (std::unique_ptr<Enemy>& enemy)
+ {
+	 return enemy->IsDelete();
 		});
 
-	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		return bullet->IsDead();
+	bullets_.remove_if([ ] (std::unique_ptr<EnemyBullet>& bullet)
+ {
+	 return bullet->IsDead();
 		});
 
 	Collision();
 
-	for (std::unique_ptr<Enemy>& enemy : Enemys_)
+	for ( std::unique_ptr<Enemy>& enemy : Enemys_ )
 	{
 		enemy->Update(attackRange_);
 	}
 
-	for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
+	for ( std::unique_ptr<EnemyBullet>& bullet : bullets_ )
 	{
 		bullet->Update();
 	}
@@ -58,7 +60,7 @@ void EnemyManager::ParticleDraw()
 
 void EnemyManager::ObjectUpdate()
 {
-	for (std::unique_ptr<Enemy>& enemy : Enemys_)
+	for ( std::unique_ptr<Enemy>& enemy : Enemys_ )
 	{
 		enemy->ObjectUpdate();
 	}
@@ -66,12 +68,12 @@ void EnemyManager::ObjectUpdate()
 
 void EnemyManager::Draw()
 {
-	for (std::unique_ptr<Enemy>& enemy : Enemys_)
+	for ( std::unique_ptr<Enemy>& enemy : Enemys_ )
 	{
 		enemy->Draw();
 	}
 
-	for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
+	for ( std::unique_ptr<EnemyBullet>& bullet : bullets_ )
 	{
 		bullet->Draw();
 	}
@@ -105,9 +107,9 @@ void EnemyManager::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 
 void EnemyManager::Collision()
 {
-	for (const std::unique_ptr<Object3d>& MapObj : *objects_)
+	for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
 	{
-		Collider::Cube mapCube, objCube;
+		Collider::Cube mapCube,objCube;
 		mapCube.Pos = MapObj->GetPosition();
 		mapCube.scale = MapObj->GetScale();
 
@@ -116,18 +118,46 @@ void EnemyManager::Collision()
 			if ( enemy->IsAttack() )
 			{
 				objCube.Pos = enemy->GetObj()->GetPosition();
-				objCube.scale = enemy->GetObj()->GetPosition();
-				if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Collsion))
+				objCube.scale = enemy->GetObj()->GetScale();
+
+				Vector3 pos = enemy->GetObj()->GetPosition();
+				if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Type::Inside)==false&&
+					Collider::QuadAndQuad(mapCube,objCube,Collider::Type::Collsion))
 				{
-					//enemy->OnCollision();
+					if ( mapCube.Pos.x + mapCube.scale.x < objCube.Pos.x + objCube.scale.x )
+					{
+						pos.x = mapCube.Pos.x + mapCube.scale.x - objCube.scale.x;
+
+						enemy->AttackOff();
+					}
+					else if ( mapCube.Pos.x - mapCube.scale.x > objCube.Pos.x - objCube.scale.x )
+					{
+						pos.x = mapCube.Pos.x - mapCube.scale.x + objCube.scale.x;
+
+						enemy->AttackOff();
+					}
+					if ( mapCube.Pos.z + mapCube.scale.z < objCube.Pos.z + objCube.scale.z )
+					{
+						pos.z = mapCube.Pos.z + mapCube.scale.z - objCube.scale.z;
+
+						enemy->AttackOff();
+					}
+					else if ( mapCube.Pos.z - mapCube.scale.z > objCube.Pos.z - objCube.scale.z )
+					{
+						pos.z = mapCube.Pos.z - mapCube.scale.z + objCube.scale.z;
+
+						enemy->AttackOff();
+					}
+
+					enemy->GetObj()->SetPosition(pos);
 				}
 			}
 		}
-		for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
+		for ( std::unique_ptr<EnemyBullet>& bullet : bullets_ )
 		{
 			objCube.Pos = bullet->GetPosition();
 			objCube.scale = bullet->GetScale();
-			if (Collider::CubeAndCube(mapCube, objCube,Collider::Collsion) == true)
+			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
 			{
 				bullet->OnCollision();
 			}

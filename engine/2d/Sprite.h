@@ -1,3 +1,6 @@
+/*
+* スプライト1枚のクラス
+*/
 #pragma once
 #include"SpriteCommon.h"
 #include"Vector2.h"

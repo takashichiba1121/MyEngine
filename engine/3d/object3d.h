@@ -1,3 +1,7 @@
+/*
+* objのオブジェクトクラス
+*/
+
 #pragma once
 
 #include "Model.h"

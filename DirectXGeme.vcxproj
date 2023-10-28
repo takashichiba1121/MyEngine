@@ -140,19 +140,12 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\io\input.cpp" />
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Math\Easing.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectBlurH.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectBlurW.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectCommon.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectLuminance.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectMixed.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectMultiRenderTarget.cpp" />
-    <ClCompile Include="engine\postEffect\PostEffectTest.cpp" />
     <ClCompile Include="engine\Math\Matrix4.cpp" />
     <ClCompile Include="engine\3d\Model.cpp" />
     <ClCompile Include="engine\3d\object3d.cpp" />
     <ClCompile Include="engine\2d\Sprite.cpp" />
     <ClCompile Include="engine\2d\SpriteCommon.cpp" />
-    <ClCompile Include="engine\2d\Texture.cpp" />
+    <ClCompile Include="engine\2d\TextureManager.cpp" />
     <ClCompile Include="engine\Math\Vector2.cpp" />
     <ClCompile Include="engine\Math\Vector3.cpp" />
     <ClCompile Include="engine\Math\Vector4.cpp" />
@@ -196,18 +189,11 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\3d\object3d.h" />
     <ClInclude Include="engine\2d\Sprite.h" />
     <ClInclude Include="engine\2d\SpriteCommon.h" />
-    <ClInclude Include="engine\2d\Texture.h" />
+    <ClInclude Include="engine\2d\TextureManager.h" />
     <ClInclude Include="engine\Math\Vector2.h" />
     <ClInclude Include="engine\Math\Vector3.h" />
     <ClInclude Include="engine\Math\Vector4.h" />
     <ClInclude Include="engine\base\WinApp.h" />
-    <ClInclude Include="engine\postEffect\PostEffectBlurH.h" />
-    <ClInclude Include="engine\postEffect\PostEffectBlurW.h" />
-    <ClInclude Include="engine\postEffect\PostEffectCommon.h" />
-    <ClInclude Include="engine\postEffect\PostEffectLuminance.h" />
-    <ClInclude Include="engine\postEffect\PostEffectMixed.h" />
-    <ClInclude Include="engine\postEffect\PostEffectMultiRenderTarget.h" />
-    <ClInclude Include="engine\postEffect\PostEffectTest.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">

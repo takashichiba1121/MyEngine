@@ -1,3 +1,6 @@
+/*
+* DirectXの基盤
+*/
 #pragma once
 #include<d3d12.h>
 #include<dxgi1_6.h>

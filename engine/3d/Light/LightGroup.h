@@ -1,3 +1,6 @@
+/*
+* ライトクラス
+*/
 #pragma once
 #include"DirectionalLight.h"
 #include"PointLight.h"

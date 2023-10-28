@@ -1,3 +1,6 @@
+/*
+* 4*4の行列
+*/
 #pragma once
 #include "Vector3.h"
 

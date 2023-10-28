@@ -1,3 +1,6 @@
+/*
+* 抽象的なシーンファクトリー
+*/
 #pragma once
 
 #include"BaseScene.h"

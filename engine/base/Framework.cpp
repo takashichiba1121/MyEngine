@@ -3,7 +3,7 @@
 #include"input.h"
 #include"SpriteCommon.h"
 #include"Sprite.h"
-#include"Texture.h"
+#include"TextureManager.h"
 #include"Sound.h"
 #include"imguiManager.h"
 #include<imgui.h>
@@ -27,7 +27,7 @@ void Framework::Initialize()
 
 	SpriteCommon::Instance()->Initialize(dxCommon_.get());
 
-	Texture::Instance()->Initialize(dxCommon_.get());
+	TextureManager::Instance()->Initialize(dxCommon_.get());
 
 	Sprite::StaticInitialize(dxCommon_.get());
 
@@ -56,7 +56,7 @@ void Framework::Finalize()
 
 	Sound::StaticFinalize();
 
-	Texture::Instance()->Finalize();
+	TextureManager::Instance()->Finalize();
 
 	imguiManager::Finalize();
 

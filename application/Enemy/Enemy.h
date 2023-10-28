@@ -43,6 +43,8 @@ public:
 	bool IsAttack() {return isAttack_ ;}
 
 	void OnCollision();
+
+	void AttackOff();
 protected:
 	Model* model_;
 

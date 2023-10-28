@@ -1,3 +1,7 @@
+/*
+* 四次元ベクトル(色指定くらいにしか使ってない)
+*/
+
 #pragma once
 
 class Vector4

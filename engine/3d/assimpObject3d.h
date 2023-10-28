@@ -1,3 +1,6 @@
+/*
+* FBXのオブジェクトクラス
+*/
 #pragma once
 
 #include <Windows.h>
