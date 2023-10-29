@@ -33,15 +33,27 @@ public:
 	//初期化
 	void Initialize(DirectXCommon* DXCommon);
 
+	/// <summary>
+	/// グラフィックパイプライン生成
+	/// </summary>
+	void InitializeGraphicsPipeline();
+
+	/// <summary>
+	/// ディゾルブグラフィックパイプライン生成
+	/// </summary>
+	void InitializeDissolveGraphicsPipeline();
+
 	DirectXCommon* GetDxCommon() { return dxCommon; }
 
-	ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
-	ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
 	Matrix4 GetMatProjection() { return matProjection; }
 
 	void PreDraw();
 
 	void PostDraw();
+
+	void DissolvePreDraw();
+
+	void DissolvePostDraw();
 
 	void Finalize();
 private:
@@ -49,6 +61,8 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> dissolvePipelineState;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> dissolveRootSignature;
 
 	Matrix4 matProjection=Matrix4Math::identity();
 };

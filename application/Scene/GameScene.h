@@ -98,9 +98,13 @@ private:
 
 	Vector3 cameraEnd_ = { 0.0,0.0,0.0 };
 
-	const uint32_t endFrame_ = 120;
+	const uint32_t endFrame_ =60;
 
-	uint32_t frame_ = endFrame_;
+	int32_t frame_ = 0;
+
+	const uint32_t cameraEndFrame_ = 120;
+
+	int32_t cameraFrame_ = 0;
 
 	//シーン遷移のスプライトの開始地点
 	const float startSpriteY_ = -720;

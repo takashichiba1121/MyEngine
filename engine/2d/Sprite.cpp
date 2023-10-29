@@ -14,9 +14,8 @@ void Sprite::StaticInitialize(DirectXCommon* dxCommon)
 	sDxCommon=dxCommon;
 }
 
-void Sprite::Initialize(uint32_t textureIndex)
+void Sprite::Initialize(uint32_t textureIndex,uint32_t maskTextureIndex)
 {
-
 	HRESULT result;
 
 	Vertex vertices[4] = {
@@ -104,6 +103,37 @@ void Sprite::Initialize(uint32_t textureIndex)
 		//リソース設定
 		D3D12_RESOURCE_DESC cbResourceDesc{};
 		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		cbResourceDesc.Width = ( sizeof(ConstBufferDataDissolveMaterial) + 0xff ) & ~0xff;//256バイトアラインメント
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		//定数バッファの生成
+		result = sDxCommon->GetDevice()->CreateCommittedResource(
+			&cbHeapProp,//ヒープ設定
+			D3D12_HEAP_FLAG_NONE,
+			&cbResourceDesc,//リソース設定
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffDissolveMaterial_));
+		assert(SUCCEEDED(result));
+	}
+	//定数バッファのマッピング
+	result = constBuffDissolveMaterial_->Map(0,nullptr,( void** ) &constMapDissolve_);//マッピング
+	//値を書き込むと自動的に転送される
+	constMapDissolve_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	constMapDissolve_->Dissolve = 0,0;
+	assert(SUCCEEDED(result));
+
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;//GPUへの転送用
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 		cbResourceDesc.Width = (sizeof(ConstBufferDateTransform) + 0xff) & ~0xff;//256バイトアラインメント
 		cbResourceDesc.Height = 1;
 		cbResourceDesc.DepthOrArraySize = 1;
@@ -135,6 +165,7 @@ void Sprite::Initialize(uint32_t textureIndex)
 		AdjustTextureSize();
 		scale_ = textureSize_;
 	}
+	maskTextureIndex_ = maskTextureIndex;
 }
 
 void Sprite::SetTexture(uint32_t texHandle)
@@ -218,6 +249,8 @@ void Sprite::Update()
 	matWorld = matRot* matTrans;//ワールド行列に回転を反映
 	//行列の計算
 	constMapTransform_->mat = matWorld * SpriteCommon::Instance()->GetMatProjection();
+
+
 }
 
 void Sprite::Draw()
@@ -244,4 +277,46 @@ void Sprite::Draw()
 
 	//描画コマンド
 	sDxCommon->GetCommandList()->DrawInstanced(_countof(vertices_), 1, 0, 0);//すべての頂点を使って描画
+}
+
+void Sprite::DissolveDraw()
+{
+	if ( isInvisible_ )
+	{
+		return;
+	}
+	SpriteCommon::Instance()->DissolvePreDraw();
+
+	//プリミティブ形状の設定コマンド
+	sDxCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	//頂点バッファビューの設定コマンド
+	sDxCommon->GetCommandList()->IASetVertexBuffers(0,1,&vbView_);
+	//定数バッファビュー（CBV）の設定コマンド
+	sDxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0,constBuffDissolveMaterial_->GetGPUVirtualAddress());
+	//定数バッファビュー（CBV）の設定コマンド
+	sDxCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1,constBuffTransform_->GetGPUVirtualAddress());
+
+	//画像描画
+	//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = TextureManager::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
+	uint32_t incrementSize = sDxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	srvGpuHandle.ptr += ( SIZE_T ) ( incrementSize * textureIndex_ );
+	sDxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2,srvGpuHandle);
+		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+	srvGpuHandle = TextureManager::Instance()->descHeap->GetGPUDescriptorHandleForHeapStart();
+	incrementSize = sDxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	srvGpuHandle.ptr += ( SIZE_T ) ( incrementSize * maskTextureIndex_ );
+	sDxCommon->GetCommandList()->SetGraphicsRootDescriptorTable(3,srvGpuHandle);
+
+	//描画コマンド
+	sDxCommon->GetCommandList()->DrawInstanced(_countof(vertices_),1,0,0);//すべての頂点を使って描画
+
+	SpriteCommon::Instance()->PreDraw();
+}
+
+void Sprite::SetColor(const Vector4& color)
+{
+	constMapMaterial_->color = color;
+
+	constMapDissolve_->color = color;
 }

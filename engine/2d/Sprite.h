@@ -19,6 +19,13 @@ struct Vertex
 struct ConstBufferDataMaterial {
 	Vector4 color;//色（RGBA）
 };
+
+//定数バッファ用データ構造体（マテリアル）
+struct ConstBufferDataDissolveMaterial
+{
+	Vector4 color;//色（RGBA）
+	float Dissolve;
+};
 //定数バッファ用データ構造体（行列）
 struct ConstBufferDateTransform {
 	Matrix4 mat;
@@ -38,11 +45,13 @@ public:
 	void static StaticInitialize(DirectXCommon* dxCommon);
 
 	//初期化
-	void Initialize(uint32_t textureIndex = UINT32_MAX);
+	void Initialize(uint32_t textureIndex = UINT32_MAX,uint32_t maskTextureIndex=0);
 
 	void Update();
 
 	void Draw();
+
+	void DissolveDraw();
 
 	uint32_t GetTexture() {return textureIndex_ ; }
 
@@ -54,7 +63,7 @@ public:
 
 	float GetRotation() const { return rotation_; }
 
-	void SetColor(const Vector4& color) { constMapMaterial_->color = color; }
+	void SetColor(const Vector4& color);
 
 	Vector4 GetColor() { return constMapMaterial_->color; }
 
@@ -86,13 +95,19 @@ public:
 
 	Vector2 GetLeftTop_() const { return anchorPoint_; }
 
+	void SetDissolve(float dissolve) {constMapDissolve_->Dissolve = dissolve;}
+
+	float GetDissolve() const {return constMapDissolve_->Dissolve;}
+
 	void SetTexture(uint32_t texHandole);
+
+	void SetMaskTexture(uint32_t masktexHandole) {maskTextureIndex_ = masktexHandole;};
 
 private:
 	//テクスチャサイズをイメージに合わせる
 	void AdjustTextureSize();
 
-protected:
+private:
 	Vertex vertices_[4] = {};
 
 	Vertex* vertMap_ = nullptr;
@@ -104,11 +119,15 @@ protected:
 
 	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
 
+	ConstBufferDataDissolveMaterial* constMapDissolve_ = nullptr;
+
 	ConstBufferDateTransform* constMapTransform_ = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffDissolveMaterial_ = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff_ = nullptr;
 
@@ -116,9 +135,11 @@ protected:
 
 	uint32_t textureIndex_;
 
+	uint32_t maskTextureIndex_;
+
 	float rotation_ = 0.0f;
 
-	Vector2 position_ = { 100.0f,100.0f };
+	Vector2 position_ = { 0.0f,0.0f };
 
 	Vector2 scale_ = { 100.0f,100.0f };
 
@@ -135,8 +156,6 @@ protected:
 	Vector2 textureLeftTop_ = {0.0f,0.0f};
 	//テクスチャ切り出しサイズ
 	Vector2 textureSize_ = {100.0f,100.0f};
-
-protected:
 
 	static DirectXCommon* sDxCommon;
 

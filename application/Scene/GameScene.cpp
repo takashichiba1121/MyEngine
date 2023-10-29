@@ -59,13 +59,11 @@ void GameScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 
 	sceneSprite_->SetScale({ 1280,720 });
-
-	sceneSprite_->SetPosition({ 0,float(startSpriteY_) });
 
 	sceneSprite_->Update();
 
@@ -122,8 +120,6 @@ void GameScene::Initialize()
 
 	skyObj_->Update();
 
-	frame_ = 120;
-
 	sceneStart_ = true;
 
 	sceneChange_ = false;
@@ -176,22 +172,24 @@ void GameScene::Update()
 
 	if ( sceneStart_ )
 	{
-		frame_--;
+		frame_++;
 		float f = ( float ) frame_ / endFrame_;
 
-		sceneSprite_->SetPosition({ 0,( ( endSpriteY_ - startSpriteY_ ) * f ) + startSpriteY_ });
+		sceneSprite_->SetDissolve(f);
 
-		if ( frame_ <= 0 )
+		if ( frame_ >= (int32_t)endFrame_ )
 		{
 			sceneStart_ = false;
-			frame_ = 0;
+
+			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve3.png"));
 		}
 		sceneSprite_->Update();
+
 	}
 	else if ( IsCameraSet_ )
 	{
-		frame_++;
-		float f = ( float ) frame_ / endFrame_;
+		cameraFrame_++;
+		float f = ( float ) cameraFrame_ / cameraEndFrame_;
 
 		Vector3 traget = ( ( cameraEnd_ - cameraStart_ ) * f ) + cameraStart_;
 
@@ -199,10 +197,10 @@ void GameScene::Update()
 
 		Object3d::SetEye(traget + cameraPos_);
 
-		if ( frame_ >= endFrame_ )
+		if ( cameraFrame_ >= ( int32_t ) cameraEndFrame_)
 		{
 			IsCameraSet_ = false;
-			frame_ = 0;
+			cameraFrame_ = 0;
 		}
 
 		player_->ObjectUpdate();
@@ -229,7 +227,6 @@ void GameScene::Update()
 			{
 				isClear_ = true;
 				sceneChange_ = true;
-				frame_ = 0;
 			}
 		}
 		else
@@ -244,7 +241,6 @@ void GameScene::Update()
 				isNext_ = true;
 				isStage1_ = true;
 				sceneChange_ = true;
-				frame_ = 0;
 			}
 
 			B.Pos = stage2Obj_->GetPosition();
@@ -256,7 +252,6 @@ void GameScene::Update()
 				isNext_ = true;
 				isStage1_ = true;
 				sceneChange_ = true;
-				frame_ = 0;
 			}
 
 			B.Pos = stage3Obj_->GetPosition();
@@ -268,29 +263,26 @@ void GameScene::Update()
 				isNext_ = true;
 				isStage1_ = true;
 				sceneChange_ = true;
-				frame_ = 0;
 			}
 		}
 		if ( player_->IsDaed() )
 		{
 			sceneChange_ = true;
-			frame_ = 0;
 		}
 	}
 	else
 	{
-		if ( frame_ < endFrame_ )
+		if ( frame_ > 0 )
 		{
-			frame_++;
+			frame_--;
 
-			float f = Easing::easeOutBounce(( float ) frame_ / endFrame_);
+			float f = ( float ) frame_ / endFrame_;
 
-			sceneSprite_->SetPosition({ 0,( ( endSpriteY_ - startSpriteY_ ) * f ) + startSpriteY_ });
+			sceneSprite_->SetDissolve(f);
 
 		}
-		else if ( frame_ >= endFrame_ + 5 )
+		else if(frame_<=-5)
 		{
-			frame_ = 120;
 			if ( mapName_ != "Resources/Select.json" )
 			{
 				if ( isClear_ )
@@ -353,11 +345,12 @@ void GameScene::Update()
 					sceneStart_ = true;
 				}
 			}
+			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
 			sceneChange_ = false;
 		}
 		else
 		{
-			frame_++;
+			frame_--;
 		}
 
 		sceneSprite_->Update();
@@ -419,7 +412,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	SpriteCommon::Instance()->PreDraw();
 	sousaSprite_->Draw();
-	sceneSprite_->Draw();
+	sceneSprite_->DissolveDraw();
 	SpriteCommon::Instance()->PostDraw();
 }
 
@@ -516,7 +509,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<Enemy>();
 
-			enemy->Initialize(models_["Enemy"],models_[ "enemyBullet" ],{objectData.trans},player_->GetObj());
+			enemy->Initialize(models_[ "Enemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
 			enemy->Update(25);
 
