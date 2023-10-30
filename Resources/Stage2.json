@@ -3,6 +3,42 @@
     "objects": [
         {
             "type": "MESH",
+            "name": "立方体",
+            "transform": {
+                "translation": [
+                    -155.0,
+                    175.0,
+                    43.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    1.5700000524520874
+                ],
+                "scaling": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "file_name": "Goal",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Goal"
+        },
+        {
+            "type": "MESH",
             "name": "Cube",
             "transform": {
                 "translation": [
@@ -36,42 +72,6 @@
                 ]
             },
             "Tag_name": "Map"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体",
-            "transform": {
-                "translation": [
-                    -155.0,
-                    175.0,
-                    44.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "Goal",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Goal"
         },
         {
             "type": "MESH",

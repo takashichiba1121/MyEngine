@@ -459,8 +459,6 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 座標
 			goalObj_->SetScale({ objectData.scale });
 
-			goalObj_->Setalpha(0.3f);
-
 			goalObj_->Update();
 
 			Object3d::SetEye(objectData.trans + cameraPos_);
@@ -573,4 +571,7 @@ void GameScene::ModelLoad()
 
 	enemyModel_.reset(Model::LoadFormOBJ("enemy",true));
 	models_.insert(std::make_pair("Enemy",enemyModel_.get()));
+
+	stageModel_.reset(Model::LoadFormOBJ("stage",true));
+	models_.insert(std::make_pair("stage",stageModel_.get()));
 }

@@ -11,7 +11,7 @@
 
 void Player::Initialize()
 {
-	model_.reset(Model::LoadFormOBJ("player",false));
+	model_.reset(Model::LoadFormOBJ("Player",false));
 
 	obj_ = std::make_unique<Object3d>();
 

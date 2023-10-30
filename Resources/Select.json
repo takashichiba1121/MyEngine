@@ -42,9 +42,9 @@
             "name": "Cube.001",
             "transform": {
                 "translation": [
-                    -35.0,
+                    -45.0,
                     0.0,
-                    -77.0
+                    20.5
                 ],
                 "rotation": [
                     0.0,
@@ -52,9 +52,9 @@
                     0.0
                 ],
                 "scaling": [
-                    30.0,
+                    40.0,
                     20.0,
-                    100.0
+                    1.5
                 ]
             },
             "file_name": "Map",
@@ -80,7 +80,7 @@
                 "translation": [
                     -75.0,
                     0.0,
-                    -73.0
+                    23.5
                 ],
                 "rotation": [
                     0.0,
@@ -90,7 +90,7 @@
                 "scaling": [
                     10.0,
                     20.0,
-                    100.0
+                    1.5
                 ]
             },
             "file_name": "Map",
@@ -129,7 +129,7 @@
                     3.0
                 ]
             },
-            "file_name": "Goal",
+            "file_name": "stage",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -150,7 +150,7 @@
             "name": "Cube.003",
             "transform": {
                 "translation": [
-                    15.0,
+                    -25.0,
                     0.0,
                     -81.0
                 ],
@@ -160,7 +160,7 @@
                     0.0
                 ],
                 "scaling": [
-                    20.0,
+                    60.0,
                     20.0,
                     100.0
                 ]

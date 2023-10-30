@@ -42,6 +42,7 @@ private:
 	std::map<std::string,Model*> models_;
 
 	std::unique_ptr <Model> mapModel_;
+	std::unique_ptr <Model> stageModel_;
 	std::unique_ptr <Model> goalModel_;
 	std::unique_ptr <Model> bulletModel_;
 
