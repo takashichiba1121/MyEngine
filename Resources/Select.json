@@ -3,42 +3,6 @@
     "objects": [
         {
             "type": "MESH",
-            "name": "Cube",
-            "transform": {
-                "translation": [
-                    0.0,
-                    0.0,
-                    24.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    5.0,
-                    5.0,
-                    5.0
-                ]
-            },
-            "file_name": "enemyBullet",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Map"
-        },
-        {
-            "type": "MESH",
             "name": "立方体.001",
             "transform": {
                 "translation": [
@@ -78,9 +42,9 @@
             "name": "Cube.001",
             "transform": {
                 "translation": [
-                    -45.0,
+                    -35.0,
                     0.0,
-                    20.5
+                    -77.0
                 ],
                 "rotation": [
                     0.0,
@@ -88,9 +52,9 @@
                     0.0
                 ],
                 "scaling": [
-                    40.0,
+                    30.0,
                     20.0,
-                    1.5
+                    100.0
                 ]
             },
             "file_name": "Map",
@@ -116,7 +80,7 @@
                 "translation": [
                     -75.0,
                     0.0,
-                    23.5
+                    -73.0
                 ],
                 "rotation": [
                     0.0,
@@ -126,7 +90,7 @@
                 "scaling": [
                     10.0,
                     20.0,
-                    1.5
+                    100.0
                 ]
             },
             "file_name": "Map",
@@ -186,9 +150,9 @@
             "name": "Cube.003",
             "transform": {
                 "translation": [
-                    -25.0,
+                    15.0,
                     0.0,
-                    18.0
+                    -81.0
                 ],
                 "rotation": [
                     0.0,
@@ -196,9 +160,9 @@
                     0.0
                 ],
                 "scaling": [
-                    60.0,
                     20.0,
-                    1.0
+                    20.0,
+                    100.0
                 ]
             },
             "file_name": "Map",
