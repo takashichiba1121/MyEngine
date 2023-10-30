@@ -122,8 +122,6 @@ private:
 
 	std::unique_ptr<Sprite> sousaSprite_;
 
-	std::unique_ptr<Object3d> GroundObj_;
-
 	std::unique_ptr<Object3d> skyObj_;
 
 	std::string mapName_;

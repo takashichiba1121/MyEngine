@@ -88,22 +88,6 @@ void GameScene::Initialize()
 
 	EnemyManager::Instance()->Initialize();
 
-	GroundModel_.reset(Model::LoadFormOBJ("Ground",true));
-
-	GroundObj_ = std::make_unique<Object3d>();
-
-	GroundObj_->Initialize();
-
-	GroundObj_->SetModel(GroundModel_.get());
-
-	GroundObj_->SetPosition({ 0,-10,0 });
-
-	GroundObj_->SetScale({ 500,500,500 });
-
-	GroundObj_->SetRot({ 0,3.14f,0 });
-
-	GroundObj_->Update();
-
 	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle",true));
 
 	skyObj_ = std::make_unique<Object3d>();
@@ -114,9 +98,9 @@ void GameScene::Initialize()
 
 	skyObj_->SetPosition({ 0,0,0 });
 
-	skyObj_->SetScale({ 500,500,500 });
+	skyObj_->SetScale({ 300,300,300 });
 
-	skyObj_->SetRot({ 1.57f,0,0 });
+	skyObj_->SetRot({ 0,0,0 });
 
 	skyObj_->Update();
 
@@ -371,8 +355,6 @@ void GameScene::Update()
 
 	stage3Obj_->Update();
 
-	GroundObj_->Update();
-
 	skyObj_->Update();
 }
 
@@ -381,8 +363,6 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	Object3d::PreDraw(dxCommon->GetCommandList());
 
 	skyObj_->Draw();
-
-	//GroundObj_->Draw();
 
 	for ( uint32_t i = 0; i < objects_.size(); i++ )
 	{
