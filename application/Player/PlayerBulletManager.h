@@ -32,6 +32,8 @@ public:
 
 	void AddBullet(std::unique_ptr<PlayerBullet> newBullet);
 
+	ParticleManager* GetParticle() {return particle_.get();}
+
 	std::list<std::unique_ptr<PlayerBullet>>& GetBullets() {
 		return bullets_;
 	}

@@ -470,25 +470,25 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			cameraStart_ = objectData.trans;
 		}
-		if ( objectData.tagName == "GunEnemy" )
+		if (  objectData.tagName== "GunEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ "GunEnemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
 			enemy->Update(25);
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if ( objectData.tagName == "Enemy" )
+		if ( objectData.tagName == "RunEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
 			enemy = std::make_unique<RunEnemy>();
 
-			enemy->Initialize(models_[ "Enemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
 			enemy->Update(25);
 
@@ -570,8 +570,8 @@ void GameScene::ModelLoad()
 	goalModel_.reset(Model::LoadFormOBJ("Goal",true));
 	models_.insert(std::make_pair("Goal",goalModel_.get()));
 
-	enemyModel_.reset(Model::LoadFormOBJ("enemy",true));
-	models_.insert(std::make_pair("Enemy",enemyModel_.get()));
+	enemyModel_.reset(Model::LoadFormOBJ("RunEnemy",true));
+	models_.insert(std::make_pair("RunEnemy",enemyModel_.get()));
 
 	gunEnemyModel_.reset(Model::LoadFormOBJ("GunEnemy",true));
 	models_.insert(std::make_pair("GunEnemy",gunEnemyModel_.get()));

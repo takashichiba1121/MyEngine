@@ -258,6 +258,8 @@ void Player::Draw()
 void Player::ParticleDraw()
 {
 	paMan_->Draw();
+
+	PlayerBulletManager::Instance()->ParticleDraw();
 }
 
 void Player::Reset()

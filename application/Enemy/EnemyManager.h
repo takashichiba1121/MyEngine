@@ -50,6 +50,8 @@ public:
 	void Clear();
 
 	void SetPlayer(Player* player) { player_ = player; }
+
+	ParticleManager* GetParticle() {return particle_.get() ;}
 private:
 	std::list<std::unique_ptr<Enemy>> Enemys_;
 
