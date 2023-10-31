@@ -475,7 +475,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ "Enemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+			enemy->Initialize(models_[ "GunEnemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
 			enemy->Update(25);
 
@@ -571,6 +571,9 @@ void GameScene::ModelLoad()
 
 	enemyModel_.reset(Model::LoadFormOBJ("enemy",true));
 	models_.insert(std::make_pair("Enemy",enemyModel_.get()));
+
+	gunEnemyModel_.reset(Model::LoadFormOBJ("GunEnemy",true));
+	models_.insert(std::make_pair("GunEnemy",gunEnemyModel_.get()));
 
 	stageModel_.reset(Model::LoadFormOBJ("stage",true));
 	models_.insert(std::make_pair("stage",stageModel_.get()));

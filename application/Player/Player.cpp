@@ -518,5 +518,7 @@ void Player::SetSpawn(Vector3 spawnPosition)
 
 	obj_->SetPosition(spawnPosition_);
 
+	obj_->SetRot({ 0,0,0 });
+
 	obj_->Update();
 }

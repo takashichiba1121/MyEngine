@@ -51,6 +51,7 @@ private:
 	std::unique_ptr<Model> skyModel_;
 
 	std::unique_ptr<Model> enemyModel_;
+	std::unique_ptr<Model> gunEnemyModel_;
 
 #pragma endregion
 

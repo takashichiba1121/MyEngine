@@ -22,13 +22,13 @@ void EnemyManager::Initialize()
 
 void EnemyManager::Update()
 {
-	Enemys_.remove_if([ ] (std::unique_ptr<Enemy>& enemy)
- {
+
+
+	Enemys_.remove_if([ ] (std::unique_ptr<Enemy>& enemy){
 	 return enemy->IsDelete();
 		});
 
-	bullets_.remove_if([ ] (std::unique_ptr<EnemyBullet>& bullet)
- {
+	bullets_.remove_if([ ] (std::unique_ptr<EnemyBullet>& bullet){
 	 return bullet->IsDead();
 		});
 
