@@ -40,7 +40,9 @@ public:
 		return obj_.get();
 	}
 
-	bool IsAttack() {return isAttack_ ;}
+	bool IsAttack() {
+		return isAttack_;
+	}
 
 	void OnCollision();
 
@@ -83,5 +85,5 @@ protected:
 
 	Vector3 attackVec;
 
-	float attackSpeed_=0.3f;
+	float attackSpeed_ = 0.3f;
 };

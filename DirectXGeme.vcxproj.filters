@@ -227,6 +227,9 @@
     <ClCompile Include="engine\base\MyGame.cpp">
       <Filter>application\ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="application\Enemy\RunEnemy.cpp">
+      <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -351,6 +354,9 @@
     </ClInclude>
     <ClInclude Include="engine\base\MyGame.h">
       <Filter>application\ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Enemy\RunEnemy.h">
+      <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

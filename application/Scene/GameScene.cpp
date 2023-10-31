@@ -10,6 +10,7 @@
 #include"SceneManager.h"
 #include"PlayerBulletManager.h"
 #include"GunEnemy.h"
+#include"RunEnemy.h"
 
 GameScene::GameScene()
 {
@@ -485,7 +486,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 		{
 			std::unique_ptr<Enemy> enemy;
 
-			enemy = std::make_unique<Enemy>();
+			enemy = std::make_unique<RunEnemy>();
 
 			enemy->Initialize(models_[ "Enemy" ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
