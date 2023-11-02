@@ -9,7 +9,13 @@ float4 main(VSOutput input) :SV_TARGET
 
 	float4 maskColor=tex2.Sample(smp,input.uv);
 
-	clip(maskColor.r-Dissolve);
+	float Emission = step(Dissolve-0.05,(maskColor.r+maskColor.g+maskColor.b)/3);
 
-	return texColor*color;
+	clip(Emission-0.5);
+
+	Emission = step(Dissolve, (maskColor.r + maskColor.g + maskColor.b) / 3);
+
+	Emission =abs(Emission -1);
+
+	return float4(texColor.rgb+Emission, texColor.a);
 }

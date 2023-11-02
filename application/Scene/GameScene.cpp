@@ -438,6 +438,27 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 配列に登録
 			objects_.push_back(std::move(newObject));
 		}
+		if ( objectData.tagName == "MapPlane" )
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+			newObject->Initialize();
+			newObject->SetModel(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture(objectData.fileName)));
+
+			assert(newObject);
+
+			// 座標
+			newObject->SetPosition({ objectData.trans });
+
+			// 回転角
+			newObject->SetRot({ objectData.rot });
+
+			// 座標
+			newObject->SetScale({ objectData.scale });
+
+			// 配列に登録
+			objects_.push_back(std::move(newObject));
+		}
 		if ( objectData.tagName == "Spawn" )
 		{
 			player_->SetSpawn(objectData.trans);

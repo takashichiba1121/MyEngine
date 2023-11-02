@@ -4,6 +4,14 @@
 class EnemyBullet
 {
 public:
+	enum class Phase
+	{
+		Charge,
+		Attack,
+	};
+
+
+public:
 	
 	///<summary>
 	///初期化処理
@@ -32,6 +40,8 @@ public:
 /// </summary>
 	bool IsDead() {return isDead_ ; }
 
+	void SetPhase(Phase phase);
+
 	Vector3 GetPosition() {return obj_->GetPosition() ; }
 
 	Vector3 GetScale() { return obj_->GetScale(); }
@@ -48,4 +58,11 @@ private:
 	uint32_t deathTimer_ = kLifeTime_;
 	//デスフラグ
 	bool isDead_ = false;
+
+	//弾のチャージ時間
+	uint32_t chaseTime_ = 60;
+
+	uint32_t chaseTimer_ = chaseTime_;
+
+	Phase phase_=Phase::Charge;
 };

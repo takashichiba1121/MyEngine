@@ -32,7 +32,7 @@ void Player::Initialize()
 	obj_->Update();
 
 	bulletModel_.reset(Model::LoadFormOBJ("playerBullet",true));
-	
+
 	PlayerBulletManager::Instance()->Initialize();
 }
 
@@ -40,13 +40,20 @@ void Player::Update()
 {
 
 	move_ = { 0,0,0 };
-	if (isDaed_==false)
+	if ( isDaed_ == false )
 	{
-		Move();
+		if ( interval == 0 )
+		{
+			Move();
 
-		Attack();
+			Attack();
+		}
+		else
+		{
+			interval--;
+		}
 
-		if (hp_<=0)
+		if ( hp_ <= 0 )
 		{
 			isDaed_ = true;
 		}
@@ -66,10 +73,10 @@ void Player::Update()
 		}
 	}
 
-	Object3d::SetTarget(Object3d::GetTarget() + ((obj_->GetPosition() - Object3d::GetTarget()) * cameraSpeed_));
+	Object3d::SetTarget(Object3d::GetTarget() + ( ( obj_->GetPosition() - Object3d::GetTarget() ) * cameraSpeed_ ));
 
 	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
-	
+
 	PlayerBulletManager::Instance()->Update();
 
 	obj_->Update();
@@ -80,7 +87,7 @@ void Player::Update()
 
 	ImGui::SliderFloat("gravityAcceleration",&gravityAcceleration_,0.0f,0.1f,"%1.2f");
 	ImGui::SliderFloat("StartJumpSpeed",&StartJumpSpeed_,-1.0f,0.0f,"%1.2f");
-	ImGui::SliderInt("resetPoint",&resetPoint_ ,-15,15);
+	ImGui::SliderInt("resetPoint",&resetPoint_,-15,15);
 	ImGui::SliderFloat("kBulletSpeed",&kBulletSpeed_,0.0f,1.0f,"%1.2f");
 	ImGui::SliderInt("bulletLife",&bulletLife_,0,300);
 
@@ -91,91 +98,91 @@ void Player::Update()
 
 void Player::Move()
 {
-	if (Input::Instance()->IsLinkGamePad())
+	if ( Input::Instance()->IsLinkGamePad() )
 	{
 
-		move_ += {Input::Instance()->GetPadStick(PadStick::LX) / 4, 0, Input::Instance()->GetPadStick(PadStick::LY) / 4};
+		move_ += {Input::Instance()->GetPadStick(PadStick::LX) / 4,0,Input::Instance()->GetPadStick(PadStick::LY) / 4};
 
-		if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A)&&onGround_ == false)
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) && onGround_ == false )
 		{
 			fallSpeed_ = StartJumpSpeed_;
 			onGround_ = true;
 
-			for (int i = 0; i < 10; i++)
+			for ( int i = 0; i < 10; i++ )
 			{
 				//消えるまでの時間
 				const uint32_t rnd_life = 10;
 				//最低限のライフ
 				const uint32_t constlife = 60;
-				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 				//XYZの広がる距離
 				const float rnd_pos = 0.1f;
 				Vector3 pos{};
-				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
-				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 
 				//pos.normalize();
 
 				//追加
-				paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+				paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
 			}
 		}
 
 	}
 	else
 	{
-		if (Input::Instance()->PushKey(DIK_W))
+		if ( Input::Instance()->PushKey(DIK_W) )
 		{
-			move_ += {0, 0, 0.25f};
+			move_ += {0,0,0.25f};
 		}
-		if (Input::Instance()->PushKey(DIK_A))
+		if ( Input::Instance()->PushKey(DIK_A) )
 		{
-			move_ += {-0.25f, 0, 0};
+			move_ += {-0.25f,0,0};
 		}
-		if (Input::Instance()->PushKey(DIK_S))
+		if ( Input::Instance()->PushKey(DIK_S) )
 		{
-			move_ += {0, 0, -0.25f};
+			move_ += {0,0,-0.25f};
 		}
-		if (Input::Instance()->PushKey(DIK_D))
+		if ( Input::Instance()->PushKey(DIK_D) )
 		{
-			move_ += {0.25f, 0, 0};
+			move_ += {0.25f,0,0};
 		}
-		if (Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false)
+		if ( Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false )
 		{
 			fallSpeed_ = StartJumpSpeed_;
 			onGround_ = true;
 
-			for (int i = 0; i < 10; i++)
+			for ( int i = 0; i < 10; i++ )
 			{
 				//消えるまでの時間
 				const uint32_t rnd_life = 10;
 				//最低限のライフ
 				const uint32_t constlife = 60;
-				uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 				//XYZの広がる距離
 				const float rnd_pos = 0.1f;
 				Vector3 pos{};
-				pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
-				pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 
 				//pos.normalize();
 
 				//追加
-				paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+				paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
 			}
 		}
 	}
-	if (obj_->GetPosition().y <= resetPoint_)
+	if ( obj_->GetPosition().y <= resetPoint_ )
 	{
 		obj_->SetPosition(spawnPosition_);
 		fallSpeed_ = 0;
 	}
 
-	if (onGround_)
+	if ( onGround_ )
 	{
 		fallSpeed_ += gravityAcceleration_;
 		move_.y -= fallSpeed_;
@@ -183,18 +190,18 @@ void Player::Move()
 
 	Vector3 cameForward = { 0,0,-1 };
 
-	Vector3  cameRight = {1,0,0};
+	Vector3  cameRight = { 1,0,0 };
 
-	Vector3 frontVec = {0,0,0};
+	Vector3 frontVec = { 0,0,0 };
 
-	if (move_.x!=0.0f|| move_.z != 0.0f)
+	if ( move_.x != 0.0f || move_.z != 0.0f )
 	{
 		frontVec = cameForward * move_.z + cameRight * move_.x;
 	}
 
-	if (frontVec.x != 0.0f|| frontVec.z != 0.0f)
+	if ( frontVec.x != 0.0f || frontVec.z != 0.0f )
 	{
-		obj_->SetRot({0, atan2f(frontVec.x, -frontVec.z),0 });
+		obj_->SetRot({ 0, atan2f(frontVec.x, -frontVec.z),0 });
 	}
 
 	EnemyCollision();
@@ -211,19 +218,25 @@ void Player::Finalize()
 
 void Player::Attack()
 {
-	if (Input::Instance()->IsLinkGamePad())
+	if ( Input::Instance()->IsLinkGamePad() )
 	{
 
-		if (Input::Instance()->GetPadStick(PadStick::RT)>=0.5&&Input::Instance()->GetOldPadStick(PadStick::RT)<0.5)
+		if ( Input::Instance()->GetPadStick(PadStick::RT) >= 0.5 && Input::Instance()->GetOldPadStick(PadStick::RT) < 0.5 )
 		{
-			Vector3 velocity(0, 0,1);
-			velocity = Matrix4Math::transform(velocity, obj_->GetMatWorld());
+			Vector3 velocity(0,0,1);
+			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
 			velocity.normalize();
 			velocity *= kBulletSpeed_;
 
+			velocity.y = 0;
+
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_.get(),{velocity.x,velocity.z},obj_->GetPosition(),bulletLife_);
+			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition() + ( velocity * -10 ),bulletLife_);
+
+			newBullet->SetPhase(PlayerBullet::Phase::Charge);
+
+			newBullet->SetChageTime(5);
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
@@ -240,10 +253,53 @@ void Player::Attack()
 
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition(),bulletLife_);
+			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition() + ( velocity * 5 ),bulletLife_);
+
+			newBullet->SetPhase(PlayerBullet::Phase::Charge);
+
+			newBullet->SetChageTime(10);
+
+			interval = 10;
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
+		}
+
+		if ( Input::Instance()->TriggerKey(DIK_X) )
+		{
+			Vector3 velocity(0,0,1);
+
+			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
+			velocity.normalize();
+			velocity *= kBulletSpeed_;
+
+			Vector3 pos[ 3 ]
+			{
+				{0,0,0},
+				{1,0,0},
+				{-1,0,0},
+			};
+
+			//弾の生成し、初期化
+			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
+			for ( int i = 0; i < 3; i++ )
+			{
+				pos[ i ] = Matrix4Math::transform(pos[ i ],obj_->GetMatWorld());
+				pos[ i ].normalize();
+				pos[ i ] *= 5;
+
+				newBullet[ i ] = std::make_unique<PlayerBullet>();
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },(obj_->GetPosition() + ( velocity * 5 ))+pos[i],bulletLife_);
+
+				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ i ]->SetChageTime(60);
+
+							//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
+			}
+
+			interval = 60;
 		}
 	}
 }
@@ -288,26 +344,26 @@ Vector3 Player::MapCollision()
 {
 	bool Ground = false;
 	Vector3 pos = obj_->GetPosition() + move_;
-	for (const std::unique_ptr<Object3d>& MapObj : *objects_)
+	for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
 	{
 
-		Collider::Cube mapCube, objCube;
+		Collider::Cube mapCube,objCube;
 		mapCube.Pos = MapObj->GetPosition();
 		mapCube.scale = MapObj->GetScale();
 		objCube.Pos = obj_->GetPosition() + move_;
 		objCube.oldPos = obj_->GetPosition();
 		objCube.scale = obj_->GetScale();
-		if (Collider::CubeAndCube(mapCube, objCube,Collider::Collsion) == true)
+		if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
 		{
-			if (mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround_)
+			if ( mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround_ )
 			{
-				pos.y = mapCube.Pos.y - (mapCube.scale.y + objCube.scale.y);
+				pos.y = mapCube.Pos.y - ( mapCube.scale.y + objCube.scale.y );
 
 				move_.y = 0;
 
 				fallSpeed_ = 0;
 			}
-			else if (mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y && onGround_)
+			else if ( mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y && onGround_ )
 			{
 				pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
 
@@ -320,67 +376,67 @@ Vector3 Player::MapCollision()
 			else
 			{
 
-				if (mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x)
+				if ( mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x )
 				{
 
-					pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x+0.1f;
+					pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x + 0.1f;
 
 					move_.x = 0;
 				}
-				else if (mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x)
+				else if ( mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x )
 				{
-					pos.x = mapCube.Pos.x - (mapCube.scale.x + objCube.scale.x)-0.1f;
+					pos.x = mapCube.Pos.x - ( mapCube.scale.x + objCube.scale.x ) - 0.1f;
 
 					move_.x = 0;
 				}
-				if (mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z)
+				if ( mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z )
 				{
 
-					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z+0.1f;
+					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z + 0.1f;
 
 					move_.z = 0;
 				}
-				else if (mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z)
+				else if ( mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z )
 				{
-					pos.z = mapCube.Pos.z - (mapCube.scale.z + objCube.scale.z)-0.1f;
+					pos.z = mapCube.Pos.z - ( mapCube.scale.z + objCube.scale.z ) - 0.1f;
 
 					move_.z = 0;
 				}
 			}
 		}
 
-		for (std::unique_ptr<PlayerBullet>& bullet: PlayerBulletManager::Instance()->GetBullets())
+		for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
 		{
 			objCube.Pos = bullet->GetPosition();
 			objCube.scale = bullet->GetScale();
-			if (Collider::CubeAndCube(mapCube, objCube,Collider::Collsion) == true)
+			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
 			{
 				bullet->OnCollision();
 			}
 		}
 	}
 
-	if (Ground == false && onGround_ == false)
+	if ( Ground == false && onGround_ == false )
 	{
-		for (const std::unique_ptr<Object3d>& MapObj : *objects_)
+		for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
 		{
 
-			Collider::Cube mapCube, objCube;
+			Collider::Cube mapCube,objCube;
 			mapCube.Pos = MapObj->GetPosition();
 			mapCube.scale = MapObj->GetScale();
 			objCube.Pos = obj_->GetPosition() + move_;
 			objCube.oldPos = obj_->GetPosition();
 			objCube.scale = obj_->GetScale();
 
-			if (Collider::QuadAndQuad(mapCube, objCube,Collider::Collsion))
+			if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Collsion) )
 			{
-				if (mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_)
+				if ( mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_ )
 				{
 					onGround_ = true;
 
 					Ground = true;
 				}
-				else if( mapCube.Pos.y - mapCube.scale.y >= objCube.Pos.y + objCube.scale.y - gravityAcceleration_ )
+				else if ( mapCube.Pos.y - mapCube.scale.y >= objCube.Pos.y + objCube.scale.y - gravityAcceleration_ )
 				{
 					onGround_ = true;
 
@@ -408,9 +464,9 @@ Vector3 Player::MapCollision()
 
 void Player::EnemyCollision()
 {
-	for (std::unique_ptr<Enemy>& enemy:EnemyManager::Instance()->GetEnemys())
+	for ( std::unique_ptr<Enemy>& enemy : EnemyManager::Instance()->GetEnemys() )
 	{
-		if ( enemy->IsDaed()==false)
+		if ( enemy->IsDaed() == false )
 		{
 			Collider::Cube enemyCube,playerCube;
 			enemyCube.Pos = enemy->GetObj()->GetPosition();
@@ -464,41 +520,41 @@ void Player::EnemyCollision()
 		}
 	}
 
-	for (std::unique_ptr<EnemyBullet>& bullet : EnemyManager::Instance()->GetBullets())
+	for ( std::unique_ptr<EnemyBullet>& bullet : EnemyManager::Instance()->GetBullets() )
 	{
-		Collider::Cube bulletCube, playerCube;
-		bulletCube.Pos =bullet->GetPosition();
+		Collider::Cube bulletCube,playerCube;
+		bulletCube.Pos = bullet->GetPosition();
 		bulletCube.scale = bullet->GetScale();
 		playerCube.Pos = obj_->GetPosition() + move_;
 		playerCube.scale = obj_->GetScale();
 
-		if (Collider::CubeAndCube(bulletCube, playerCube,Collider::Collsion) == true)
+		if ( Collider::CubeAndCube(bulletCube,playerCube,Collider::Collsion) == true )
 		{
-			if (isKnockBack_ == false)
+			if ( isKnockBack_ == false )
 			{
 				hp_--;
 
 				isKnockBack_ = true;
 
-				for (int i = 0; i < 10; i++)
+				for ( int i = 0; i < 10; i++ )
 				{
 					//消えるまでの時間
 					const uint32_t rnd_life = 10;
 					//最低限のライフ
 					const uint32_t constlife = 60;
-					uint32_t life = (rand() / RAND_MAX * rnd_life) + constlife;
+					uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 					//XYZの広がる距離
 					const float rnd_pos = 0.1f;
 					Vector3 pos{};
-					pos.x = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-					pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
-					pos.z = (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+					pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+					pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+					pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 
 					//pos.normalize();
 
 					//追加
-					paMan_->Add(life, obj_->GetPosition(), pos, { 0,0,0 }, 0.5f, 0.5f, { 1,1,1,1 }, { 1,1,1,1 });
+					paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
 				}
 			}
 

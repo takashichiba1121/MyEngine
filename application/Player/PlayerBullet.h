@@ -5,6 +5,12 @@
 class PlayerBullet
 {
 public:
+	enum class Phase
+	{
+		Charge,
+		Attack,
+	};
+public:
 	
 	///<summary>
 	///初期化処理
@@ -37,6 +43,10 @@ public:
 
 	Vector3 GetScale() { return obj_->GetScale(); }
 
+	void SetPhase(Phase phase);
+
+	void SetChageTime(uint32_t Time) {chageTime_=Time;}
+
 private:
 
 	std::unique_ptr<Object3d> obj_;
@@ -47,4 +57,11 @@ private:
 	uint32_t life_;
 	//デスフラグ
 	bool isDead_ = false;
+
+		//弾のチャージ時間
+	uint32_t chageTime_ = 60;
+
+	uint32_t chageTimer_ = 0;
+
+	Phase phase_ = Phase::Charge;
 };

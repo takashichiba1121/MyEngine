@@ -1,6 +1,7 @@
 #include"Enemy.h"
 #include"EnemyManager.h"
 #include<imgui.h>
+#include"TextureManager.h"
 
 void Enemy::Initialize(Model* enemyModel,Model* bulletModel,Vector3 position,Object3d* playerObj)
 {
@@ -20,7 +21,7 @@ void Enemy::Initialize(Model* enemyModel,Model* bulletModel,Vector3 position,Obj
 
 	playerObj_ = playerObj;
 
-	circle_.reset(Model::LoadFormOBJ("Circle",true));
+	circle_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/Circle/enemyTex.png")));
 
 	attackCircle_ = std::make_unique<Object3d>();
 
@@ -163,7 +164,7 @@ void Enemy::Draw()
 #ifdef _DEBUG
 	if ( isDaed_ == false )
 	{
-		//attackCircle_->Draw();
+		attackCircle_->Draw();
 	}
 #endif
 }

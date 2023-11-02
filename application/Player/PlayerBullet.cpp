@@ -18,16 +18,38 @@ void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position,u
 
 void PlayerBullet::Update()
 {
+	Vector3 move;
 
-	if (--life_ <= 0) {
-		isDead_ = true;
+	float f;
+	switch ( phase_ )
+	{
+	case Phase::Charge:
+		chageTimer_++;
+		f = ( float ) chageTimer_ / chageTime_;
+
+		obj_->SetScale({ f,f,f });
+
+		if ( chageTimer_ >= chageTime_ )
+		{
+			phase_ = Phase::Attack;
+		}
+
+		break;
+	case Phase::Attack:
+		if ( --life_ <= 0 )
+		{
+			isDead_ = true;
+		}
+
+		move = obj_->GetPosition();
+
+		move += {velocity_.x,0,velocity_.y};
+
+		obj_->SetPosition(move);
+		break;
+	default:
+		break;
 	}
-
-	Vector3 move = obj_->GetPosition();
-
-	move += {velocity_.x,0,velocity_.y};
-
-	obj_->SetPosition(move);
 
 	obj_->Update();
 }
@@ -60,5 +82,17 @@ void PlayerBullet::OnCollision()
 
 		//追加
 		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{1,0.5,0,1},{1,0.5,0,0});
+	}
+}
+
+void PlayerBullet::SetPhase(Phase phase)
+{
+	phase_ = phase;
+
+	if ( phase == Phase::Charge )
+	{
+		obj_->SetScale({ 0,0,0 });
+
+		obj_->Update();
 	}
 }

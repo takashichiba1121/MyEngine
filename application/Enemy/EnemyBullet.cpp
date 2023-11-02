@@ -18,18 +18,37 @@ void EnemyBullet::Initialize(Model* model, Vector3 velocity, Vector3 position)
 
 void EnemyBullet::Update()
 {
+	float f;
+	Vector3 move;
+	switch ( phase_ )
+	{
+	case EnemyBullet::Phase::Charge:
+		chaseTimer_++;
+		f = ( float ) chaseTimer_ / chaseTime_;
 
-	if (--deathTimer_ <= 0) {
-		isDead_ = true;
+		obj_->SetScale({ f,f,f });
+
+		if ( chaseTimer_ >= chaseTime_ )
+		{
+			phase_ = Phase::Attack;
+		}
+
+		break;
+	case EnemyBullet::Phase::Attack:
+		if ( --deathTimer_ <= 0 )
+		{
+			isDead_ = true;
+		}
+
+		move = obj_->GetPosition();
+
+		move += velocity_;
+
+		obj_->SetPosition(move);
+		break;
+	default:
+		break;
 	}
-
-	Vector3 move = obj_->GetPosition();
-
-	move +=velocity_;
-
-	
-
-	obj_->SetPosition(move);
 
 	obj_->Update();
 }
@@ -62,5 +81,17 @@ void EnemyBullet::OnCollision()
 
 		//追加
 		EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,{ 1,0.5,0,1 },{ 1,0.5,0,0 });
+	}
+}
+
+void EnemyBullet::SetPhase(Phase phase)
+{
+	phase_ = phase;
+
+	if ( phase==Phase::Charge )
+	{
+		obj_->SetScale({0,0,0});
+
+		obj_->Update();
 	}
 }

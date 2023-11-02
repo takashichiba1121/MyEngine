@@ -70,6 +70,13 @@ Vector3& Vector3::operator*=(float s)
 	z *= s;
 	return *this;
 }
+Vector3& Vector3::operator*=(Vector3 s)
+{
+	x *= s.x;
+	y *= s.y;
+	z *= s.z;
+	return *this;
+}
 Vector3& Vector3::operator/=(float s)
 {
 	x /= s;
@@ -95,10 +102,16 @@ const Vector3 operator*(const Vector3& v, float s)
 	Vector3 temp(v);
 	return temp *= s;
 }
-const Vector3 operator*(float s, const Vector3& v)
+const Vector3 operator*(const Vector3& v, const Vector3 s)
 {
-	return v * s;
+	Vector3 temp(v);
+
+	return temp*=s;
 }
+//const Vector3 operator*(float s, const Vector3& v)
+//{
+//	return v * s;
+//}
 const Vector3 operator/(const Vector3& v, float s)
 {
 	Vector3 temp(v);

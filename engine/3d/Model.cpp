@@ -21,6 +21,19 @@ Model* Model::LoadFormOBJ(const std::string& modelname,bool smoothing)
 	return model;
 }
 
+Model* Model::CreatePlaneModel(uint32_t texIndex)
+{
+	//新たなModel型のインスタンスをnewする
+	Model* model = new Model();
+	
+	model->CreatePlaneModelJInternal(texIndex);
+
+	//バッファ生成
+	model->CreateBuffers();
+
+	return model;
+}
+
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	//ファイルストリーム
@@ -350,4 +363,28 @@ void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 			}
 		}
 	}
+}
+
+void Model::CreatePlaneModelJInternal(uint32_t texIndex)
+{
+	vector<unsigned short> indices =
+	{
+		//前
+		0,1,2,//三角形1
+		1,3,2,//三角形2
+	};
+
+	vector<VertexPosNormalUv> vertexs =
+	{
+		{{-0.5,0,-0.5},{0,-1,0},{0,0}},
+		{{ 0.5,0,-0.5},{0,-1,0},{1,0}},
+		{{-0.5,0, 0.5},{0,-1,0},{0,1}},
+		{{ 0.5,0, 0.5},{0,-1,0},{1,1}},
+	};
+
+	vertices_ = vertexs;
+
+	indices_ = indices;
+
+	textureIndex_ = texIndex;
 }

@@ -122,5 +122,7 @@ private:
 	float ExplosionFrame = 0;
 
 	const float ExplosionMaxFrame = 60;
+
+	uint32_t interval=0;
 };
 

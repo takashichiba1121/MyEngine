@@ -91,6 +91,8 @@ void GunEnemy::Attack()
 		std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 		newBullet->Initialize(bulletModel_,velocity,bulletPosition);
 
+		newBullet->SetPhase(EnemyBullet::Phase::Charge);
+
 		//弾の登録する
 		EnemyManager::Instance()->AddBullet(std::move(newBullet));
 	}

@@ -61,6 +61,9 @@ public://メンバ関数
 	//OBJファイルから3Dモデルを読み込む
 	static Model* LoadFormOBJ(const std::string& modelname, bool smoothing);
 
+		//OBJファイルから3Dモデルを読み込む
+	static Model* CreatePlaneModel(uint32_t texIndex);
+
 	//setter
 	static void SetDevice(ID3D12Device* device) { Model::sDevice = device; }
 
@@ -87,6 +90,8 @@ public://メンバ関数
 private://非公開のメンバ関数
 	//OBJファイルから3Dモデルを読み込む(非公開)
 	void LoadFromOBJInternal(const std::string& modelname, bool smoothing);
+
+	void CreatePlaneModelJInternal(uint32_t texIndex);
 	
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 

@@ -30,6 +30,7 @@ public:
 	Vector3& operator+=(const Vector3& v); 
 	Vector3& operator-=(const Vector3& v);
 	Vector3& operator*=(float s);
+	Vector3& operator*=(Vector3 s);
 	Vector3& operator/=(float s);
 };
 //二項演算子オーバーロード
@@ -37,5 +38,6 @@ public:
 const Vector3 operator+(const Vector3& v1, const Vector3& v2);
 const Vector3 operator-(const Vector3& v1, const Vector3& v2);
 const Vector3 operator*(const Vector3& v, float s);
+const Vector3 operator*(const Vector3& v,const Vector3 s);
 const Vector3 operator*(float s, const Vector3& v);
 const Vector3 operator/(const Vector3& v, float s);
