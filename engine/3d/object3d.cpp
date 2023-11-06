@@ -433,6 +433,7 @@ void Object3d::Update()
 	constMap->shininess = shininess_;
 	constMap->alpha = alpha_;
 	constMap->color = color_;
+	constMap->uvShift = uvShift_;
 	constBuffB0_->Unmap(0, nullptr);
 
 	ConstBufferPolygonExplosion* constMap2=nullptr;

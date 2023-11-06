@@ -53,6 +53,8 @@ private:
 	std::unique_ptr<Model> enemyModel_;
 	std::unique_ptr<Model> gunEnemyModel_;
 
+	std::unique_ptr <Model> planeModel_;
+
 #pragma endregion
 
 	std::unique_ptr<LightGroup> light_;
@@ -60,6 +62,8 @@ private:
 	uint32_t texHandle_ = 0;
 
 	std::vector<std::unique_ptr<Object3d>> objects_;
+
+	std::vector<std::unique_ptr<Object3d>> planes_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
@@ -129,5 +133,7 @@ private:
 	std::string mapName_;
 
 	Vector3 lightV = { -1,-1,1 };
+
+	Vector2 uvShift_ = {0,0};
 };
 

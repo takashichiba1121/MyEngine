@@ -84,6 +84,8 @@ LevelData* LevelLoad::Load(const std::string fullpath)
 			objectData.center.x += objectData.trans.x;
 			objectData.center.y += objectData.trans.y;
 			objectData.center.z += objectData.trans.z;
+
+			objectData.rot = objectData.rot / 180 * 3.14f;
 		}
 	}	
 	return levelData;

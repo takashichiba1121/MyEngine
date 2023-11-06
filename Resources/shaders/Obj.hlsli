@@ -1,10 +1,10 @@
 cbuffer cbuff0 : register(b0) {
-    //matrix mat; //3D•ÏŠ·s—ñ
     matrix viewproj;
     matrix world;
     float3 cameraPos;
     float shininess;//Œõ‘ò“x
     float alpha;
+    float2 uvShift;
     float3 color;
 };
 

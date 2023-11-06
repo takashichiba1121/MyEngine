@@ -35,6 +35,8 @@ public: // サブクラス
 		Vector3 cameraPos;
 		float shininess;//光沢度
 		float alpha; //透明度
+		Vector2 uvShift;
+		float pad1;
 		Vector3 color;
 	};
 	// 定数バッファ用データ構造体
@@ -220,6 +222,8 @@ public: // メンバ関数
 
 	void Setalpha(float alpha) { alpha_=alpha; }
 
+	void SetUVShift(Vector2 uvShift) {uvShift_ = uvShift;}
+
 	void SetColor(Vector3 color) {color_ = color;}
 
 private: // メンバ変数
@@ -248,6 +252,8 @@ private: // メンバ変数
 	float shininess_=10;
 
 	float alpha_ = 1.0f;
+
+	Vector2 uvShift_;
 
 	Vector3 color_ = { 1,1,1 };
 };

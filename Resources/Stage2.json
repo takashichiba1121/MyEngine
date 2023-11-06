@@ -13,12 +13,12 @@
                 "rotation": [
                     0.0,
                     -0.0,
-                    1.5700000524520874
+                    90.00000762939453
                 ],
                 "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
+                    2.0,
+                    2.0,
+                    2.0
                 ]
             },
             "file_name": "Goal",
@@ -36,6 +36,42 @@
                 ]
             },
             "Tag_name": "Goal"
+        },
+        {
+            "type": "MESH",
+            "name": "平面",
+            "transform": {
+                "translation": [
+                    -15.0,
+                    0.0,
+                    20.100000381469727
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -179.99998474121094
+                ],
+                "scaling": [
+                    10.0,
+                    30.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
         },
         {
             "type": "MESH",
@@ -165,7 +201,7 @@
                     1.0
                 ]
             },
-            "file_name": "GunEnemy",
+            "file_name": "Enemy",
             "colider": {
                 "type": "BOX",
                 "center": [

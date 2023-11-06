@@ -347,6 +347,20 @@ void GameScene::Update()
 
 	}
 
+	for ( std::unique_ptr<Object3d>& obj : planes_ )
+	{
+		uvShift_.x += 0.005f;
+
+		if (uvShift_.x>=1 )
+		{
+			uvShift_.x = 0;
+		}
+
+		obj->SetUVShift(uvShift_);
+
+		obj->Update();
+	}
+
 
 	goalObj_->Update();
 
@@ -368,6 +382,11 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	for ( uint32_t i = 0; i < objects_.size(); i++ )
 	{
 		objects_[ i ]->Draw();
+	}
+
+	for ( uint32_t i = 0; i < planes_.size(); i++ )
+	{
+		planes_[ i ]->Draw();
 	}
 
 	EnemyManager::Instance()->Draw();
@@ -443,7 +462,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			newObject->Initialize();
-			newObject->SetModel(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture(objectData.fileName)));
+			newObject->SetModel(models_[ objectData.fileName ]);
 
 			assert(newObject);
 
@@ -457,7 +476,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			newObject->SetScale({ objectData.scale });
 
 			// 配列に登録
-			objects_.push_back(std::move(newObject));
+			planes_.push_back(std::move(newObject));
 		}
 		if ( objectData.tagName == "Spawn" )
 		{
@@ -599,4 +618,7 @@ void GameScene::ModelLoad()
 
 	stageModel_.reset(Model::LoadFormOBJ("stage",true));
 	models_.insert(std::make_pair("stage",stageModel_.get()));
+
+	planeModel_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/MapTex.png")));
+	models_.insert(std::make_pair("plane",planeModel_.get()));
 }
