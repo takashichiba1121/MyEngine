@@ -164,7 +164,7 @@ void Enemy::Draw()
 #ifdef _DEBUG
 	if ( isDaed_ == false )
 	{
-		attackCircle_->Draw();
+		//attackCircle_->Draw();
 	}
 #endif
 }

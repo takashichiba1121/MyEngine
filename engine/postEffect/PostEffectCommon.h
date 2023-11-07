@@ -2,11 +2,26 @@
 #include "Sprite.h"
 class PostEffectCommon
 {
+#pragma region Singleton
+private:
+	PostEffectCommon() {};
+
+	~PostEffectCommon() {};
+public:
+	PostEffectCommon(const PostEffectCommon& carManager) = delete;
+
+	PostEffectCommon& operator=(const PostEffectCommon& carManager) = delete;
+
+	static PostEffectCommon* Instance();
+#pragma endregion
+
 public:
 
-    void StaticInitialize(DirectXCommon* dxCommon);
+    void Initialize(DirectXCommon* dxCommon);
 
-    uint32_t CreateDescHeapSRV(ID3D12Resource* texBuff); 
+    uint32_t CreateDescHeapSRV(ID3D12Resource* texBuff);
+
+	void Fin();
 
     ID3D12Device* device;
 

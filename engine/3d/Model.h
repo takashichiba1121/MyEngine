@@ -51,9 +51,9 @@ public:
 		std::string textureFilename;	//テクスチャファイル名
 		//コンストラクタ
 		Material() {
-			ambient = { 0.3f,0.3f,0.3f };
-			diffuse = { 0.0f,0.0f,0.0f };
-			specular = { 0.0f,0.0f,0.0f };
+			ambient = { 1,1,1 };
+			diffuse = { 1,1,1 };
+			specular = { 1,1,1 };
 			alpha = 1.0f;
 		}
 	};
@@ -107,20 +107,16 @@ private:
 	ComPtr<ID3D12Resource> vertBuff_;
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
+		// 頂点データ配列
+	std::vector<VertexPosNormalUv> vertices_;
 	// インデックスバッファ
 	ComPtr<ID3D12Resource> indexBuff_;
 	// インデックスバッファビュー
 	D3D12_INDEX_BUFFER_VIEW ibView_ = {};
-	// 頂点データ配列
-	std::vector<VertexPosNormalUv> vertices_;
 	// 頂点インデックス配列
 	std::vector<unsigned short>indices_;
 	//マテリアル
 	Material material;
-	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_;
-	// シェーダリソースビューのハンドル(CPU)
-	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_;
 	// 定数バッファ(マテリアル)
 	ComPtr<ID3D12Resource> constBuffB1_;
 

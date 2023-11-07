@@ -1,6 +1,7 @@
 #pragma once
 #include"GameScene.h"
 #include"Framework.h"
+#include"RenderTarget.h"
 
 class MyGame : public Framework
 {
@@ -15,6 +16,7 @@ public:
 	void Draw() override;
 
 private:
+	std::unique_ptr<RenderTarget> renderTarget1;
 };
 
  

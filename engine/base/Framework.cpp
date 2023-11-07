@@ -12,6 +12,8 @@
 #include"assimpObject3d.h"
 #include"LightGroup.h"
 #include"ParticleManager.h"
+#include"RenderTarget.h"
+#include"PostEffectLuminance.h"
 
 void Framework::Initialize()
 {
@@ -46,6 +48,12 @@ void Framework::Initialize()
 	imguiManager::StaticInitialize(winApp_.get(), dxCommon_.get());
 
 	ParticleManager::StaticInitialize(dxCommon_->GetDevice());
+
+	PostEffectCommon::Instance()->Initialize(dxCommon_.get());
+
+	RenderTarget::StaticInitialze(dxCommon_->GetDevice());
+
+	PostEffectLuminance::Instance()->Initialize();
 }
 
 void Framework::Finalize()
@@ -55,6 +63,10 @@ void Framework::Finalize()
 	sceneFactory_ = nullptr;
 
 	Sound::StaticFinalize();
+
+	PostEffectCommon::Instance()->Fin();
+
+	PostEffectLuminance::Instance()->Fin();
 
 	TextureManager::Instance()->Finalize();
 

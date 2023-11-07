@@ -105,6 +105,12 @@
     <Filter Include="シェーダーファイル\PostEffect">
       <UniqueIdentifier>{d18b7b87-557a-4105-8c6a-25614d1cda7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="engin\ソースファイル\PostEffect">
+      <UniqueIdentifier>{af19f4c3-d0f8-45f3-b12b-c37b26b37997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engin\ヘッダーファイル\PostEffect">
+      <UniqueIdentifier>{3662e189-190a-4f2a-b02a-d6113dde4354}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\2d\Sprite.cpp">
@@ -229,6 +235,15 @@
     </ClCompile>
     <ClCompile Include="application\Enemy\RunEnemy.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectCommon.cpp">
+      <Filter>engin\ソースファイル\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\PostEffectLuminance.cpp">
+      <Filter>engin\ソースファイル\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\postEffect\RenderTarget.cpp">
+      <Filter>engin\ソースファイル\PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,6 +372,15 @@
     </ClInclude>
     <ClInclude Include="application\Enemy\RunEnemy.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectCommon.h">
+      <Filter>engin\ヘッダーファイル\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\PostEffectLuminance.h">
+      <Filter>engin\ヘッダーファイル\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\postEffect\RenderTarget.h">
+      <Filter>engin\ヘッダーファイル\PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

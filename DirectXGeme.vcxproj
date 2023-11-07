@@ -136,6 +136,9 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\2d\imguiManager.cpp" />
     <ClCompile Include="engine\base\Framework.cpp" />
     <ClCompile Include="engine\base\MyGame.cpp" />
+    <ClCompile Include="engine\postEffect\PostEffectCommon.cpp" />
+    <ClCompile Include="engine\postEffect\PostEffectLuminance.cpp" />
+    <ClCompile Include="engine\postEffect\RenderTarget.cpp" />
     <ClCompile Include="engine\Scene\SceneManager.cpp" />
     <ClCompile Include="engine\Collider\Collider.cpp" />
     <ClCompile Include="engine\io\input.cpp" />
@@ -176,6 +179,9 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\3d\ParticleManager.h" />
     <ClInclude Include="engine\3d\Light\PointLight.h" />
     <ClInclude Include="engine\audio\Sound.h" />
+    <ClInclude Include="engine\postEffect\PostEffectCommon.h" />
+    <ClInclude Include="engine\postEffect\PostEffectLuminance.h" />
+    <ClInclude Include="engine\postEffect\RenderTarget.h" />
     <ClInclude Include="engine\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
     <ClInclude Include="engine\2d\imguiManager.h" />

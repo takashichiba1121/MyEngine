@@ -1,12 +1,19 @@
 #include "PostEffectCommon.h"
 #include<d3dx12.h>
 #include"WinApp.h"
-#include"Texture.h"
+#include"TextureManager.h"
 #include"SpriteCommon.h"
 
 using namespace DirectX;
 
-void PostEffectCommon::StaticInitialize(DirectXCommon* dxCommon)
+PostEffectCommon* PostEffectCommon::Instance()
+{
+	static PostEffectCommon instance;
+
+	return &instance;
+}
+
+void PostEffectCommon::Initialize(DirectXCommon* dxCommon)
 {
 	HRESULT result;
 
@@ -44,4 +51,9 @@ uint32_t PostEffectCommon::CreateDescHeapSRV(ID3D12Resource* texBuff)
 	);
 	texIndex++;
 	return textureHandle;
+}
+
+void PostEffectCommon::Fin()
+{
+	descHeapSRV = nullptr;
 }
