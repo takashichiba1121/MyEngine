@@ -54,13 +54,7 @@ void RunEnemy::Update(float attackRange)
 		}
 	}
 
-	attackCircle_->SetPosition(obj_->GetPosition());
-
-	attackCircle_->Update();
-
 	obj_->Update();
-
-	attackCircle_->SetScale({ attackRange,0, attackRange });
 }
 
 void RunEnemy::Move()

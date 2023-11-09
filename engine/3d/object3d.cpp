@@ -1,4 +1,4 @@
- #include "Object3d.h"
+#include "Object3d.h"
 #include <d3dcompiler.h>
 #include <string>
 using namespace std;
@@ -37,10 +37,10 @@ float ToRadian(float angle)
 {
 	float PI = 3.141592f;
 
-	return angle * (PI / 180);
+	return angle * ( PI / 180 );
 }
 
-void Object3d::StaticInitialize(ID3D12Device* device, uint32_t window_width, uint32_t window_height)
+void Object3d::StaticInitialize(ID3D12Device* device,uint32_t window_width,uint32_t window_height)
 {
 	// nullptrチェック
 	assert(device);
@@ -50,7 +50,7 @@ void Object3d::StaticInitialize(ID3D12Device* device, uint32_t window_width, uin
 	Model::SetDevice(device);
 
 	// カメラ初期化
-	InitializeCamera(window_width, window_height);
+	InitializeCamera(window_width,window_height);
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
@@ -93,7 +93,7 @@ void Object3d::SetTarget(const Vector3& target)
 	UpdateViewMatrix();
 }
 
-void Object3d::InitializeCamera(uint32_t window_width, uint32_t window_height)
+void Object3d::InitializeCamera(uint32_t window_width,uint32_t window_height)
 {
 	// ビュー行列の生成
 	sMatView = Matrix4Math::ViewMat(
@@ -104,8 +104,8 @@ void Object3d::InitializeCamera(uint32_t window_width, uint32_t window_height)
 	// 透視投影による射影行列の生成
 	sMatProjection = Matrix4Math::ProjectionMat(
 		ToRadian(45.0f),
-		(float)window_width / window_height,
-		0.1f, 1000.0f
+		( float ) window_width / window_height,
+		0.1f,1000.0f
 	);
 }
 
@@ -122,16 +122,17 @@ void Object3d::InitializeGraphicsPipeline()
 		L"Resources/shaders/ObjVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main","vs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&vsBlob, &errorBlob);
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
+		&vsBlob,&errorBlob);
+	if ( FAILED(result) )
+	{
+// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
+		std::copy_n(( char* ) errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -145,16 +146,17 @@ void Object3d::InitializeGraphicsPipeline()
 		L"Resources/shaders/ObjGS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main","gs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&gsBlob, &errorBlob);
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
+		&gsBlob,&errorBlob);
+	if ( FAILED(result) )
+	{
+// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
+		std::copy_n(( char* ) errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -168,16 +170,17 @@ void Object3d::InitializeGraphicsPipeline()
 		L"Resources/shaders/ObjPS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
+		"main","ps_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&psBlob, &errorBlob);
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
+		&psBlob,&errorBlob);
+	if ( FAILED(result) )
+	{
+// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
+		std::copy_n(( char* ) errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
@@ -187,7 +190,7 @@ void Object3d::InitializeGraphicsPipeline()
 	}
 
 	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+	D3D12_INPUT_ELEMENT_DESC inputLayout[ ] = {
 		{ // xy座標(1行で書いたほうが見やすい)
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
@@ -234,7 +237,7 @@ void Object3d::InitializeGraphicsPipeline()
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
 	// ブレンドステートの設定
-	gpipeline.BlendState.RenderTarget[0] = blenddesc;
+	gpipeline.BlendState.RenderTarget[ 0 ] = blenddesc;
 
 	// 深度バッファのフォーマット
 	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
@@ -247,43 +250,46 @@ void Object3d::InitializeGraphicsPipeline()
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
-	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
+	gpipeline.RTVFormats[ 0 ] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	// デスクリプタレンジ
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV = {};
-	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV,1,0); // t0 レジスタ
 
 	// ルートパラメータ
 	/*CD3DX12_ROOT_PARAMETER rootparams[2];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);*/
 
-	CD3DX12_ROOT_PARAMETER rootparams[5] = {};
-	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[3].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[4].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_PIXEL);
+	CD3DX12_ROOT_PARAMETER rootparams[ 5 ] = {};
+	rootparams[ 0 ].InitAsConstantBufferView(0,0,D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[ 1 ].InitAsConstantBufferView(1,0,D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[ 2 ].InitAsConstantBufferView(2,0,D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[ 3 ].InitAsConstantBufferView(3,0,D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[ 4 ].InitAsDescriptorTable(1,&descRangeSRV,D3D12_SHADER_VISIBILITY_PIXEL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+
 	// ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	rootSignatureDesc.Init_1_0(_countof(rootparams),rootparams,1,&samplerDesc,D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
-	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
+	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc,D3D_ROOT_SIGNATURE_VERSION_1_0,&rootSigBlob,&errorBlob);
 	// ルートシグネチャの生成
-	result = sDevice->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&sRootsignature));
+	result = sDevice->CreateRootSignature(0,rootSigBlob->GetBufferPointer(),rootSigBlob->GetBufferSize(),IID_PPV_ARGS(&sRootsignature));
 	assert(SUCCEEDED(result));
 
 	gpipeline.pRootSignature = sRootsignature.Get();
 
 	// グラフィックスパイプラインの生成
-	result = sDevice->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&sPipelinestate));
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline,IID_PPV_ARGS(&sPipelinestate));
 	assert(SUCCEEDED(result));
 
 }
@@ -326,15 +332,15 @@ void Object3d::UpdateViewMatrix()
 	sMatBillboard = Matrix4Math::identity();
 
 	//ビルボード行列
-	sMatBillboard.m[0][0] = cameraAxisX.x;
-	sMatBillboard.m[0][1] = cameraAxisX.y;
-	sMatBillboard.m[0][2] = cameraAxisX.z;
-	sMatBillboard.m[1][0] = cameraAxisY.x;
-	sMatBillboard.m[1][1] = cameraAxisY.y;
-	sMatBillboard.m[1][2] = cameraAxisY.z;
-	sMatBillboard.m[2][0] = cameraAxisZ.x;
-	sMatBillboard.m[2][1] = cameraAxisZ.y;
-	sMatBillboard.m[2][2] = cameraAxisZ.z;
+	sMatBillboard.m[ 0 ][ 0 ] = cameraAxisX.x;
+	sMatBillboard.m[ 0 ][ 1 ] = cameraAxisX.y;
+	sMatBillboard.m[ 0 ][ 2 ] = cameraAxisX.z;
+	sMatBillboard.m[ 1 ][ 0 ] = cameraAxisY.x;
+	sMatBillboard.m[ 1 ][ 1 ] = cameraAxisY.y;
+	sMatBillboard.m[ 1 ][ 2 ] = cameraAxisY.z;
+	sMatBillboard.m[ 2 ][ 0 ] = cameraAxisZ.x;
+	sMatBillboard.m[ 2 ][ 1 ] = cameraAxisZ.y;
+	sMatBillboard.m[ 2 ][ 2 ] = cameraAxisZ.z;
 }
 
 void Object3d::Finalize()
@@ -355,12 +361,12 @@ bool Object3d::Initialize()
 	{
 		// リソース設定
 		CD3DX12_RESOURCE_DESC resourceDesc =
-			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
+			CD3DX12_RESOURCE_DESC::Buffer(( sizeof(ConstBufferDataB0) + 0xff ) & ~0xff);
 
 		// 定数バッファの生成
 		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
-			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+			D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,
 			IID_PPV_ARGS(&constBuffB0_));
 		//// 定数バッファの生成
 		//result = device->CreateCommittedResource(
@@ -376,12 +382,12 @@ bool Object3d::Initialize()
 	{
 		// リソース設定
 		CD3DX12_RESOURCE_DESC resourceDesc =
-			CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferPolygonExplosion) + 0xff) & ~0xff);
+			CD3DX12_RESOURCE_DESC::Buffer(( sizeof(ConstBufferPolygonExplosion) + 0xff ) & ~0xff);
 
 		// 定数バッファの生成
 		result = sDevice->CreateCommittedResource(
 			&heapProps, // アップロード可能
-			D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+			D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,
 			IID_PPV_ARGS(&constBuffB2_));
 		//// 定数バッファの生成
 		//result = device->CreateCommittedResource(
@@ -393,23 +399,102 @@ bool Object3d::Initialize()
 		//	IID_PPV_ARGS(&constBuffB1));
 		assert(SUCCEEDED(result));
 	}
-	ConstMapPolygon_ = {0.0f,1.0f,0.0f,0.0f};
+	ConstMapPolygon_ = { 0.0f,1.0f,0.0f,0.0f };
 
-	
+
 	return true;
 }
 
 void Object3d::Update()
 {
 	HRESULT result;
-	Matrix4 matScale, matRot, matTrans;
+	Matrix4 matScale,matRot,matTrans;
+
+		//モデルがセットされていなければ描画をスキップ
+	if ( model_ != nullptr )
+	{
+		if ( 0 == vertices_.size() % 3&&changeScale_&&scaleUV_ )
+		{
+
+			for ( int i = 0; i < vertices_.size(); i += 3 )
+			{
+				Model::VertexPosNormalUv Vertex0,Vertex1,Vertex2;
+
+				Vertex0 = initialVertices_[ i ];
+				Vertex1 = initialVertices_[ i + 1 ];
+				Vertex2 = initialVertices_[ i + 2 ];
+
+				if ( Vertex0.pos.x == Vertex1.pos.x && Vertex0.pos.x == Vertex2.pos.x )
+				{
+					Vertex0.uv.x *= scale_.z;
+					Vertex0.uv.y *= scale_.y;
+
+					Vertex1.uv.x *= scale_.z;
+					Vertex1.uv.y *= scale_.y;
+
+					Vertex2.uv.x *= scale_.z;
+					Vertex2.uv.y *= scale_.y;
+					
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+				else if ( Vertex0.pos.y == Vertex1.pos.y && Vertex0.pos.y == Vertex2.pos.y )
+				{
+					Vertex0.uv.x *= scale_.z;
+					Vertex0.uv.y *= scale_.x;
+
+					Vertex1.uv.x *= scale_.z;
+					Vertex1.uv.y *= scale_.x;
+
+					Vertex2.uv.x *= scale_.z;
+					Vertex2.uv.y *= scale_.x;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+				else if ( Vertex0.pos.z == Vertex1.pos.z && Vertex0.pos.z == Vertex2.pos.z )
+				{
+					Vertex0.uv.x *= scale_.y;
+					Vertex0.uv.y *= scale_.x;
+
+					Vertex1.uv.x *= scale_.y;
+					Vertex1.uv.y *= scale_.x;
+
+					Vertex2.uv.x *= scale_.y;
+					Vertex2.uv.y *= scale_.x;
+
+										Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+
+				vertices_[ i ] = Vertex0;
+				vertices_[ i+1 ] = Vertex1;
+				vertices_[ i+2 ] = Vertex2;
+			}
+
+			changeScale_ = false;
+		}
+
+		// 頂点バッファへのデータ転送
+		Model::VertexPosNormalUv* vertMap = nullptr;
+		result = vertBuff_->Map(0,nullptr,( void** ) &vertMap);
+		if ( SUCCEEDED(result) )
+		{
+	/*memcpy(vertMap, vertices, sizeof(vertices));*/
+			std::copy(vertices_.begin(),vertices_.end(),vertMap);
+			vertBuff_->Unmap(0,nullptr);
+		}
+	}
 
 	// スケール、回転、平行移動行列の計算
 	matScale = Matrix4Math::scale(scale_);
 	matRot = Matrix4Math::identity();
-	matRot = matRot * Matrix4Math::rotateZ((rotation_.z));
-	matRot = matRot * Matrix4Math::rotateX((rotation_.x));
-	matRot = matRot * Matrix4Math::rotateY((rotation_.y));
+	matRot = matRot * Matrix4Math::rotateZ(( rotation_.z ));
+	matRot = matRot * Matrix4Math::rotateX(( rotation_.x ));
+	matRot = matRot * Matrix4Math::rotateY(( rotation_.y ));
 	matTrans = Matrix4Math::translate(position_);
 
 	// ワールド行列の合成
@@ -419,14 +504,15 @@ void Object3d::Update()
 	matWorld_ = matWorld_ * matTrans; // ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
-	if (parent_ != nullptr) {
-		// 親オブジェクトのワールド行列を掛ける
+	if ( parent_ != nullptr )
+	{
+// 親オブジェクトのワールド行列を掛ける
 		matWorld_ *= parent_->matWorld_;
 	}
 
 	// 定数バッファへデータ転送
 	ConstBufferDataB0* constMap = nullptr;
-	result = constBuffB0_->Map(0, nullptr, (void**)&constMap);
+	result = constBuffB0_->Map(0,nullptr,( void** ) &constMap);
 	constMap->viewproj = sMatView * sMatProjection;	// 行列の合成
 	constMap->world = matWorld_;
 	constMap->cameraPos = sEye;
@@ -434,16 +520,16 @@ void Object3d::Update()
 	constMap->alpha = alpha_;
 	constMap->color = color_;
 	constMap->uvShift = uvShift_;
-	constBuffB0_->Unmap(0, nullptr);
+	constBuffB0_->Unmap(0,nullptr);
 
-	ConstBufferPolygonExplosion* constMap2=nullptr;
+	ConstBufferPolygonExplosion* constMap2 = nullptr;
 
-	result = constBuffB2_->Map(0, nullptr, (void**)&constMap2);
-	constMap2->_Destruction= ConstMapPolygon_._Destruction;	// 行列の合成
-	constMap2->_PositionFactor= ConstMapPolygon_._PositionFactor;
-	constMap2->_RotationFactor= ConstMapPolygon_._RotationFactor;
-	constMap2->_ScaleFactor= ConstMapPolygon_._ScaleFactor;
-	constBuffB2_->Unmap(0, nullptr);
+	result = constBuffB2_->Map(0,nullptr,( void** ) &constMap2);
+	constMap2->_Destruction = ConstMapPolygon_._Destruction;	// 行列の合成
+	constMap2->_PositionFactor = ConstMapPolygon_._PositionFactor;
+	constMap2->_RotationFactor = ConstMapPolygon_._RotationFactor;
+	constMap2->_ScaleFactor = ConstMapPolygon_._ScaleFactor;
+	constBuffB2_->Unmap(0,nullptr);
 }
 
 void Object3d::Draw()
@@ -453,20 +539,24 @@ void Object3d::Draw()
 	assert(Object3d::sCmdList);
 
 	//モデルがセットされていなければ描画をスキップ
-	if (model_ == nullptr) {
+	if ( model_ == nullptr )
+	{
 		return;
 	}
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0_->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(0,constBuffB0_->GetGPUVirtualAddress());
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(3, constBuffB2_->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(3,constBuffB2_->GetGPUVirtualAddress());
 
 	sLightGroup->Draw(sCmdList,2);
 
+		// 頂点バッファの設定
+	sCmdList->IASetVertexBuffers(0,1,&vbView_);
+
 	//モデルを描画
-	model_->Draw(sCmdList, 1);
+	model_->Draw(sCmdList,1);
 }
 
 void Object3d::Draw(uint32_t texHandle)
@@ -476,20 +566,76 @@ void Object3d::Draw(uint32_t texHandle)
 	assert(Object3d::sCmdList);
 
 	//モデルがセットされていなければ描画をスキップ
-	if (model_ == nullptr) {
+	if ( model_ == nullptr )
+	{
 		return;
 	}
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(0, constBuffB0_->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(0,constBuffB0_->GetGPUVirtualAddress());
 
 	// 定数バッファビューをセット
-	sCmdList->SetGraphicsRootConstantBufferView(3, constBuffB2_->GetGPUVirtualAddress());
+	sCmdList->SetGraphicsRootConstantBufferView(3,constBuffB2_->GetGPUVirtualAddress());
 
-	sLightGroup->Draw(sCmdList, 2);
+	sLightGroup->Draw(sCmdList,2);
+
+		// 頂点バッファの設定
+	sCmdList->IASetVertexBuffers(0,1,&vbView_);
 
 	//モデルを描画
-	model_->Draw(sCmdList, 1, texHandle);
+	model_->Draw(sCmdList,1,texHandle);
+}
+
+void Object3d::CreateBuffers()
+{
+	HRESULT result = S_FALSE;
+
+	uint32_t sizeVB = static_cast< uint32_t >( sizeof(Model::VertexPosNormalUv) * vertices_.size() );
+
+	// ヒーププロパティ
+	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	// リソース設定
+	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
+
+	// 頂点バッファ生成
+	result = sDevice->CreateCommittedResource(
+		&heapProps,D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,
+		IID_PPV_ARGS(&vertBuff_));
+	assert(SUCCEEDED(result));
+
+	// 頂点バッファへのデータ転送
+	Model::VertexPosNormalUv* vertMap = nullptr;
+	result = vertBuff_->Map(0,nullptr,( void** ) &vertMap);
+	if ( SUCCEEDED(result) )
+	{
+/*memcpy(vertMap, vertices, sizeof(vertices));*/
+		std::copy(vertices_.begin(),vertices_.end(),vertMap);
+		vertBuff_->Unmap(0,nullptr);
+	}
+
+	// 頂点バッファビューの作成
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
+	/*vbView.SizeInBytes = sizeof(vertices);*/
+	vbView_.SizeInBytes = sizeVB;
+	vbView_.StrideInBytes = sizeof(vertices_[ 0 ]);
+}
+
+void Object3d::SetScale(const Vector3& scale)
+{
+	this->scale_ = scale;
+
+	changeScale_ = true;
+}
+
+void Object3d::SetModel(Model* model)
+{
+	model_ = model;
+
+	vertices_ = model->GetVertices();
+
+	initialVertices_ = model->GetVertices();
+
+	CreateBuffers();
 }
 
 Matrix4 Object3d::GetMatViewPro()

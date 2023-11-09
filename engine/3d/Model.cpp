@@ -112,27 +112,6 @@ void Model::CreateBuffers()
 	// リソース設定
 	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
 
-	// 頂点バッファ生成
-	result = sDevice->CreateCommittedResource(
-		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&vertBuff_));
-	assert(SUCCEEDED(result));
-
-	// 頂点バッファへのデータ転送
-	VertexPosNormalUv* vertMap = nullptr;
-	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
-	if (SUCCEEDED(result)) {
-		/*memcpy(vertMap, vertices, sizeof(vertices));*/
-		std::copy(vertices_.begin(),vertices_.end(), vertMap);
-		vertBuff_->Unmap(0, nullptr);
-	}
-
-	// 頂点バッファビューの作成
-	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
-	/*vbView.SizeInBytes = sizeof(vertices);*/
-	vbView_.SizeInBytes = sizeVB;
-	vbView_.StrideInBytes = sizeof(vertices_[0]);
-
 	/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
 	uint32_t sizeIB = static_cast<uint32_t>(sizeof(unsigned short) * indices_.size());
 	// リソース設定
@@ -191,8 +170,6 @@ void Model::CreateBuffers()
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial)
 {
-	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView_);
 	// インデックスバッファの設定
 	cmdList->IASetIndexBuffer(&ibView_);
 
@@ -213,8 +190,6 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMate
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial, uint32_t textureHandle)
 {
-	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView_);
 	// インデックスバッファの設定
 	cmdList->IASetIndexBuffer(&ibView_);
 
@@ -377,9 +352,9 @@ void Model::CreatePlaneModelJInternal(uint32_t texIndex)
 	vector<VertexPosNormalUv> vertexs =
 	{
 		{{-1,0,-1},{0,-1,0},{0,0}},
-		{{ 1,0,-1},{0,-1,0},{1,0}},
-		{{-1,0, 1},{0,-1,0},{0,1}},
-		{{ 1,0, 1},{0,-1,0},{1,1}},
+		{{ 1,0,-1},{0,-1,0},{0.5,0}},
+		{{-1,0, 1},{0,-1,0},{0,0.5}},
+		{{ 1,0, 1},{0,-1,0},{0.5,0.5}},
 	};
 
 	vertices_ = vertexs;

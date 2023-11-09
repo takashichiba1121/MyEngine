@@ -18,13 +18,6 @@ private: // エイリアス
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public: // サブクラス
-	// 頂点データ構造体
-	struct VertexPosNormalUv
-	{
-		Vector3 pos; // xyz座標
-		Vector3 normal; // 法線ベクトル
-		Vector2 uv;  // uv座標 
-	};
 
 	// 定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
@@ -168,6 +161,9 @@ public: // メンバ関数
 /// </summary>
 	void Draw(uint32_t texHandle);
 
+		//各種バッファの生成
+	void CreateBuffers();
+
 	/// <summary>
 	/// 座標の取得
 	/// </summary>
@@ -190,7 +186,7 @@ public: // メンバ関数
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	void SetScale(const Vector3& scale) { this->scale_ = scale; }
+	void SetScale(const Vector3& scale);
 
 	/// <summary>
 	/// 座標の取得
@@ -205,7 +201,7 @@ public: // メンバ関数
 	void SetRot(const Vector3& rot) { this->rotation_ = rot; }
 
 	//setter
-	void SetModel(Model* model) { this->model_ = model; }
+	void SetModel(Model* model);
 
 	const ConstBufferPolygonExplosion GetPolygonExplosion() { return ConstMapPolygon_; }
 
@@ -226,7 +222,19 @@ public: // メンバ関数
 
 	void SetColor(Vector3 color) {color_ = color;}
 
+	void SetScaleUV(bool scaleUV) {scaleUV_ = scaleUV;}
+
 private: // メンバ変数
+		// 頂点バッファ
+	ComPtr<ID3D12Resource> vertBuff_;
+	// 頂点バッファビュー
+	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
+		// 頂点データ配列
+	std::vector<Model::VertexPosNormalUv> vertices_;
+
+			// 頂点データ配列
+	std::vector<Model::VertexPosNormalUv> initialVertices_;
+
 	ComPtr<ID3D12Resource> constBuffB0_; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1_; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB2_; // 定数バッファ
@@ -256,6 +264,10 @@ private: // メンバ変数
 	Vector2 uvShift_;
 
 	Vector3 color_ = { 1,1,1 };
+
+	bool scaleUV_=false;
+
+	bool changeScale_ = false;
 };
 
 float ToRadian(float angle);

@@ -52,10 +52,6 @@ protected:
 
 	Model* bulletModel_;
 
-	std::unique_ptr<Model> circle_;
-
-	std::unique_ptr<Object3d> attackCircle_;
-
 	std::unique_ptr<Object3d> obj_;
 
 	bool isDaed_ = false;

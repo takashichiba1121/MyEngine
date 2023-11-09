@@ -21,28 +21,6 @@ void Enemy::Initialize(Model* enemyModel,Model* bulletModel,Vector3 position,Obj
 
 	playerObj_ = playerObj;
 
-	circle_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/Circle/enemyTex.png")));
-
-	attackCircle_ = std::make_unique<Object3d>();
-
-	attackCircle_->Initialize();
-
-	attackCircle_->SetModel(circle_.get());
-
-	attackCircle_->SetPosition({ position.x,position.y - obj_->GetScale().y + 0.1f,position.z });
-
-	attackCircle_->SetScale({ 25,0,25 });
-
-	//attackCircle_->SetRot({ 3.14f,0,0 });
-
-	attackCircle_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
-
-	attackCircle_->SetColor({ 1,0,0 });
-
-	attackCircle_->Setalpha(0.5f);
-
-	attackCircle_->Update();
-
 
 }
 
@@ -98,11 +76,8 @@ void Enemy::Update(float attackRange)
 		}
 	}
 
-	attackCircle_->Update();
-
 	obj_->Update();
 
-	attackCircle_->SetScale({ attackRange,0, attackRange });
 }
 
 void Enemy::Move()
@@ -153,8 +128,6 @@ void Enemy::Move()
 void Enemy::ObjectUpdate()
 {
 	obj_->Update();
-
-	attackCircle_->Update();
 }
 
 void Enemy::Draw()

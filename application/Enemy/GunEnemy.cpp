@@ -54,11 +54,8 @@ void GunEnemy::Update(float attackRange)
 		}
 	}
 
-	attackCircle_->Update();
-
 	obj_->Update();
 
-	attackCircle_->SetScale({ attackRange,0, attackRange });
 }
 
 void GunEnemy::Move()

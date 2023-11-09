@@ -103,10 +103,6 @@ private://非公開のメンバ関数
 private:
 	//デバイス
 	static ID3D12Device* sDevice;
-	// 頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff_;
-	// 頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 		// 頂点データ配列
 	std::vector<VertexPosNormalUv> vertices_;
 	// インデックスバッファ

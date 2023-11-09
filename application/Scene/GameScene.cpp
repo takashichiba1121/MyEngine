@@ -349,7 +349,7 @@ void GameScene::Update()
 
 	for ( std::unique_ptr<Object3d>& obj : planes_ )
 	{
-		uvShift_.x += 0.01f;
+		uvShift_.x += 0.005f;
 
 		if (uvShift_.x>=1 )
 		{
@@ -453,6 +453,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			// 座標
 			newObject->SetScale({ objectData.scale });
+
+			newObject->SetScaleUV(true);
 
 			// 配列に登録
 			objects_.push_back(std::move(newObject));
