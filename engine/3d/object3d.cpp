@@ -413,7 +413,7 @@ void Object3d::Update()
 		//モデルがセットされていなければ描画をスキップ
 	if ( model_ != nullptr )
 	{
-		if ( 0 == vertices_.size() % 3&&changeScale_&&scaleUV_ )
+		if ( 0 == vertices_.size() % 3&&isChangeScale_&&isScaleUV_ )
 		{
 
 			for ( int i = 0; i < vertices_.size(); i += 3 )
@@ -435,9 +435,9 @@ void Object3d::Update()
 					Vertex2.uv.x *= scale_.z;
 					Vertex2.uv.y *= scale_.y;
 					
-					Vertex0.uv /= 2;
-					Vertex1.uv /= 2;
-					Vertex2.uv /= 2;
+					Vertex0.uv /= uvScaling_;
+					Vertex1.uv /= uvScaling_;
+					Vertex2.uv /= uvScaling_;
 				}
 				else if ( Vertex0.pos.y == Vertex1.pos.y && Vertex0.pos.y == Vertex2.pos.y )
 				{
@@ -450,9 +450,9 @@ void Object3d::Update()
 					Vertex2.uv.x *= scale_.z;
 					Vertex2.uv.y *= scale_.x;
 
-					Vertex0.uv /= 2;
-					Vertex1.uv /= 2;
-					Vertex2.uv /= 2;
+					Vertex0.uv /= uvScaling_;
+					Vertex1.uv /= uvScaling_;
+					Vertex2.uv /= uvScaling_;
 				}
 				else if ( Vertex0.pos.z == Vertex1.pos.z && Vertex0.pos.z == Vertex2.pos.z )
 				{
@@ -465,9 +465,9 @@ void Object3d::Update()
 					Vertex2.uv.x *= scale_.y;
 					Vertex2.uv.y *= scale_.x;
 
-										Vertex0.uv /= 2;
-					Vertex1.uv /= 2;
-					Vertex2.uv /= 2;
+					Vertex0.uv /= uvScaling_;
+					Vertex1.uv /= uvScaling_;
+					Vertex2.uv /= uvScaling_;
 				}
 
 				vertices_[ i ] = Vertex0;
@@ -475,7 +475,7 @@ void Object3d::Update()
 				vertices_[ i+2 ] = Vertex2;
 			}
 
-			changeScale_ = false;
+			isChangeScale_ = false;
 		}
 
 		// 頂点バッファへのデータ転送
@@ -624,7 +624,7 @@ void Object3d::SetScale(const Vector3& scale)
 {
 	this->scale_ = scale;
 
-	changeScale_ = true;
+	isChangeScale_ = true;
 }
 
 void Object3d::SetModel(Model* model)

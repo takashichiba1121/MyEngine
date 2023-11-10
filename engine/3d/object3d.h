@@ -222,7 +222,9 @@ public: // メンバ関数
 
 	void SetColor(Vector3 color) {color_ = color;}
 
-	void SetScaleUV(bool scaleUV) {scaleUV_ = scaleUV;}
+	void SetScaleUV(bool scaleUV) {isScaleUV_ = scaleUV;}
+
+	void SetUvScaling(float uvScaling) {uvScaling_=uvScaling;}
 
 private: // メンバ変数
 		// 頂点バッファ
@@ -265,9 +267,11 @@ private: // メンバ変数
 
 	Vector3 color_ = { 1,1,1 };
 
-	bool scaleUV_=false;
+	float uvScaling_ = 1;
 
-	bool changeScale_ = false;
+	bool isScaleUV_=false;
+
+	bool isChangeScale_ = false;
 };
 
 float ToRadian(float angle);

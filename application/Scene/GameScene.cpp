@@ -456,6 +456,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			newObject->SetScaleUV(true);
 
+			newObject->SetUvScaling(2);
+
 			// 配列に登録
 			objects_.push_back(std::move(newObject));
 		}
