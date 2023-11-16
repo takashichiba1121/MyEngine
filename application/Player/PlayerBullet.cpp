@@ -13,7 +13,7 @@ void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position,u
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor({3,3,3});
+	//obj_->SetColor({3,3,3});
 
 	life_ = life;
 }
@@ -78,12 +78,12 @@ void PlayerBullet::OnCollision()
 		Vector3 pos{};
 		pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 		pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-		pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+		pos.z = -abs(( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
 
 		//pos.normalize();
 
 		//追加
-		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{1,1,1,1},{1,0.7f,0,0});
+		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{3,3,1,1},{3,3,0.5,1});
 	}
 }
 

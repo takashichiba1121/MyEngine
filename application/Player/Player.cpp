@@ -45,7 +45,7 @@ void Player::Update()
 		if ( interval == 0 )
 		{
 			Move();
-			if (onGround_==false )
+			if ( onGround_ == false )
 			{
 				Attack();
 			}
@@ -74,6 +74,12 @@ void Player::Update()
 			isDelete_ = true;
 		}
 	}
+
+	EnemyCollision();
+
+	move_ = MapCollision();
+
+	obj_->SetPosition(move_);
 
 	Object3d::SetTarget(Object3d::GetTarget() + ( ( obj_->GetPosition() - Object3d::GetTarget() ) * cameraSpeed_ ));
 
@@ -205,12 +211,6 @@ void Player::Move()
 	{
 		obj_->SetRot({ 0, atan2f(frontVec.x, -frontVec.z),0 });
 	}
-
-	EnemyCollision();
-
-	move_ = MapCollision();
-
-	obj_->SetPosition(move_);
 }
 
 void Player::Finalize()
@@ -242,6 +242,42 @@ void Player::Attack()
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
+		}
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_RIGHT_THUMB))
+		{
+			Vector3 velocity(0,0,1);
+
+			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
+			velocity.normalize();
+			velocity *= kBulletSpeed_;
+
+			Vector3 pos[ 3 ]
+			{
+				{0,0,0},
+				{1,0,0},
+				{-1,0,0},
+			};
+
+			//弾の生成し、初期化
+			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
+			for ( int i = 0; i < 3; i++ )
+			{
+				pos[ i ] = Matrix4Math::transform(pos[ i ],obj_->GetMatWorld());
+				pos[ i ].normalize();
+				pos[ i ] *= 3;
+
+				newBullet[ i ] = std::make_unique<PlayerBullet>();
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },( obj_->GetPosition() + ( velocity * 3 ) ) + pos[ i ],bulletLife_);
+
+				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ i ]->SetChageTime(30);
+
+							//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
+			}
+
+			interval = 30;
 		}
 	}
 	else
@@ -291,7 +327,7 @@ void Player::Attack()
 				pos[ i ] *= 3;
 
 				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },(obj_->GetPosition() + ( velocity * 3 ))+pos[i],bulletLife_);
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },( obj_->GetPosition() + ( velocity * 3 ) ) + pos[ i ],bulletLife_);
 
 				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
@@ -301,7 +337,7 @@ void Player::Attack()
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
 
-			interval = 60;
+			interval = 30;
 		}
 	}
 }

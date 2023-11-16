@@ -111,6 +111,12 @@
     <Filter Include="application\ソース ファイル\player">
       <UniqueIdentifier>{4066f2dd-b7aa-48e0-8fc9-b0e0ea1c09e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="application\ソース ファイル\appCollider">
+      <UniqueIdentifier>{a0bd15a2-c6e7-4e8e-82b3-ff8f3be66beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application\ヘッダーファイル\appCollider">
+      <UniqueIdentifier>{887b3cfb-eee1-4b9b-af65-4605dd7c74ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\2d\Sprite.cpp">
@@ -250,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="engine\postEffect\PostEffectMixeds.cpp">
       <Filter>engin\ソースファイル\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Collider\AppCollider.cpp">
+      <Filter>application\ソース ファイル\appCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +402,9 @@
     </ClInclude>
     <ClInclude Include="engine\postEffect\PostEffectMixeds.h">
       <Filter>engin\ヘッダーファイル\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Collider\AppCollider.h">
+      <Filter>application\ヘッダーファイル\appCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
