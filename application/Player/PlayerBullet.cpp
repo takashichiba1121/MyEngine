@@ -13,6 +13,8 @@ void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position,u
 
 	obj_->SetPosition(position);
 
+	obj_->SetColor({3,3,3});
+
 	life_ = life;
 }
 
@@ -81,7 +83,7 @@ void PlayerBullet::OnCollision()
 		//pos.normalize();
 
 		//追加
-		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{1,0.5,0,1},{1,0.5,0,0});
+		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{1,1,1,1},{1,0.7f,0,0});
 	}
 }
 

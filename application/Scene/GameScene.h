@@ -26,6 +26,11 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(DirectXCommon* dxCommon) override;
 
+		/// <summary>
+	/// 描画
+	/// </summary>
+	void SpriteDraw() override;
+
 	void Finalize() override;
 
 	/// <summary>

@@ -26,7 +26,7 @@ public:
 	/// <summary>
 	/// 動き全般の処理
 	/// </summary>
-	void Move(); 
+	void Move();
 
 	/// <summary>
 	/// 終了処理

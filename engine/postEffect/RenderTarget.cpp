@@ -13,7 +13,7 @@ void RenderTarget::StaticInitialze(ID3D12Device* dev)
 }
 void RenderTarget::Initialize()
 {
-	const float clearColor[ 4 ] = { 0.1f,0.25f,0.5f,0.0f };
+	const float clearColor[ 4 ] = { 0.0f,0.0f,0.0f,0.0f };
 
 	HRESULT result;
 
@@ -144,7 +144,7 @@ void RenderTarget::PreDraw(ID3D12GraphicsCommandList* commandList)
 	//シザリング矩形の設定
 	commandList->RSSetScissorRects(1,&rect);
 
-	FLOAT clearColor[ ] = { 0.1f,0.25f,0.5f,0.0f };//青っぽい色
+	FLOAT clearColor[ ] = { 0.0f,0.0f,0.0f,0.0f };//青っぽい色
 	//全画面のクリア
 	commandList->ClearRenderTargetView(rtvH,clearColor,0,nullptr);
 	//深度バッファのクリア

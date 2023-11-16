@@ -215,7 +215,10 @@ void TitileScene::Draw(DirectXCommon* dxCommon)
 	particles_->Draw();
 
 	ParticleManager::PostDraw();
+}
 
+void TitileScene::SpriteDraw()
+{
 	SpriteCommon::Instance()->PreDraw();
 	spaceSprite_->Draw();
 	startSprite_->Draw();

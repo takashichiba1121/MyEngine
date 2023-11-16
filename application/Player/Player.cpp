@@ -45,8 +45,10 @@ void Player::Update()
 		if ( interval == 0 )
 		{
 			Move();
-
-			Attack();
+			if (onGround_==false )
+			{
+				Attack();
+			}
 		}
 		else
 		{
@@ -286,14 +288,14 @@ void Player::Attack()
 			{
 				pos[ i ] = Matrix4Math::transform(pos[ i ],obj_->GetMatWorld());
 				pos[ i ].normalize();
-				pos[ i ] *= 5;
+				pos[ i ] *= 3;
 
 				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },(obj_->GetPosition() + ( velocity * 5 ))+pos[i],bulletLife_);
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },(obj_->GetPosition() + ( velocity * 3 ))+pos[i],bulletLife_);
 
 				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-				newBullet[ i ]->SetChageTime(60);
+				newBullet[ i ]->SetChageTime(30);
 
 							//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));

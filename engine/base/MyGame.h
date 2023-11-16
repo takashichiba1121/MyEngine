@@ -17,6 +17,10 @@ public:
 
 private:
 	std::unique_ptr<RenderTarget> renderTarget1;
+
+	std::unique_ptr<RenderTarget> renderTarget2;
+
+	std::unique_ptr<RenderTarget> renderTarget3;
 };
 
  

@@ -12,32 +12,29 @@ void GunEnemy::Update(float attackRange)
 
 			Move();
 		}
-		else
-		{
-			Vector3 playerPos,enemyPos,playerScale,enemyScale;
+		Vector3 playerPos,enemyPos,playerScale,enemyScale;
 
-			playerPos = playerObj_->GetPosition();
+		playerPos = playerObj_->GetPosition();
 
-			enemyPos = obj_->GetPosition();
+		enemyPos = obj_->GetPosition();
 
-			playerScale = playerObj_->GetScale();
+		playerScale = playerObj_->GetScale();
 
-			enemyScale = obj_->GetScale();
+		enemyScale = obj_->GetScale();
 
-			float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
+		float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
 
-			float playerYmax,playerYmin,enemyYmax,enemyYmin;
+		float playerYmax,playerYmin,enemyYmax,enemyYmin;
 
-			playerYmax = playerPos.y + playerScale.y;
+		playerYmax = playerPos.y + playerScale.y;
 
-			playerYmin = playerPos.y - playerScale.y;
+		playerYmin = playerPos.y - playerScale.y;
 
-			enemyYmax = enemyPos.y + ( enemyScale.y + 3 );
+		enemyYmax = enemyPos.y + ( enemyScale.y + 3 );
 
-			enemyYmin = enemyPos.y - ( enemyScale.y + 3 );
+		enemyYmin = enemyPos.y - ( enemyScale.y + 3 );
 
-			isMove_ = ( distance <= attackRange && ( playerYmax >= enemyYmin && playerYmin <= enemyYmax ) );
-		}
+		isMove_ = ( distance <= attackRange && ( playerYmax >= enemyYmin && playerYmin <= enemyYmax ) );
 	}
 	else
 	{
@@ -80,7 +77,7 @@ void GunEnemy::Attack()
 
 		//弾の速度
 		const float kBulletSpeed = 0.5f;
-		Vector3 velocity = playerObj_->GetPosition() -bulletPosition;
+		Vector3 velocity = playerObj_->GetPosition() - bulletPosition;
 		velocity.normalize();
 		velocity *= kBulletSpeed;
 

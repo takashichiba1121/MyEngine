@@ -12,7 +12,7 @@ float Gaussian(float2 drawUV,float2 pickUV,float sigma)
 
 float4 main(VSOutput input) : SV_TARGET
 {
-float totalWeight = 0,_Sigma = 0.005,_StepWidth = 0.001;
+float totalWeight = 0,_Sigma = 0.01,_StepWidth = 0.002;
 float4 col = float4(0,0,0,0);
 
 for (float py = -_Sigma * 2; py <= _Sigma * 2; py += _StepWidth)

@@ -136,8 +136,10 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\2d\imguiManager.cpp" />
     <ClCompile Include="engine\base\Framework.cpp" />
     <ClCompile Include="engine\base\MyGame.cpp" />
+    <ClCompile Include="engine\postEffect\PostEffectBlur.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectCommon.cpp" />
     <ClCompile Include="engine\postEffect\PostEffectLuminance.cpp" />
+    <ClCompile Include="engine\postEffect\PostEffectMixeds.cpp" />
     <ClCompile Include="engine\postEffect\RenderTarget.cpp" />
     <ClCompile Include="engine\Scene\SceneManager.cpp" />
     <ClCompile Include="engine\Collider\Collider.cpp" />
@@ -179,8 +181,10 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\3d\ParticleManager.h" />
     <ClInclude Include="engine\3d\Light\PointLight.h" />
     <ClInclude Include="engine\audio\Sound.h" />
+    <ClInclude Include="engine\postEffect\PostEffectBlur.h" />
     <ClInclude Include="engine\postEffect\PostEffectCommon.h" />
     <ClInclude Include="engine\postEffect\PostEffectLuminance.h" />
+    <ClInclude Include="engine\postEffect\PostEffectMixeds.h" />
     <ClInclude Include="engine\postEffect\RenderTarget.h" />
     <ClInclude Include="engine\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="engine\base\DirectXCommon.h" />
@@ -266,24 +270,13 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectBlurHVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectBlurPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectBlurWVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectBlurVS.hlsl" />
     <FxCompile Include="Resources\shaders\PostEffectLuminancePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

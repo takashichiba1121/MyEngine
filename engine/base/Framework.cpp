@@ -14,6 +14,8 @@
 #include"ParticleManager.h"
 #include"RenderTarget.h"
 #include"PostEffectLuminance.h"
+#include"PostEffectBlur.h"
+#include"PostEffectMixeds.h"
 
 void Framework::Initialize()
 {
@@ -54,6 +56,10 @@ void Framework::Initialize()
 	RenderTarget::StaticInitialze(dxCommon_->GetDevice());
 
 	PostEffectLuminance::Instance()->Initialize();
+
+	PostEffectBlur::Instance()->Initialize();
+
+	PostEffectMixeds::Instance()->Initialize();
 }
 
 void Framework::Finalize()
@@ -67,6 +73,10 @@ void Framework::Finalize()
 	PostEffectCommon::Instance()->Fin();
 
 	PostEffectLuminance::Instance()->Fin();
+
+	PostEffectBlur::Instance()->Fin();
+
+	PostEffectMixeds::Instance()->Fin();
 
 	TextureManager::Instance()->Finalize();
 

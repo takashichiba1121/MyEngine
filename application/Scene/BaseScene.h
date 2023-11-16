@@ -19,6 +19,11 @@ public:
 	/// </summary>
 	virtual void Draw(DirectXCommon* dxCommon)=0;
 
+		/// <summary>
+	/// 描画
+	/// </summary>
+	virtual void SpriteDraw() = 0;
+
 	 
 };
 

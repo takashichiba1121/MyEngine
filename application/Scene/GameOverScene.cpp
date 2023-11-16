@@ -209,7 +209,10 @@ void GameOverScene::Draw(DirectXCommon* dxCommon)
 	particles_->Draw();
 
 	ParticleManager::PostDraw();
+}
 
+void GameOverScene::SpriteDraw()
+{
 	SpriteCommon::Instance()->PreDraw();
 	buttonSprite_->Draw();
 	titleSprite_->Draw();

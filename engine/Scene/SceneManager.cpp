@@ -43,6 +43,11 @@ void SceneManager::Draw(DirectXCommon* dxCommon)
 	scene_->Draw(dxCommon);
 }
 
+void SceneManager::SpriteDraw()
+{
+	scene_->SpriteDraw();
+}
+
 void SceneManager::Finalize()
 {
 	scene_->Finalize();

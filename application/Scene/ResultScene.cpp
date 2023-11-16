@@ -209,7 +209,10 @@ void ResultScene::Draw(DirectXCommon* dxCommon)
 	particles_->Draw();
 
 	ParticleManager::PostDraw();
+}
 
+void ResultScene::SpriteDraw()
+{
 	SpriteCommon::Instance()->PreDraw();
 	buttonSprite_->Draw();
 	titleSprite_->Draw();

@@ -18,6 +18,8 @@ class ResultScene :public BaseScene
 
 	void Draw(DirectXCommon* dxCommon) override;
 
+	void SpriteDraw() override;
+
 private:
 
 	uint32_t texHandle_ = 0;

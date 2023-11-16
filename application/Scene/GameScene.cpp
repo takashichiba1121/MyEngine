@@ -409,7 +409,10 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	player_->ParticleDraw();
 	EnemyManager::Instance()->ParticleDraw();
 	ParticleManager::PostDraw();
+}
 
+void GameScene::SpriteDraw()
+{
 	SpriteCommon::Instance()->PreDraw();
 	sousaSprite_->Draw();
 	sceneSprite_->DissolveDraw();

@@ -33,6 +33,8 @@ public:
 
 	void Draw(DirectXCommon* dxCommon);
 
+	void SpriteDraw();
+
 	void Finalize();
 
 	void SetSceneFactory(AbstractSceneFactory* sceneFactory) {sceneFactory_=sceneFactory ; }
