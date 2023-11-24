@@ -347,14 +347,15 @@ void GameScene::Update()
 
 	}
 
+	uvShift_.x += 0.005f;
+
+	if ( uvShift_.x >= 1 )
+	{
+		uvShift_.x = 0;
+	}
+
 	for ( std::unique_ptr<Object3d>& obj : planes_ )
 	{
-		uvShift_.x += 0.005f;
-
-		if (uvShift_.x>=1 )
-		{
-			uvShift_.x = 0;
-		}
 
 		obj->SetUVShift(uvShift_);
 

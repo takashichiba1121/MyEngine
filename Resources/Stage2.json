@@ -7,7 +7,7 @@
             "transform": {
                 "translation": [
                     -155.0,
-                    152.0,
+                    154.0,
                     44.0
                 ],
                 "rotation": [
@@ -42,19 +42,379 @@
             "name": "平面",
             "transform": {
                 "translation": [
-                    -14.9,
+                    -15.0,
                     0.0,
-                    20.01
+                    20.100000381469727
                 ],
                 "rotation": [
                     0.0,
                     -0.0,
-                    -179.99998474121094
+                    0.0
                 ],
                 "scaling": [
-                    0.2,
+                    0.20000000298023224,
                     30.0,
                     1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.001",
+            "transform": {
+                "translation": [
+                    5.0,
+                    0.0,
+                    20.100000381469727
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.002",
+            "transform": {
+                "translation": [
+                    -5.0,
+                    10.0,
+                    20.100000381469727
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.003",
+            "transform": {
+                "translation": [
+                    -5.0,
+                    -10.0,
+                    20.100000381469727
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.004",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    10.0,
+                    40.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.005",
+            "transform": {
+                "translation": [
+                    -55.0,
+                    0.0,
+                    40.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.006",
+            "transform": {
+                "translation": [
+                    -155.0,
+                    20.0,
+                    44.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.007",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    -10.0,
+                    40.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.008",
+            "transform": {
+                "translation": [
+                    -75.0,
+                    0.0,
+                    40.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.009",
+            "transform": {
+                "translation": [
+                    -95.0,
+                    0.0,
+                    40.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.010",
+            "transform": {
+                "translation": [
+                    -115.0,
+                    0.0,
+                    40.099998474121094
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    30.0,
+                    0.10000000149011612
                 ]
             },
             "file_name": "plane",
@@ -78,7 +438,7 @@
             "name": "Cube",
             "transform": {
                 "translation": [
-                    -5.038763046264648,
+                    -5.0,
                     0.0,
                     -80.0
                 ],
@@ -547,7 +907,7 @@
             "transform": {
                 "translation": [
                     -155.0,
-                    152.0,
+                    154.0,
                     -56.0
                 ],
                 "rotation": [
