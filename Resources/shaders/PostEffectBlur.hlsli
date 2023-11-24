@@ -7,3 +7,8 @@ struct VSOutput
 	// uv’l
 	float2 uv :TEXCOORD;
 };
+
+cbuffer cbuff0 : register(b0) {
+	float _Sigma : packoffset(c0.x);
+	float _StepWidth : packoffset(c0.y);
+};

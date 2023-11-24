@@ -4,20 +4,20 @@
 Texture2D<float4> tex : register(t0);  	// 0番スロットに設定されたテクスチャ
 SamplerState smp : register(s0);      	// 0番スロットに設定されたサンプラー
 
-float Gaussian(float2 drawUV,float2 pickUV,float sigma)
+float Gaussian(float2 drawUV,float2 pickUV,float _Sigma)
 {
 	float d = distance(drawUV,pickUV);
-	return exp(-(d * d) / (2 * sigma * sigma));
+	return exp(-(d * d) / (2 * _Sigma * _Sigma));
 }
 
 float4 main(VSOutput input) : SV_TARGET
 {
-float totalWeight = 0,_Sigma = 0.01,_StepWidth = 0.002;
+float totalWeight = 0;
 float4 col = float4(0,0,0,0);
 
-for (float py = -_Sigma * 2; py <= _Sigma * 2; py += _StepWidth)
+for (float py = -_Sigma; py <= _Sigma; py += _StepWidth)
 {
-	for (float px = -_Sigma * 2; px <= _Sigma * 2; px += _StepWidth)
+	for (float px = -_Sigma; px <= _Sigma; px += _StepWidth)
 	{
 		float2 pickUV = input.uv + float2(px,py);
 		float weight = Gaussian(input.uv,pickUV,_Sigma);

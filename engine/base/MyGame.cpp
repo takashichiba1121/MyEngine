@@ -5,6 +5,8 @@
 #include"PostEffectLuminance.h"
 #include"PostEffectBlur.h"
 #include"PostEffectMixeds.h"
+#include"imguiManager.h"
+#include<imgui.h>
 
 
 using namespace std;
@@ -29,6 +31,13 @@ void MyGame::Initialize()
 	renderTarget3 = std::make_unique<RenderTarget>();
 
 	renderTarget3->Initialize();
+
+	LuminanceColor = { 0.299f,0.587f,0.114f };
+	smoothstepMax = 0.9f;
+	smoothstepMin = 0.6f;
+
+	sigma = 0.01f;
+	stepWidth = 0.002f;
 }
 
 void MyGame::Finalize()
@@ -39,6 +48,24 @@ void MyGame::Finalize()
 void MyGame::Update()
 {
 	Framework::Update();
+
+	ImGui::Begin("postEffect");
+
+	ImGui::Text("Blur");
+	ImGui::SliderFloat("sigma",&sigma,0.01f,0.5f,"%0.2f");
+	ImGui::SliderFloat("stepWidth",&stepWidth,0.001f,0.01f,"%0.3f");
+
+	ImGui::Text("Luminance");
+	ImGui::SliderFloat("Max",&smoothstepMax,0.0f,1.0f,"%1.2f");
+	ImGui::SliderFloat("Min",&smoothstepMin,0.0f,1.0f,"%1.2f");
+
+	ImGui::SliderFloat3("color",&LuminanceColor.x,0.0f,1.0f,"%1.3f");
+
+	ImGui::End();
+
+	PostEffectLuminance::Instance()->Update(LuminanceColor,smoothstepMax,smoothstepMin);
+
+	PostEffectBlur::Instance()->Update(sigma,stepWidth);
 } 
 
 void MyGame::Draw()

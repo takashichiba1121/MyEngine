@@ -7,3 +7,8 @@ struct VSOutput
 	// uv’l
 	float2 uv :TEXCOORD;
 };
+cbuffer cbuff0 : register(b0) {
+	float3 m_color : packoffset(c0);
+	float smoothstepMax : packoffset(c1.x);
+	float smoothstepMin : packoffset(c1.y);
+};

@@ -77,6 +77,28 @@ void PostEffectBlur::Initialize()
 	vbView.StrideInBytes = sizeof(vertices[0]);
 
 	CreatGraphicsPipelineState();
+
+	// ヒーププロパティ
+	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	{
+		// リソース設定
+		CD3DX12_RESOURCE_DESC resourceDesc =
+			CD3DX12_RESOURCE_DESC::Buffer(( sizeof(ConstBufferDataB0) + 0xff ) & ~0xff);
+
+		// 定数バッファの生成
+		result = PostEffectCommon::Instance()->device->CreateCommittedResource(
+			&heapProps, // アップロード可能
+			D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,
+			IID_PPV_ARGS(&constBuffB0_));
+		assert(SUCCEEDED(result));
+	}
+
+		// 定数バッファへデータ転送
+	ConstBufferDataB0* constMap = nullptr;
+	result = constBuffB0_->Map(0,nullptr,( void** ) &constMap);
+	constMap->sigma = 0.005f;
+	constMap->stepWidth = 0.001f;
+	constBuffB0_->Unmap(0,nullptr);
 }
 
 void PostEffectBlur::CreatGraphicsPipelineState()
@@ -208,12 +230,18 @@ void PostEffectBlur::CreatGraphicsPipelineState()
 
 
 	//ルートパラメーターの設定
-	D3D12_ROOT_PARAMETER rootParams[1] = {};
+	D3D12_ROOT_PARAMETER rootParams[2] = {};
 	//テクスチャレジスタ1番
-	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;//種類
-	rootParams[0].DescriptorTable.pDescriptorRanges = &descriptorRange;//デスクリプタレンジ
-	rootParams[0].DescriptorTable.NumDescriptorRanges = 1;//デスクリプタレンジ数
-	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;//種類
+	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;//デスクリプタレンジ
+	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;//デスクリプタレンジ数
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
+	//定数バッファ
+		//定数バッファ
+	rootParams[ 0 ].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;//定数バッファ
+	rootParams[ 0 ].Descriptor.ShaderRegister = 0;//定数バッファ番号
+	rootParams[ 0 ].Descriptor.RegisterSpace = 0;//デフォルト値
+	rootParams[ 0 ].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;//全てのシェーダーから見える
 
 	//テクスチャサンプラー設定
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
@@ -252,6 +280,18 @@ void PostEffectBlur::CreatGraphicsPipelineState()
 	assert(SUCCEEDED(result));
 }
 
+void PostEffectBlur::Update(float sigma,float stepWidth)
+{
+	HRESULT result;
+
+			// 定数バッファへデータ転送
+	ConstBufferDataB0* constMap = nullptr;
+	result = constBuffB0_->Map(0,nullptr,( void** ) &constMap);
+	constMap->sigma = sigma;
+	constMap->stepWidth = stepWidth;
+	constBuffB0_->Unmap(0,nullptr);
+}
+
 void PostEffectBlur::Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHandle)
 {
 	commandList = cmdList;
@@ -273,7 +313,10 @@ void PostEffectBlur::Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHan
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = PostEffectCommon::Instance()->descHeapSRV->GetGPUDescriptorHandleForHeapStart();
 	UINT incrementSize = PostEffectCommon::Instance()->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvGpuHandle.ptr += incrementSize * textureHandle;
-	commandList->SetGraphicsRootDescriptorTable(0, srvGpuHandle);
+	commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+		// 定数バッファビューをセット
+	commandList->SetGraphicsRootConstantBufferView(0,constBuffB0_->GetGPUVirtualAddress());
 
 	//描画コマンド
 	commandList->DrawInstanced(_countof(vertices), 1, 0, 0);//すべての頂点を使って描画
@@ -282,6 +325,8 @@ void PostEffectBlur::Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHan
 void PostEffectBlur::Fin()
 {
 	vertBuff = nullptr;
+
+	constBuffB0_ = nullptr;
 
 	pipelineState = nullptr;
 

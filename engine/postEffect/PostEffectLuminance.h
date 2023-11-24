@@ -18,12 +18,23 @@ public:
 #pragma endregion
 public:
 
+		// 定数バッファ用データ構造体B0
+	struct ConstBufferDataB0
+	{
+		Vector3 color;
+		float pad1;
+		float smoothstepMax;
+		float smoothstepMin;
+	};
+
     void Initialize();
 
     /// <summary>
     /// パイプライン生成
     /// </summary>
-    void CreatGraphicsPipelineState(); 
+    void CreatGraphicsPipelineState();
+
+	void Update(Vector3 LuminanceColor,float smoothstepMax,float smoothstepMin);
 
     void Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHandle);
 
@@ -50,5 +61,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> normalPipelineState;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB0_; // 定数バッファ
 };
 

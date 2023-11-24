@@ -21,6 +21,13 @@ private:
 	std::unique_ptr<RenderTarget> renderTarget2;
 
 	std::unique_ptr<RenderTarget> renderTarget3;
+
+	Vector3 LuminanceColor;
+	float smoothstepMax;
+	float smoothstepMin;
+
+	float sigma;
+	float stepWidth;
 };
 
  

@@ -32,10 +32,10 @@ float4 main(VSOutput input) : SV_TARGET
 
 	float4 col = tex.Sample(smp, input.uv);
 
-	float grayScale = col.r * 0.299 + col.g * 0.587 + col.b * 0.114;
+	float grayScale = col.r *m_color.r + col.g * m_color.g + col.b * m_color.b;
 
-	float extract = smoothstep(0.6, 0.9, grayScale);
-	col *= extract;
+	float extract = smoothstep(smoothstepMin, smoothstepMax, grayScale);
+	col.a = extract;
 	return col;
 }
 
