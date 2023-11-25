@@ -24,7 +24,7 @@ public://サブクラス
 		//平行光源用
 		DirectionalLight::ConstBufferData dirLights[cDirLightNum];
 
-		PointLight::ConstBufferData pointLight[cDirLightNum];
+		PointLight::ConstBufferData pointLight[ cPointLightNum ];
 	};
 
 private:

@@ -504,6 +504,78 @@
                 ]
             },
             "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.010",
+            "transform": {
+                "translation": [
+                    35.099998474121094,
+                    10.149999618530273,
+                    -31.0
+                ],
+                "rotation": [
+                    90.0,
+                    -0.0,
+                    90.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.011",
+            "transform": {
+                "translation": [
+                    35.099998474121094,
+                    -9.850000381469727,
+                    -31.0
+                ],
+                "rotation": [
+                    90.0,
+                    -0.0,
+                    90.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
         }
     ]
 }
