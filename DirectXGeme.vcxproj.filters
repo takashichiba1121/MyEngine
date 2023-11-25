@@ -203,9 +203,6 @@
     <ClCompile Include="application\Enemy\EnemyBullet.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="engine\main.cpp">
-      <Filter>engin\ソースファイル\base</Filter>
-    </ClCompile>
     <ClCompile Include="engine\base\Framework.cpp">
       <Filter>engin\ソースファイル\base</Filter>
     </ClCompile>
@@ -259,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="application\Collider\AppCollider.cpp">
       <Filter>application\ソース ファイル\appCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\main.cpp">
+      <Filter>engin\ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

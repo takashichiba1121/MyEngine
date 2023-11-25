@@ -410,84 +410,73 @@ void Object3d::Update()
 	HRESULT result;
 	Matrix4 matScale,matRot,matTrans;
 
-		//モデルがセットされていなければ描画をスキップ
-	if ( model_ != nullptr )
-	{
-		if ( 0 == vertices_.size() % 3&&isChangeScale_&&isScaleUV_ )
-		{
+	//	//モデルがセットされていなければスキップ
+	//if ( model_ != nullptr )
+	//{
+	//	if ( 0 == vertices_.size() % 3&&isChangeScale_&&isScaleUV_ )
+	//	{
 
-			for ( int i = 0; i < vertices_.size(); i += 3 )
-			{
-				Model::VertexPosNormalUv Vertex0,Vertex1,Vertex2;
+	//		for ( int i = 0; i < vertices_.size(); i += 3 )
+	//		{
+	//			Model::VertexPosNormalUv Vertex0,Vertex1,Vertex2;
 
-				Vertex0 = initialVertices_[ i ];
-				Vertex1 = initialVertices_[ i + 1 ];
-				Vertex2 = initialVertices_[ i + 2 ];
+	//			Vertex0 = initialVertices_[ i ];
+	//			Vertex1 = initialVertices_[ i + 1 ];
+	//			Vertex2 = initialVertices_[ i + 2 ];
 
-				if ( Vertex0.pos.x == Vertex1.pos.x && Vertex0.pos.x == Vertex2.pos.x )
-				{
-					Vertex0.uv.x *= scale_.z;
-					Vertex0.uv.y *= scale_.y;
+	//			if ( Vertex0.pos.x == Vertex1.pos.x && Vertex0.pos.x == Vertex2.pos.x )
+	//			{
+	//				Vertex0.uv.x *= scale_.z;
+	//				Vertex0.uv.y *= scale_.y;
 
-					Vertex1.uv.x *= scale_.z;
-					Vertex1.uv.y *= scale_.y;
+	//				Vertex1.uv.x *= scale_.z;
+	//				Vertex1.uv.y *= scale_.y;
 
-					Vertex2.uv.x *= scale_.z;
-					Vertex2.uv.y *= scale_.y;
-					
-					Vertex0.uv /= uvScaling_;
-					Vertex1.uv /= uvScaling_;
-					Vertex2.uv /= uvScaling_;
-				}
-				else if ( Vertex0.pos.y == Vertex1.pos.y && Vertex0.pos.y == Vertex2.pos.y )
-				{
-					Vertex0.uv.x *= scale_.z;
-					Vertex0.uv.y *= scale_.x;
+	//				Vertex2.uv.x *= scale_.z;
+	//				Vertex2.uv.y *= scale_.y;
+	//				
+	//				Vertex0.uv /= uvScaling_;
+	//				Vertex1.uv /= uvScaling_;
+	//				Vertex2.uv /= uvScaling_;
+	//			}
+	//			else if ( Vertex0.pos.y == Vertex1.pos.y && Vertex0.pos.y == Vertex2.pos.y )
+	//			{
+	//				Vertex0.uv.x *= scale_.z;
+	//				Vertex0.uv.y *= scale_.x;
 
-					Vertex1.uv.x *= scale_.z;
-					Vertex1.uv.y *= scale_.x;
+	//				Vertex1.uv.x *= scale_.z;
+	//				Vertex1.uv.y *= scale_.x;
 
-					Vertex2.uv.x *= scale_.z;
-					Vertex2.uv.y *= scale_.x;
+	//				Vertex2.uv.x *= scale_.z;
+	//				Vertex2.uv.y *= scale_.x;
 
-					Vertex0.uv /= uvScaling_;
-					Vertex1.uv /= uvScaling_;
-					Vertex2.uv /= uvScaling_;
-				}
-				else if ( Vertex0.pos.z == Vertex1.pos.z && Vertex0.pos.z == Vertex2.pos.z )
-				{
-					Vertex0.uv.x *= scale_.y;
-					Vertex0.uv.y *= scale_.x;
+	//				Vertex0.uv /= uvScaling_;
+	//				Vertex1.uv /= uvScaling_;
+	//				Vertex2.uv /= uvScaling_;
+	//			}
+	//			else if ( Vertex0.pos.z == Vertex1.pos.z && Vertex0.pos.z == Vertex2.pos.z )
+	//			{
+	//				Vertex0.uv.x *= scale_.y;
+	//				Vertex0.uv.y *= scale_.x;
 
-					Vertex1.uv.x *= scale_.y;
-					Vertex1.uv.y *= scale_.x;
+	//				Vertex1.uv.x *= scale_.y;
+	//				Vertex1.uv.y *= scale_.x;
 
-					Vertex2.uv.x *= scale_.y;
-					Vertex2.uv.y *= scale_.x;
+	//				Vertex2.uv.x *= scale_.y;
+	//				Vertex2.uv.y *= scale_.x;
 
-					Vertex0.uv /= uvScaling_;
-					Vertex1.uv /= uvScaling_;
-					Vertex2.uv /= uvScaling_;
-				}
+	//				Vertex0.uv /= uvScaling_;
+	//				Vertex1.uv /= uvScaling_;
+	//				Vertex2.uv /= uvScaling_;
+	//			}
 
-				vertices_[ i ] = Vertex0;
-				vertices_[ i+1 ] = Vertex1;
-				vertices_[ i+2 ] = Vertex2;
-			}
+	//			vertices_[ i ] = Vertex0;
+	//			vertices_[ i+1 ] = Vertex1;
+	//			vertices_[ i+2 ] = Vertex2;
+	//		}
 
-			isChangeScale_ = false;
-		}
-
-		// 頂点バッファへのデータ転送
-		Model::VertexPosNormalUv* vertMap = nullptr;
-		result = vertBuff_->Map(0,nullptr,( void** ) &vertMap);
-		if ( SUCCEEDED(result) )
-		{
-	/*memcpy(vertMap, vertices, sizeof(vertices));*/
-			std::copy(vertices_.begin(),vertices_.end(),vertMap);
-			vertBuff_->Unmap(0,nullptr);
-		}
-	}
+	//		isChangeScale_ = false;
+	//	}
 
 	// スケール、回転、平行移動行列の計算
 	matScale = Matrix4Math::scale(scale_);
@@ -623,8 +612,6 @@ void Object3d::CreateBuffers()
 void Object3d::SetScale(const Vector3& scale)
 {
 	this->scale_ = scale;
-
-	isChangeScale_ = true;
 }
 
 void Object3d::SetModel(Model* model)
@@ -636,6 +623,22 @@ void Object3d::SetModel(Model* model)
 	initialVertices_ = model->GetVertices();
 
 	CreateBuffers();
+}
+
+void Object3d::SetVertices(std::vector<Model::VertexPosNormalUv> vertices)
+{
+	HRESULT result;
+
+	vertices_ = vertices;
+
+			// 頂点バッファへのデータ転送
+	Model::VertexPosNormalUv* vertMap = nullptr;
+	result = vertBuff_->Map(0,nullptr,( void** ) &vertMap);
+	if ( SUCCEEDED(result) )
+	{
+		std::copy(vertices_.begin(),vertices_.end(),vertMap);
+		vertBuff_->Unmap(0,nullptr);
+	}
 }
 
 Matrix4 Object3d::GetMatViewPro()

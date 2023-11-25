@@ -45,12 +45,13 @@ void EnemyManager::Update()
 	}
 
 	particle_->Update();
-
+#ifdef _DEBUG
 	ImGui::Begin("Eneny");
 
 	ImGui::Text("bullet%d",bullets_.size());
 
 	ImGui::End();
+#endif
 }
 
 void EnemyManager::ParticleDraw()

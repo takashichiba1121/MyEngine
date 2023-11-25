@@ -91,6 +91,8 @@ void Player::Update()
 
 	paMan_->Update();
 
+#ifdef _DEBUG
+
 	ImGui::Begin("player");
 
 	ImGui::SliderFloat("gravityAcceleration",&gravityAcceleration_,0.0f,0.1f,"%1.2f");
@@ -102,6 +104,8 @@ void Player::Update()
 	ImGui::SliderFloat3("camera",&cameraPos_.x,-100,100,"%3.0f");
 
 	ImGui::End();
+
+#endif
 }
 
 void Player::Move()
@@ -230,15 +234,15 @@ void Player::Attack()
 			velocity.normalize();
 			velocity *= kBulletSpeed_;
 
-			velocity.y = 0;
-
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition() + ( velocity * -10 ),bulletLife_);
+			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition() + ( velocity * 5 ),bulletLife_);
 
 			newBullet->SetPhase(PlayerBullet::Phase::Charge);
 
-			newBullet->SetChageTime(5);
+			newBullet->SetChageTime(10);
+
+			interval = 10;
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));

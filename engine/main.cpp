@@ -25,8 +25,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Framework* game = new MyGame;
 
-	//game = std::unique_ptr<MyGame>();
-
 	game->Run();
 
 	delete game;

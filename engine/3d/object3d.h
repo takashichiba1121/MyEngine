@@ -222,9 +222,9 @@ public: // メンバ関数
 
 	void SetColor(Vector3 color) {color_ = color;}
 
-	void SetScaleUV(bool scaleUV) {isScaleUV_ = scaleUV;}
+	std::vector<Model::VertexPosNormalUv> GetVertices() {return initialVertices_;}
 
-	void SetUvScaling(float uvScaling) {uvScaling_=uvScaling;}
+	void SetVertices(std::vector<Model::VertexPosNormalUv> vertices);
 
 private: // メンバ変数
 		// 頂点バッファ
@@ -266,12 +266,6 @@ private: // メンバ変数
 	Vector2 uvShift_;
 
 	Vector3 color_ = { 1,1,1 };
-
-	float uvScaling_ = 1;
-
-	bool isScaleUV_=false;
-
-	bool isChangeScale_ = false;
 };
 
 float ToRadian(float angle);

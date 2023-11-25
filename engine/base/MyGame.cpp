@@ -49,6 +49,7 @@ void MyGame::Update()
 {
 	Framework::Update();
 
+#ifdef _DEBUG
 	ImGui::Begin("postEffect");
 
 	ImGui::Text("Blur");
@@ -66,6 +67,7 @@ void MyGame::Update()
 	PostEffectLuminance::Instance()->Update(LuminanceColor,smoothstepMax,smoothstepMin);
 
 	PostEffectBlur::Instance()->Update(sigma,stepWidth);
+#endif
 } 
 
 void MyGame::Draw()

@@ -126,12 +126,13 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-
+#ifdef _DEBUG
 	ImGui::Begin("Scene");
 
 	ImGui::SliderFloat3("light",&lightV.x,-100,100,"%3.1f");
 
 	ImGui::End();
+#endif
 
 	light_->SetDirLightDir(0,lightV);
 
@@ -139,7 +140,7 @@ void GameScene::Update()
 
 	if ( Input::Instance()->TriggerKey(DIK_0) )
 	{
-		objects_.clear();
+		EnemyManager::Instance()->Clear();
 
 		MapLoad(mapName_);
 	}
@@ -162,7 +163,7 @@ void GameScene::Update()
 
 		sceneSprite_->SetDissolve(f);
 
-		if ( frame_ >= (int32_t)endFrame_ )
+		if ( frame_ >= ( int32_t ) endFrame_ )
 		{
 			sceneStart_ = false;
 
@@ -182,7 +183,7 @@ void GameScene::Update()
 
 		Object3d::SetEye(traget + cameraPos_);
 
-		if ( cameraFrame_ >= ( int32_t ) cameraEndFrame_)
+		if ( cameraFrame_ >= ( int32_t ) cameraEndFrame_ )
 		{
 			IsCameraSet_ = false;
 			cameraFrame_ = 0;
@@ -266,7 +267,7 @@ void GameScene::Update()
 			sceneSprite_->SetDissolve(f);
 
 		}
-		else if(frame_<=-5)
+		else if ( frame_ <= -5 )
 		{
 			if ( mapName_ != "Resources/Select.json" )
 			{
@@ -347,7 +348,7 @@ void GameScene::Update()
 
 	}
 
-	uvShift_.x += 0.005f;
+	uvShift_.x += 0.01f;
 
 	if ( uvShift_.x >= 1 )
 	{
@@ -434,6 +435,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 	objects_.clear();
 
+	planes_.clear();
+
 	EnemyManager::Instance()->Clear();
 
 	mapName_ = mapFullpath;
@@ -458,9 +461,68 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 座標
 			newObject->SetScale({ objectData.scale });
 
-			newObject->SetScaleUV(true);
+			std::vector<Model::VertexPosNormalUv> vertices = newObject->GetVertices();
 
-			newObject->SetUvScaling(2);
+			for ( int i = 0; i < vertices.size(); i += 3 )
+			{
+				Model::VertexPosNormalUv Vertex0,Vertex1,Vertex2;
+
+				Vertex0 = vertices[ i ];
+				Vertex1 = vertices[ i + 1 ];
+				Vertex2 = vertices[ i + 2 ];
+
+				if ( Vertex0.pos.x == Vertex1.pos.x && Vertex0.pos.x == Vertex2.pos.x )
+				{
+					Vertex0.uv.x *= objectData.scale.z;
+					Vertex0.uv.y *= objectData.scale.y;
+
+					Vertex1.uv.x *= objectData.scale.z;
+					Vertex1.uv.y *= objectData.scale.y;
+
+					Vertex2.uv.x *= objectData.scale.z;
+					Vertex2.uv.y *= objectData.scale.y;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+				else if ( Vertex0.pos.y == Vertex1.pos.y && Vertex0.pos.y == Vertex2.pos.y )
+				{
+					Vertex0.uv.x *= objectData.scale.z;
+					Vertex0.uv.y *= objectData.scale.x;
+
+					Vertex1.uv.x *= objectData.scale.z;
+					Vertex1.uv.y *= objectData.scale.x;
+
+					Vertex2.uv.x *= objectData.scale.z;
+					Vertex2.uv.y *= objectData.scale.x;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+				else if ( Vertex0.pos.z == Vertex1.pos.z && Vertex0.pos.z == Vertex2.pos.z )
+				{
+					Vertex0.uv.x *= objectData.scale.y;
+					Vertex0.uv.y *= objectData.scale.x;
+
+					Vertex1.uv.x *= objectData.scale.y;
+					Vertex1.uv.y *= objectData.scale.x;
+
+					Vertex2.uv.x *= objectData.scale.y;
+					Vertex2.uv.y *= objectData.scale.x;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+
+				vertices[ i ] = Vertex0;
+				vertices[ i + 1 ] = Vertex1;
+				vertices[ i + 2 ] = Vertex2;
+			}
+
+			newObject->SetVertices(vertices);
 
 			// 配列に登録
 			objects_.push_back(std::move(newObject));
@@ -482,6 +544,20 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			// 座標
 			newObject->SetScale({ objectData.scale });
+
+			std::vector<Model::VertexPosNormalUv> vertices = newObject->GetVertices();
+
+			vertices[ 0 ].uv.x *= objectData.scale.x;
+			vertices[ 1 ].uv.x *= objectData.scale.x;
+			vertices[ 2 ].uv.x *= objectData.scale.x;
+			vertices[ 3 ].uv.x *= objectData.scale.x;
+
+			vertices[ 0 ].uv.x /= 10;
+			vertices[ 1 ].uv.x /= 10;
+			vertices[ 2 ].uv.x /= 10;
+			vertices[ 3 ].uv.x /= 10;
+
+			newObject->SetVertices(vertices);
 
 			// 配列に登録
 			planes_.push_back(std::move(newObject));
@@ -518,7 +594,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			cameraStart_ = objectData.trans;
 		}
-		if (  objectData.tagName== "GunEnemy" )
+		if ( objectData.tagName == "GunEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
