@@ -348,19 +348,18 @@ void GameScene::Update()
 
 	}
 
-	uvShift_.x += 0.01f;
-
-	if ( uvShift_.x >= 1 )
+	for (uint32_t i=0;i< planes_.size();i++)
 	{
-		uvShift_.x = 0;
-	}
+		UVSift_[i].x += 0.01f;
 
-	for ( std::unique_ptr<Object3d>& obj : planes_ )
-	{
+		if ( UVSift_[i].x >= 1 )
+		{
+			UVSift_[ i ].x -= 1;
+		}
 
-		obj->SetUVShift(uvShift_);
+		planes_[ i ]->SetUVShift(UVSift_[ i ]);
 
-		obj->Update();
+		planes_[ i ]->Update();
 	}
 
 
@@ -558,6 +557,14 @@ void GameScene::MapLoad(std::string mapFullpath)
 			vertices[ 3 ].uv.x /= 10;
 
 			newObject->SetVertices(vertices);
+
+			Vector2 UVSift = { (float)(rand()%1000)/1000,0};
+
+			UVSift_.push_back(UVSift);
+
+			Vector2 UVSiftSpeed = { ( float ) ( rand() % 100 ) / 1000,0 };
+
+			UVSiftSpeed_.push_back(UVSiftSpeed);
 
 			// 配列に登録
 			planes_.push_back(std::move(newObject));

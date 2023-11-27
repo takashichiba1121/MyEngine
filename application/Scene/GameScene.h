@@ -139,6 +139,8 @@ private:
 
 	Vector3 lightV = { -1,-1,1 };
 
-	Vector2 uvShift_ = {0,0};
+	std::vector<Vector2> UVSift_;
+
+	std::vector<Vector2> UVSiftSpeed_;
 };
 
