@@ -7,7 +7,7 @@ class GunEnemy :
 public:
 
 
-	void Update(float attackRange) override;
+	void Update() override;
 
 	void Move() override;
 
@@ -21,5 +21,7 @@ public:
 private:
 
 	const uint32_t kAttackTime_ = 120;
+
+	float attackRange_=50;
 };
 

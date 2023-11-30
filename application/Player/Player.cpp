@@ -309,39 +309,33 @@ void Player::Attack()
 
 		if ( Input::Instance()->TriggerKey(DIK_X) )
 		{
-			Vector3 velocity(0,0,1);
-
-			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-			velocity.normalize();
-			velocity *= kBulletSpeed_;
-
-			Vector3 pos[ 3 ]
+			Vector3 velocity[ 3 ]
 			{
-				{0,0,0},
-				{1,0,0},
-				{-1,0,0},
+				{0,0,1},
+				{0.3f,0,1},
+				{-0.3f,0,1},
 			};
 
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
 			for ( int i = 0; i < 3; i++ )
 			{
-				pos[ i ] = Matrix4Math::transform(pos[ i ],obj_->GetMatWorld());
-				pos[ i ].normalize();
-				pos[ i ] *= 3;
+				velocity[i] = Matrix4Math::transform(velocity[i],obj_->GetMatWorld());
+				velocity[i].normalize();
+				velocity[i] *= kBulletSpeed_;
 
 				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },( obj_->GetPosition() + ( velocity * 3 ) ) + pos[ i ],bulletLife_);
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[i].x,velocity[i].z},( obj_->GetPosition() + ( velocity[ 0 ] * 3 ) ),bulletLife_);
 
 				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-				newBullet[ i ]->SetChageTime(30);
+				newBullet[ i ]->SetChageTime(20);
 
 							//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
 
-			interval = 30;
+			interval = 20;
 		}
 	}
 }

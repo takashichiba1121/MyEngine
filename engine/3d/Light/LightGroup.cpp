@@ -127,6 +127,12 @@ void LightGroup::SetPointActive(uint32_t index, bool active)
 	pointLight_[index].SetActive(active);
 }
 
+bool LightGroup::GetPointActive(uint32_t index)
+{
+	assert(0 <= index && index < cDirLightNum);
+	return pointLight_[ index ].IsActive();
+}
+
 void LightGroup::SetPointPos(uint32_t index, const Vector3& lightPos)
 {
 	assert(0 <= index && index < cDirLightNum);

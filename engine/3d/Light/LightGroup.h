@@ -102,6 +102,13 @@ public:
 /// <param name="active">有効フラグ</param>
 	void SetPointActive(uint32_t index, bool active);
 
+		/// <summary>
+/// 点光源の有効フラグをセット
+/// </summary>
+/// <param name="index">ライト番号</param>
+/// <param name="active">有効フラグ</param>
+	bool GetPointActive(uint32_t index);
+
 	/// <summary>
 	/// 点光源のライトの方向設定
 	/// </summary>

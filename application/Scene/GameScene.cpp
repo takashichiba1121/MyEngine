@@ -52,7 +52,7 @@ void GameScene::Initialize()
 
 	Object3d::SetLight(light_.get());
 
-	light_->SetDirLightActive(0,false);
+	light_->SetDirLightActive(0,true);
 
 	light_->SetDirLightActive(1,false);
 
@@ -236,7 +236,7 @@ void GameScene::Update()
 			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
 				isNext_ = true;
-				isStage1_ = true;
+				isStage2_ = true;
 				sceneChange_ = true;
 			}
 
@@ -247,7 +247,7 @@ void GameScene::Update()
 			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
 				isNext_ = true;
-				isStage1_ = true;
+				isStage3_ = true;
 				sceneChange_ = true;
 			}
 		}
@@ -284,7 +284,7 @@ void GameScene::Update()
 			{
 				if ( isStage1_ == true )
 				{
-					MapLoad("Resources/Stage2.json");
+					MapLoad("Resources/Stage1.json");
 
 					player_->SetMapData(&objects_);
 
@@ -300,7 +300,7 @@ void GameScene::Update()
 				}
 				else if ( isStage2_ == true )
 				{
-					MapLoad("Resources/Stage1.json");
+					MapLoad("Resources/Stage2.json");
 
 					player_->SetMapData(&objects_);
 
@@ -316,7 +316,7 @@ void GameScene::Update()
 				}
 				else
 				{
-					MapLoad("Resources/Stage1.json");
+					MapLoad("Resources/Stage3.json");
 
 					player_->SetMapData(&objects_);
 
@@ -350,7 +350,7 @@ void GameScene::Update()
 
 	for (uint32_t i=0;i< planes_.size();i++)
 	{
-		UVSift_[i].x += 0.01f;
+		UVSift_[i].x += 0.02f;
 
 		if ( UVSift_[i].x >= 1 )
 		{
@@ -544,25 +544,27 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 座標
 			newObject->SetScale({ objectData.scale });
 
-			std::vector<Model::VertexPosNormalUv> vertices = newObject->GetVertices();
+			//std::vector<Model::VertexPosNormalUv> vertices = newObject->GetVertices();
 
-			vertices[ 0 ].uv.x *= objectData.scale.x;
-			vertices[ 1 ].uv.x *= objectData.scale.x;
-			vertices[ 2 ].uv.x *= objectData.scale.x;
-			vertices[ 3 ].uv.x *= objectData.scale.x;
+			//vertices[ 0 ].uv.x *= objectData.scale.x;
+			//vertices[ 1 ].uv.x *= objectData.scale.x;
+			//vertices[ 2 ].uv.x *= objectData.scale.x;
+			//vertices[ 3 ].uv.x *= objectData.scale.x;
 
-			vertices[ 0 ].uv.x /= 10;
-			vertices[ 1 ].uv.x /= 10;
-			vertices[ 2 ].uv.x /= 10;
-			vertices[ 3 ].uv.x /= 10;
+			//float UVScale = ( float ) ( rand() % 5 + 5 );
 
-			newObject->SetVertices(vertices);
+			//vertices[ 0 ].uv.x /= UVScale;
+			//vertices[ 1 ].uv.x /= UVScale;
+			//vertices[ 2 ].uv.x /= UVScale;
+			//vertices[ 3 ].uv.x /= UVScale;
 
-			Vector2 UVSift = { (float)(rand()%1000)/1000,0};
+			//newObject->SetVertices(vertices);
+
+			Vector2 UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
 
 			UVSift_.push_back(UVSift);
 
-			Vector2 UVSiftSpeed = { ( float ) ( rand() % 100 ) / 1000,0 };
+			Vector2 UVSiftSpeed = { ( float ) ( ( rand() % 500 / objectData.scale.x ) + 50 ) / 100,0 };
 
 			UVSiftSpeed_.push_back(UVSiftSpeed);
 
@@ -609,7 +611,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
-			enemy->Update(25);
+			enemy->Update();
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
@@ -621,7 +623,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
 
-			enemy->Update(25);
+			enemy->Update();
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}

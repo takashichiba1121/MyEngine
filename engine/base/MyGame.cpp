@@ -7,6 +7,7 @@
 #include"PostEffectMixeds.h"
 #include"imguiManager.h"
 #include<imgui.h>
+#include"input.h"
 
 
 using namespace std;
@@ -36,8 +37,8 @@ void MyGame::Initialize()
 	smoothstepMax = 0.9f;
 	smoothstepMin = 0.6f;
 
-	sigma = 0.01f;
-	stepWidth = 0.002f;
+	sigma = 0.005f;
+	stepWidth = 0.001f;
 }
 
 void MyGame::Finalize()
@@ -53,8 +54,8 @@ void MyGame::Update()
 	ImGui::Begin("postEffect");
 
 	ImGui::Text("Blur");
-	ImGui::SliderFloat("sigma",&sigma,0.01f,0.5f,"%0.2f");
-	ImGui::SliderFloat("stepWidth",&stepWidth,0.001f,0.01f,"%0.3f");
+	ImGui::SliderFloat("sigma",&sigma,0.005f,0.5f,"%0.3f");
+	ImGui::SliderFloat("stepWidth",&stepWidth,0.001f,0.005f,"%0.3f");
 
 	ImGui::Text("Luminance");
 	ImGui::SliderFloat("Max",&smoothstepMax,0.0f,1.0f,"%1.2f");
@@ -67,8 +68,20 @@ void MyGame::Update()
 	PostEffectLuminance::Instance()->Update(LuminanceColor,smoothstepMax,smoothstepMin);
 
 	PostEffectBlur::Instance()->Update(sigma,stepWidth);
+
+	if (Input::Instance()->TriggerKey(DIK_1))
+	{
+		if (isPostEffect )
+		{
+			isPostEffect = false;
+		}
+		else
+		{
+			isPostEffect = true;
+		}
+	}
 #endif
-} 
+}
 
 void MyGame::Draw()
 {
@@ -91,10 +104,15 @@ void MyGame::Draw()
 	renderTarget3->PostDraw(dxCommon_->GetCommandList());
 
 	Framework::GetDxCommon()->PreDraw();
+	if ( isPostEffect )
+	{
+		PostEffectMixeds::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget3->GettexHandle(),renderTarget1->GettexHandle());
+	}
+	else
+	{
 
-	PostEffectMixeds::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget3->GettexHandle(),renderTarget1->GettexHandle());
-
-	//SceneManager::Instance()->Draw(dxCommon_.get());
+		SceneManager::Instance()->Draw(dxCommon_.get());
+	}
 
 	SceneManager::Instance()->SpriteDraw();
 
@@ -103,5 +121,5 @@ void MyGame::Draw()
 #endif
 	Framework::GetDxCommon()->PostDrow();
 
-	
+
 }

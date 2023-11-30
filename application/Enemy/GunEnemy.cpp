@@ -2,7 +2,7 @@
 #include"EnemyManager.h"
 
 
-void GunEnemy::Update(float attackRange)
+void GunEnemy::Update()
 {
 	if ( isDaed_ == false )
 	{
@@ -34,7 +34,7 @@ void GunEnemy::Update(float attackRange)
 
 		enemyYmin = enemyPos.y - ( enemyScale.y + 3 );
 
-		isMove_ = ( distance <= attackRange && ( playerYmax >= enemyYmin && playerYmin <= enemyYmax ) );
+		isMove_ = ( distance <= attackRange_ && ( playerYmax >= enemyYmin && playerYmin <= enemyYmax ) );
 	}
 	else
 	{

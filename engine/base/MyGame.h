@@ -28,6 +28,8 @@ private:
 
 	float sigma;
 	float stepWidth;
+
+	bool isPostEffect=true;
 };
 
  

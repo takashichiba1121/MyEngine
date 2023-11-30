@@ -2,7 +2,7 @@
 #include"EnemyManager.h"
 
 
-void RunEnemy::Update(float attackRange)
+void RunEnemy::Update()
 {
 	if ( isDaed_ == false )
 	{
@@ -30,7 +30,7 @@ void RunEnemy::Update(float attackRange)
 
 		enemyYmin = enemyPos.y - enemyScale.y;
 
-		isMove_ = ( distance <= attackRange && ( playerPos.y == enemyPos.y ) );
+		isMove_ = ( distance <= attackRange_ && ( playerPos.y == enemyPos.y ) );
 
 		if ( isMove_ == false )
 		{

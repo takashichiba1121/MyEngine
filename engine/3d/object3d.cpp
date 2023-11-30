@@ -18,7 +18,8 @@ ID3D12Device* Object3d::sDevice = nullptr;
 //UINT Object3d::descriptorHandleIncrementSize = 0;
 ID3D12GraphicsCommandList* Object3d::sCmdList = nullptr;
 ComPtr<ID3D12RootSignature> Object3d::sRootsignature;
-ComPtr<ID3D12PipelineState> Object3d::sPipelinestate;
+ComPtr<ID3D12PipelineState> Object3d::sPipelinestateModeBack;
+ComPtr<ID3D12PipelineState> Object3d::sPipelinestateModeNone;
 //ComPtr<ID3D12DescriptorHeap> Object3d::descHeap;
 //ComPtr<ID3D12Resource> Object3d::texbuff;
 //CD3DX12_CPU_DESCRIPTOR_HANDLE Object3d::cpuDescHandleSRV;
@@ -66,11 +67,28 @@ void Object3d::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	Object3d::sCmdList = cmdList;
 
 	// パイプラインステートの設定
-	cmdList->SetPipelineState(sPipelinestate.Get());
+	sCmdList->SetPipelineState(sPipelinestateModeBack.Get());
 	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(sRootsignature.Get());
+	sCmdList->SetGraphicsRootSignature(sRootsignature.Get());
 	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	sCmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void Object3d::ChangePipeLine(pipelineType Type)
+{
+	switch ( Type )
+	{
+	case Object3d::CullBack:
+			// パイプラインステートの設定
+		sCmdList->SetPipelineState(sPipelinestateModeBack.Get());
+		break;
+	case Object3d::CullNone:
+			// パイプラインステートの設定
+		sCmdList->SetPipelineState(sPipelinestateModeNone.Get());
+		break;
+	default:
+		break;
+	}
 }
 
 void Object3d::PostDraw()
@@ -218,7 +236,7 @@ void Object3d::InitializeGraphicsPipeline()
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	//gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
 	gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;//ポリゴン内塗りつぶし
 	gpipeline.RasterizerState.DepthClipEnable = true;//深度グリッピングを有効に
 	// デプスステンシルステート
@@ -289,9 +307,14 @@ void Object3d::InitializeGraphicsPipeline()
 	gpipeline.pRootSignature = sRootsignature.Get();
 
 	// グラフィックスパイプラインの生成
-	result = sDevice->CreateGraphicsPipelineState(&gpipeline,IID_PPV_ARGS(&sPipelinestate));
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline,IID_PPV_ARGS(&sPipelinestateModeBack));
 	assert(SUCCEEDED(result));
 
+	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+
+		// グラフィックスパイプラインの生成
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline,IID_PPV_ARGS(&sPipelinestateModeNone));
+	assert(SUCCEEDED(result));
 }
 
 void Object3d::UpdateViewMatrix()
@@ -345,7 +368,8 @@ void Object3d::UpdateViewMatrix()
 
 void Object3d::Finalize()
 {
-	sPipelinestate = nullptr;
+	sPipelinestateModeBack = nullptr;
+	sPipelinestateModeNone = nullptr;
 	sRootsignature = nullptr;
 }
 

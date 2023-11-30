@@ -36,7 +36,7 @@ void EnemyManager::Update()
 
 	for ( std::unique_ptr<Enemy>& enemy : Enemys_ )
 	{
-		enemy->Update(attackRange_);
+		enemy->Update();
 	}
 
 	for ( std::unique_ptr<EnemyBullet>& bullet : bullets_ )

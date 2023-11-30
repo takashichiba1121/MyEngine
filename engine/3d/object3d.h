@@ -41,6 +41,12 @@ public: // サブクラス
 		float _PositionFactor = 0.0f;
 	};
 
+	enum pipelineType
+	{
+		CullBack,
+		CullNone
+	};
+
 public: // 静的メンバ関数
 	/// <summary>
 	/// 静的初期化
@@ -55,6 +61,8 @@ public: // 静的メンバ関数
 	/// </summary>
 	/// <param name="cmdList">描画コマンドリスト</param>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
+
+	static void ChangePipeLine(pipelineType Type);
 
 	/// <summary>
 	/// 描画後処理
@@ -128,7 +136,9 @@ private: // 静的メンバ変数
 	// ルートシグネチャ
 	static ComPtr<ID3D12RootSignature> sRootsignature;
 	// パイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> sPipelinestate;
+	static ComPtr<ID3D12PipelineState> sPipelinestateModeBack;
+	// パイプラインステートオブジェクト
+	static ComPtr<ID3D12PipelineState> sPipelinestateModeNone;
 	// ビュー行列
 	static Matrix4 sMatView;
 	// 射影行列

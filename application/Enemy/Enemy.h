@@ -10,7 +10,7 @@ public:
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	virtual void Update(float attackRange);
+	virtual void Update();
 
 	/// <summary>
 	/// 動き全般
