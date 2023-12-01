@@ -37,7 +37,7 @@ void LightGroup::Initialize()
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	// リソース設定
 	CD3DX12_RESOURCE_DESC resourceDesc =
-		CD3DX12_RESOURCE_DESC::Buffer((sizeof(constBuff_) + 0xff) & ~0xff);
+		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff);
 
 	// 定数バッファの生成
 	result = sDevice->CreateCommittedResource(
@@ -75,28 +75,31 @@ void  LightGroup::TransferConstBuffer()
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	constMap->ambientColor = ambientColor_;
-	for (uint32_t i=0;i<cDirLightNum;i++)
+	for ( uint32_t i = 0; i < cDirLightNum; i++ )
 	{
-		if (dirLights_[i].IsActive())
+		if ( dirLights_[ i ].IsActive() )
 		{
-			constMap->dirLights[i].active = 1;
-			constMap->dirLights[i].lightv = -dirLights_[i].GetLightDir();
-			constMap->dirLights[i].lightcolor = dirLights_[i].GetLightColor();
+			constMap->dirLights[ i ].active = 1;
+			constMap->dirLights[ i ].lightv = -dirLights_[ i ].GetLightDir();
+			constMap->dirLights[ i ].lightcolor = dirLights_[ i ].GetLightColor();
 		}
 		else
 		{
-			constMap->dirLights[i].active = 0;
+			constMap->dirLights[ i ].active = 0;
 		}
-		if (pointLight_[i].IsActive())
+	}
+	for ( uint32_t i = 0; i < cPointLightNum; i++ )
+	{
+		if ( pointLight_[ i ].IsActive() )
 		{
-			constMap->pointLight[i].active = 1;
-			constMap->pointLight[i].lightPos = -pointLight_[i].GetLightPos();
-			constMap->pointLight[i].lightcolor = pointLight_[i].GetLightColor();
-			constMap->pointLight[i].lightatten = pointLight_[i].GetLightAtten();
+			constMap->pointLight[ i ].active = 1;
+			constMap->pointLight[ i ].lightPos = -pointLight_[ i ].GetLightPos();
+			constMap->pointLight[ i ].lightcolor = pointLight_[ i ].GetLightColor();
+			constMap->pointLight[ i ].lightatten = pointLight_[ i ].GetLightAtten();
 		}
 		else
 		{
-			constMap->pointLight[i].active = 0;
+			constMap->pointLight[ i ].active = 0;
 		}
 	}
 	constBuff_->Unmap(0, nullptr);
@@ -123,33 +126,33 @@ void LightGroup::SetDirLightColor(uint32_t index, const Vector3& lightcolor)
 
 void LightGroup::SetPointActive(uint32_t index, bool active)
 {
-	assert(0 <= index && index < cDirLightNum);
+	assert(0 <= index && index < cPointLightNum);
 	pointLight_[index].SetActive(active);
 }
 
 bool LightGroup::GetPointActive(uint32_t index)
 {
-	assert(0 <= index && index < cDirLightNum);
+	assert(0 <= index && index < cPointLightNum);
 	return pointLight_[ index ].IsActive();
 }
 
 void LightGroup::SetPointPos(uint32_t index, const Vector3& lightPos)
 {
-	assert(0 <= index && index < cDirLightNum);
+	assert(0 <= index && index < cPointLightNum);
 	pointLight_[index].SetLightPos(lightPos);
 	dirty_ = true;
 }
 
 void LightGroup::SetPointColor(uint32_t index, const Vector3& lightcolor)
 {
-	assert(0 <= index && index < cDirLightNum);
+	assert(0 <= index && index < cPointLightNum);
 	pointLight_[index].SetLightColor(lightcolor);
 	dirty_ = true;
 }
 
 void LightGroup::SetPointAtten(uint32_t index, const Vector3& lightAtten)
 {
-	assert(0 <= index && index < cDirLightNum);
+	assert(0 <= index && index < cPointLightNum);
 	pointLight_[index].SetLightAtten(lightAtten);
 	dirty_ = true;
 }

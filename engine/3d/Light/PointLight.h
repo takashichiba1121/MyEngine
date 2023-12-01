@@ -33,7 +33,7 @@ public:
 
 	void SetLightColor(const Vector3& lightColor) { lightColor_ = lightColor; }
 
-	void SetLightAtten(const Vector3& lightAtten) { lightPos_ = lightAtten; }
+	void SetLightAtten(const Vector3& lightAtten) {lightAtten_ = lightAtten; }
 
 	Vector3 GetLightAtten() { return lightAtten_; }
 

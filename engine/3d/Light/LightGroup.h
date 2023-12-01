@@ -12,7 +12,7 @@ private: // エイリアス
 public://定数
 	static const uint32_t cDirLightNum = 3;
 
-	static const uint32_t cPointLightNum = 3;
+	static const uint32_t cPointLightNum = 20;
 
 public://サブクラス
 	//定数バッファ用データ構造体
@@ -38,7 +38,7 @@ private:
 
 	DirectionalLight dirLights_[cDirLightNum];
 
-	PointLight pointLight_[cDirLightNum];
+	PointLight pointLight_[ cPointLightNum ];
 
 	bool dirty_ = false;
 public:
@@ -110,10 +110,10 @@ public:
 	bool GetPointActive(uint32_t index);
 
 	/// <summary>
-	/// 点光源のライトの方向設定
+	/// 点光源のライトの位置設定
 	/// </summary>
 	/// <param name="index">ライト番号</param>
-	/// <param name="lightdir">ライト方向</param>
+	/// <param name="lightdir">ライト位置</param>
 	void SetPointPos(uint32_t index, const Vector3& lightPos);
 
 	/// <summary>
@@ -124,10 +124,10 @@ public:
 	void SetPointColor(uint32_t index, const Vector3& lightcolor);
 
 	/// <summary>
-/// 点光源のライト色をセット
+/// 点光源の減衰係数をセット
 /// </summary>
 /// <param name="index">ライト番号</param>
-/// <param name="lightcolor">ライト色</param>
+/// <param name="lightcolor">ライトの減衰係数</param>
 	void SetPointAtten(uint32_t index, const Vector3& lightAtten);
 
 	/// <summary>

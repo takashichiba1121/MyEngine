@@ -47,6 +47,8 @@ public:
 
 	void SetChageTime(uint32_t Time) {chageTime_=Time;}
 
+	void SetLight(LightGroup* light,uint32_t lightIndex);
+
 private:
 
 	std::unique_ptr<Object3d> obj_;
@@ -64,4 +66,8 @@ private:
 	uint32_t chageTimer_ = 0;
 
 	Phase phase_ = Phase::Charge;
+
+	LightGroup* light_;
+
+	uint32_t lightIndex_;
 };

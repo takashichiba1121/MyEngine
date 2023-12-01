@@ -301,6 +301,16 @@ void Player::Attack()
 
 			newBullet->SetChageTime(10);
 
+			for (uint32_t i=0;i<20;i++ )
+			{
+				if ( light_->GetPointActive(i) == false )
+				{
+					newBullet->SetLight(light_,i);
+
+					break;
+				}
+			}
+
 			interval = 10;
 
 			//弾の登録する
@@ -330,6 +340,16 @@ void Player::Attack()
 				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
 				newBullet[ i ]->SetChageTime(20);
+
+				for (int j = 0; j < 20; j++ )
+				{
+					if ( light_->GetPointActive(j) == false )
+					{
+						newBullet[i]->SetLight(light_,j);
+
+						break;
+					}
+				}
 
 							//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));

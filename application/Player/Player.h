@@ -66,6 +66,10 @@ public:
 	Object3d* GetObj() { return obj_.get(); }
 
 	bool IsDaed() { return isDelete_; }
+
+	void SetLight(LightGroup* light) {light_ = light;}
+
+	LightGroup* GetLight() {return light_;}
 private:
 #pragma region パラメーター
 	float gravityAcceleration_ = 0.03f;
@@ -124,5 +128,7 @@ private:
 	const float ExplosionMaxFrame = 60;
 
 	uint32_t interval=0;
+
+	LightGroup* light_;
 };
 

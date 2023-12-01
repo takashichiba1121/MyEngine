@@ -12,12 +12,9 @@ float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
 
 float3 ambient = m_ambient;
 
-//視点座標
-const float3 eye = float3(0, 0, -20);
-
 float4 shadecolor=float4(ambientColor*ambient,m_alpha);
 
-for (uint i=0;i< DIR_LIGHT_NUM;i++)
+for (uint i=0;i< DIRLIGHT_NUM;i++)
 {
 	if (dirLights[i].active)
 	{
@@ -34,7 +31,7 @@ for (uint i=0;i< DIR_LIGHT_NUM;i++)
 	}
 }
 
-for (uint i = 0; i < DIR_LIGHT_NUM; i++)
+for (i = 0; i < POINTLIGHT_NUM; i++)
 {
 	if (PointLights[i].active)
 	{
@@ -48,7 +45,7 @@ for (uint i = 0; i < DIR_LIGHT_NUM; i++)
 		//距離減衰係数
 		float atten = 1.0f / (PointLights[i].lightAtten.x + PointLights[i].lightAtten.y * d + PointLights[i].lightAtten.z * d * d);
 
-		//ライトに向かうベクトルと法線のない席
+		//ライトに向かうベクトルと法線のない積
 		float3 dotlightnormal = dot(lightv, input.normal);
 		//反射光ベクトル
 		float3 reflect = normalize(-lightv + 2 * dotlightnormal * input.normal);

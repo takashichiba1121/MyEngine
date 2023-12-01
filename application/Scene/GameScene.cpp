@@ -115,6 +115,8 @@ void GameScene::Initialize()
 
 	player_->SetMapData(&objects_);
 
+	player_->SetLight(light_.get());
+
 	EnemyManager::Instance()->SetMapData(&objects_);
 
 	EnemyManager::Instance()->SetPlayer(player_.get());
@@ -133,10 +135,6 @@ void GameScene::Update()
 
 	ImGui::End();
 #endif
-
-	light_->SetDirLightDir(0,lightV);
-
-	light_->Update();
 
 	if ( Input::Instance()->TriggerKey(DIK_0) )
 	{
@@ -361,7 +359,9 @@ void GameScene::Update()
 
 		planes_[ i ]->Update();
 	}
+	light_->SetDirLightDir(0,lightV);
 
+	light_->Update();
 
 	goalObj_->Update();
 

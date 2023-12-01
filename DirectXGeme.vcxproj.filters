@@ -432,9 +432,6 @@
     <FxCompile Include="Resources\shaders\ObjGS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
-      <Filter>シェーダーファイル\3D</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ObjVS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
@@ -476,6 +473,9 @@
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectBlurVS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
+      <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,9 @@ cbuffer cbuff1 : register(b1) {
     float m_alpha : packoffset(c2.w); //ƒAƒ‹ƒtƒ@
 };
 
-static const uint DIR_LIGHT_NUM = 3;
+static const uint DIRLIGHT_NUM = 3;
+
+static const uint POINTLIGHT_NUM = 20;
 
 struct DirLight
 {
@@ -35,8 +37,8 @@ struct PointLight
 
 cbuffer cbuff2 : register(b2) {
     float3 ambientColor;
-    DirLight dirLights[DIR_LIGHT_NUM];
-    PointLight PointLights[DIR_LIGHT_NUM];
+    DirLight dirLights[DIRLIGHT_NUM];
+    PointLight PointLights[POINTLIGHT_NUM];
 };
 
 cbuffer cbuff3 : register(b3) {

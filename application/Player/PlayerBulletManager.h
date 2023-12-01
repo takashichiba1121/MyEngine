@@ -1,6 +1,7 @@
 #pragma once
 #include"Player.h"
 #include"PlayerBullet.h"
+#include"LightGroup.h"
 class PlayerBulletManager
 {
 #pragma region Singleton

@@ -37,23 +37,27 @@ void PlayerBullet::Update()
 		}
 
 		break;
-	case Phase::Attack:
-		if ( --life_ <= 0 )
-		{
-			isDead_ = true;
-		}
+	//case Phase::Attack:
+	//	if ( --life_ <= 0 )
+	//	{
+	//		light_->SetPointActive(lightIndex_,false);
 
-		move = obj_->GetPosition();
+	//		isDead_ = true;
+	//	}
 
-		move += {velocity_.x,0,velocity_.y};
+	//	move = obj_->GetPosition();
 
-		obj_->SetPosition(move);
-		break;
+	//	move += {velocity_.x,0,velocity_.y};
+
+	//	obj_->SetPosition(move);
+	//	break;
 	default:
 		break;
 	}
 
 	obj_->Update();
+
+	light_->SetPointPos(lightIndex_,obj_->GetPosition());
 }
 
 void PlayerBullet::Draw()
@@ -84,6 +88,8 @@ void PlayerBullet::OnCollision()
 
 		//追加
 		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{3,3,1,1},{3,3,0.5,1});
+
+		light_->SetPointActive(lightIndex_,false);
 	}
 }
 
@@ -97,4 +103,19 @@ void PlayerBullet::SetPhase(Phase phase)
 
 		obj_->Update();
 	}
+}
+
+void PlayerBullet::SetLight(LightGroup* light,uint32_t lightIndex)
+{
+	light_ = light;
+
+	lightIndex_ = lightIndex;
+
+	light_->SetPointActive(lightIndex_,true);
+
+	light_->SetPointPos(lightIndex_,obj_->GetPosition());
+
+	light_->SetPointColor(lightIndex_,{1,1,1});
+
+	light_->SetPointAtten(lightIndex_,{0.0015f,0.0015f,0.0015f});
 }
