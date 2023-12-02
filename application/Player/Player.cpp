@@ -240,6 +240,20 @@ void Player::Attack()
 
 			newBullet->SetPhase(PlayerBullet::Phase::Charge);
 
+			for ( uint32_t i = 0; i < 20; i++ )
+			{
+				if ( light_->GetPointActive(i) == false )
+				{
+					newBullet->SetLight(light_,i);
+
+					break;
+				}
+				if (i<=19 )
+				{
+					newBullet->SetLight(light_,-1);
+				}
+			}
+
 			newBullet->SetChageTime(10);
 
 			interval = 10;
@@ -247,41 +261,44 @@ void Player::Attack()
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
 		}
-		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_RIGHT_THUMB))
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_RIGHT_THUMB) )
 		{
-			Vector3 velocity(0,0,1);
-
-			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-			velocity.normalize();
-			velocity *= kBulletSpeed_;
-
-			Vector3 pos[ 3 ]
-			{
-				{0,0,0},
-				{1,0,0},
-				{-1,0,0},
-			};
-
 			//弾の生成し、初期化
 			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
+
+			Vector3 velocity[ 3 ]
+			{
+				{0,0,1},
+				{0.3f,0,1},
+				{-0.3f,0,1},
+			};
 			for ( int i = 0; i < 3; i++ )
 			{
-				pos[ i ] = Matrix4Math::transform(pos[ i ],obj_->GetMatWorld());
-				pos[ i ].normalize();
-				pos[ i ] *= 3;
+				velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
+				velocity[ i ].normalize();
+				velocity[ i ] *= kBulletSpeed_;
 
 				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },( obj_->GetPosition() + ( velocity * 3 ) ) + pos[ i ],bulletLife_);
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },( obj_->GetPosition() + ( velocity[ 0 ] * 3 ) ),bulletLife_);
 
 				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-				newBullet[ i ]->SetChageTime(30);
+				newBullet[ i ]->SetChageTime(20);
+
+				for ( int j = 0; j < 20; j++ )
+				{
+					if ( light_->GetPointActive(j) == false )
+					{
+						newBullet[ i ]->SetLight(light_,j);
+
+						break;
+					}
+				}
 
 							//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
-
-			interval = 30;
+			interval = 20;
 		}
 	}
 	else
@@ -301,7 +318,7 @@ void Player::Attack()
 
 			newBullet->SetChageTime(10);
 
-			for (uint32_t i=0;i<20;i++ )
+			for ( uint32_t i = 0; i < 20; i++ )
 			{
 				if ( light_->GetPointActive(i) == false )
 				{
@@ -330,22 +347,22 @@ void Player::Attack()
 			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
 			for ( int i = 0; i < 3; i++ )
 			{
-				velocity[i] = Matrix4Math::transform(velocity[i],obj_->GetMatWorld());
-				velocity[i].normalize();
-				velocity[i] *= kBulletSpeed_;
+				velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
+				velocity[ i ].normalize();
+				velocity[ i ] *= kBulletSpeed_;
 
 				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[i].x,velocity[i].z},( obj_->GetPosition() + ( velocity[ 0 ] * 3 ) ),bulletLife_);
+				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },( obj_->GetPosition() + ( velocity[ 0 ] * 3 ) ),bulletLife_);
 
 				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
 				newBullet[ i ]->SetChageTime(20);
 
-				for (int j = 0; j < 20; j++ )
+				for ( int j = 0; j < 20; j++ )
 				{
 					if ( light_->GetPointActive(j) == false )
 					{
-						newBullet[i]->SetLight(light_,j);
+						newBullet[ i ]->SetLight(light_,j);
 
 						break;
 					}
@@ -394,6 +411,11 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	paMan_->Clear();
 
 	PlayerBulletManager::Instance()->Clear();
+
+	for ( int i = 0; i < 20; i++ )
+	{
+		light_->SetPointActive(i,false);
+	}
 }
 
 Vector3 Player::MapCollision()
@@ -535,41 +557,48 @@ void Player::EnemyCollision()
 
 				bulletCube.Pos = bullet->GetPosition();
 				bulletCube.scale = bullet->GetScale();
-				if ( Collider::CubeAndCube(enemyCube,bulletCube,Collider::Collsion) == true )
+				if ((bulletCube.Pos.x+ bulletCube.Pos.y + bulletCube.Pos.z/3)- ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 )<=3
+					&& ( bulletCube.Pos.x + bulletCube.Pos.y + bulletCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )
 				{
-					bullet->OnCollision();
+					if ( Collider::CubeAndCube(enemyCube,bulletCube,Collider::Collsion) == true )
+					{
+						bullet->OnCollision();
 
-					enemy->OnCollision();
+						enemy->OnCollision();
+					}
 				}
 			}
-
-			if ( Collider::CubeAndCube(enemyCube,playerCube,Collider::Collsion) == true )
+			if ( ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
+					&& ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )
 			{
-				if ( isKnockBack_ == false )
+				if ( Collider::CubeAndCube(enemyCube,playerCube,Collider::Collsion) == true )
 				{
-					hp_--;
-
-					isKnockBack_ = true;
-
-					for ( int i = 0; i < 10; i++ )
+					if ( isKnockBack_ == false )
 					{
-						//消えるまでの時間
-						const uint32_t rnd_life = 10;
-						//最低限のライフ
-						const uint32_t constlife = 60;
-						uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+						hp_--;
 
-						//XYZの広がる距離
-						const float rnd_pos = 0.1f;
-						Vector3 pos{};
-						pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-						pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-						pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+						isKnockBack_ = true;
 
-						//pos.normalize();
+						for ( int i = 0; i < 10; i++ )
+						{
+							//消えるまでの時間
+							const uint32_t rnd_life = 10;
+							//最低限のライフ
+							const uint32_t constlife = 60;
+							uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
-						//追加
-						paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+							//XYZの広がる距離
+							const float rnd_pos = 0.1f;
+							Vector3 pos{};
+							pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+							pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+							pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+							//pos.normalize();
+
+							//追加
+							paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+						}
 					}
 				}
 			}

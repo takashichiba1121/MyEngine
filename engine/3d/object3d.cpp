@@ -20,6 +20,7 @@ ID3D12GraphicsCommandList* Object3d::sCmdList = nullptr;
 ComPtr<ID3D12RootSignature> Object3d::sRootsignature;
 ComPtr<ID3D12PipelineState> Object3d::sPipelinestateModeBack;
 ComPtr<ID3D12PipelineState> Object3d::sPipelinestateModeNone;
+ComPtr<ID3D12PipelineState> Object3d::sPipelinestateLight;
 //ComPtr<ID3D12DescriptorHeap> Object3d::descHeap;
 //ComPtr<ID3D12Resource> Object3d::texbuff;
 //CD3DX12_CPU_DESCRIPTOR_HANDLE Object3d::cpuDescHandleSRV;
@@ -86,6 +87,10 @@ void Object3d::ChangePipeLine(pipelineType Type)
 			// パイプラインステートの設定
 		sCmdList->SetPipelineState(sPipelinestateModeNone.Get());
 		break;
+	case Object3d::Light:
+			// パイプラインステートの設定
+		sCmdList->SetPipelineState(sPipelinestateLight.Get());
+		break;
 	default:
 		break;
 	}
@@ -133,6 +138,7 @@ void Object3d::InitializeGraphicsPipeline()
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> gsBlob;	// ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> psBlob;	// ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> psLightBlob;	// ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
@@ -192,6 +198,30 @@ void Object3d::InitializeGraphicsPipeline()
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob,&errorBlob);
+	if ( FAILED(result) )
+	{
+// errorBlobからエラー内容をstring型にコピー
+		std::string errstr;
+		errstr.resize(errorBlob->GetBufferSize());
+
+		std::copy_n(( char* ) errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			errstr.begin());
+		errstr += "\n";
+		// エラー内容を出力ウィンドウに表示
+		OutputDebugStringA(errstr.c_str());
+		exit(1);
+	}
+
+		// ピクセルシェーダの読み込みとコンパイル
+	result = D3DCompileFromFile(
+		L"Resources/shaders/ObjNotLightPS.hlsl",	// シェーダファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+		"main","ps_5_0",	// エントリーポイント名、シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		0,
+		&psLightBlob,&errorBlob);
 	if ( FAILED(result) )
 	{
 // errorBlobからエラー内容をstring型にコピー
@@ -315,6 +345,14 @@ void Object3d::InitializeGraphicsPipeline()
 		// グラフィックスパイプラインの生成
 	result = sDevice->CreateGraphicsPipelineState(&gpipeline,IID_PPV_ARGS(&sPipelinestateModeNone));
 	assert(SUCCEEDED(result));
+
+	gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
+
+	gpipeline.PS= CD3DX12_SHADER_BYTECODE(psLightBlob.Get());
+
+	// グラフィックスパイプラインの生成
+	result = sDevice->CreateGraphicsPipelineState(&gpipeline,IID_PPV_ARGS(&sPipelinestateLight));
+	assert(SUCCEEDED(result));
 }
 
 void Object3d::UpdateViewMatrix()
@@ -370,6 +408,7 @@ void Object3d::Finalize()
 {
 	sPipelinestateModeBack = nullptr;
 	sPipelinestateModeNone = nullptr;
+	sPipelinestateLight = nullptr;
 	sRootsignature = nullptr;
 }
 

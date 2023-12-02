@@ -93,7 +93,7 @@ void  LightGroup::TransferConstBuffer()
 		if ( pointLight_[ i ].IsActive() )
 		{
 			constMap->pointLight[ i ].active = 1;
-			constMap->pointLight[ i ].lightPos = -pointLight_[ i ].GetLightPos();
+			constMap->pointLight[ i ].lightPos = pointLight_[ i ].GetLightPos();
 			constMap->pointLight[ i ].lightcolor = pointLight_[ i ].GetLightColor();
 			constMap->pointLight[ i ].lightatten = pointLight_[ i ].GetLightAtten();
 		}
@@ -128,6 +128,7 @@ void LightGroup::SetPointActive(uint32_t index, bool active)
 {
 	assert(0 <= index && index < cPointLightNum);
 	pointLight_[index].SetActive(active);
+	dirty_ = true;
 }
 
 bool LightGroup::GetPointActive(uint32_t index)

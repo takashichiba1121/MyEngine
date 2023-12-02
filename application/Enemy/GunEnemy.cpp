@@ -1,6 +1,7 @@
 #include "GunEnemy.h"
 #include"EnemyManager.h"
 
+LightGroup* Enemy::light_;
 
 void GunEnemy::Update()
 {
@@ -87,6 +88,19 @@ void GunEnemy::Attack()
 
 		newBullet->SetPhase(EnemyBullet::Phase::Charge);
 
+		for ( int i = 0; i < 20; i++ )
+		{
+			if ( light_->GetPointActive(i) == false )
+			{
+				newBullet->SetLight(i);
+
+				break;
+			}
+			if (i>=19)
+			{
+				newBullet->SetLight(-1);
+			}
+		}
 		//弾の登録する
 		EnemyManager::Instance()->AddBullet(std::move(newBullet));
 	}

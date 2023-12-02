@@ -36,7 +36,7 @@ for (i = 0; i < POINTLIGHT_NUM; i++)
 	if (PointLights[i].active)
 	{
 		//ライトへのベクトル
-		float3 lightv = PointLights[i].lightpos - input.worldpos.xyz;
+		float3 lightv =PointLights[i].lightpos-input.worldpos;
 		//ベクトルの長さ
 		float d = length(lightv);
 		//正規化し、単位ベクトルとする
@@ -55,7 +55,7 @@ for (i = 0; i < POINTLIGHT_NUM; i++)
 		float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 
 		//すべて加算する
-		shadecolor.rgb += atten * (diffuse + specular) * PointLights[i].lightcolor;
+		shadecolor.rgb += abs(atten * (diffuse + specular) * PointLights[i].lightcolor);
 	}
 }
 return target*shadecolor;

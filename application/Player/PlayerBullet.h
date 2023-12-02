@@ -47,7 +47,7 @@ public:
 
 	void SetChageTime(uint32_t Time) {chageTime_=Time;}
 
-	void SetLight(LightGroup* light,uint32_t lightIndex);
+	void SetLight(LightGroup* light,int32_t lightIndex);
 
 private:
 
@@ -69,5 +69,5 @@ private:
 
 	LightGroup* light_;
 
-	uint32_t lightIndex_;
+	int32_t lightIndex_;
 };

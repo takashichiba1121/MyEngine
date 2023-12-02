@@ -37,38 +37,48 @@ void PlayerBullet::Update()
 		}
 
 		break;
-	//case Phase::Attack:
-	//	if ( --life_ <= 0 )
-	//	{
-	//		light_->SetPointActive(lightIndex_,false);
+	case Phase::Attack:
+		if ( --life_ <= 0 )
+		{
+			if ( lightIndex_ >= 0 )
+			{
+				light_->SetPointActive(lightIndex_,false);
+			}
+			isDead_ = true;
+		}
 
-	//		isDead_ = true;
-	//	}
+		move = obj_->GetPosition();
 
-	//	move = obj_->GetPosition();
+		move += {velocity_.x,0,velocity_.y};
 
-	//	move += {velocity_.x,0,velocity_.y};
+		obj_->SetPosition(move);
 
-	//	obj_->SetPosition(move);
-	//	break;
+		if ( lightIndex_ >= 0 )
+		{
+			light_->SetPointPos(lightIndex_,obj_->GetPosition());
+		}
+		break;
 	default:
 		break;
 	}
 
 	obj_->Update();
-
-	light_->SetPointPos(lightIndex_,obj_->GetPosition());
 }
 
 void PlayerBullet::Draw()
 {
+	Object3d::ChangePipeLine(Object3d::Light);
 	obj_->Draw();
+	Object3d::ChangePipeLine(Object3d::CullBack);
 }
 
 void PlayerBullet::OnCollision()
 {
 	isDead_ = true;
-
+	if ( lightIndex_ >= 0 )
+	{
+		light_->SetPointActive(lightIndex_,false);
+	}
 	for ( int i = 0; i < 50; i++ )
 	{
 		//消えるまでの時間
@@ -88,8 +98,6 @@ void PlayerBullet::OnCollision()
 
 		//追加
 		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{3,3,1,1},{3,3,0.5,1});
-
-		light_->SetPointActive(lightIndex_,false);
 	}
 }
 
@@ -105,17 +113,21 @@ void PlayerBullet::SetPhase(Phase phase)
 	}
 }
 
-void PlayerBullet::SetLight(LightGroup* light,uint32_t lightIndex)
+void PlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 {
 	light_ = light;
 
 	lightIndex_ = lightIndex;
 
-	light_->SetPointActive(lightIndex_,true);
+	if ( lightIndex_>=0)
+	{
 
-	light_->SetPointPos(lightIndex_,obj_->GetPosition());
+		light_->SetPointActive(lightIndex_,true);
 
-	light_->SetPointColor(lightIndex_,{1,1,1});
+		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-	light_->SetPointAtten(lightIndex_,{0.0015f,0.0015f,0.0015f});
+		light_->SetPointColor(lightIndex_,{ 1,1,0.1f });
+
+		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
+	}
 }

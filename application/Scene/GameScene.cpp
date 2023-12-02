@@ -52,12 +52,6 @@ void GameScene::Initialize()
 
 	Object3d::SetLight(light_.get());
 
-	light_->SetDirLightActive(0,true);
-
-	light_->SetDirLightActive(1,false);
-
-	light_->SetDirLightActive(2,false);
-
 	sceneSprite_ = std::make_unique<Sprite>();
 
 	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
@@ -113,9 +107,9 @@ void GameScene::Initialize()
 
 	MapLoad("Resources/Select.json");
 
-	player_->SetMapData(&objects_);
-
 	player_->SetLight(light_.get());
+
+	player_->SetMapData(&objects_);
 
 	EnemyManager::Instance()->SetMapData(&objects_);
 
@@ -123,7 +117,9 @@ void GameScene::Initialize()
 	player_->ObjectUpdate();
 	EnemyManager::Instance()->Update();
 
+	Enemy::SetLight(light_.get());
 
+	EnemyBullet::SetLight(light_.get());
 }
 
 void GameScene::Update()
@@ -131,7 +127,7 @@ void GameScene::Update()
 #ifdef _DEBUG
 	ImGui::Begin("Scene");
 
-	ImGui::SliderFloat3("light",&lightV.x,-100,100,"%3.1f");
+	ImGui::SliderFloat3("light",&lightV.x,-1,1,"%3.1f");
 
 	ImGui::End();
 #endif
@@ -348,18 +344,18 @@ void GameScene::Update()
 
 	for (uint32_t i=0;i< planes_.size();i++)
 	{
-		UVSift_[i].x += 0.02f;
+		UVSift_[i].x +=0.02f;
 
 		if ( UVSift_[i].x >= 1 )
 		{
-			UVSift_[ i ].x -= 1;
+			UVSift_[ i ].x = 0;
 		}
 
 		planes_[ i ]->SetUVShift(UVSift_[ i ]);
 
 		planes_[ i ]->Update();
 	}
-	light_->SetDirLightDir(0,lightV);
+	//light_->SetDirLightDir(0,lightV);
 
 	light_->Update();
 
@@ -564,7 +560,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			UVSift_.push_back(UVSift);
 
-			Vector2 UVSiftSpeed = { ( float ) ( ( rand() % 500 / objectData.scale.x ) + 50 ) / 100,0 };
+			Vector2 UVSiftSpeed = { ( float ) ( rand() % 100)/3000 ,0};
 
 			UVSiftSpeed_.push_back(UVSiftSpeed);
 

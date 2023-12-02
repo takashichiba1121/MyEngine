@@ -2,6 +2,7 @@
 #include"EnemyManager.h"
 
 
+
 void RunEnemy::Update()
 {
 	if ( isDaed_ == false )

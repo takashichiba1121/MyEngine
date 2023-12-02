@@ -47,7 +47,11 @@ public:
 	void OnCollision();
 
 	void AttackOff();
+
+	static void SetLight(LightGroup* light) {light_ = light;}
 protected:
+	static LightGroup* light_;
+
 	Model* model_;
 
 	Model* bulletModel_;

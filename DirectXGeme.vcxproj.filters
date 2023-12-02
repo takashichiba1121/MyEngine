@@ -477,6 +477,9 @@
     <FxCompile Include="Resources\shaders\ObjPS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjNotLightPS.hlsl">
+      <Filter>シェーダーファイル\3D</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\DissolveSprite.hlsli">

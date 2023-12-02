@@ -46,23 +46,31 @@ public:
 
 	Vector3 GetScale() { return obj_->GetScale(); }
 
+	void SetLight(int32_t lightIndex);
+
+	static void SetLight(LightGroup* light) {light_ = light;}
+
 private:
+
+	static LightGroup* light_;
 
 	std::unique_ptr<Object3d> obj_;
 
 	//速度
 	Vector3 velocity_;
 	//寿命<frm>
-	static const uint32_t kLifeTime_ = 180;
+	static const uint32_t kLifeTime_ = 120;
 	//デスタイマー
 	uint32_t deathTimer_ = kLifeTime_;
 	//デスフラグ
 	bool isDead_ = false;
 
 	//弾のチャージ時間
-	uint32_t chaseTime_ = 60;
+	uint32_t chaseTime_ = 20;
 
-	uint32_t chaseTimer_ = chaseTime_;
+	uint32_t chaseTimer_ = 0;
 
 	Phase phase_=Phase::Charge;
+
+	int32_t lightIndex_;
 };

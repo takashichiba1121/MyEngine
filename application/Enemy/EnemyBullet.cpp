@@ -1,6 +1,8 @@
 #include"EnemyBullet.h"
 #include"EnemyManager.h"
 
+LightGroup* EnemyBullet::light_;
+
 void EnemyBullet::Initialize(Model* model, Vector3 velocity, Vector3 position)
 {
 	obj_ = std::make_unique<Object3d>();
@@ -38,6 +40,11 @@ void EnemyBullet::Update()
 		if ( --deathTimer_ <= 0 )
 		{
 			isDead_ = true;
+
+			if ( lightIndex_ >= 0 )
+			{
+				light_->SetPointActive(lightIndex_,false);
+			}
 		}
 
 		move = obj_->GetPosition();
@@ -45,6 +52,11 @@ void EnemyBullet::Update()
 		move += velocity_;
 
 		obj_->SetPosition(move);
+
+		if ( lightIndex_ >= 0 )
+		{
+			light_->SetPointPos(lightIndex_,obj_->GetPosition());
+		}
 		break;
 	default:
 		break;
@@ -55,13 +67,19 @@ void EnemyBullet::Update()
 
 void EnemyBullet::Draw()
 {
-	obj_->Draw();
+		Object3d::ChangePipeLine(Object3d::Light);
+		obj_->Draw();
+		Object3d::ChangePipeLine(Object3d::CullBack);
 }
 
 void EnemyBullet::OnCollision()
 {
 	isDead_ = true;
 
+	if ( lightIndex_ >= 0 )
+	{
+		light_->SetPointActive(lightIndex_,false);
+	}
 	for ( int i = 0; i < 50; i++ )
 	{
 		//消えるまでの時間
@@ -80,7 +98,7 @@ void EnemyBullet::OnCollision()
 		//pos.normalize();
 
 		//追加
-		EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,{ 1,0.5,0,1 },{ 1,0.5,0,0 });
+		EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,{ 3,3,1,1 },{ 3,3,0.5,1 });
 	}
 }
 
@@ -93,5 +111,22 @@ void EnemyBullet::SetPhase(Phase phase)
 		obj_->SetScale({0,0,0});
 
 		obj_->Update();
+	}
+}
+
+void EnemyBullet::SetLight(int32_t lightIndex)
+{
+	lightIndex_ = lightIndex;
+
+	if ( lightIndex_ >= 0 )
+	{
+
+		light_->SetPointActive(lightIndex_,true);
+
+		light_->SetPointPos(lightIndex_,obj_->GetPosition());
+
+		light_->SetPointColor(lightIndex_,{ 1,1,0.1f });
+
+		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}
 }

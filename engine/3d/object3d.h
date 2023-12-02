@@ -44,7 +44,8 @@ public: // サブクラス
 	enum pipelineType
 	{
 		CullBack,
-		CullNone
+		CullNone,
+		Light
 	};
 
 public: // 静的メンバ関数
@@ -139,6 +140,8 @@ private: // 静的メンバ変数
 	static ComPtr<ID3D12PipelineState> sPipelinestateModeBack;
 	// パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> sPipelinestateModeNone;
+		// パイプラインステートオブジェクト
+	static ComPtr<ID3D12PipelineState> sPipelinestateLight;
 	// ビュー行列
 	static Matrix4 sMatView;
 	// 射影行列

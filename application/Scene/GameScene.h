@@ -137,7 +137,7 @@ private:
 
 	std::string mapName_;
 
-	Vector3 lightV = { -1,-1,1 };
+	Vector3 lightV = { 0,-1,0 };
 
 	std::vector<Vector2> UVSift_;
 
