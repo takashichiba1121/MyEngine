@@ -1014,7 +1014,7 @@
             "name": "NURBSパス.001",
             "transform": {
                 "translation": [
-                    -115.0,
+                    -100.0,
                     10.0,
                     41.0
                 ],
@@ -1050,7 +1050,7 @@
             "name": "NURBSパス.003",
             "transform": {
                 "translation": [
-                    -115.0,
+                    -100.0,
                     -10.0,
                     41.0
                 ],
