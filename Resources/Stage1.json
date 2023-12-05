@@ -6,7 +6,7 @@
             "name": "立方体",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     177.0,
                     44.099998474121094
                 ],
@@ -186,7 +186,7 @@
             "name": "平面.011",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     50.0,
                     44.099998474121094
                 ],
@@ -197,7 +197,7 @@
                 ],
                 "scaling": [
                     0.20000000298023224,
-                    20.0,
+                    30.0,
                     0.10000000149011612
                 ]
             },
@@ -222,7 +222,7 @@
             "name": "平面.012",
             "transform": {
                 "translation": [
-                    -143.0,
+                    -151.0,
                     20.0,
                     44.099998474121094
                 ],
@@ -294,7 +294,7 @@
             "name": "平面.002",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     85.0,
                     44.099998474121094
                 ],
@@ -330,7 +330,7 @@
             "name": "平面.004",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     131.0,
                     44.099998474121094
                 ],
@@ -360,6 +360,186 @@
                 ]
             },
             "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.004",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    20.0,
+                    41.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "RunEnemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "RunEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.005",
+            "transform": {
+                "translation": [
+                    -80.0,
+                    -20.0,
+                    41.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "RunEnemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "RunEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.006",
+            "transform": {
+                "translation": [
+                    -185.0,
+                    0.0,
+                    45.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Enemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "GunEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.007",
+            "transform": {
+                "translation": [
+                    -160.0,
+                    44.0,
+                    45.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Enemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "GunEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "NURBSパス.008",
+            "transform": {
+                "translation": [
+                    -165.0,
+                    131.0,
+                    45.0
+                ],
+                "rotation": [
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Enemy",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "GunEnemy"
         },
         {
             "type": "MESH",
@@ -474,7 +654,7 @@
             "name": "NURBSパス.002",
             "transform": {
                 "translation": [
-                    -135.9424591064453,
+                    -136.0,
                     0.0,
                     45.0
                 ],
@@ -618,7 +798,7 @@
             "name": "Cube.006",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     85.0,
                     -56.0
                 ],
@@ -654,7 +834,7 @@
             "name": "Cube.008",
             "transform": {
                 "translation": [
-                    -136.0,
+                    -146.0,
                     108.0,
                     -56.0
                 ],
@@ -690,7 +870,7 @@
             "name": "Cube.009",
             "transform": {
                 "translation": [
-                    -174.0,
+                    -184.0,
                     108.0,
                     -56.0
                 ],
@@ -726,7 +906,7 @@
             "name": "Cube.010",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     131.0,
                     -56.0
                 ],
@@ -762,7 +942,7 @@
             "name": "Cube.011",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     154.0,
                     -56.0
                 ],
@@ -798,7 +978,7 @@
             "name": "Cube.013",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     177.0,
                     -56.0
                 ],
@@ -906,7 +1086,7 @@
             "name": "Cube.007",
             "transform": {
                 "translation": [
-                    -155.0,
+                    -165.0,
                     20.0,
                     -56.0
                 ],
@@ -916,7 +1096,7 @@
                     0.0
                 ],
                 "scaling": [
-                    20.0,
+                    30.0,
                     50.0,
                     100.0
                 ]

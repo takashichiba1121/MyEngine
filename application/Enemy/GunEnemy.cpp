@@ -15,11 +15,11 @@ void GunEnemy::Update()
 		}
 		Vector3 playerPos,enemyPos,playerScale,enemyScale;
 
-		playerPos = playerObj_->GetPosition();
+		playerPos = player_->GetObj()->GetPosition();
 
 		enemyPos = obj_->GetPosition();
 
-		playerScale = playerObj_->GetScale();
+		playerScale = player_->GetObj()->GetScale();
 
 		enemyScale = obj_->GetScale();
 
@@ -58,7 +58,7 @@ void GunEnemy::Update()
 
 void GunEnemy::Move()
 {
-	Vector3 frontVec = playerObj_->GetPosition() - obj_->GetPosition();
+	Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
 
 	obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
 }
@@ -77,8 +77,8 @@ void GunEnemy::Attack()
 		Vector3 bulletPosition = { obj_->GetPosition().x ,obj_->GetPosition().y + 3 ,obj_->GetPosition().z };
 
 		//弾の速度
-		const float kBulletSpeed = 0.5f;
-		Vector3 velocity = playerObj_->GetPosition() - bulletPosition;
+		const float kBulletSpeed = 0.7f;
+		Vector3 velocity = player_->GetObj()->GetPosition() - bulletPosition;
 		velocity.normalize();
 		velocity *= kBulletSpeed;
 

@@ -1,4 +1,4 @@
- #include"LightGroup.h"
+#include"LightGroup.h"
 #include<assert.h>
 #include <d3dx12.h>
 #include"Vector3.h"
@@ -37,12 +37,12 @@ void LightGroup::Initialize()
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	// リソース設定
 	CD3DX12_RESOURCE_DESC resourceDesc =
-		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff);
+		CD3DX12_RESOURCE_DESC::Buffer(( sizeof(ConstBufferData) + 0xff ) & ~0xff);
 
 	// 定数バッファの生成
 	result = sDevice->CreateCommittedResource(
 		&heapProps, // アップロード可能
-		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_GENERIC_READ,nullptr,
 		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result));
 
@@ -53,14 +53,14 @@ void LightGroup::Initialize()
 void LightGroup::Update()
 {
 	//値の更新があった時だけ定数バッファに転送する
-	if (dirty_)
+	if ( dirty_ )
 	{
 		TransferConstBuffer();
 		dirty_ = false;
 	}
 }
 
-void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
+void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList,UINT rootParameterIndex)
 {
 	//定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex,
@@ -73,7 +73,7 @@ void  LightGroup::TransferConstBuffer()
 
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
-	result = constBuff_->Map(0, nullptr, (void**)&constMap);
+	result = constBuff_->Map(0,nullptr,( void** ) &constMap);
 	constMap->ambientColor = ambientColor_;
 	for ( uint32_t i = 0; i < cDirLightNum; i++ )
 	{
@@ -102,7 +102,7 @@ void  LightGroup::TransferConstBuffer()
 			constMap->pointLight[ i ].active = 0;
 		}
 	}
-	constBuff_->Unmap(0, nullptr);
+	constBuff_->Unmap(0,nullptr);
 }
 
 void LightGroup::SetAmbientColor(const Vector3& color)
@@ -111,23 +111,23 @@ void LightGroup::SetAmbientColor(const Vector3& color)
 	dirty_ = true;
 }
 
-void LightGroup::SetDirLightActive(uint32_t index, bool active)
+void LightGroup::SetDirLightActive(uint32_t index,bool active)
 {
 	assert(0 <= index && index < cDirLightNum);
-	dirLights_[index].SetActive(active);
+	dirLights_[ index ].SetActive(active);
 }
 
-void LightGroup::SetDirLightColor(uint32_t index, const Vector3& lightcolor)
+void LightGroup::SetDirLightColor(uint32_t index,const Vector3& lightcolor)
 {
 	assert(0 <= index && index < cDirLightNum);
-	dirLights_[index].SetLightColor(lightcolor);
+	dirLights_[ index ].SetLightColor(lightcolor);
 	dirty_ = true;
 }
 
-void LightGroup::SetPointActive(uint32_t index, bool active)
+void LightGroup::SetPointActive(uint32_t index,bool active)
 {
 	assert(0 <= index && index < cPointLightNum);
-	pointLight_[index].SetActive(active);
+	pointLight_[ index ].SetActive(active);
 	dirty_ = true;
 }
 
@@ -137,60 +137,53 @@ bool LightGroup::GetPointActive(uint32_t index)
 	return pointLight_[ index ].IsActive();
 }
 
-void LightGroup::SetPointPos(uint32_t index, const Vector3& lightPos)
+void LightGroup::SetPointPos(uint32_t index,const Vector3& lightPos)
 {
 	assert(0 <= index && index < cPointLightNum);
-	pointLight_[index].SetLightPos(lightPos);
+	pointLight_[ index ].SetLightPos(lightPos);
 	dirty_ = true;
 }
 
-void LightGroup::SetPointColor(uint32_t index, const Vector3& lightcolor)
+void LightGroup::SetPointColor(uint32_t index,const Vector3& lightcolor)
 {
 	assert(0 <= index && index < cPointLightNum);
-	pointLight_[index].SetLightColor(lightcolor);
+	pointLight_[ index ].SetLightColor(lightcolor);
 	dirty_ = true;
 }
 
-void LightGroup::SetPointAtten(uint32_t index, const Vector3& lightAtten)
+void LightGroup::SetPointAtten(uint32_t index,const Vector3& lightAtten)
 {
 	assert(0 <= index && index < cPointLightNum);
-	pointLight_[index].SetLightAtten(lightAtten);
+	pointLight_[ index ].SetLightAtten(lightAtten);
 	dirty_ = true;
 }
 
 void LightGroup::DefaultLightSetting()
 {
-	dirLights_[0].SetActive(true);
-	dirLights_[0].SetLightColor({1.0f,1.0f,1.0f});
-	dirLights_[0].SetLightDir({0.0f,1.0f,0.0f});
+	dirLights_[ 0 ].SetActive(false);
+	dirLights_[ 0 ].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights_[ 0 ].SetLightDir({ 0.0f,1.0f,0.0f });
 
-	dirLights_[1].SetActive(true);
-	dirLights_[1].SetLightColor({ 1.0f,1.0f,1.0f });
-	dirLights_[1].SetLightDir({ 0.0f,1.0f,0.0f });
+	dirLights_[ 1 ].SetActive(false);
+	dirLights_[ 1 ].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights_[ 1 ].SetLightDir({ 0.0f,1.0f,0.0f });
 
-	dirLights_[2].SetActive(true);
-	dirLights_[2].SetLightColor({ 1.0f,1.0f,1.0f });
-	dirLights_[2].SetLightDir({ 0.0f,1.0f,0.0f });
+	dirLights_[ 2 ].SetActive(false);
+	dirLights_[ 2 ].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights_[ 2 ].SetLightDir({ 0.0f,1.0f,0.0f });
 
-	pointLight_[0].SetActive(false);
-	pointLight_[0].SetLightPos({0.0f,0.0f,0.0f});
-	pointLight_[0].SetLightColor({0.0f,0.0f,0.0f});
-	pointLight_[0].SetLightAtten({1.0f,1.0f,1.0f});
-
-	pointLight_[1].SetActive(false);
-	pointLight_[1].SetLightPos({ 0.0f,0.0f,0.0f });
-	pointLight_[1].SetLightColor({ 0.0f,0.0f,0.0f });
-	pointLight_[1].SetLightAtten({ 1.0f,1.0f,1.0f });
-
-	pointLight_[2].SetActive(false);
-	pointLight_[2].SetLightPos({ 0.0f,0.0f,0.0f });
-	pointLight_[2].SetLightColor({ 0.0f,0.0f,0.0f });
-	pointLight_[2].SetLightAtten({ 1.0f,1.0f,1.0f });
+	for ( uint32_t i = 0; i < 20; i++ )
+	{
+		pointLight_[ i ].SetActive(false);
+		pointLight_[ i ].SetLightPos({ 0.0f,0.0f,0.0f });
+		pointLight_[ i ].SetLightColor({ 0.0f,0.0f,0.0f });
+		pointLight_[ i ].SetLightAtten({ 1.0f,1.0f,1.0f });
+	}
 }
 
-void LightGroup::SetDirLightDir(uint32_t index, const Vector3& lightdir)
+void LightGroup::SetDirLightDir(uint32_t index,const Vector3& lightdir)
 {
 	assert(0 <= index && index < cDirLightNum);
-	dirLights_[index].SetLightDir(lightdir);
+	dirLights_[ index ].SetLightDir(lightdir);
 	dirty_ = true;
 }

@@ -5,7 +5,7 @@
 class Enemy
 {
 public:
-	void Initialize(Model* EnemyModel,Model* bulletModel,Vector3 position,Object3d* playerObj);
+	void Initialize(Model* EnemyModel,Model* bulletModel,Vector3 position,Player* player);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -62,7 +62,7 @@ protected:
 
 	bool isDelete_ = false;
 
-	Object3d* playerObj_;
+	Player* player_;
 
 	float ExplosionFrame = 0;
 
@@ -85,5 +85,5 @@ protected:
 
 	Vector3 attackVec;
 
-	float attackSpeed_ = 0.3f;
+	float attackSpeed_ = 0.4f;
 };

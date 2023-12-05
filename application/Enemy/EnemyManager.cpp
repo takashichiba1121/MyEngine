@@ -73,7 +73,6 @@ void EnemyManager::Draw()
 	{
 		enemy->Draw();
 	}
-
 	for ( std::unique_ptr<EnemyBullet>& bullet : bullets_ )
 	{
 		bullet->Draw();

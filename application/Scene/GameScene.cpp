@@ -605,7 +605,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
 
 			enemy->Update();
 
@@ -617,7 +617,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<RunEnemy>();
 
-			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_->GetObj());
+			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
 
 			enemy->Update();
 

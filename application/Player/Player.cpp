@@ -113,7 +113,7 @@ void Player::Move()
 	if ( Input::Instance()->IsLinkGamePad() )
 	{
 
-		move_ += {Input::Instance()->GetPadStick(PadStick::LX) / 4,0,Input::Instance()->GetPadStick(PadStick::LY) / 4};
+		move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
 
 		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) && onGround_ == false )
 		{
@@ -147,19 +147,19 @@ void Player::Move()
 	{
 		if ( Input::Instance()->PushKey(DIK_W) )
 		{
-			move_ += {0,0,0.25f};
+			move_ += {0,0,1};
 		}
 		if ( Input::Instance()->PushKey(DIK_A) )
 		{
-			move_ += {-0.25f,0,0};
+			move_ += {-1,0,0};
 		}
 		if ( Input::Instance()->PushKey(DIK_S) )
 		{
-			move_ += {0,0,-0.25f};
+			move_ += {0,0,-1};
 		}
 		if ( Input::Instance()->PushKey(DIK_D) )
 		{
-			move_ += {0.25f,0,0};
+			move_ += {1,0,0};
 		}
 		if ( Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false )
 		{
@@ -188,6 +188,8 @@ void Player::Move()
 			}
 		}
 	}
+
+	move_ = move_.normalize()*0.25f;
 	if ( obj_->GetPosition().y <= resetPoint_ )
 	{
 		obj_->SetPosition(spawnPosition_);
@@ -293,6 +295,10 @@ void Player::Attack()
 
 						break;
 					}
+					if ( i >= 19 )
+					{
+						newBullet[i]->SetLight(light_,-1);
+					}
 				}
 
 							//弾の登録する
@@ -325,6 +331,10 @@ void Player::Attack()
 					newBullet->SetLight(light_,i);
 
 					break;
+				}
+				if ( i >= 19 )
+				{
+					newBullet->SetLight(light_,-1);
 				}
 			}
 
@@ -365,6 +375,10 @@ void Player::Attack()
 						newBullet[ i ]->SetLight(light_,j);
 
 						break;
+					}
+					if ( i >= 19 )
+					{
+						newBullet[i]->SetLight(light_, - 1);
 					}
 				}
 

@@ -11,29 +11,19 @@ void RunEnemy::Update()
 
 		Vector3 playerPos,enemyPos,playerScale,enemyScale;
 
-		playerPos = playerObj_->GetPosition();
+		playerPos = player_->GetObj()->GetPosition();
 
 		enemyPos = obj_->GetPosition();
 
-		playerScale = playerObj_->GetScale();
+		playerScale = player_->GetObj()->GetScale();
 
 		enemyScale = obj_->GetScale();
 
 		float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
 
-		float playerYmax,playerYmin,enemyYmax,enemyYmin;
+		isMove_ = ( distance <= attackRange_);
 
-		playerYmax = playerPos.y + playerScale.y;
-
-		playerYmin = playerPos.y - playerScale.y;
-
-		enemyYmax = enemyPos.y + enemyScale.y;
-
-		enemyYmin = enemyPos.y - enemyScale.y;
-
-		isMove_ = ( distance <= attackRange_ && ( playerPos.y == enemyPos.y ) );
-
-		if ( isMove_ == false )
+		if ( isMove_ == false && ( playerPos.y == enemyPos.y ) )
 		{
 			isAttack_ = false;
 
@@ -82,7 +72,7 @@ void RunEnemy::Move()
 
 			if ( IntervalTimer_ <= kIntervalTime_ )
 			{
-				Vector3 frontVec = playerObj_->GetPosition() - obj_->GetPosition();
+				Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
 
 				obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
 			}
@@ -93,12 +83,26 @@ void RunEnemy::Move()
 
 				IntervalTimer_ = kIntervalTime_;
 
-				attackVec = playerObj_->GetPosition() - obj_->GetPosition();
+				attackVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
 
 				attackVec.y = 0;
 
 				attackVec.normalize();
 			}
 		}
+		//obj_->SetPosition(obj_->GetPosition() + attackVec * attackSpeed_);
+
+		//Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
+
+		//obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
+		//isAttack_ = true;
+
+		//IntervalTimer_ = kIntervalTime_;
+
+		//attackVec = frontVec;
+
+		//attackVec.y = 0;
+
+		//attackVec.normalize();
 	}
 }

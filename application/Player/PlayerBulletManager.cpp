@@ -34,10 +34,12 @@ void PlayerBulletManager::Update()
 
 void PlayerBulletManager::Draw()
 {
+	Object3d::ChangePipeLine(Object3d::Light);
 	for ( std::unique_ptr<PlayerBullet>& bullet : bullets_ )
 	{
 		bullet->Draw();
 	}
+	Object3d::ChangePipeLine(Object3d::CullBack);
 }
 
 void PlayerBulletManager::ParticleDraw()

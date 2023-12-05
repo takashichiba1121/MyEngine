@@ -38,24 +38,27 @@ void PlayerBullet::Update()
 
 		break;
 	case Phase::Attack:
-		if ( --life_ <= 0 )
+		if (life_>=60 )
 		{
+			if ( --life_ <= 0 )
+			{
+				if ( lightIndex_ >= 0 )
+				{
+					light_->SetPointActive(lightIndex_,false);
+				}
+				isDead_ = true;
+			}
+
+			move = obj_->GetPosition();
+
+			move += {velocity_.x,0,velocity_.y};
+
+			obj_->SetPosition(move);
+
 			if ( lightIndex_ >= 0 )
 			{
-				light_->SetPointActive(lightIndex_,false);
+				light_->SetPointPos(lightIndex_,obj_->GetPosition());
 			}
-			isDead_ = true;
-		}
-
-		move = obj_->GetPosition();
-
-		move += {velocity_.x,0,velocity_.y};
-
-		obj_->SetPosition(move);
-
-		if ( lightIndex_ >= 0 )
-		{
-			light_->SetPointPos(lightIndex_,obj_->GetPosition());
 		}
 		break;
 	default:
@@ -67,9 +70,7 @@ void PlayerBullet::Update()
 
 void PlayerBullet::Draw()
 {
-	Object3d::ChangePipeLine(Object3d::Light);
 	obj_->Draw();
-	Object3d::ChangePipeLine(Object3d::CullBack);
 }
 
 void PlayerBullet::OnCollision()
