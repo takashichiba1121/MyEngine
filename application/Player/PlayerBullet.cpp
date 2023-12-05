@@ -1,12 +1,12 @@
 #include"PlayerBullet.h"
 #include"PlayerBulletManager.h"
 
-void PlayerBullet::Initialize(Model* model, Vector2 velocity, Vector3 position,uint32_t life)
+void PlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position,uint32_t life)
 {
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
-	
+
 	velocity_ = velocity;
 
 	obj_->SetModel(model);
@@ -38,27 +38,24 @@ void PlayerBullet::Update()
 
 		break;
 	case Phase::Attack:
-		if (life_>=60 )
+		if ( --life_ <= 0 )
 		{
-			if ( --life_ <= 0 )
-			{
-				if ( lightIndex_ >= 0 )
-				{
-					light_->SetPointActive(lightIndex_,false);
-				}
-				isDead_ = true;
-			}
-
-			move = obj_->GetPosition();
-
-			move += {velocity_.x,0,velocity_.y};
-
-			obj_->SetPosition(move);
-
 			if ( lightIndex_ >= 0 )
 			{
-				light_->SetPointPos(lightIndex_,obj_->GetPosition());
+				light_->SetPointActive(lightIndex_,false);
 			}
+			isDead_ = true;
+		}
+
+		move = obj_->GetPosition();
+
+		move += {velocity_.x,0,velocity_.y};
+
+		obj_->SetPosition(move);
+
+		if ( lightIndex_ >= 0 )
+		{
+			light_->SetPointPos(lightIndex_,obj_->GetPosition());
 		}
 		break;
 	default:
@@ -98,7 +95,7 @@ void PlayerBullet::OnCollision()
 		//pos.normalize();
 
 		//追加
-		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},1.0f,1.0f,{3,3,1,1},{3,3,0.5,1});
+		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,{ 3,3,1,1 },{ 3,3,0.5,1 });
 	}
 }
 
@@ -120,7 +117,7 @@ void PlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 	lightIndex_ = lightIndex;
 
-	if ( lightIndex_>=0)
+	if ( lightIndex_ >= 0 )
 	{
 
 		light_->SetPointActive(lightIndex_,true);
