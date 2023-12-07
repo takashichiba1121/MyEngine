@@ -1,9 +1,8 @@
 #pragma once
 #include "Enemy.h"
-class RunEnemy :
-	public Enemy
+class jumpEnemy :
+    public Enemy
 {
-
 public:
 
 
@@ -20,9 +19,9 @@ public:
 
 private:
 
-	float attackRange_=40;
+	float attackRange_ = 40;
 
-	uint32_t kAttackTimer_ = 70;
+	uint32_t kAttackTimer_ = 90;
 
 	uint32_t attackTimer_ = kAttackTimer_;
 
@@ -30,7 +29,13 @@ private:
 
 	float attackSpeed_ = 0.7f;
 
-	float moveSpeed_ =0.2f;
+	float moveSpeed_ = 0.2f;
+
+	Vector3 attackStartPoint = {0,0,0};
+
+	Vector3 attackMiddlePoint = {0,0,0};
+
+	Vector3 attackEndPoint = {0,0,0};
 
 	float attackStartRot = 0;
 

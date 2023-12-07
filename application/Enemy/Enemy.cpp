@@ -52,6 +52,4 @@ void Enemy::OnCollision()
 void Enemy::AttackOff()
 {
 	isAttack_ = false;
-
-	attackTimer_ = kAttackTimer_;
 }

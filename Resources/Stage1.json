@@ -453,7 +453,7 @@
                     1.0
                 ]
             },
-            "file_name": "Enemy",
+            "file_name": "GunEnemy",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -489,7 +489,7 @@
                     1.0
                 ]
             },
-            "file_name": "Enemy",
+            "file_name": "GunEnemy",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -525,7 +525,7 @@
                     1.0
                 ]
             },
-            "file_name": "Enemy",
+            "file_name": "GunEnemy",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -669,7 +669,7 @@
                     1.0
                 ]
             },
-            "file_name": "Enemy",
+            "file_name": "GunEnemy",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -1043,7 +1043,7 @@
                     2.0
                 ]
             },
-            "Tag_name": "RunEnemy"
+            "Tag_name": "jumpEnemy"
         },
         {
             "type": "MESH",
@@ -1079,7 +1079,7 @@
                     2.0
                 ]
             },
-            "Tag_name": "RunEnemy"
+            "Tag_name": "jumpEnemy"
         },
         {
             "type": "MESH",

@@ -113,6 +113,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
   <ItemGroup>
     <ClCompile Include="application\Collider\AppCollider.cpp" />
     <ClCompile Include="application\Enemy\GunEnemy.cpp" />
+    <ClCompile Include="application\Enemy\jumpEnemy.cpp" />
     <ClCompile Include="application\Enemy\RunEnemy.cpp" />
     <ClCompile Include="application\Player\PlayerBulletManager.cpp" />
     <ClCompile Include="application\Scene\BaseScene.cpp" />
@@ -162,6 +163,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
   <ItemGroup>
     <ClInclude Include="application\Collider\AppCollider.h" />
     <ClInclude Include="application\Enemy\GunEnemy.h" />
+    <ClInclude Include="application\Enemy\jumpEnemy.h" />
     <ClInclude Include="application\Enemy\RunEnemy.h" />
     <ClInclude Include="application\Player\PlayerBulletManager.h" />
     <ClInclude Include="application\Scene\BaseScene.h" />

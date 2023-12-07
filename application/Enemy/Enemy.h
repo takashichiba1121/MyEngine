@@ -46,7 +46,7 @@ public:
 
 	void OnCollision();
 
-	void AttackOff();
+	virtual void AttackOff();
 
 	static void SetLight(LightGroup* light) {light_ = light;}
 protected:
@@ -71,19 +71,11 @@ protected:
 	float attackRange_ = 25.0f;
 
 			//攻撃間隔
-	const uint32_t kIntervalTime_ = 30;
+	const uint32_t kIntervalTime_ = 120;
 
 	uint32_t IntervalTimer_ = kIntervalTime_ / 2;
 
 	bool isMove_ = false;
 
 	bool isAttack_ = false;
-
-	uint32_t kAttackTimer_ = 120;
-
-	uint32_t attackTimer_ = kAttackTimer_;
-
-	Vector3 attackVec;
-
-	float attackSpeed_ = 0.4f;
 };

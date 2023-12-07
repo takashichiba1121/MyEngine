@@ -11,6 +11,7 @@
 #include"PlayerBulletManager.h"
 #include"GunEnemy.h"
 #include"RunEnemy.h"
+#include"jumpEnemy.h"
 
 GameScene::GameScene()
 {
@@ -605,7 +606,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
 
 			enemy->Update();
 
@@ -617,7 +618,19 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<RunEnemy>();
 
-			enemy->Initialize(models_[ objectData.tagName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
+
+			enemy->Update();
+
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+		}
+		if ( objectData.tagName == "jumpEnemy" )
+		{
+			std::unique_ptr<Enemy> enemy;
+
+			enemy = std::make_unique<jumpEnemy>();
+
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get());
 
 			enemy->Update();
 

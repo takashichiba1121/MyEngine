@@ -260,6 +260,9 @@
     <ClCompile Include="engine\main.cpp">
       <Filter>engin\ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="application\Enemy\jumpEnemy.cpp">
+      <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -405,6 +408,9 @@
     </ClInclude>
     <ClInclude Include="application\Collider\AppCollider.h">
       <Filter>application\ヘッダーファイル\appCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Enemy\jumpEnemy.h">
+      <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

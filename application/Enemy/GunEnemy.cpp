@@ -72,7 +72,7 @@ void GunEnemy::Attack()
 
 	if ( IntervalTimer_ <= 0 )
 	{
-		IntervalTimer_ = kAttackTime_;
+		IntervalTimer_ = kIntervalTime_;
 
 		Vector3 bulletPosition = { obj_->GetPosition().x ,obj_->GetPosition().y + 3 ,obj_->GetPosition().z };
 
@@ -104,4 +104,9 @@ void GunEnemy::Attack()
 		//弾の登録する
 		EnemyManager::Instance()->AddBullet(std::move(newBullet));
 	}
+}
+
+void GunEnemy::AttackOff()
+{
+	isAttack_ = false;
 }
