@@ -74,8 +74,12 @@ private:
 	std::unique_ptr<Object3d> spawnObj_;
 
 	std::unique_ptr<Object3d> stage1Obj_;
+	std::unique_ptr<Object3d> stage1BillBoard_;
+	std::unique_ptr<Model> stage1Plane;
 	std::unique_ptr<Object3d> stage2Obj_;
+	std::unique_ptr<Object3d> stage2BillBoard;
 	std::unique_ptr<Object3d> stage3Obj_;
+	std::unique_ptr<Object3d> stage3BillBoard;
 
 	bool isNext_ = false;
 	bool isStage1_ = false;

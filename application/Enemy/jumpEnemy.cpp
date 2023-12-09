@@ -16,7 +16,7 @@ void jumpEnemy::Update()
 
 		float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
 
-		isMove_ = ( distance <= attackRange_ && ( playerPos.y == enemyPos.y ) );
+		isMove_ = ( distance <= attackRange_);
 
 		if ( distance <= 20&& isAttack_ == false )
 		{

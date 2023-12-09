@@ -41,6 +41,20 @@ void GameScene::Initialize()
 
 	stage1Obj_->Initialize();
 
+	stage1Plane.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/1-1.png")));
+
+	stage1BillBoard_ = std::make_unique<Object3d>();
+
+	stage1BillBoard_->Initialize();
+
+	stage1BillBoard_->SetModel(stage1Plane.get());
+
+	stage1BillBoard_->SetScale({2,4,1});
+
+	stage1BillBoard_->SetRot({45,0,0});
+
+	stage1BillBoard_->SetBillBoard(true);
+
 	stage2Obj_ = std::make_unique<Object3d>();
 
 	stage2Obj_->Initialize();
@@ -364,6 +378,8 @@ void GameScene::Update()
 
 	stage1Obj_->Update();
 
+	stage1BillBoard_->Update();
+
 	stage2Obj_->Update();
 
 	stage3Obj_->Update();
@@ -393,6 +409,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	if ( mapName_ == "Resources/Select.json" )
 	{
 		stage1Obj_->Draw();
+		stage1BillBoard_->Draw();
 		stage2Obj_->Draw();
 		stage3Obj_->Draw();
 	}
@@ -643,6 +660,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			// 座標
 			stage1Obj_->SetPosition({ objectData.trans });
+
+			stage1BillBoard_->SetPosition({ objectData.trans.x,objectData.trans.y+5.0f,objectData.trans.z });
 
 			// 回転角
 			stage1Obj_->SetRot({ objectData.rot });

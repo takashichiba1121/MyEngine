@@ -239,6 +239,8 @@ public: // メンバ関数
 
 	void SetVertices(std::vector<Model::VertexPosNormalUv> vertices);
 
+	void SetBillBoard(bool isBillBoard) {isBillboard_ =isBillBoard;}
+
 private: // メンバ変数
 		// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
@@ -279,6 +281,8 @@ private: // メンバ変数
 	Vector2 uvShift_;
 
 	Vector3 color_ = { 1,1,1 };
+
+	bool isBillboard_=false;
 };
 
 float ToRadian(float angle);

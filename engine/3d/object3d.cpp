@@ -485,6 +485,10 @@ void Object3d::Update()
 	matWorld_ = Matrix4Math::identity(); // 変形をリセット
 	matWorld_ = matWorld_ * matScale; // ワールド行列にスケーリングを反映
 	matWorld_ = matWorld_ * matRot; // ワールド行列に回転を反映
+	if ( isBillboard_ )
+	{
+		matWorld_ = matWorld_ * sMatBillboard;
+	}
 	matWorld_ = matWorld_ * matTrans; // ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
