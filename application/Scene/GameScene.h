@@ -57,8 +57,12 @@ private:
 
 	std::unique_ptr<Model> enemyModel_;
 	std::unique_ptr<Model> gunEnemyModel_;
+	std::unique_ptr<Model> jumpEnemyModel_;
 
 	std::unique_ptr <Model> planeModel_;
+
+	std::unique_ptr<Model> stage2Plane_;
+	std::unique_ptr<Model> stage1Plane_;
 
 #pragma endregion
 
@@ -75,11 +79,10 @@ private:
 
 	std::unique_ptr<Object3d> stage1Obj_;
 	std::unique_ptr<Object3d> stage1BillBoard_;
-	std::unique_ptr<Model> stage1Plane;
 	std::unique_ptr<Object3d> stage2Obj_;
-	std::unique_ptr<Object3d> stage2BillBoard;
+	std::unique_ptr<Object3d> stage2BillBoard_;
 	std::unique_ptr<Object3d> stage3Obj_;
-	std::unique_ptr<Object3d> stage3BillBoard;
+	std::unique_ptr<Object3d> stage3BillBoard_;
 
 	bool isNext_ = false;
 	bool isStage1_ = false;

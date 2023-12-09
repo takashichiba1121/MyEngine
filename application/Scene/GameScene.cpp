@@ -41,19 +41,33 @@ void GameScene::Initialize()
 
 	stage1Obj_->Initialize();
 
-	stage1Plane.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/1-1.png")));
+	stage1Plane_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/1-1.png")));
 
 	stage1BillBoard_ = std::make_unique<Object3d>();
 
 	stage1BillBoard_->Initialize();
 
-	stage1BillBoard_->SetModel(stage1Plane.get());
+	stage1BillBoard_->SetModel(stage1Plane_.get());
 
 	stage1BillBoard_->SetScale({2,4,1});
 
 	stage1BillBoard_->SetRot({45,0,0});
 
 	stage1BillBoard_->SetBillBoard(true);
+
+	stage2Plane_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/1-2.png")));
+
+	stage2BillBoard_ = std::make_unique<Object3d>();
+
+	stage2BillBoard_->Initialize();
+
+	stage2BillBoard_->SetModel(stage2Plane_.get());
+
+	stage2BillBoard_->SetScale({ 2,4,1 });
+
+	stage2BillBoard_->SetRot({ 45,0,0 });
+
+	stage2BillBoard_->SetBillBoard(true);
 
 	stage2Obj_ = std::make_unique<Object3d>();
 
@@ -380,6 +394,8 @@ void GameScene::Update()
 
 	stage1BillBoard_->Update();
 
+	stage2BillBoard_->Update();
+
 	stage2Obj_->Update();
 
 	stage3Obj_->Update();
@@ -411,6 +427,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		stage1Obj_->Draw();
 		stage1BillBoard_->Draw();
 		stage2Obj_->Draw();
+		stage2BillBoard_->Draw();
 		stage3Obj_->Draw();
 	}
 	else
@@ -681,6 +698,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 座標
 			stage2Obj_->SetPosition({ objectData.trans });
 
+			stage2BillBoard_->SetPosition({ objectData.trans.x,objectData.trans.y + 5.0f,objectData.trans.z });
+
 			// 回転角
 			stage2Obj_->SetRot({ objectData.rot });
 
@@ -736,6 +755,9 @@ void GameScene::ModelLoad()
 
 	gunEnemyModel_.reset(Model::LoadFormOBJ("GunEnemy",true));
 	models_.insert(std::make_pair("GunEnemy",gunEnemyModel_.get()));
+
+	jumpEnemyModel_.reset(Model::LoadFormOBJ("jumpEnemy",true));
+	models_.insert(std::make_pair("jumpEnemy",jumpEnemyModel_.get()));
 
 	stageModel_.reset(Model::LoadFormOBJ("stage",true));
 	models_.insert(std::make_pair("stage",stageModel_.get()));

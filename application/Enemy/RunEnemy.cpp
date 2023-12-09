@@ -126,11 +126,11 @@ void RunEnemy::Attack()
 				pos += vec;
 
 				//追加
-				EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },0.5f,0.5f,{ 0.5f,0,0,1 },{ 0.5f,0,0,1 });
+				EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },0.5f,0.5f,{ 1,0.8f,0,1 },{ 1,0.8f,0,1 });
 
 				pos -= vec*2;
 								//追加
-				EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },0.5f,0.5f,{ 0.5f,0,0,1 },{ 0.5f,0,0,1 });
+				EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },0.5f,0.5f,{ 1,0.8f,0,1 },{ 1,0.8f,0,1 });
 			}
 			obj_->SetPosition(obj_->GetPosition() + attackVec * attackSpeed_);
 			if ( attackTimer_ >= kAttackTimer_)
