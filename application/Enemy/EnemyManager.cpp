@@ -115,7 +115,7 @@ void EnemyManager::Collision()
 
 		for ( std::unique_ptr<Enemy>& enemy : Enemys_ )
 		{
-			if ( enemy->IsAttack() )
+			if ( enemy->IsAttack())
 			{
 				objCube.Pos = enemy->GetObj()->GetPosition();
 				objCube.scale = enemy->GetObj()->GetScale();

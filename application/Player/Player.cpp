@@ -634,7 +634,7 @@ void Player::EnemyCollision()
 					}
 				}
 			}
-			if ( isAvoid_==false)
+			if ( isAvoid_==false&&Enemy::EnemyType::Tutorial != enemy->GetType() )
 			{
 				if ( ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
 						&& ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )

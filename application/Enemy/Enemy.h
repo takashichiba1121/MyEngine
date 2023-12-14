@@ -5,7 +5,16 @@
 class Enemy
 {
 public:
-	void Initialize(Model* EnemyModel,Model* bulletModel,Vector3 position,Player* player);
+	enum class EnemyType
+	{
+		Gun,
+		Run,
+		Jump,
+		Tutorial
+	};
+
+public:
+	void Initialize(Model* EnemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -46,6 +55,8 @@ public:
 
 	void OnCollision();
 
+	EnemyType GetType() {return enemyType_;}
+
 	virtual void AttackOff();
 
 	static void SetLight(LightGroup* light) {light_ = light;}
@@ -78,4 +89,6 @@ protected:
 	bool isMove_ = false;
 
 	bool isAttack_ = false;
+
+	EnemyType enemyType_;
 };
