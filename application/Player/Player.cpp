@@ -42,19 +42,7 @@ void Player::Update()
 	move_ = { 0,0,0 };
 	if ( isDaed_ == false )
 	{
-		if ( interval == 0 )
-		{
-			Move();
-			if ( onGround_ == false )
-			{
-				Attack();
-			}
-		}
-		else
-		{
-			interval--;
-		}
-
+		Move();
 		if ( hp_ <= 0 )
 		{
 			isDaed_ = true;
@@ -74,7 +62,6 @@ void Player::Update()
 			isDelete_ = true;
 		}
 	}
-
 	EnemyCollision();
 
 	move_ = MapCollision();
@@ -110,86 +97,121 @@ void Player::Update()
 
 void Player::Move()
 {
-	if ( Input::Instance()->IsLinkGamePad() )
+	if ( AttackInterval == 0 )
 	{
-
-		move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
-
-		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) && onGround_ == false )
+		if (isAvoid_==false )
 		{
-			fallSpeed_ = StartJumpSpeed_;
-			onGround_ = true;
-
-			for ( int i = 0; i < 10; i++ )
+			if ( Input::Instance()->IsLinkGamePad() )
 			{
-				//消えるまでの時間
-				const uint32_t rnd_life = 10;
-				//最低限のライフ
-				const uint32_t constlife = 60;
-				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
-				//XYZの広がる距離
-				const float rnd_pos = 0.1f;
-				Vector3 pos{};
-				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
 
-				//pos.normalize();
+				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) && onGround_ == false )
+				{
+					fallSpeed_ = StartJumpSpeed_;
+					onGround_ = true;
 
-				//追加
-				paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+					for ( int i = 0; i < 10; i++ )
+					{
+						//消えるまでの時間
+						const uint32_t rnd_life = 10;
+						//最低限のライフ
+						const uint32_t constlife = 60;
+						uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+						//XYZの広がる距離
+						const float rnd_pos = 0.1f;
+						Vector3 pos{};
+						pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+						pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+						pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+						//pos.normalize();
+
+						//追加
+						paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+					}
+				}
+
+			}
+			else
+			{
+				if ( Input::Instance()->PushKey(DIK_W) )
+				{
+					move_ += {0,0,1};
+				}
+				if ( Input::Instance()->PushKey(DIK_A) )
+				{
+					move_ += {-1,0,0};
+				}
+				if ( Input::Instance()->PushKey(DIK_S) )
+				{
+					move_ += {0,0,-1};
+				}
+				if ( Input::Instance()->PushKey(DIK_D) )
+				{
+					move_ += {1,0,0};
+				}
+				if ( Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false )
+				{
+					fallSpeed_ = StartJumpSpeed_;
+					onGround_ = true;
+
+					for ( int i = 0; i < 10; i++ )
+					{
+						//消えるまでの時間
+						const uint32_t rnd_life = 10;
+						//最低限のライフ
+						const uint32_t constlife = 60;
+						uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+						//XYZの広がる距離
+						const float rnd_pos = 0.1f;
+						Vector3 pos{};
+						pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+						pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+						pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+						//pos.normalize();
+
+						//追加
+						paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+					}
+				}
+			}
+
+			if ( onGround_ == false )
+			{
+				Attack();
 			}
 		}
+		if (avoidInterval==0 )
+		{
+			if ( isAvoid_ == false && Input::Instance()->TriggerKey(DIK_I) )
+			{
+				isAvoid_ = true;
 
+				avoidInterval = 30;
+
+				initialRot = obj_->GetRot();
+
+				Vector3 velocity(0,0,1);
+				avoidVec_ = Matrix4Math::transform(velocity,obj_->GetMatWorld());
+				avoidVec_.normalize();
+			}
+		}
+		else
+		{
+			avoidInterval--;
+			Avoid();
+		}
+
+		move_ = move_.normalize() * 0.25f;
 	}
 	else
 	{
-		if ( Input::Instance()->PushKey(DIK_W) )
-		{
-			move_ += {0,0,1};
-		}
-		if ( Input::Instance()->PushKey(DIK_A) )
-		{
-			move_ += {-1,0,0};
-		}
-		if ( Input::Instance()->PushKey(DIK_S) )
-		{
-			move_ += {0,0,-1};
-		}
-		if ( Input::Instance()->PushKey(DIK_D) )
-		{
-			move_ += {1,0,0};
-		}
-		if ( Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false )
-		{
-			fallSpeed_ = StartJumpSpeed_;
-			onGround_ = true;
-
-			for ( int i = 0; i < 10; i++ )
-			{
-				//消えるまでの時間
-				const uint32_t rnd_life = 10;
-				//最低限のライフ
-				const uint32_t constlife = 60;
-				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
-
-				//XYZの広がる距離
-				const float rnd_pos = 0.1f;
-				Vector3 pos{};
-				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-
-				//pos.normalize();
-
-				//追加
-				paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
-			}
-		}
+		AttackInterval--;
 	}
-
-	move_ = move_.normalize()*0.25f;
 	if ( obj_->GetPosition().y <= resetPoint_ )
 	{
 		obj_->SetPosition(spawnPosition_);
@@ -250,7 +272,7 @@ void Player::Attack()
 
 					break;
 				}
-				if (i<=19 )
+				if ( i <= 19 )
 				{
 					newBullet->SetLight(light_,-1);
 				}
@@ -258,7 +280,7 @@ void Player::Attack()
 
 			newBullet->SetChageTime(10);
 
-			interval = 10;
+			AttackInterval = 10;
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
@@ -297,19 +319,19 @@ void Player::Attack()
 					}
 					if ( i >= 19 )
 					{
-						newBullet[i]->SetLight(light_,-1);
+						newBullet[ i ]->SetLight(light_,-1);
 					}
 				}
 
 							//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
-			interval = 20;
+			AttackInterval = 20;
 		}
 	}
 	else
 	{
-		if ( Input::Instance()->TriggerKey(DIK_Z) )
+		if ( Input::Instance()->TriggerKey(DIK_J) )
 		{
 			Vector3 velocity(0,0,1);
 			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
@@ -338,13 +360,13 @@ void Player::Attack()
 				}
 			}
 
-			interval = 10;
+			AttackInterval = 10;
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
 		}
 
-		if ( Input::Instance()->TriggerKey(DIK_X) )
+		if ( Input::Instance()->TriggerKey(DIK_K) )
 		{
 			Vector3 velocity[ 3 ]
 			{
@@ -378,7 +400,7 @@ void Player::Attack()
 					}
 					if ( i >= 19 )
 					{
-						newBullet[i]->SetLight(light_, - 1);
+						newBullet[ i ]->SetLight(light_,-1);
 					}
 				}
 
@@ -386,7 +408,39 @@ void Player::Attack()
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
 
-			interval = 20;
+			AttackInterval = 20;
+		}
+	}
+}
+
+void Player::Avoid()
+{
+	if ( isAvoid_ )
+	{
+		avoidTime_++;
+		obj_->SetPosition(obj_->GetPosition() + avoidVec_ * 0.5f);
+
+		obj_->SetRot({ 0,obj_->GetRot().y - 0.314f,0 });
+
+		const uint32_t constlife = 10;
+		uint32_t life = constlife;
+
+		//XYZの広がる距離
+		Vector3 verocity{};
+		verocity.x = 0;
+		verocity.y = -0;
+		verocity.z = 0;
+
+		Vector3 pos = obj_->GetPosition();
+
+		//追加
+		EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },1.0f,0.0f,{ 1,1,1,1 },{ 1,1,1,1 });
+
+		if ( avoidTime_ >= 20 )
+		{
+			avoidTime_ = 0;
+			obj_->SetRot(initialRot);
+			isAvoid_ = false;
 		}
 	}
 }
@@ -412,8 +466,6 @@ void Player::Reset()
 	hp_ = maxHp_;
 
 	PlayerBulletManager::Instance()->Clear();
-
-	isKnockBack_ = false;
 }
 
 void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
@@ -571,7 +623,7 @@ void Player::EnemyCollision()
 
 				bulletCube.Pos = bullet->GetPosition();
 				bulletCube.scale = bullet->GetScale();
-				if ((bulletCube.Pos.x+ bulletCube.Pos.y + bulletCube.Pos.z/3)- ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 )<=3
+				if ( ( bulletCube.Pos.x + bulletCube.Pos.y + bulletCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
 					&& ( bulletCube.Pos.x + bulletCube.Pos.y + bulletCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )
 				{
 					if ( Collider::CubeAndCube(enemyCube,bulletCube,Collider::Collsion) == true )
@@ -582,16 +634,14 @@ void Player::EnemyCollision()
 					}
 				}
 			}
-			if ( ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
-					&& ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )
+			if ( isAvoid_==false)
 			{
-				if ( Collider::CubeAndCube(enemyCube,playerCube,Collider::Collsion) == true )
+				if ( ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
+						&& ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )
 				{
-					if ( isKnockBack_ == false )
+					if ( Collider::CubeAndCube(enemyCube,playerCube,Collider::Collsion) == true )
 					{
 						hp_--;
-
-						isKnockBack_ = true;
 
 						for ( int i = 0; i < 10; i++ )
 						{
@@ -629,32 +679,27 @@ void Player::EnemyCollision()
 
 		if ( Collider::CubeAndCube(bulletCube,playerCube,Collider::Collsion) == true )
 		{
-			if ( isKnockBack_ == false )
+			hp_--;
+
+			for ( int i = 0; i < 10; i++ )
 			{
-				hp_--;
+				//消えるまでの時間
+				const uint32_t rnd_life = 10;
+				//最低限のライフ
+				const uint32_t constlife = 60;
+				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
-				isKnockBack_ = true;
+				//XYZの広がる距離
+				const float rnd_pos = 0.1f;
+				Vector3 pos{};
+				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 
-				for ( int i = 0; i < 10; i++ )
-				{
-					//消えるまでの時間
-					const uint32_t rnd_life = 10;
-					//最低限のライフ
-					const uint32_t constlife = 60;
-					uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+				//pos.normalize();
 
-					//XYZの広がる距離
-					const float rnd_pos = 0.1f;
-					Vector3 pos{};
-					pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-					pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-					pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-
-					//pos.normalize();
-
-					//追加
-					paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
-				}
+				//追加
+				paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
 			}
 
 			bullet->OnCollision();

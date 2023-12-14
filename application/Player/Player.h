@@ -39,6 +39,12 @@ public:
 	void Attack();
 
 	/// <summary>
+	/// 緊急回避
+	/// </summary>
+	void Avoid();
+
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
@@ -115,8 +121,6 @@ private:
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
-	bool isKnockBack_ = false;
-
 	bool isDaed_ = false;
 
 	bool isDelete_ = false;
@@ -127,7 +131,17 @@ private:
 
 	const float ExplosionMaxFrame = 60;
 
-	uint32_t interval=0;
+	uint32_t AttackInterval=0;
+
+	bool isAvoid_=false;
+
+	uint32_t avoidTime_=0;
+
+	Vector3 avoidVec_ = {0,0,0};
+
+	Vector3 initialRot = {0,0,0};
+
+	uint32_t avoidInterval = 0;
 
 	LightGroup* light_;
 };
