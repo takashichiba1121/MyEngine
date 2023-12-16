@@ -14,6 +14,12 @@ namespace Collider
 		Vector3 scale;
 	};
 
+	struct  Sphere
+	{
+		Vector3 Pos;
+		Vector3 scale;
+	};
+
 	enum Type
 	{
 		Collsion,
@@ -23,4 +29,6 @@ namespace Collider
 	bool CubeAndCube(Cube A,Cube B,Type type);
 
 	bool QuadAndQuad(Cube A, Cube B,Type type);
+
+	bool SphereAndSphere(Sphere A,Sphere B,Type type);
 } 

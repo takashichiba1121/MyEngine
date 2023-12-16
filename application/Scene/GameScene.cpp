@@ -29,6 +29,27 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
+	keyTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/spaceKey.png");
+
+	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
+
+	spaceSprite_ = std::make_unique<Sprite>();
+
+	if ( Input::Instance()->IsLinkGamePad() )
+	{
+		spaceSprite_->Initialize(padTexHandle_);
+	}
+	else
+	{
+		spaceSprite_->Initialize(keyTexHandle_);
+	}
+
+	spaceSprite_->SetPosition({ 640.0f,515.0f });
+
+	spaceSprite_->SetAnchorPoint({ 0.5f,0.5f });
+
+	spaceSprite_->Update();
+
 	padSousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/PadSousa.png");
 
 	keySousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/KeySousa.png");
@@ -109,6 +130,46 @@ void GameScene::Initialize()
 	sousaSprite_->SetPosition({ 25,645 });
 
 	sousaSprite_->Update();
+
+	retrySprite_ = std::make_unique<Sprite>();
+
+	retrySprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/retry.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+
+	retrySprite_->SetAnchorPoint({ 0.5f,0.5f });
+	;
+	retrySprite_->SetPosition({ 612,300 });
+
+	retrySprite_->Update();
+
+	yesSprite_ = std::make_unique<Sprite>();
+
+	yesSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Yes.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+
+	yesSprite_->SetAnchorPoint({ 0.5f,0.5f });
+	;
+	yesSprite_->SetPosition({ 320,400 });
+
+	yesSprite_->Update();
+
+	noSprite_ = std::make_unique<Sprite>();
+
+	noSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/No.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+
+	noSprite_->SetAnchorPoint({ 0.5f,0.5f });
+	;
+	noSprite_->SetPosition({ 960,400 });
+
+	noSprite_->Update();
+
+	yazirusiSprite_ = std::make_unique<Sprite>();
+
+	yazirusiSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/yazirusi.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+
+	yazirusiSprite_->SetAnchorPoint({ 0.5f,0.5f });
+	;
+	yazirusiSprite_->SetPosition({ 240,400 });
+
+	yazirusiSprite_->Update();
 
 	light_->Update();
 
@@ -291,18 +352,82 @@ void GameScene::Update()
 
 			sceneSprite_->SetDissolve(f);
 
+			retry = true;
 		}
-		else if ( frame_ <= -5 )
+		else if ( frame_ <= 0 )
 		{
 			if ( mapName_ != "Resources/Select.json" )
 			{
 				if ( isClear_ )
 				{
-					SceneManager::Instance()->ChangeScene("RESULT");
+					MapLoad("Resources/Select.json");
+
+					player_->Reset();
+
+					player_->SetMapData(&objects_);
+
+					EnemyManager::Instance()->SetMapData(&objects_);
+
+					EnemyManager::Instance()->SetPlayer(player_.get());
+					player_->Update();
+					EnemyManager::Instance()->Update();
+
+					sceneStart_ = true;
+
+					sceneChange_ = false;
+
+					retry = false;
 				}
 				else if ( player_->IsDaed() )
 				{
-					SceneManager::Instance()->ChangeScene("GAMEOVER");
+					if (Input::Instance()->GetPadStick(PadStick::LX)<=-0.5||Input::Instance()->TriggerKey(DIK_A) )
+					{
+						retry = true;
+						yazirusiSprite_->SetPosition({ 240,400 });
+						yazirusiSprite_->Update();
+					}
+					else if( Input::Instance()->GetPadStick(PadStick::LX) >= 0.5||Input::Instance()->TriggerKey(DIK_D) )
+					{
+						retry = false;
+						yazirusiSprite_->SetPosition({ 848,400 });
+						yazirusiSprite_->Update();
+					}
+					if ( Input::Instance()->IsLinkGamePad() )
+					{
+						spaceSprite_->SetTexture(padTexHandle_);
+					}
+					else
+					{
+						spaceSprite_->SetTexture(keyTexHandle_);
+					}
+					spaceSprite_->Update();
+					if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) || Input::Instance()->TriggerKey(DIK_SPACE) )
+					{
+						if ( retry == false )
+						{
+							SceneManager::Instance()->ChangeScene("TITLE");
+						}
+						else
+						{
+							MapLoad(mapName_);
+
+							player_->Reset();
+
+							player_->SetMapData(&objects_);
+
+							EnemyManager::Instance()->SetMapData(&objects_);
+
+							EnemyManager::Instance()->SetPlayer(player_.get());
+							//player_->Update();
+							EnemyManager::Instance()->Update();
+
+							sceneStart_ = true;
+
+							sceneChange_ = false;
+
+							retry = false;
+						}
+					}
 				}
 			}
 			else
@@ -358,10 +483,6 @@ void GameScene::Update()
 			}
 			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
 			sceneChange_ = false;
-		}
-		else
-		{
-			frame_--;
 		}
 
 		sceneSprite_->Update();
@@ -450,6 +571,14 @@ void GameScene::SpriteDraw()
 	SpriteCommon::Instance()->PreDraw();
 	sousaSprite_->Draw();
 	sceneSprite_->DissolveDraw();
+	if (frame_<=0&&player_->IsDaed() )
+	{
+		retrySprite_->Draw();
+		yesSprite_->Draw();
+		noSprite_->Draw();
+		yazirusiSprite_->Draw();
+		spaceSprite_->Draw();
+	}
 	SpriteCommon::Instance()->PostDraw();
 }
 
@@ -472,6 +601,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 	EnemyManager::Instance()->Clear();
 
 	mapName_ = mapFullpath;
+
+	uint32_t EnemyNumber=0;
 
 	for ( auto& objectData : levelData->objects )
 	{
@@ -642,7 +773,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Gun);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Gun,EnemyNumber++);
 
 			enemy->Update();
 
@@ -654,7 +785,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<RunEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Run);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Run,EnemyNumber++);
 
 			enemy->Update();
 
@@ -666,7 +797,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<jumpEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Jump);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Jump,EnemyNumber++);
 
 			enemy->Update();
 
@@ -678,7 +809,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<TutorialEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Tutorial);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Tutorial,EnemyNumber++);
 
 			enemy->Update();
 
@@ -751,6 +882,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 		IsCameraSet_ = false;
 	}
+
+	isGoal_ = false;
 }
 
 void GameScene::ModelLoad()

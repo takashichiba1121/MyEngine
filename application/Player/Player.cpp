@@ -47,6 +47,16 @@ void Player::Update()
 		{
 			isDaed_ = true;
 		}
+
+		EnemyCollision();
+
+		move_ = MapCollision();
+
+		obj_->SetPosition(move_);
+
+		Object3d::SetTarget(Object3d::GetTarget() + ( ( obj_->GetPosition() - Object3d::GetTarget() ) * cameraSpeed_ ));
+
+		Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 	}
 	else
 	{
@@ -62,15 +72,6 @@ void Player::Update()
 			isDelete_ = true;
 		}
 	}
-	EnemyCollision();
-
-	move_ = MapCollision();
-
-	obj_->SetPosition(move_);
-
-	Object3d::SetTarget(Object3d::GetTarget() + ( ( obj_->GetPosition() - Object3d::GetTarget() ) * cameraSpeed_ ));
-
-	Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 
 	PlayerBulletManager::Instance()->Update();
 
@@ -99,7 +100,7 @@ void Player::Move()
 {
 	if ( AttackInterval == 0 )
 	{
-		if (isAvoid_==false )
+		if ( isAvoid_ == false )
 		{
 			if ( Input::Instance()->IsLinkGamePad() )
 			{
@@ -184,10 +185,27 @@ void Player::Move()
 			{
 				Attack();
 			}
+
+			Vector3 cameForward = { 0,0,-1 };
+
+			Vector3  cameRight = { 1,0,0 };
+
+			Vector3 frontVec = { 0,0,0 };
+
+			if ( move_.x != 0.0f || move_.z != 0.0f )
+			{
+				frontVec = cameForward * move_.z + cameRight * move_.x;
+			}
+
+			if ( frontVec.x != 0.0f || frontVec.z != 0.0f )
+			{
+				obj_->SetRot({ 0, atan2f(frontVec.x, -frontVec.z),0 });
+			}
 		}
-		if (avoidInterval==0 )
+		move_ = move_.normalize() * 0.25f;
+		if ( avoidInterval == 0 )
 		{
-			if ( isAvoid_ == false && Input::Instance()->TriggerKey(DIK_I) )
+			if ( isAvoid_ == false && Input::Instance()->TriggerKey(DIK_Q) || Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_X) )
 			{
 				isAvoid_ = true;
 
@@ -205,8 +223,6 @@ void Player::Move()
 			avoidInterval--;
 			Avoid();
 		}
-
-		move_ = move_.normalize() * 0.25f;
 	}
 	else
 	{
@@ -222,22 +238,6 @@ void Player::Move()
 	{
 		fallSpeed_ += gravityAcceleration_;
 		move_.y -= fallSpeed_;
-	}
-
-	Vector3 cameForward = { 0,0,-1 };
-
-	Vector3  cameRight = { 1,0,0 };
-
-	Vector3 frontVec = { 0,0,0 };
-
-	if ( move_.x != 0.0f || move_.z != 0.0f )
-	{
-		frontVec = cameForward * move_.z + cameRight * move_.x;
-	}
-
-	if ( frontVec.x != 0.0f || frontVec.z != 0.0f )
-	{
-		obj_->SetRot({ 0, atan2f(frontVec.x, -frontVec.z),0 });
 	}
 }
 
@@ -331,7 +331,7 @@ void Player::Attack()
 	}
 	else
 	{
-		if ( Input::Instance()->TriggerKey(DIK_J) )
+		if ( Input::Instance()->TriggerKey(DIK_Z) )
 		{
 			Vector3 velocity(0,0,1);
 			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
@@ -366,7 +366,7 @@ void Player::Attack()
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
 		}
 
-		if ( Input::Instance()->TriggerKey(DIK_K) )
+		if ( Input::Instance()->TriggerKey(DIK_X) )
 		{
 			Vector3 velocity[ 3 ]
 			{
@@ -418,7 +418,7 @@ void Player::Avoid()
 	if ( isAvoid_ )
 	{
 		avoidTime_++;
-		obj_->SetPosition(obj_->GetPosition() + avoidVec_ * 0.5f);
+		move_ += avoidVec_ * 0.5f;
 
 		obj_->SetRot({ 0,obj_->GetRot().y - 0.314f,0 });
 
@@ -463,7 +463,15 @@ void Player::Reset()
 {
 	isDelete_ = false;
 
+	isDaed_ = false;
+
 	hp_ = maxHp_;
+
+	ExplosionFrame=0;
+
+	obj_->SetDestruction(0);
+
+	obj_->Setalpha(1);
 
 	PlayerBulletManager::Instance()->Clear();
 }
@@ -634,7 +642,7 @@ void Player::EnemyCollision()
 					}
 				}
 			}
-			if ( isAvoid_==false&&Enemy::EnemyType::Tutorial != enemy->GetType() )
+			if ( isAvoid_ == false && Enemy::EnemyType::Tutorial != enemy->GetType() )
 			{
 				if ( ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
 						&& ( playerCube.Pos.x + playerCube.Pos.y + playerCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )

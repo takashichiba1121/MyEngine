@@ -170,6 +170,34 @@ void EnemyManager::Collision()
 			}
 		}
 	}
+	for ( std::unique_ptr<Enemy>& enemy1 : Enemys_ )
+	{
+		if (enemy1->IsAttack()||enemy1->IsMove()&&enemy1->GetType()!=Enemy::EnemyType::Gun )
+		{
+			Collider::Sphere A;
+			A.Pos = enemy1->GetObj()->GetPosition();
+			A.scale = {1,1,1};
+
+			for ( std::unique_ptr<Enemy>& enemy2 : Enemys_ )
+			{
+				if (enemy1->GetNumber()!=enemy2->GetNumber() )
+				{
+					Collider::Sphere B;
+					B.Pos = enemy2->GetObj()->GetPosition();
+					B.scale = {1,1,1};
+
+					if ( Collider::SphereAndSphere(A,B,Collider::Type::Collsion) )
+					{
+						Vector3 reject = (B.scale+A.scale)-(B.Pos-A.Pos);
+
+						reject.y = 0;
+
+						enemy1->GetObj()->SetPosition(A.Pos+reject);
+					}
+				}
+			}
+		}
+	}
 }
 
 void EnemyManager::Clear()

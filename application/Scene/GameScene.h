@@ -140,6 +140,16 @@ private:
 
 	std::unique_ptr<Sprite> sousaSprite_;
 
+	std::unique_ptr<Sprite> retrySprite_;
+	std::unique_ptr<Sprite> yesSprite_;
+	std::unique_ptr<Sprite> noSprite_;
+	std::unique_ptr<Sprite> yazirusiSprite_;
+	uint32_t keyTexHandle_;
+
+	uint32_t padTexHandle_;
+
+	std::unique_ptr<Sprite> spaceSprite_;
+
 	std::unique_ptr<Object3d> skyObj_;
 
 	std::string mapName_;
@@ -149,5 +159,7 @@ private:
 	std::vector<Vector2> UVSift_;
 
 	std::vector<Vector2> UVSiftSpeed_;
+
+	bool retry=false;
 };
 

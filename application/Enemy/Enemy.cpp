@@ -3,7 +3,7 @@
 #include<imgui.h>
 #include"TextureManager.h"
 
-void Enemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType)
+void Enemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
 {
 	model_ = enemyModel;
 
@@ -24,6 +24,8 @@ void Enemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& posit
 	player_ = player;
 
 	enemyType_ = enemyType;
+
+	number_ = number;
 }
 
 void Enemy::Update()

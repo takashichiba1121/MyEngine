@@ -110,3 +110,30 @@ bool Collider::QuadAndQuad(Cube A,Cube B,Type type)
 	}
 	return false;
 }
+
+bool Collider::SphereAndSphere(Sphere A,Sphere B,Type type)
+{
+	if ( type == Type::Collsion )
+	{
+
+		double AR = pow(( B.Pos.x - A.Pos.x ),2) + pow(( B.Pos.y - A.Pos.y ),2) + pow(( B.Pos.z - A.Pos.z ),2);
+		double BR = pow(( A.scale.x + B.scale.x ),2);
+
+		if ( AR <= BR )
+		{
+			return true;
+		}
+	}
+	if ( type == Type::Inside )
+	{
+
+		double AR = pow(( B.Pos.x + A.Pos.x ),2) + pow(( B.Pos.y + A.Pos.y ),2) + pow(( B.Pos.z + A.Pos.z ),2);
+		double BR = pow(( A.scale.x + B.scale.x ),2);
+
+		if ( AR <= BR )
+		{
+			return true;
+		}
+	}
+	return false;
+}

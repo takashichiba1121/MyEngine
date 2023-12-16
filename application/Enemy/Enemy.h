@@ -14,7 +14,7 @@ public:
 	};
 
 public:
-	void Initialize(Model* EnemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType);
+	void Initialize(Model* EnemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -51,6 +51,14 @@ public:
 
 	bool IsAttack() {
 		return isAttack_;
+	}
+
+	bool IsMove() {
+		return isMove_;
+	}
+
+	uint32_t GetNumber() {
+		return number_;
 	}
 
 	void OnCollision();
@@ -91,4 +99,6 @@ protected:
 	bool isAttack_ = false;
 
 	EnemyType enemyType_;
+
+	uint32_t number_;
 };
