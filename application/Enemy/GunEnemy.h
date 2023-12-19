@@ -30,7 +30,7 @@ private:
 
 	uint32_t attackTimer_ = kAttackTimer_;
 
-	Vector3 attackVec;
+	Vector3 attackVec_;
 
 	float attackSpeed_ = 0.5f;
 

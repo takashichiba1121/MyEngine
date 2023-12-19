@@ -18,19 +18,19 @@ void jumpEnemy::Update()
 
 		isMove_ = ( distance <= attackRange_&&(playerPos.y == enemyPos.y));
 
-		if ( distance <= 20&& isAttack_ == false )
+		if ( distance <= 20&& isAttack_ == false&&player_->GetOnGround()==false)
 		{
 			isAttack_ = true;
 
 			attackTimer_ =0;
 
-			attackEndPoint = playerPos;
+			attackEndPoint_ = playerPos;
 
-			attackMiddlePoint = ( playerPos + enemyPos ) / 2;
+			attackMiddlePoint_ = ( playerPos + enemyPos ) / 2;
 
-			attackMiddlePoint.y += 30;
+			attackMiddlePoint_.y += 30;
 
-			attackStartPoint = enemyPos;
+			attackStartPoint_ = enemyPos;
 
 			Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
 
@@ -43,14 +43,14 @@ void jumpEnemy::Update()
 	}
 	else
 	{
-		ExplosionFrame++;
+		ExplosionFrame_++;
 
-		float a = ExplosionFrame / ExplosionMaxFrame;
+		float a = ExplosionFrame_ / ExplosionMaxFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
-		if ( ExplosionFrame >= ExplosionMaxFrame )
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
 			isDelete_ = true;
 		}
@@ -67,13 +67,13 @@ void jumpEnemy::Move()
 
 		obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
 
-		attackVec = frontVec;
+		attackVec_ = frontVec;
 
-		attackVec.y = 0;
+		attackVec_.y = 0;
 
-		attackVec.normalize();
+		attackVec_.normalize();
 
-		obj_->SetPosition(obj_->GetPosition() + attackVec * moveSpeed_);
+		obj_->SetPosition(obj_->GetPosition() + attackVec_ * moveSpeed_);
 	}
 }
 
@@ -90,8 +90,8 @@ void jumpEnemy::Attack()
 		{
 			float timeRate =( float(attackTimer_-20) / float( kAttackTimer_ - 20 ));
 
-			Vector3 a = attackStartPoint * ( 1.0f - timeRate ) +attackMiddlePoint* timeRate;
-			Vector3 b = attackMiddlePoint * ( 1.0f - timeRate ) + attackEndPoint * timeRate;
+			Vector3 a = attackStartPoint_ * ( 1.0f - timeRate ) +attackMiddlePoint_* timeRate;
+			Vector3 b = attackMiddlePoint_ * ( 1.0f - timeRate ) + attackEndPoint_ * timeRate;
 
 			Vector3 c = a * ( 1.0f - timeRate ) + b * timeRate;
 
@@ -107,4 +107,15 @@ void jumpEnemy::Attack()
 void jumpEnemy::AttackOff()
 {
 	isAttack_ = false;
+}
+
+void jumpEnemy::OnEnemyCollision(Vector3 reject)
+{
+	reject.y = 0;
+
+	obj_->SetPosition(obj_->GetPosition() + ( reject ));
+
+	attackEndPoint_ += reject;
+	attackMiddlePoint_ += reject;
+	attackStartPoint_ += reject;
 }

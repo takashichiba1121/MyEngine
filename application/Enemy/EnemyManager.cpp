@@ -176,7 +176,7 @@ void EnemyManager::Collision()
 		{
 			Collider::Sphere A;
 			A.Pos = enemy1->GetObj()->GetPosition();
-			A.scale = {1,1,1};
+			A.scale = 1;
 
 			for ( std::unique_ptr<Enemy>& enemy2 : Enemys_ )
 			{
@@ -184,15 +184,13 @@ void EnemyManager::Collision()
 				{
 					Collider::Sphere B;
 					B.Pos = enemy2->GetObj()->GetPosition();
-					B.scale = {1,1,1};
+					B.scale = 1;
+					Vector3 reject = {0,0,0};
 
-					if ( Collider::SphereAndSphere(A,B,Collider::Type::Collsion) )
+					if ( Collider::SphereAndSphere(A,B,Collider::Type::Collsion,&reject) )
 					{
-						Vector3 reject = (B.scale+A.scale)-(B.Pos-A.Pos);
 
-						reject.y = 0;
-
-						enemy1->GetObj()->SetPosition(A.Pos+reject);
+						enemy1->OnEnemyCollision(reject);
 					}
 				}
 			}

@@ -16,20 +16,20 @@ public:
 	void Draw() override;
 
 private:
-	std::unique_ptr<RenderTarget> renderTarget1;
+	std::unique_ptr<RenderTarget> renderTarget1_;
 
-	std::unique_ptr<RenderTarget> renderTarget2;
+	std::unique_ptr<RenderTarget> renderTarget2_;
 
-	std::unique_ptr<RenderTarget> renderTarget3;
+	std::unique_ptr<RenderTarget> renderTarget3_;
 
-	Vector3 LuminanceColor;
-	float smoothstepMax;
-	float smoothstepMin;
+	Vector3 LuminanceColor_;
+	float smoothstepMax_;
+	float smoothstepMin_;
 
-	float sigma;
-	float stepWidth;
+	float sigma_;
+	float stepWidth_;
 
-	bool isPostEffect=true;
+	bool isPostEffect_=true;
 };
 
  

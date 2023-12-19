@@ -29,13 +29,13 @@ void RunEnemy::Update()
 
 			Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
 
-			attackEndRot = atan2f(frontVec.x,frontVec.z);
+			attackEndRot_ = atan2f(frontVec.x,frontVec.z);
 
-			attackStartRot = obj_->GetRot().y;
+			attackStartRot_ = obj_->GetRot().y;
 
-			attackVec = frontVec;
+			attackVec_ = frontVec;
 
-			attackVec.normalize();
+			attackVec_.normalize();
 		}
 
 		if ( isMove_ == false )
@@ -49,14 +49,14 @@ void RunEnemy::Update()
 	}
 	else
 	{
-		ExplosionFrame++;
+		ExplosionFrame_++;
 
-		float a = ExplosionFrame / ExplosionMaxFrame;
+		float a = ExplosionFrame_ / ExplosionMaxFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
-		if ( ExplosionFrame >= ExplosionMaxFrame )
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
 			isDelete_ = true;
 		}
@@ -73,13 +73,13 @@ void RunEnemy::Move()
 
 		obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
 
-		attackVec = frontVec;
+		attackVec_ = frontVec;
 
-		attackVec.y = 0;
+		attackVec_.y = 0;
 
-		attackVec.normalize();
+		attackVec_.normalize();
 
-		obj_->SetPosition(obj_->GetPosition() + attackVec * moveSpeed_);
+		obj_->SetPosition(obj_->GetPosition() + attackVec_ * moveSpeed_);
 	}
 }
 
@@ -90,15 +90,11 @@ void RunEnemy::Attack()
 		attackTimer_++;
 		if ( attackTimer_ <= kAttackTimer_ - 60 )
 		{
-			float timeRate = ( float(attackTimer_) / float(kAttackTimer_ - 60) );
-
-			float a = attackStartRot * ( 1.0f - timeRate ) + attackEndRot * timeRate;
-
-			obj_->SetRot({ 0,a,0 });
+			obj_->SetRot({ 0,attackEndRot_,0 });
 		}
 		else if ( attackTimer_ <= kAttackTimer_ - 40 )
 		{
-			obj_->SetPosition(obj_->GetPosition() - attackVec * 0.05f);
+			obj_->SetPosition(obj_->GetPosition() - attackVec_ * 0.05f);
 		}
 		else if ( attackTimer_ >= kAttackTimer_ - 30 )
 		{
@@ -129,7 +125,7 @@ void RunEnemy::Attack()
 			pos -= vec * 2;
 							//追加
 			EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },0.5f,0.5f,{ 1,0.8f,0,1 },{ 1,0.8f,0,1 });
-			obj_->SetPosition(obj_->GetPosition() + attackVec * attackSpeed_);
+			obj_->SetPosition(obj_->GetPosition() + attackVec_ * attackSpeed_);
 			if ( attackTimer_ >= kAttackTimer_ )
 			{
 				isAttack_ = false;

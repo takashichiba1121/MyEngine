@@ -4,31 +4,31 @@ void TutorialEnemy::Update()
 {
 	if ( isDaed_)
 	{
-		ExplosionFrame++;
+		ExplosionFrame_++;
 
-		float a = ExplosionFrame / ExplosionMaxFrame;
+		float a = ExplosionFrame_ / ExplosionMaxFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
-		if ( ExplosionFrame >= ExplosionMaxFrame )
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
-			isRevival = true;
+			isRevival_ = true;
 			isDaed_ = false;
 		}
 	}
-	else if(isRevival)
+	else if(isRevival_)
 	{
-		ExplosionFrame--;
+		ExplosionFrame_--;
 
-		float a = ExplosionFrame / ExplosionMaxFrame;
+		float a = ExplosionFrame_ / ExplosionMaxFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
-		if ( ExplosionFrame <=0 )
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		if ( ExplosionFrame_ <=0 )
 		{
-			isRevival = false;
+			isRevival_ = false;
 		}
 	}
 

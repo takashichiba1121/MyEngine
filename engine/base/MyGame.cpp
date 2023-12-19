@@ -21,24 +21,24 @@ void MyGame::Initialize()
 
 	SceneManager::Instance()->ChangeScene("TITLE");
 
-	renderTarget1 = std::make_unique<RenderTarget>();
+	renderTarget1_ = std::make_unique<RenderTarget>();
 
-	renderTarget1->Initialize();
+	renderTarget1_->Initialize();
 
-	renderTarget2 = std::make_unique<RenderTarget>();
+	renderTarget2_ = std::make_unique<RenderTarget>();
 
-	renderTarget2->Initialize();
+	renderTarget2_->Initialize();
 
-	renderTarget3 = std::make_unique<RenderTarget>();
+	renderTarget3_ = std::make_unique<RenderTarget>();
 
-	renderTarget3->Initialize();
+	renderTarget3_->Initialize();
 
-	LuminanceColor = { 0.299f,0.587f,0.114f };
-	smoothstepMax = 0.9f;
-	smoothstepMin = 0.6f;
+	LuminanceColor_ = { 0.299f,0.587f,0.114f };
+	smoothstepMax_ = 0.9f;
+	smoothstepMin_ = 0.6f;
 
-	sigma = 0.005f;
-	stepWidth = 0.001f;
+	sigma_ = 0.005f;
+	stepWidth_ = 0.001f;
 }
 
 void MyGame::Finalize()
@@ -85,28 +85,28 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
-	renderTarget1->PreDraw(dxCommon_->GetCommandList());
+	renderTarget1_->PreDraw(dxCommon_->GetCommandList());
 
 	SceneManager::Instance()->Draw(dxCommon_.get());
 
-	renderTarget1->PostDraw(dxCommon_->GetCommandList());
+	renderTarget1_->PostDraw(dxCommon_->GetCommandList());
 
-	renderTarget2->PreDraw(dxCommon_->GetCommandList());
+	renderTarget2_->PreDraw(dxCommon_->GetCommandList());
 
-	PostEffectLuminance::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget1->GettexHandle());
+	PostEffectLuminance::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget1_->GettexHandle());
 
-	renderTarget2->PostDraw(dxCommon_->GetCommandList());
+	renderTarget2_->PostDraw(dxCommon_->GetCommandList());
 
-	renderTarget3->PreDraw(dxCommon_->GetCommandList());
+	renderTarget3_->PreDraw(dxCommon_->GetCommandList());
 
-	PostEffectBlur::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget2->GettexHandle());
+	PostEffectBlur::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget2_->GettexHandle());
 
-	renderTarget3->PostDraw(dxCommon_->GetCommandList());
+	renderTarget3_->PostDraw(dxCommon_->GetCommandList());
 
 	Framework::GetDxCommon()->PreDraw();
-	if ( isPostEffect )
+	if ( isPostEffect_ )
 	{
-		PostEffectMixeds::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget3->GettexHandle(),renderTarget1->GettexHandle());
+		PostEffectMixeds::Instance()->Draw(dxCommon_->GetCommandList(),renderTarget3_->GettexHandle(),renderTarget1_->GettexHandle());
 	}
 	else
 	{

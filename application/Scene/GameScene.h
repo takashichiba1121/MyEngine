@@ -154,12 +154,12 @@ private:
 
 	std::string mapName_;
 
-	Vector3 lightV = { 0,-1,0 };
+	Vector3 lightV_ = { 0,-1,0 };
 
 	std::vector<Vector2> UVSift_;
 
 	std::vector<Vector2> UVSiftSpeed_;
 
-	bool retry=false;
+	bool retry_=false;
 };
 

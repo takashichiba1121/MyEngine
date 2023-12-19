@@ -111,16 +111,24 @@ bool Collider::QuadAndQuad(Cube A,Cube B,Type type)
 	return false;
 }
 
-bool Collider::SphereAndSphere(Sphere A,Sphere B,Type type)
+bool Collider::SphereAndSphere(Sphere A,Sphere B,Type type,Vector3* reject)
 {
 	if ( type == Type::Collsion )
 	{
 
-		double AR = pow(( B.Pos.x - A.Pos.x ),2) + pow(( B.Pos.y - A.Pos.y ),2) + pow(( B.Pos.z - A.Pos.z ),2);
-		double BR = pow(( A.scale.x + B.scale.x ),2);
+		float AR = float(pow(( B.Pos.x - A.Pos.x ),2) + pow(( B.Pos.y - A.Pos.y ),2) + pow(( B.Pos.z - A.Pos.z ),2));
+		float BR = float(pow(( A.scale + B.scale ),2));
 
 		if ( AR <= BR )
 		{
+			if (reject )
+			{
+				float rejectLen = A.scale + B.scale - sqrtf(AR);
+				 Vector3 tmp = A.Pos - B.Pos;
+				*reject = tmp.normalize();
+				*reject *= rejectLen;
+			}
+
 			return true;
 		}
 	}
@@ -128,7 +136,7 @@ bool Collider::SphereAndSphere(Sphere A,Sphere B,Type type)
 	{
 
 		double AR = pow(( B.Pos.x + A.Pos.x ),2) + pow(( B.Pos.y + A.Pos.y ),2) + pow(( B.Pos.z + A.Pos.z ),2);
-		double BR = pow(( A.scale.x + B.scale.x ),2);
+		double BR = pow(( A.scale + B.scale ),2);
 
 		if ( AR <= BR )
 		{

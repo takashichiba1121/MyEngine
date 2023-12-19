@@ -51,6 +51,11 @@ void Enemy::OnCollision()
 	isDaed_ = true;
 }
 
+void Enemy::OnEnemyCollision(Vector3 reject)
+{
+	obj_->SetPosition(obj_->GetPosition() + ( reject ));
+}
+
 void Enemy::AttackOff()
 {
 	isAttack_ = false;

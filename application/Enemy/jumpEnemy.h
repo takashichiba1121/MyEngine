@@ -17,6 +17,8 @@ public:
 
 	void AttackOff() override;
 
+	void OnEnemyCollision(Vector3 reject) override;
+
 private:
 
 	float attackRange_ = 40;
@@ -25,20 +27,20 @@ private:
 
 	uint32_t attackTimer_ = kAttackTimer_;
 
-	Vector3 attackVec;
+	Vector3 attackVec_;
 
 	float attackSpeed_ = 0.7f;
 
 	float moveSpeed_ = 0.2f;
 
-	Vector3 attackStartPoint = {0,0,0};
+	Vector3 attackStartPoint_ = {0,0,0};
 
-	Vector3 attackMiddlePoint = {0,0,0};
+	Vector3 attackMiddlePoint_ = {0,0,0};
 
-	Vector3 attackEndPoint = {0,0,0};
+	Vector3 attackEndPoint_ = {0,0,0};
 
-	float attackStartRot = 0;
+	float attackStartRot_ = 0;
 
-	float attackEndRot = 0;
+	float attackEndRot_ = 0;
 };
 

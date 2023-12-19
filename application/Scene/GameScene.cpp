@@ -352,7 +352,7 @@ void GameScene::Update()
 
 			sceneSprite_->SetDissolve(f);
 
-			retry = true;
+			retry_ = true;
 		}
 		else if ( frame_ <= 0 )
 		{
@@ -376,19 +376,19 @@ void GameScene::Update()
 
 					sceneChange_ = false;
 
-					retry = false;
+					retry_ = false;
 				}
 				else if ( player_->IsDaed() )
 				{
 					if (Input::Instance()->GetPadStick(PadStick::LX)<=-0.5||Input::Instance()->TriggerKey(DIK_A) )
 					{
-						retry = true;
+						retry_ = true;
 						yazirusiSprite_->SetPosition({ 240,400 });
 						yazirusiSprite_->Update();
 					}
 					else if( Input::Instance()->GetPadStick(PadStick::LX) >= 0.5||Input::Instance()->TriggerKey(DIK_D) )
 					{
-						retry = false;
+						retry_ = false;
 						yazirusiSprite_->SetPosition({ 848,400 });
 						yazirusiSprite_->Update();
 					}
@@ -403,7 +403,7 @@ void GameScene::Update()
 					spaceSprite_->Update();
 					if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) || Input::Instance()->TriggerKey(DIK_SPACE) )
 					{
-						if ( retry == false )
+						if ( retry_ == false )
 						{
 							SceneManager::Instance()->ChangeScene("TITLE");
 						}
@@ -425,7 +425,7 @@ void GameScene::Update()
 
 							sceneChange_ = false;
 
-							retry = false;
+							retry_ = false;
 						}
 					}
 				}

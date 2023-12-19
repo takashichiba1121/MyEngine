@@ -63,6 +63,8 @@ public:
 
 	void OnCollision();
 
+	virtual void OnEnemyCollision(Vector3 reject);
+
 	EnemyType GetType() {return enemyType_;}
 
 	virtual void AttackOff();
@@ -83,9 +85,9 @@ protected:
 
 	Player* player_;
 
-	float ExplosionFrame = 0;
+	float ExplosionFrame_ = 0;
 
-	const float ExplosionMaxFrame = 60;
+	const float ExplosionMaxFrame_ = 60;
 
 	float attackRange_ = 25.0f;
 

@@ -39,14 +39,14 @@ void GunEnemy::Update()
 	}
 	else
 	{
-		ExplosionFrame++;
+		ExplosionFrame_++;
 
-		float a = ExplosionFrame / ExplosionMaxFrame;
+		float a = ExplosionFrame_ / ExplosionMaxFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
-		if ( ExplosionFrame >= ExplosionMaxFrame )
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
 			isDelete_ = true;
 		}

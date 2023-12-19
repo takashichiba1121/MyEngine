@@ -9,6 +9,6 @@ public:
 	void Update() override;
 
 private:
-	bool isRevival=false;
+	bool isRevival_=false;
 };
 

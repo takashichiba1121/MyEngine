@@ -69,6 +69,8 @@ public:
 
 	void SetCameraPos(const Vector3 cameraPos) {cameraPos_=cameraPos ; }
 
+	bool GetOnGround() {return onGround_;}
+
 	Object3d* GetObj() { return obj_.get(); }
 
 	bool IsDaed() { return isDelete_; }
@@ -127,11 +129,11 @@ private:
 
 	uint32_t hp_ = maxHp_;
 
-	float ExplosionFrame = 0;
+	float ExplosionFrame_ = 0;
 
-	const float ExplosionMaxFrame = 60;
+	const float ExplosionMaxFrame_ = 60;
 
-	uint32_t AttackInterval=0;
+	uint32_t AttackInterval_=0;
 
 	bool isAvoid_=false;
 
@@ -139,9 +141,9 @@ private:
 
 	Vector3 avoidVec_ = {0,0,0};
 
-	Vector3 initialRot = {0,0,0};
+	Vector3 initialRot_ = {0,0,0};
 
-	uint32_t avoidInterval = 0;
+	uint32_t avoidInterval_ = 0;
 
 	LightGroup* light_;
 };

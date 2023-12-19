@@ -60,14 +60,14 @@ void Player::Update()
 	}
 	else
 	{
-		ExplosionFrame++;
+		ExplosionFrame_++;
 
-		float a = ExplosionFrame / ExplosionMaxFrame;
+		float a = ExplosionFrame_ / ExplosionMaxFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame - ExplosionFrame ) / ExplosionMaxFrame ));
-		if ( ExplosionFrame >= ExplosionMaxFrame )
+		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
 			isDelete_ = true;
 		}
@@ -98,7 +98,7 @@ void Player::Update()
 
 void Player::Move()
 {
-	if ( AttackInterval == 0 )
+	if ( AttackInterval_ == 0 )
 	{
 		if ( isAvoid_ == false )
 		{
@@ -203,15 +203,15 @@ void Player::Move()
 			}
 		}
 		move_ = move_.normalize() * 0.25f;
-		if ( avoidInterval == 0 )
+		if ( avoidInterval_ == 0 )
 		{
 			if ( isAvoid_ == false && Input::Instance()->TriggerKey(DIK_Q) || Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_X) )
 			{
 				isAvoid_ = true;
 
-				avoidInterval = 30;
+				avoidInterval_ = 30;
 
-				initialRot = obj_->GetRot();
+				initialRot_ = obj_->GetRot();
 
 				Vector3 velocity(0,0,1);
 				avoidVec_ = Matrix4Math::transform(velocity,obj_->GetMatWorld());
@@ -220,13 +220,13 @@ void Player::Move()
 		}
 		else
 		{
-			avoidInterval--;
+			avoidInterval_--;
 			Avoid();
 		}
 	}
 	else
 	{
-		AttackInterval--;
+		AttackInterval_--;
 	}
 	if ( obj_->GetPosition().y <= resetPoint_ )
 	{
@@ -280,7 +280,7 @@ void Player::Attack()
 
 			newBullet->SetChageTime(10);
 
-			AttackInterval = 10;
+			AttackInterval_ = 10;
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
@@ -326,7 +326,7 @@ void Player::Attack()
 							//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
-			AttackInterval = 20;
+			AttackInterval_ = 20;
 		}
 	}
 	else
@@ -360,7 +360,7 @@ void Player::Attack()
 				}
 			}
 
-			AttackInterval = 10;
+			AttackInterval_ = 10;
 
 			//弾の登録する
 			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
@@ -408,7 +408,7 @@ void Player::Attack()
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 			}
 
-			AttackInterval = 20;
+			AttackInterval_ = 20;
 		}
 	}
 }
@@ -439,7 +439,7 @@ void Player::Avoid()
 		if ( avoidTime_ >= 20 )
 		{
 			avoidTime_ = 0;
-			obj_->SetRot(initialRot);
+			obj_->SetRot(initialRot_);
 			isAvoid_ = false;
 		}
 	}
@@ -467,7 +467,7 @@ void Player::Reset()
 
 	hp_ = maxHp_;
 
-	ExplosionFrame=0;
+	ExplosionFrame_=0;
 
 	obj_->SetDestruction(0);
 

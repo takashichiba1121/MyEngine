@@ -26,14 +26,14 @@ private:
 
 	uint32_t attackTimer_ = kAttackTimer_;
 
-	Vector3 attackVec;
+	Vector3 attackVec_;
 
 	float attackSpeed_ = 0.7f;
 
 	float moveSpeed_ =0.2f;
 
-	float attackStartRot = 0;
+	float attackStartRot_ = 0;
 
-	float attackEndRot = 0;
+	float attackEndRot_ = 0;
 };
 
