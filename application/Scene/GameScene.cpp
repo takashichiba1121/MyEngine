@@ -212,6 +212,16 @@ void GameScene::Initialize()
 	Enemy::SetLight(light_.get());
 
 	EnemyBullet::SetLight(light_.get());
+
+	gameBGM_.Load("Resources/Sound/GameBgm.wav");
+
+	gameBGM_.Play(true,0.1f);
+
+	reTryBGM_.Load("Resources/Sound/ReTryBGM.wav");
+
+	enterSE_.Load("Resources/Sound/enter.wav");
+
+	goalSE_.Load("Resources/Sound/Goal.wav");
 }
 
 void GameScene::Update()
@@ -219,7 +229,7 @@ void GameScene::Update()
 #ifdef _DEBUG
 	ImGui::Begin("Scene");
 
-	ImGui::SliderFloat3("light",&lightV.x,-1,1,"%3.1f");
+	ImGui::SliderFloat3("light",&lightV_.x,-1,1,"%3.1f");
 
 	ImGui::End();
 #endif
@@ -256,7 +266,6 @@ void GameScene::Update()
 			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve3.png"));
 		}
 		sceneSprite_->Update();
-
 	}
 	else if ( IsCameraSet_ )
 	{
@@ -299,6 +308,10 @@ void GameScene::Update()
 			{
 				isClear_ = true;
 				sceneChange_ = true;
+
+				gameBGM_.Stop();
+
+				goalSE_.Play(false,0.3f);
 			}
 		}
 		else
@@ -340,6 +353,10 @@ void GameScene::Update()
 		if ( player_->IsDaed() )
 		{
 			sceneChange_ = true;
+
+			gameBGM_.Stop();
+
+			reTryBGM_.Play(false,0.1f);
 		}
 	}
 	else
@@ -360,23 +377,7 @@ void GameScene::Update()
 			{
 				if ( isClear_ )
 				{
-					MapLoad("Resources/Select.json");
-
-					player_->Reset();
-
-					player_->SetMapData(&objects_);
-
-					EnemyManager::Instance()->SetMapData(&objects_);
-
-					EnemyManager::Instance()->SetPlayer(player_.get());
-					player_->Update();
-					EnemyManager::Instance()->Update();
-
-					sceneStart_ = true;
-
-					sceneChange_ = false;
-
-					retry_ = false;
+					SceneManager::Instance()->ChangeScene("RESULT");
 				}
 				else if ( player_->IsDaed() )
 				{
@@ -406,6 +407,8 @@ void GameScene::Update()
 						if ( retry_ == false )
 						{
 							SceneManager::Instance()->ChangeScene("TITLE");
+
+							enterSE_.Play(false,0.5f);
 						}
 						else
 						{
@@ -426,6 +429,12 @@ void GameScene::Update()
 							sceneChange_ = false;
 
 							retry_ = false;
+
+							reTryBGM_.Stop();
+
+							gameBGM_.Play(true,0.1f);
+
+							enterSE_.Play(false,0.5f);
 						}
 					}
 				}
@@ -447,6 +456,8 @@ void GameScene::Update()
 					IsCameraSet_ = true;
 
 					sceneStart_ = true;
+
+					sceneChange_ = false;
 				}
 				else if ( isStage2_ == true )
 				{
@@ -463,6 +474,8 @@ void GameScene::Update()
 					IsCameraSet_ = true;
 
 					sceneStart_ = true;
+
+					sceneChange_ = false;
 				}
 				else
 				{
@@ -479,10 +492,10 @@ void GameScene::Update()
 					IsCameraSet_ = true;
 
 					sceneStart_ = true;
+
+					sceneChange_ = false;
 				}
 			}
-			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
-			sceneChange_ = false;
 		}
 
 		sceneSprite_->Update();

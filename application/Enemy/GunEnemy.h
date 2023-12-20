@@ -6,6 +6,7 @@ class GunEnemy :
 
 public:
 
+	void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number) override;
 
 	void Update() override;
 

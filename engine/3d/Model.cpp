@@ -62,32 +62,32 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 		//先頭文字がnewmtlならマテリアル名
 		if (key == "newmtl") {
 			//マテリアル名読み込み
-			line_stream >> material.name;
+			line_stream >> material_.name;
 		}
 		//先頭文字がKaならアンビエント色
 		if (key == "Ka") {
-			line_stream >> material.ambient.x;
-			line_stream >> material.ambient.y;
-			line_stream >> material.ambient.z;
+			line_stream >> material_.ambient.x;
+			line_stream >> material_.ambient.y;
+			line_stream >> material_.ambient.z;
 		}
 		//先頭文字がKdならディフューズ色
 		if (key == "Kd") {
-			line_stream >> material.diffuse.x;
-			line_stream >> material.diffuse.y;
-			line_stream >> material.diffuse.z;
+			line_stream >> material_.diffuse.x;
+			line_stream >> material_.diffuse.y;
+			line_stream >> material_.diffuse.z;
 		}
 		//先頭文字列がKsならスペキュラー色
 		if (key == "Ks") {
-			line_stream >> material.specular.x;
-			line_stream >> material.specular.y;
-			line_stream >> material.specular.z;
+			line_stream >> material_.specular.x;
+			line_stream >> material_.specular.y;
+			line_stream >> material_.specular.z;
 		}
 		//先頭文字列がmap_Kdならテクスチャファイル名
 		if (key == "map_Kd") {
 			//テクスチャのファイル名読み込み
-			line_stream >> material.textureFilename;
+			line_stream >> material_.textureFilename;
 			//テクスチャ読み込み
-			LoadTexture(directoryPath, material.textureFilename);
+			LoadTexture(directoryPath, material_.textureFilename);
 		}
 	}
 	//ファイルを閉じる
@@ -160,10 +160,10 @@ void Model::CreateBuffers()
 	ConstBufferDataB1* constMap1 = nullptr;
 	result = constBuffB1_->Map(0, nullptr, (void**)&constMap1);
 	if (SUCCEEDED(result)) {
-		constMap1->ambient = material.ambient;
-		constMap1->diffuse = material.diffuse;
-		constMap1->specular = material.specular;
-		constMap1->alpha = material.alpha;
+		constMap1->ambient = material_.ambient;
+		constMap1->diffuse = material_.diffuse;
+		constMap1->specular = material_.specular;
+		constMap1->alpha = material_.alpha;
 		constBuffB1_->Unmap(0, nullptr);
 	}
 }

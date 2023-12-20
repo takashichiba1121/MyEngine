@@ -5,6 +5,11 @@ IXAudio2MasteringVoice* Sound::sMasterVoice;
 
 Sound::~Sound()
 {
+	if (isPlay_ )
+	{
+		Stop();
+	}
+
 	//バッファのメモリを解放
 	delete[] soundData_.pBuffer_;
 
@@ -155,6 +160,8 @@ void Sound::Play(bool loop, float volume) {
 	result = pSourceVoice_->SubmitSourceBuffer(&buf_);
 	result = pSourceVoice_->Start();
 
+	isPlay_=true;
+
 }
 
 //----------音声ストップ------------//
@@ -167,4 +174,5 @@ void Sound::Stop()
 		result = pSourceVoice_->FlushSourceBuffers();
 		result = pSourceVoice_->SubmitSourceBuffer(&buf_);
 	}
+	isPlay_ = false;
 }

@@ -3,6 +3,33 @@
 
 
 
+void RunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
+{
+	model_ = enemyModel;
+
+	bulletModel_ = bulletModel;
+
+	player_ = player;
+
+	enemyType_ = enemyType;
+
+	obj_ = std::make_unique<Object3d>();
+
+	obj_->Initialize();
+
+	obj_->SetModel(model_);
+
+	obj_->SetPosition(position);
+
+	obj_->SetRot({ 0,135,0 });
+
+	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
+
+	number_ = number;
+
+	attackSE_.Load("Resources/Sound/PlayerAvoid.wav");
+}
+
 void RunEnemy::Update()
 {
 	if ( isDaed_ == false )
@@ -36,6 +63,8 @@ void RunEnemy::Update()
 			attackVec_ = frontVec;
 
 			attackVec_.normalize();
+
+			attackSE_.Play(false,0.3f);
 		}
 
 		if ( isMove_ == false )

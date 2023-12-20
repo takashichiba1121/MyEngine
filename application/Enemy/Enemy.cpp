@@ -7,6 +7,14 @@ void Enemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& posit
 {
 	model_ = enemyModel;
 
+	bulletModel_ = bulletModel;
+
+	player_ = player;
+
+	enemyType_ = enemyType;
+
+	number_ = number;
+
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
@@ -18,14 +26,6 @@ void Enemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& posit
 	obj_->SetRot({0,135,0});
 
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
-
-	bulletModel_ = bulletModel;
-
-	player_ = player;
-
-	enemyType_ = enemyType;
-
-	number_ = number;
 }
 
 void Enemy::Update()

@@ -54,30 +54,30 @@ void MyGame::Update()
 	ImGui::Begin("postEffect");
 
 	ImGui::Text("Blur");
-	ImGui::SliderFloat("sigma",&sigma,0.005f,0.5f,"%0.3f");
-	ImGui::SliderFloat("stepWidth",&stepWidth,0.001f,0.005f,"%0.3f");
+	ImGui::SliderFloat("sigma",&sigma_,0.005f,0.5f,"%0.3f");
+	ImGui::SliderFloat("stepWidth",&stepWidth_,0.001f,0.005f,"%0.3f");
 
 	ImGui::Text("Luminance");
-	ImGui::SliderFloat("Max",&smoothstepMax,0.0f,1.0f,"%1.2f");
-	ImGui::SliderFloat("Min",&smoothstepMin,0.0f,1.0f,"%1.2f");
+	ImGui::SliderFloat("Max",&smoothstepMax_,0.0f,1.0f,"%1.2f");
+	ImGui::SliderFloat("Min",&smoothstepMin_,0.0f,1.0f,"%1.2f");
 
-	ImGui::SliderFloat3("color",&LuminanceColor.x,0.0f,1.0f,"%1.3f");
+	ImGui::SliderFloat3("color",&LuminanceColor_.x,0.0f,1.0f,"%1.3f");
 
 	ImGui::End();
 
-	PostEffectLuminance::Instance()->Update(LuminanceColor,smoothstepMax,smoothstepMin);
+	PostEffectLuminance::Instance()->Update(LuminanceColor_,smoothstepMax_,smoothstepMin_);
 
-	PostEffectBlur::Instance()->Update(sigma,stepWidth);
+	PostEffectBlur::Instance()->Update(sigma_,stepWidth_);
 
 	if (Input::Instance()->TriggerKey(DIK_1))
 	{
-		if (isPostEffect )
+		if (isPostEffect_ )
 		{
-			isPostEffect = false;
+			isPostEffect_ = false;
 		}
 		else
 		{
-			isPostEffect = true;
+			isPostEffect_ = true;
 		}
 	}
 #endif

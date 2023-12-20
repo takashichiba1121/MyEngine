@@ -112,7 +112,7 @@ private:
 	// 頂点インデックス配列
 	std::vector<unsigned short>indices_;
 	//マテリアル
-	Material material;
+	Material material_;
 	// 定数バッファ(マテリアル)
 	ComPtr<ID3D12Resource> constBuffB1_;
 

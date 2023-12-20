@@ -91,6 +91,12 @@ void ResultScene::Initialize()
 	particles_->Initialize();
 
 	particles_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+
+	bgm_.Load("Resources/Sound/GameClear.wav");
+
+	bgm_.Play(true,0.1f);
+
+	enterSE_.Load("Resources/Sound/enter.wav");
 }
 
 void ResultScene::Finalize()
@@ -154,6 +160,8 @@ void ResultScene::Update()
 			if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
 			{
 				sceneChange_ = true;
+
+				enterSE_.Play(false,0.5f);
 			}
 		}
 		else
@@ -162,6 +170,8 @@ void ResultScene::Update()
 			if (Input::Instance()->TriggerKey(DIK_SPACE))
 			{
 				sceneChange_ = true;
+
+				enterSE_.Play(false,0.5f);
 			}
 		}
 	}
@@ -184,7 +194,7 @@ void ResultScene::Update()
 
 			sceneChange_ = false;
 
-			SceneManager::Instance()->ChangeScene("TITLE");
+			SceneManager::Instance()->ChangeScene("GAME");
 		}
 		else
 		{

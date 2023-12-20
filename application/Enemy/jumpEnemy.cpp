@@ -1,5 +1,32 @@
 #include "jumpEnemy.h"
 
+void jumpEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
+{
+	model_ = enemyModel;
+
+	bulletModel_ = bulletModel;
+
+	player_ = player;
+
+	enemyType_ = enemyType;
+
+	obj_ = std::make_unique<Object3d>();
+
+	obj_->Initialize();
+
+	obj_->SetModel(model_);
+
+	obj_->SetPosition(position);
+
+	obj_->SetRot({ 0,135,0 });
+
+	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
+
+	number_ = number;
+
+	attackSE_.Load("Resources/Sound/Jamp.wav");
+}
+
 void jumpEnemy::Update()
 {
 	if ( isDaed_ == false )
@@ -35,6 +62,8 @@ void jumpEnemy::Update()
 			Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
 
 			obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
+
+			attackSE_.Play(false,0.3f);
 		}
 
 		Move();

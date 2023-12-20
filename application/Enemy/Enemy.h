@@ -14,7 +14,7 @@ public:
 	};
 
 public:
-	void Initialize(Model* EnemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number);
+	virtual void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -103,4 +103,6 @@ protected:
 	EnemyType enemyType_;
 
 	uint32_t number_;
+
+	Sound attackSE_;
 };

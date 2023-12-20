@@ -52,8 +52,6 @@ private:
 	uint32_t keyTexHandle_;
 	uint32_t padTexHandle_;
 
-	Sound bgm;
-
 #pragma endregion
 
 	std::unique_ptr<Model> skyModel_;
@@ -65,5 +63,9 @@ private:
 	std::unique_ptr<ParticleManager> particles_;
 
 	uint32_t ParticleFlame_=0;
+
+	Sound bgm_;
+
+	Sound enterSE_;
 };
 

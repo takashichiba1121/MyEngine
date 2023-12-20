@@ -18,6 +18,8 @@ void EnemyManager::Initialize()
 	particle_->Initialize();
 
 	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+
+	landingSE_.Load("Resources/Sound/Landing.wav");
 }
 
 void EnemyManager::Update()
@@ -91,6 +93,8 @@ void EnemyManager::AddEnemy(std::unique_ptr<Enemy> newEnemy)
 
 void EnemyManager::Fin()
 {
+	landingSE_.Stop();
+
 	bullets_.clear();
 
 	Enemys_.clear();
@@ -167,6 +171,8 @@ void EnemyManager::Collision()
 			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
 			{
 				bullet->OnCollision();
+
+				landingSE_.Play(false,0.3f);
 			}
 		}
 	}

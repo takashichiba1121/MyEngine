@@ -161,5 +161,13 @@ private:
 	std::vector<Vector2> UVSiftSpeed_;
 
 	bool retry_=false;
+
+	Sound gameBGM_;
+
+	Sound reTryBGM_;
+
+	Sound enterSE_;
+
+	Sound goalSE_;
 };
 

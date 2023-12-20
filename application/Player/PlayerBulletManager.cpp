@@ -54,6 +54,7 @@ void PlayerBulletManager::AddBullet(std::unique_ptr<PlayerBullet> newBullet)
 
 void PlayerBulletManager::Fin()
 {
+
 	bullets_.clear();
 
 	particle_ = nullptr;

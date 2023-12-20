@@ -64,4 +64,6 @@ private:
 	Player* player_=nullptr;
 
 	float attackRange_ = 40.0f;
+
+	Sound landingSE_;
 };

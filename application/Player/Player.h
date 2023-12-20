@@ -2,6 +2,7 @@
 #include"object3d.h"
 #include"ParticleManager.h"
 #include"PlayerBullet.h"
+#include"Sound.h"
 
 
 class Player
@@ -146,5 +147,15 @@ private:
 	uint32_t avoidInterval_ = 0;
 
 	LightGroup* light_;
+
+	Sound attackSE_;
+
+	Sound jampSE_;
+
+	Sound avoidSE_;
+
+	Sound deadSE_;
+
+	Sound landingSE_;
 };
 
