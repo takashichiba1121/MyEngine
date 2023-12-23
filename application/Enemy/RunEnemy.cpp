@@ -62,6 +62,8 @@ void RunEnemy::Update()
 
 			attackVec_ = frontVec;
 
+			attackVec_.y = 0;
+
 			attackVec_.normalize();
 
 			attackSE_.Play(false,0.3f);

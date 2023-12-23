@@ -24,7 +24,7 @@ private:
 
 	float attackRange_ = 40;
 
-	uint32_t kAttackTimer_ = 90;
+	uint32_t kAttackTimer_ = 60;
 
 	uint32_t attackTimer_ = kAttackTimer_;
 
@@ -36,12 +36,16 @@ private:
 
 	Vector3 attackStartPoint_ = {0,0,0};
 
-	Vector3 attackMiddlePoint_ = {0,0,0};
-
 	Vector3 attackEndPoint_ = {0,0,0};
 
 	float attackStartRot_ = 0;
 
 	float attackEndRot_ = 0;
+
+	float fallSpeed_=0;
+
+	const float StartJumpSpeed_=-0.7f;
+
+	const float gravityAcceleration_ = 0.03f;
 };
 

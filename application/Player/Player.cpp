@@ -459,7 +459,7 @@ void Player::Avoid()
 		Vector3 pos = obj_->GetPosition();
 
 		//追加
-		EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{ 0,0,0 },1.0f,0.0f,{ 1,1,1,1 },{ 1,1,1,1 });
+		paMan_->Add(life,pos,verocity,{ 0,0,0 },1.0f,0.0f,{ 1,1,1,1 },{ 1,1,1,1 });
 
 		if ( avoidTime_ >= 20 )
 		{

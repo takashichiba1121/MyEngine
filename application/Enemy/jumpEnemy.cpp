@@ -1,4 +1,5 @@
 #include "jumpEnemy.h"
+#include"EnemyManager.h"
 
 void jumpEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
 {
@@ -51,19 +52,30 @@ void jumpEnemy::Update()
 
 			attackTimer_ =0;
 
-			attackEndPoint_ = playerPos;
-
-			attackMiddlePoint_ = ( playerPos + enemyPos ) / 2;
-
-			attackMiddlePoint_.y += 30;
-
-			attackStartPoint_ = enemyPos;
-
-			Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
-
-			obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
-
 			attackSE_.Play(false,0.3f);
+
+			fallSpeed_ = StartJumpSpeed_;
+
+			for ( int i = 0; i < 10; i++ )
+			{
+				//消えるまでの時間
+				const uint32_t rnd_life = 10;
+				//最低限のライフ
+				const uint32_t constlife = 60;
+				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+				//XYZの広がる距離
+				const float rnd_pos = 0.1f;
+				Vector3 pos{};
+				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+				//pos.normalize();
+
+				//追加
+				EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+			}
 		}
 
 		Move();
@@ -113,19 +125,82 @@ void jumpEnemy::Attack()
 		attackTimer_++;
 		if ( attackTimer_ <= 20 )
 		{
+			fallSpeed_ += gravityAcceleration_;
 
+			Vector3 pos = obj_->GetPosition();
+
+			pos.y -= fallSpeed_;
+
+			obj_->SetPosition(pos);
+		}
+		else if(attackTimer_ <= 30 )
+		{
+			Vector3 frontVec = player_->GetObj()->GetPosition() - obj_->GetPosition();
+
+			obj_->SetRot({ 0, atan2f(frontVec.x, frontVec.z),0 });
+
+			if (attackTimer_==30 )
+			{
+				attackVec_ = frontVec;
+
+				attackVec_.y = 0;
+
+				attackVec_.normalize();
+
+				attackEndPoint_ = obj_->GetPosition() + attackVec_ * 20;
+
+				attackEndPoint_.y = player_->GetObj()->GetPosition().y;
+
+				attackStartPoint_ = obj_->GetPosition();
+
+				Vector3 playerPos,enemyPos,playerScale,enemyScale;
+
+				playerPos = player_->GetObj()->GetPosition();
+
+				enemyPos = obj_->GetPosition();
+
+				playerScale = player_->GetObj()->GetScale();
+
+				enemyScale = obj_->GetScale();
+
+				float distance = static_cast< float >( sqrt(pow(playerPos.x - enemyPos.x,2) + pow(playerPos.z - enemyPos.z,2)) );
+
+				if ( distance <= 20)
+				{
+					attackEndPoint_ = player_->GetObj()->GetPosition();
+				}
+
+				if ( player_->GetOnGround())
+				{
+					attackTimer_ = 29;
+				}
+			}
+		}
+		else if ( attackTimer_ <= 60 )
+		{
+			float timeRate = ( float(attackTimer_ - 30) / float(kAttackTimer_ - 30) );
+
+			Vector3 a = attackStartPoint_ * ( 1.0f - timeRate ) + attackEndPoint_ * timeRate;
+
+			obj_->SetPosition(a);
+
+			const uint32_t constlife = 10;
+			uint32_t life = constlife;
+
+			//XYZの広がる距離
+			Vector3 verocity{};
+			verocity.x = 0;
+			verocity.y = -0;
+			verocity.z = 0;
+
+			Vector3 pos = obj_->GetPosition();
+
+			//追加
+			EnemyManager::Instance()->GetParticle()->Add(life,pos,verocity,{0,0,0},1.0f,0.0f,{1,1,1,1},{1,1,1,1});
 		}
 		else
 		{
-			float timeRate =( float(attackTimer_-20) / float( kAttackTimer_ - 20 ));
-
-			Vector3 a = attackStartPoint_ * ( 1.0f - timeRate ) +attackMiddlePoint_* timeRate;
-			Vector3 b = attackMiddlePoint_ * ( 1.0f - timeRate ) + attackEndPoint_ * timeRate;
-
-			Vector3 c = a * ( 1.0f - timeRate ) + b * timeRate;
-
-			obj_->SetPosition(c);
-			if (attackTimer_>=kAttackTimer_ )
+			if ( attackTimer_ >= kAttackTimer_+20 )
 			{
 				isAttack_ = false;
 			}
@@ -145,6 +220,5 @@ void jumpEnemy::OnEnemyCollision(Vector3 reject)
 	obj_->SetPosition(obj_->GetPosition() + ( reject ));
 
 	attackEndPoint_ += reject;
-	attackMiddlePoint_ += reject;
 	attackStartPoint_ += reject;
 }
