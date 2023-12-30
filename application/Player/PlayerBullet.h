@@ -9,6 +9,7 @@ public:
 	{
 		Charge,
 		Attack,
+		Delete,
 	};
 public:
 	
@@ -18,11 +19,12 @@ public:
 	///<param name="model">モデル</param>
 	///<param name="velocity">速度</param>
 	///<param name="position">初期位置</param>
-	void Initialize(Model* model,Vector2 velocity,Vector3 position,uint32_t life);
+	virtual void Initialize(Model* model,Vector2 velocity,Vector3 position,uint32_t life);
+
 	///<summary>
 	///毎フレーム処理
 	///</summary>
-	void Update();
+	virtual void Update();
 
 	///<summary>
 	///描画
@@ -32,7 +34,7 @@ public:
 	///<summary>
 	///衝突を検出したら呼び出されたるコールバック関数
 	///</summary>
-	void OnCollision();
+	 virtual void OnCollision();
 
 /// <summary>
 /// 消えるべきか
@@ -47,11 +49,17 @@ public:
 
 	void SetChageTime(uint32_t Time) {chageTime_=Time;}
 
-	void SetLight(LightGroup* light,int32_t lightIndex);
+	virtual void SetLight(LightGroup* light,int32_t lightIndex);
 
-private:
+	void SetRot(Vector3 rot) {
+		obj_->SetRot(rot);
+	}
+
+protected:
 
 	std::unique_ptr<Object3d> obj_;
+
+	Model* model_;
 
 	//速度
 	Vector2 velocity_;

@@ -266,6 +266,12 @@
     <ClCompile Include="application\Enemy\tutorialEnemy.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="application\Player\DivisionPlayerBullet.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Player\BombPlayerBullet.cpp">
+      <Filter>application\ソース ファイル\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -417,6 +423,12 @@
     </ClInclude>
     <ClInclude Include="application\Enemy\tutorialEnemy.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Player\DivisionPlayerBullet.h">
+      <Filter>application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Player\BombPlayerBullet.h">
+      <Filter>application\ヘッダーファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

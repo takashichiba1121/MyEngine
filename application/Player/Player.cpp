@@ -7,6 +7,8 @@
 #include<math.h>
 #include"EnemyManager.h"
 #include"PlayerBulletManager.h"
+#include"DivisionPlayerBullet.h"
+#include"BombPlayerBullet.h"
 
 
 void Player::Initialize()
@@ -35,6 +37,58 @@ void Player::Initialize()
 
 	PlayerBulletManager::Instance()->Initialize();
 
+	normalAttack = std::make_unique<Sprite>();
+
+	normalAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/normalAttack.png"));
+
+	normalAttack->SetPosition({148,158});
+
+	normalAttack->SetScale({138,138});
+
+	normalAttack->SetColor({ 1,1,1,1 });
+
+	normalAttack->SetAnchorPoint({0.5f,1});
+
+	normalAttack->Update();
+
+	threeWayAttack = std::make_unique<Sprite>();
+
+	threeWayAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/3WayAttack.png"));
+
+	threeWayAttack->SetPosition({ 148,158 });
+
+	threeWayAttack->SetScale({ 128,128 });
+
+	threeWayAttack->SetColor({1,1,1,0.5f});
+
+	threeWayAttack->SetAnchorPoint({ 1,0.5f });
+
+	threeWayAttack->Update();
+
+	divisionAttack = std::make_unique<Sprite>();
+
+	divisionAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/DivisionAttack.png"));
+
+	divisionAttack->SetPosition({ 148,158 });
+
+	divisionAttack->SetColor({ 1,1,1,0.5f });
+
+	divisionAttack->SetAnchorPoint({ 0,0.5f });
+
+	divisionAttack->Update();
+
+	bombAttack = std::make_unique<Sprite>();
+
+	bombAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/BombAttack.png"));
+
+	bombAttack->SetPosition({ 148,158 });
+
+	bombAttack->SetAnchorPoint({ 0.5f,0 });
+
+	bombAttack->SetColor({ 1,1,1,0.5f });
+
+	bombAttack->Update();
+
 	attackSE_.Load("Resources/Sound/PlayerAttack.wav");
 
 	jampSE_.Load("Resources/Sound/Jamp.wav");
@@ -57,6 +111,87 @@ void Player::Update()
 		{
 			isDaed_ = true;
 			deadSE_.Play(false,0.3f);
+		}
+
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP) )
+		{
+			normalAttack->SetScale({ 138,138 });
+
+			normalAttack->SetColor({ 1,1,1,1 });
+
+			threeWayAttack->SetScale({ 128,128 });
+
+			threeWayAttack->SetColor({ 1,1,1,0.5f });
+
+			divisionAttack->SetScale({ 128,128 });
+
+			divisionAttack->SetColor({ 1,1,1,0.5f });
+
+			bombAttack->SetScale({ 128,128 });
+
+			bombAttack->SetColor({ 1,1,1,0.5f });
+
+			attackType = AttackType::Normal;
+		}
+		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_LEFT) )
+		{
+			normalAttack->SetScale({ 128,128 });
+
+			normalAttack->SetColor({ 1,1,1,0.5f });
+
+			threeWayAttack->SetScale({ 138,138 });
+
+			threeWayAttack->SetColor({ 1,1,1,1 });
+
+			divisionAttack->SetScale({ 128,128 });
+
+			divisionAttack->SetColor({ 1,1,1,0.5f });
+
+			bombAttack->SetScale({ 128,128 });
+
+			bombAttack->SetColor({ 1,1,1,0.5f });
+
+			attackType = AttackType::ThreeWay;
+		}
+		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_RIGHT) )
+		{
+			normalAttack->SetScale({ 128,128 });
+
+			normalAttack->SetColor({ 1,1,1,0.5f });
+
+			threeWayAttack->SetScale({ 128,128 });
+
+			threeWayAttack->SetColor({ 1,1,1,0.5f });
+
+			divisionAttack->SetScale({ 138,138 });
+
+			divisionAttack->SetColor({ 1,1,1,1 });
+
+			bombAttack->SetScale({ 128,128 });
+
+			bombAttack->SetColor({ 1,1,1,0.5f });
+
+			attackType = AttackType::Division;
+		}
+		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_DOWN) )
+		{
+			normalAttack->SetScale({ 128,128 });
+
+			normalAttack->SetColor({ 1,1,1,0.5f });
+
+			threeWayAttack->SetScale({ 128,128 });
+
+			threeWayAttack->SetColor({ 1,1,1,0.5f });
+
+			divisionAttack->SetScale({ 128,128 });
+
+			divisionAttack->SetColor({ 1,1,1,0.5f });
+
+			bombAttack->SetScale({ 138,138 });
+
+			bombAttack->SetColor({ 1,1,1,1 });
+
+			attackType = AttackType::Bomb;
 		}
 
 		EnemyCollision();
@@ -89,6 +224,11 @@ void Player::Update()
 	obj_->Update();
 
 	paMan_->Update();
+
+	normalAttack->Update();
+	threeWayAttack->Update();
+	divisionAttack->Update();
+	bombAttack->Update();
 
 #ifdef _DEBUG
 
@@ -269,128 +409,186 @@ void Player::Attack()
 
 		if ( Input::Instance()->GetPadStick(PadStick::RT) >= 0.5 && Input::Instance()->GetOldPadStick(PadStick::RT) < 0.5 )
 		{
-			Vector3 velocity(0,0,1);
-			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-			velocity.normalize();
-			velocity *= kBulletSpeed_;
-
-			//弾の生成し、初期化
-			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition() + ( velocity * 5 ),bulletLife_);
-
-			newBullet->SetPhase(PlayerBullet::Phase::Charge);
-
-			for ( uint32_t i = 0; i < 20; i++ )
-			{
-				if ( light_->GetPointActive(i) == false )
-				{
-					newBullet->SetLight(light_,i);
-
-					break;
-				}
-				if ( i <= 19 )
-				{
-					newBullet->SetLight(light_,-1);
-				}
-			}
-
-			newBullet->SetChageTime(10);
-
-			AttackInterval_ = 10;
-
-			//弾の登録する
-			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
-
-			attackSE_.Play(false,0.3f);
-
-		}
-		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_RIGHT_THUMB) )
-		{
-			//弾の生成し、初期化
-			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
-
+			std::unique_ptr<PlayerBullet> newBullet[3];
+			Vector3 pos[3];
 			Vector3 velocity[ 3 ]
 			{
 				{0,0,1},
 				{0.3f,0,1},
 				{-0.3f,0,1},
 			};
-			for ( int i = 0; i < 3; i++ )
+
+			switch ( attackType )
 			{
-				velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
-				velocity[ i ].normalize();
-				velocity[ i ] *= kBulletSpeed_;
+			case Player::AttackType::Normal:
 
-				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },( obj_->GetPosition() + ( velocity[ 0 ] * 3 ) ),bulletLife_);
+				velocity[0] = { 0,0,1 };
+				velocity[0] = Matrix4Math::transform(velocity[0],obj_->GetMatWorld());
+				velocity[0].normalize();
+				velocity[0] *= kBulletSpeed_;
 
-				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
+				pos[0] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
-				newBullet[ i ]->SetChageTime(20);
+				//弾の生成し、初期化
+				newBullet[0] = std::make_unique<PlayerBullet>();
+				newBullet[0]->Initialize(bulletModel_.get(),{ velocity[0].x,velocity[0].z },pos[0],bulletLife_);
 
-				for ( int j = 0; j < 20; j++ )
+				newBullet[0]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[0]->SetRot(obj_->GetRot());
+
+				for ( uint32_t i = 0; i < 20; i++ )
 				{
-					if ( light_->GetPointActive(j) == false )
+					if ( light_->GetPointActive(i) == false )
 					{
-						newBullet[ i ]->SetLight(light_,j);
+						newBullet[0]->SetLight(light_,i);
 
 						break;
 					}
-					if ( i >= 19 )
+					if ( i <= 19 )
 					{
-						newBullet[ i ]->SetLight(light_,-1);
+						newBullet[0]->SetLight(light_,-1);
 					}
 				}
 
-							//弾の登録する
-				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
-			}
-			AttackInterval_ = 20;
+				newBullet[0]->SetChageTime(10);
 
-			attackSE_.Play(false,0.3f);
+				AttackInterval_ = 10;
+
+				//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[0]));
+
+				attackSE_.Play(false,0.3f);
+				break;
+			case Player::AttackType::ThreeWay:
+				for ( int i = 0; i < 3; i++ )
+				{
+					velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
+					velocity[ i ].normalize();
+					velocity[ i ] *= kBulletSpeed_;
+
+					newBullet[ i ] = std::make_unique<PlayerBullet>();
+
+					pos[i] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+
+					newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },pos[i],bulletLife_);
+
+					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
+
+					newBullet[ i ]->SetChageTime(20);
+
+					for ( int j = 0; j < 20; j++ )
+					{
+						if ( light_->GetPointActive(j) == false )
+						{
+							newBullet[ i ]->SetLight(light_,j);
+
+							break;
+						}
+						if ( i >= 19 )
+						{
+							newBullet[ i ]->SetLight(light_,-1);
+						}
+					}
+
+								//弾の登録する
+					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
+				}
+				AttackInterval_ = 20;
+
+				attackSE_.Play(false,0.3f);
+				break;
+			case Player::AttackType::Division:
+				velocity[ 0 ] = { 0,0,1 };
+				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
+				velocity[ 0 ].normalize();
+				velocity[ 0 ] *= kBulletSpeed_;
+
+				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+
+				pos[ 0 ].y += 2.5f;
+
+				//弾の生成し、初期化
+				newBullet[ 0 ] = std::make_unique<DivisionPlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
+
+				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
+
+				for ( uint32_t i = 0; i < 20; i++ )
+				{
+					if ( light_->GetPointActive(i) == false )
+					{
+						newBullet[ 0 ]->SetLight(light_,i);
+
+						break;
+					}
+					if ( i <= 19 )
+					{
+						newBullet[ 0 ]->SetLight(light_,-1);
+					}
+				}
+
+				newBullet[ 0 ]->SetChageTime(30);
+
+				AttackInterval_ = 30;
+
+				//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
+
+				attackSE_.Play(false,0.3f);
+				break;
+			case Player::AttackType::Bomb:
+
+				velocity[ 0 ] = { 0,0,1 };
+				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
+				velocity[ 0 ].normalize();
+				velocity[ 0 ] *= kBulletSpeed_;
+
+				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+
+				//弾の生成し、初期化
+				newBullet[ 0 ] = std::make_unique<BombPlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
+
+				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
+
+				for ( uint32_t i = 0; i < 20; i++ )
+				{
+					if ( light_->GetPointActive(i) == false )
+					{
+						newBullet[ 0 ]->SetLight(light_,i);
+
+						break;
+					}
+					if ( i <= 19 )
+					{
+						newBullet[ 0 ]->SetLight(light_,-1);
+					}
+				}
+
+				newBullet[ 0 ]->SetChageTime(30);
+
+				AttackInterval_ = 30;
+
+				//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
+
+				attackSE_.Play(false,0.3f);
+				break;
+			}
+
 		}
 	}
 	else
 	{
 		if ( Input::Instance()->TriggerKey(DIK_Z) )
 		{
-			Vector3 velocity(0,0,1);
-			velocity = Matrix4Math::transform(velocity,obj_->GetMatWorld());
-			velocity.normalize();
-			velocity *= kBulletSpeed_;
-
-			//弾の生成し、初期化
-			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-			newBullet->Initialize(bulletModel_.get(),{ velocity.x,velocity.z },obj_->GetPosition() + ( velocity * 5 ),bulletLife_);
-
-			newBullet->SetPhase(PlayerBullet::Phase::Charge);
-
-			newBullet->SetChageTime(10);
-
-			for ( uint32_t i = 0; i < 20; i++ )
-			{
-				if ( light_->GetPointActive(i) == false )
-				{
-					newBullet->SetLight(light_,i);
-
-					break;
-				}
-				if ( i >= 19 )
-				{
-					newBullet->SetLight(light_,-1);
-				}
-			}
-
-			AttackInterval_ = 10;
-
-			attackSE_.Play(false,0.3f);
-
-			//弾の登録する
-			PlayerBulletManager::Instance()->AddBullet(std::move(newBullet));
-		}
-
-		if ( Input::Instance()->TriggerKey(DIK_X) )
-		{
+			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
+			Vector3 pos[ 3 ];
 			Vector3 velocity[ 3 ]
 			{
 				{0,0,1},
@@ -398,42 +596,168 @@ void Player::Attack()
 				{-0.3f,0,1},
 			};
 
-			//弾の生成し、初期化
-			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
-			for ( int i = 0; i < 3; i++ )
+			switch ( attackType )
 			{
-				velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
-				velocity[ i ].normalize();
-				velocity[ i ] *= kBulletSpeed_;
+			case Player::AttackType::Normal:
 
-				newBullet[ i ] = std::make_unique<PlayerBullet>();
-				newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },( obj_->GetPosition() + ( velocity[ 0 ] * 3 ) ),bulletLife_);
+				velocity[ 0 ] = { 0,0,1 };
+				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
+				velocity[ 0 ].normalize();
+				velocity[ 0 ] *= kBulletSpeed_;
 
-				newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
+				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
-				newBullet[ i ]->SetChageTime(20);
+				//弾の生成し、初期化
+				newBullet[ 0 ] = std::make_unique<PlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
 
-				for ( int j = 0; j < 20; j++ )
+				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
+
+				for ( uint32_t i = 0; i < 20; i++ )
 				{
-					if ( light_->GetPointActive(j) == false )
+					if ( light_->GetPointActive(i) == false )
 					{
-						newBullet[ i ]->SetLight(light_,j);
+						newBullet[ 0 ]->SetLight(light_,i);
 
 						break;
 					}
-					if ( i >= 19 )
+					if ( i <= 19 )
 					{
-						newBullet[ i ]->SetLight(light_,-1);
+						newBullet[ 0 ]->SetLight(light_,-1);
 					}
 				}
 
-							//弾の登録する
-				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
+				newBullet[ 0 ]->SetChageTime(10);
+
+				AttackInterval_ = 10;
+
+				//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
+
+				attackSE_.Play(false,0.3f);
+				break;
+			case Player::AttackType::ThreeWay:
+				for ( int i = 0; i < 3; i++ )
+				{
+					velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
+					velocity[ i ].normalize();
+					velocity[ i ] *= kBulletSpeed_;
+
+					newBullet[ i ] = std::make_unique<PlayerBullet>();
+
+					pos[ i ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+
+					newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },pos[ i ],bulletLife_);
+
+					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
+
+					newBullet[ i ]->SetChageTime(20);
+
+					for ( int j = 0; j < 20; j++ )
+					{
+						if ( light_->GetPointActive(j) == false )
+						{
+							newBullet[ i ]->SetLight(light_,j);
+
+							break;
+						}
+						if ( i >= 19 )
+						{
+							newBullet[ i ]->SetLight(light_,-1);
+						}
+					}
+
+								//弾の登録する
+					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
+				}
+				AttackInterval_ = 20;
+
+				attackSE_.Play(false,0.3f);
+				break;
+			case Player::AttackType::Division:
+				velocity[ 0 ] = { 0,0,1 };
+				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
+				velocity[ 0 ].normalize();
+				velocity[ 0 ] *= kBulletSpeed_;
+
+				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+
+				pos[ 0 ].y += 2.5f;
+
+				//弾の生成し、初期化
+				newBullet[ 0 ] = std::make_unique<DivisionPlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
+
+				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
+
+				for ( uint32_t i = 0; i < 20; i++ )
+				{
+					if ( light_->GetPointActive(i) == false )
+					{
+						newBullet[ 0 ]->SetLight(light_,i);
+
+						break;
+					}
+					if ( i <= 19 )
+					{
+						newBullet[ 0 ]->SetLight(light_,-1);
+					}
+				}
+
+				newBullet[ 0 ]->SetChageTime(30);
+
+				AttackInterval_ = 30;
+
+				//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
+
+				attackSE_.Play(false,0.3f);
+				break;
+			case Player::AttackType::Bomb:
+
+				velocity[ 0 ] = { 0,0,1 };
+				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
+				velocity[ 0 ].normalize();
+				velocity[ 0 ] *= kBulletSpeed_;
+
+				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+
+				//弾の生成し、初期化
+				newBullet[ 0 ] = std::make_unique<BombPlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
+
+				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
+
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
+
+				for ( uint32_t i = 0; i < 20; i++ )
+				{
+					if ( light_->GetPointActive(i) == false )
+					{
+						newBullet[ 0 ]->SetLight(light_,i);
+
+						break;
+					}
+					if ( i <= 19 )
+					{
+						newBullet[ 0 ]->SetLight(light_,-1);
+					}
+				}
+
+				newBullet[ 0 ]->SetChageTime(30);
+
+				AttackInterval_ = 30;
+
+				//弾の登録する
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
+
+				attackSE_.Play(false,0.3f);
+				break;
 			}
-
-			AttackInterval_ = 20;
-
-			attackSE_.Play(false,0.3f);
 		}
 	}
 }
@@ -482,6 +806,14 @@ void Player::ParticleDraw()
 	paMan_->Draw();
 
 	PlayerBulletManager::Instance()->ParticleDraw();
+}
+
+void Player::SpriteDraw()
+{
+	normalAttack->Draw();
+	threeWayAttack->Draw();
+	divisionAttack->Draw();
+	bombAttack->Draw();
 }
 
 void Player::Reset()

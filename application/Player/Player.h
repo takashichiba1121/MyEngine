@@ -3,10 +3,20 @@
 #include"ParticleManager.h"
 #include"PlayerBullet.h"
 #include"Sound.h"
+#include"Sprite.h"
 
 
 class Player
 {
+public:
+	enum class AttackType
+	{
+		Normal,
+		ThreeWay,
+		Division,
+		Bomb,
+	};
+
 public:
 	/// <summary>
 	/// 初期化全般
@@ -44,7 +54,6 @@ public:
 	/// </summary>
 	void Avoid();
 
-
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -54,6 +63,11 @@ public:
 	/// パーティクルの描画
 	/// </summary>
 	void ParticleDraw();
+
+	/// <summary>
+	///スプライトの描画
+	/// </summary>
+	void SpriteDraw();
 
 	void Reset();
 
@@ -103,6 +117,11 @@ private:
 
 	std::unique_ptr<Object3d> obj_;
 
+	std::unique_ptr<Sprite> normalAttack;
+	std::unique_ptr<Sprite> threeWayAttack;
+	std::unique_ptr<Sprite> divisionAttack;
+	std::unique_ptr<Sprite> bombAttack;
+
 	Vector3 move_;
 
 	float fallSpeed_ = 0;
@@ -145,6 +164,8 @@ private:
 	Vector3 initialRot_ = {0,0,0};
 
 	uint32_t avoidInterval_ = 0;
+
+	AttackType attackType=AttackType::Normal;
 
 	LightGroup* light_;
 

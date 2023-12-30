@@ -116,6 +116,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="application\Enemy\jumpEnemy.cpp" />
     <ClCompile Include="application\Enemy\RunEnemy.cpp" />
     <ClCompile Include="application\Enemy\tutorialEnemy.cpp" />
+    <ClCompile Include="application\Player\BombPlayerBullet.cpp" />
+    <ClCompile Include="application\Player\DivisionPlayerBullet.cpp" />
     <ClCompile Include="application\Player\PlayerBulletManager.cpp" />
     <ClCompile Include="application\Scene\BaseScene.cpp" />
     <ClCompile Include="application\Enemy\Enemy.cpp" />
@@ -167,6 +169,8 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="application\Enemy\jumpEnemy.h" />
     <ClInclude Include="application\Enemy\RunEnemy.h" />
     <ClInclude Include="application\Enemy\tutorialEnemy.h" />
+    <ClInclude Include="application\Player\BombPlayerBullet.h" />
+    <ClInclude Include="application\Player\DivisionPlayerBullet.h" />
     <ClInclude Include="application\Player\PlayerBulletManager.h" />
     <ClInclude Include="application\Scene\BaseScene.h" />
     <ClInclude Include="application\Enemy\Enemy.h" />

@@ -232,7 +232,6 @@ void GameScene::Update()
 	ImGui::SliderFloat3("light",&lightV_.x,-1,1,"%3.1f");
 
 	ImGui::End();
-#endif
 
 	if ( Input::Instance()->TriggerKey(DIK_0) )
 	{
@@ -240,6 +239,7 @@ void GameScene::Update()
 
 		MapLoad(mapName_);
 	}
+#endif
 
 	srand(( unsigned int ) time(NULL));
 
@@ -583,6 +583,7 @@ void GameScene::SpriteDraw()
 {
 	SpriteCommon::Instance()->PreDraw();
 	sousaSprite_->Draw();
+	player_->SpriteDraw();
 	sceneSprite_->DissolveDraw();
 	if (frame_<=0&&player_->IsDaed() )
 	{
