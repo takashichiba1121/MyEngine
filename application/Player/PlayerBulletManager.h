@@ -2,6 +2,9 @@
 #include"Player.h"
 #include"PlayerBullet.h"
 #include"LightGroup.h"
+/*
+* プレイヤーの弾の管理
+*/
 class PlayerBulletManager
 {
 #pragma region Singleton

@@ -2,6 +2,9 @@
 #include "Sprite.h"
 #include"PostEffectCommon.h"
 #include"RenderTarget.h"
+/*
+* ブラーのポストエフェクト
+*/
 class PostEffectBlur
 {
 #pragma region Singleton
@@ -25,6 +28,7 @@ public:
 		float stepWidth;
 	};
 
+	//初期化
     void Initialize();
 
     /// <summary>
@@ -32,10 +36,13 @@ public:
     /// </summary>
     void CreatGraphicsPipelineState();
 
+	//更新
 	void Update(float sigma,float stepWidth);
 
+	//描画
     void Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHandle);
 
+	//終了
 	void Fin();
 
 private://静的メンバ変数

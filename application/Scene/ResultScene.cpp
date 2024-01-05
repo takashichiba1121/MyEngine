@@ -188,12 +188,6 @@ void ResultScene::Update()
 		}
 		else if(frame_<-5)
 		{
-			frame_ = 120;
-
-			sceneStart_ = true;
-
-			sceneChange_ = false;
-
 			SceneManager::Instance()->ChangeScene("GAME");
 		}
 		else

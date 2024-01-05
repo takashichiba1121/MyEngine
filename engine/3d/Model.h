@@ -1,6 +1,3 @@
-/*
-* objモデルクラス
-*/
 #pragma once
 #include <cassert>
 #include <string>
@@ -17,7 +14,9 @@
 #include"Vector4.h"
 #include"Matrix4.h"
 #include<map>
-//3Dモデル
+/*
+* objモデルクラス
+*/
 class Model 
 {
 private:
@@ -61,7 +60,7 @@ public://メンバ関数
 	//OBJファイルから3Dモデルを読み込む
 	static Model* LoadFormOBJ(const std::string& modelname, bool smoothing);
 
-		//OBJファイルから3Dモデルを読み込む
+	//OBJファイルから3Dモデルを読み込む
 	static Model* CreatePlaneModel(uint32_t texIndex);
 
 	//setter
@@ -78,10 +77,10 @@ public://メンバ関数
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
 	/// <summary>
-/// 画像指定描画
-/// </summary>
-/// <param name="cmdlist">描画コマンドリスト</param>
-/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
+	/// 画像指定描画
+	/// </summary>
+	/// <param name="cmdlist">描画コマンドリスト</param>
+	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial,uint32_t TextureHandle);
 
 	std::vector<VertexPosNormalUv> GetVertices() {return vertices_; }
@@ -91,13 +90,22 @@ private://非公開のメンバ関数
 	//OBJファイルから3Dモデルを読み込む(非公開)
 	void LoadFromOBJInternal(const std::string& modelname, bool smoothing);
 
+	/// <summary>
+	/// 平面モデルの作成
+	/// </summary>
+	/// <param name="texIndex"></param>
 	void CreatePlaneModelJInternal(uint32_t texIndex);
-	
+
+	/// <summary>
+	/// モデルに貼るテクスチャの読み込み
+	/// </summary>
+	/// <param name="directoryPath"></param>
+	/// <param name="filename"></param>
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
-/// マテリアルの読み込み
-/// </summary>
+	/// マテリアルの読み込み
+	/// </summary>
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 private:

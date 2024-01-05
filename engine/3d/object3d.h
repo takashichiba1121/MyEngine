@@ -1,16 +1,11 @@
-/*
-* objのオブジェクトクラス
-*/
-
 #pragma once
-
 #include "Model.h"
 #include"LightGroup.h"
 
 
-/// <summary>
-/// 3Dオブジェクト
-/// </summary>
+/*
+* objのオブジェクトクラス
+*/
 class Object3d
 {
 private: // エイリアス

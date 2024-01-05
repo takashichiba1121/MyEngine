@@ -21,8 +21,6 @@ void Player::Initialize()
 
 	obj_->SetModel(model_.get());
 
-	obj_->SetPosition({ 5,5,5 });
-
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	paMan_ = std::make_unique<ParticleManager>();
@@ -356,14 +354,14 @@ void Player::Move()
 				obj_->SetRot({ 0, atan2f(frontVec.x, -frontVec.z),0 });
 			}
 		}
-		move_ = move_.normalize() * 0.25f;
+		move_ = move_.normalize() * moveSpeed_;
 		if ( avoidInterval_ == 0 )
 		{
 			if ( isAvoid_ == false && Input::Instance()->TriggerKey(DIK_Q) || Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_X) )
 			{
 				isAvoid_ = true;
 
-				avoidInterval_ = 30;
+				avoidInterval_ = maxAvoidInterval_;
 
 				initialRot_ = obj_->GetRot();
 
@@ -437,7 +435,7 @@ void Player::Attack()
 
 				newBullet[0]->SetRot(obj_->GetRot());
 
-				for ( uint32_t i = 0; i < 20; i++ )
+				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
@@ -451,9 +449,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[0]->SetChageTime(10);
+				newBullet[0]->SetChageTime(normalAttackInterval_);
 
-				AttackInterval_ = 10;
+				AttackInterval_ = normalAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[0]));
@@ -475,9 +473,9 @@ void Player::Attack()
 
 					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-					newBullet[ i ]->SetChageTime(20);
+					newBullet[ i ]->SetChageTime(threeWayAttackInterval_);
 
-					for ( int j = 0; j < 20; j++ )
+					for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 					{
 						if ( light_->GetPointActive(j) == false )
 						{
@@ -494,7 +492,7 @@ void Player::Attack()
 								//弾の登録する
 					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 				}
-				AttackInterval_ = 20;
+				AttackInterval_ = threeWayAttackInterval_;
 
 				attackSE_.Play(false,0.3f);
 				break;
@@ -516,7 +514,7 @@ void Player::Attack()
 
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
-				for ( uint32_t i = 0; i < 20; i++ )
+				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
@@ -530,9 +528,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(30);
+				newBullet[ 0 ]->SetChageTime(divisionAttackInterval_);
 
-				AttackInterval_ = 30;
+				AttackInterval_ = divisionAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -556,7 +554,7 @@ void Player::Attack()
 
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
-				for ( uint32_t i = 0; i < 20; i++ )
+				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
@@ -570,9 +568,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(30);
+				newBullet[ 0 ]->SetChageTime(bombAttackInterval_);
 
-				AttackInterval_ = 30;
+				AttackInterval_ = bombAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -615,7 +613,7 @@ void Player::Attack()
 
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
-				for ( uint32_t i = 0; i < 20; i++ )
+				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
@@ -629,9 +627,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(10);
+				newBullet[ 0 ]->SetChageTime(normalAttackInterval_);
 
-				AttackInterval_ = 10;
+				AttackInterval_ = normalAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -653,9 +651,9 @@ void Player::Attack()
 
 					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-					newBullet[ i ]->SetChageTime(20);
+					newBullet[ i ]->SetChageTime(threeWayAttackInterval_);
 
-					for ( int j = 0; j < 20; j++ )
+					for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 					{
 						if ( light_->GetPointActive(j) == false )
 						{
@@ -672,7 +670,7 @@ void Player::Attack()
 								//弾の登録する
 					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 				}
-				AttackInterval_ = 20;
+				AttackInterval_ = threeWayAttackInterval_;
 
 				attackSE_.Play(false,0.3f);
 				break;
@@ -694,7 +692,7 @@ void Player::Attack()
 
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
-				for ( uint32_t i = 0; i < 20; i++ )
+				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
@@ -708,9 +706,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(30);
+				newBullet[ 0 ]->SetChageTime(divisionAttackInterval_);
 
-				AttackInterval_ = 30;
+				AttackInterval_ = divisionAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -734,7 +732,7 @@ void Player::Attack()
 
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
-				for ( uint32_t i = 0; i < 20; i++ )
+				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
@@ -748,9 +746,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(30);
+				newBullet[ 0 ]->SetChageTime(bombAttackInterval_);
 
-				AttackInterval_ = 30;
+				AttackInterval_ = bombAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -767,7 +765,7 @@ void Player::Avoid()
 	if ( isAvoid_ )
 	{
 		avoidTime_++;
-		move_ += avoidVec_ * 0.5f;
+		move_ += avoidVec_ * avoidSpeed_;
 
 		obj_->SetRot({ 0,obj_->GetRot().y - 0.314f,0 });
 
@@ -843,7 +841,7 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 
 	PlayerBulletManager::Instance()->Clear();
 
-	for ( int i = 0; i < 20; i++ )
+	for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
 	{
 		light_->SetPointActive(i,false);
 	}

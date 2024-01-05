@@ -1,10 +1,8 @@
+#pragma once
+#include"Vector3.h"
 /*
 * 当たり判定の関数(適宜追加)
 */
-
-#pragma once
-#include"Vector3.h"
-
 namespace Collider
 {
 	struct  Cube
@@ -25,10 +23,12 @@ namespace Collider
 		Collsion,
 		Inside,
 	};
-
+	//キューブ同士の当たり判定
 	bool CubeAndCube(Cube A,Cube B,Type type);
 
+	//四角同士の当たり判定
 	bool QuadAndQuad(Cube A, Cube B,Type type);
 
+	//球同士のああtリ判定
 	bool SphereAndSphere(Sphere A,Sphere B,Type type,Vector3* reject = nullptr);
 } 

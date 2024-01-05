@@ -1,9 +1,4 @@
-/*
-* 音クラス
-*/
-
 #pragma once
-
 #include <xaudio2.h>
 #pragma comment(lib,"xaudio2.lib")
 #include <fstream>
@@ -36,7 +31,9 @@ struct FormatChunk {
 	ChunkHeader chunk;	//"fmt"
 	WAVEFORMATEX fmt;	//波形フォーマット
 };
-
+/*
+* 音クラス
+*/
 class Sound
 {
 public:

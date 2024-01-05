@@ -5,7 +5,9 @@
 #include"Sound.h"
 #include"Sprite.h"
 
-
+/*
+* プレイヤー
+*/
 class Player
 {
 public:
@@ -69,6 +71,9 @@ public:
 	/// </summary>
 	void SpriteDraw();
 
+	/// <summary>
+	/// リセット
+	/// </summary>
 	void Reset();
 
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
@@ -78,8 +83,14 @@ public:
 	/// </summary>
 	Vector3 MapCollision();
 
+	/// <summary>
+	/// エネミーとの当たり判定
+	/// </summary>
 	void EnemyCollision();
 
+	/// <summary>
+	/// スポーン位置の設定
+	/// </summary>
 	void SetSpawn(Vector3 spawnPosition);
 
 	void SetCameraPos(const Vector3 cameraPos) {cameraPos_=cameraPos ; }
@@ -95,6 +106,7 @@ public:
 	LightGroup* GetLight() {return light_;}
 private:
 #pragma region パラメーター
+
 	float gravityAcceleration_ = 0.03f;
 
 	float StartJumpSpeed_ = -0.7f;
@@ -106,6 +118,14 @@ private:
 	int32_t bulletLife_ = 90;
 
 	int32_t maxHp_ = 1;
+
+	const uint32_t normalAttackInterval_ = 10;
+
+	const uint32_t threeWayAttackInterval_ = 20;
+
+	const uint32_t divisionAttackInterval_ = 30;
+
+	const uint32_t bombAttackInterval_ = 30;
 
 #pragma endregion
 
@@ -141,6 +161,10 @@ private:
 
 	const float cameraSpeed_ = 0.1f;
 
+	const float moveSpeed_ = 0.25f;
+
+	const uint32_t maxAvoidInterval_=30;
+
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
 	bool isDaed_ = false;
@@ -160,6 +184,8 @@ private:
 	uint32_t avoidTime_=0;
 
 	Vector3 avoidVec_ = {0,0,0};
+
+	const float avoidSpeed_ = 0.5f;
 
 	Vector3 initialRot_ = {0,0,0};
 

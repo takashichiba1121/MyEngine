@@ -1,5 +1,8 @@
 #pragma once
 #include "Sprite.h"
+/*
+* ポストエフェクトの管理
+*/
 class PostEffectCommon
 {
 #pragma region Singleton
@@ -16,9 +19,10 @@ public:
 #pragma endregion
 
 public:
-
+	//初期化
     void Initialize(DirectXCommon* dxCommon);
 
+	//SRVの作成
     uint32_t CreateDescHeapSRV(ID3D12Resource* texBuff);
 
 	void Fin();

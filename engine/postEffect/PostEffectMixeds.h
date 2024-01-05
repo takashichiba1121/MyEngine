@@ -2,6 +2,9 @@
 #include "Sprite.h"
 #include"PostEffectCommon.h"
 #include"RenderTarget.h"
+/*
+* 画像二枚の合成のポストエフェクト
+*/
 class PostEffectMixeds
 {
 #pragma region Singleton
@@ -17,7 +20,7 @@ public:
 	static PostEffectMixeds* Instance();
 #pragma endregion
 public:
-
+	//初期化
     void Initialize();
 
     /// <summary>
@@ -25,8 +28,9 @@ public:
     /// </summary>
     void CreatGraphicsPipelineState(); 
 
+	//更新
     void Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHandle1,uint32_t textureHandle2);
-
+	//終了
 	void Fin();
 
 private://静的メンバ変数

@@ -1,6 +1,3 @@
-/*
-* 4*4の行列
-*/
 #pragma once
 #include "Vector3.h"
 
@@ -8,7 +5,9 @@ struct Matrix4
 {
 	float m[4][4];
 };
-
+/*
+* 4*4の行列
+*/
 namespace Matrix4Math
 {
 

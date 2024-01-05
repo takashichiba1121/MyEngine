@@ -1,5 +1,8 @@
 #pragma once
 #include"DirectXCommon.h"
+/*
+* シーンの基底クラス
+*/
 class BaseScene
 {
 public:

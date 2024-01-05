@@ -1,4 +1,4 @@
- #pragma once
+#pragma once
 #include"BaseScene.h"
 #include"object3d.h"
 #include"Sprite.h"
@@ -7,17 +7,20 @@
 #include"LightGroup.h"
 #include"Player.h"
 #include"EnemyManager.h"
+/*
+* リザルトシーン
+*/
 class ResultScene :public BaseScene
 {
-
+	//初期化
 	void Initialize() override;
-
+	//終了
 	void Finalize() override;
-
+	//更新
 	void Update() override;
-
+	//描画
 	void Draw(DirectXCommon* dxCommon) override;
-
+	//スプライト描画
 	void SpriteDraw() override;
 
 private:

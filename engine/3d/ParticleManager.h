@@ -1,7 +1,3 @@
-/*
-* 3Dパーティクルクラス(CPUパーティクル)
-*/
-
 #pragma once
 #include <string>
 #include <unordered_map>
@@ -11,9 +7,9 @@
 #include "Vector4.h"
 #include "Matrix4.h"
 #include"object3d.h"
-/// <summary>
-/// 3Dオブジェクト
-/// </summary>
+/*
+* 3Dパーティクルクラス(CPUパーティクル)
+*/
 class ParticleManager
 {
 private: // エイリアス
@@ -92,6 +88,9 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void PostDraw();
 
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	static void Finalize();
 
 private: // 静的メンバ変数
@@ -118,6 +117,9 @@ private:// 静的メンバ関数
 	/// <returns>成否</returns>
 	static void InitializeGraphicsPipeline();
 
+	/// <summary>
+	/// 頂点バッファの初期化
+	/// </summary>
 	static void InitializeVerticeBuff();
 
 public: // メンバ関数
@@ -153,17 +155,6 @@ public: // メンバ関数
 
 private: // メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff; // 定数バッファ
-	//// 色
-	//Vector4 color = { 1,1,1,1 };
-	//// ローカルスケール
-	//Vector3 scale = { 1,1,1 };
-	//// X,Y,Z軸回りのローカル回転角
-	//Vector3 rotation = { 0,0,0 };
-	//// ローカル座標
-	//Vector3 position = { 0,0,0 };
-	// ローカルワールド変換行列
-	Matrix4 matWorld_;
-	//// 親オブジェクト
 
 	//パーティクル配列
 	std::list<OutParticle>Particles_;

@@ -1,6 +1,3 @@
-/*
-* DirectXの基盤
-*/
 #pragma once
 #include<d3d12.h>
 #include<dxgi1_6.h>
@@ -8,7 +5,9 @@
 #include<vector>
 #include"WinApp.h"
 #include<chrono>
-
+/*
+* DirectXの基盤
+*/
 class DirectXCommon
 {
 public://メンバ関数
@@ -27,8 +26,14 @@ public://メンバ関数
 	 
 	void IntializeFence();
 
+	/// <summary>
+	/// 最終的な画面への描画準備
+	/// </summary>
 	void PreDraw();
 
+	/// <summary>
+	/// 描画の終了
+	/// </summary>
 	void PostDrow();
 
 	//デバイス取得

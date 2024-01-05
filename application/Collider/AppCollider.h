@@ -1,4 +1,7 @@
 #pragma once
+/*
+* アプリケーションのあたり判定管理
+*/
 class AppCollider
 {
 #pragma region Singleton

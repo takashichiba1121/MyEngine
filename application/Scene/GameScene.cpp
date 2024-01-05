@@ -72,9 +72,9 @@ void GameScene::Initialize()
 
 	stage1BillBoard_->SetModel(stage1Plane_.get());
 
-	stage1BillBoard_->SetScale({2,4,1});
+	stage1BillBoard_->SetScale({ 2,4,1 });
 
-	stage1BillBoard_->SetRot({45,0,0});
+	stage1BillBoard_->SetRot({ 45,0,0 });
 
 	stage1BillBoard_->SetBillBoard(true);
 
@@ -211,7 +211,7 @@ void GameScene::Initialize()
 
 	Enemy::SetLight(light_.get());
 
-	EnemyBullet::SetLight(light_.get());
+	EnemyBullet::SetLightIndex(light_.get());
 
 	gameBGM_.Load("Resources/Sound/GameBgm.wav");
 
@@ -381,13 +381,13 @@ void GameScene::Update()
 				}
 				else if ( player_->IsDaed() )
 				{
-					if (Input::Instance()->GetPadStick(PadStick::LX)<=-0.5||Input::Instance()->TriggerKey(DIK_A) )
+					if ( Input::Instance()->GetPadStick(PadStick::LX) <= -0.5 || Input::Instance()->TriggerKey(DIK_A) )
 					{
 						retry_ = true;
 						yazirusiSprite_->SetPosition({ 240,400 });
 						yazirusiSprite_->Update();
 					}
-					else if( Input::Instance()->GetPadStick(PadStick::LX) >= 0.5||Input::Instance()->TriggerKey(DIK_D) )
+					else if ( Input::Instance()->GetPadStick(PadStick::LX) >= 0.5 || Input::Instance()->TriggerKey(DIK_D) )
 					{
 						retry_ = false;
 						yazirusiSprite_->SetPosition({ 848,400 });
@@ -507,20 +507,19 @@ void GameScene::Update()
 
 	}
 
-	for (uint32_t i=0;i< planes_.size();i++)
+	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
-		UVSift_[i].x +=0.02f;
+		planes_[ i ]->UVSift += planes_[ i ]->UVSiftSpeed;
 
-		if ( UVSift_[i].x >= 1 )
+		if ( planes_[ i ]->UVSift.x >= 1 )
 		{
-			UVSift_[ i ].x = 0;
+			planes_[ i ]->UVSift.x = 0;
 		}
 
-		planes_[ i ]->SetUVShift(UVSift_[ i ]);
+		planes_[ i ]->plane->SetUVShift(planes_[ i ]->UVSift);
 
-		planes_[ i ]->Update();
+		planes_[ i ]->plane->Update();
 	}
-	//light_->SetDirLightDir(0,lightV);
 
 	light_->Update();
 
@@ -552,7 +551,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
-		planes_[ i ]->Draw();
+		planes_[ i ]->plane->Draw(planes_[ i ]->texHandle);
 	}
 
 	EnemyManager::Instance()->Draw();
@@ -585,7 +584,7 @@ void GameScene::SpriteDraw()
 	sousaSprite_->Draw();
 	player_->SpriteDraw();
 	sceneSprite_->DissolveDraw();
-	if (frame_<=0&&player_->IsDaed() )
+	if ( frame_ <= 0 && player_->IsDaed() )
 	{
 		retrySprite_->Draw();
 		yesSprite_->Draw();
@@ -616,7 +615,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 	mapName_ = mapFullpath;
 
-	uint32_t EnemyNumber=0;
+	uint32_t EnemyNumber = 0;
 
 	for ( auto& objectData : levelData->objects )
 	{
@@ -707,20 +706,23 @@ void GameScene::MapLoad(std::string mapFullpath)
 		if ( objectData.tagName == "MapPlane" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
-			newObject->Initialize();
-			newObject->SetModel(models_[ objectData.fileName ]);
+			std::unique_ptr<Plane> newObject = std::make_unique<Plane>();
+			newObject->plane = std::make_unique<Object3d>();
+			newObject->plane->Initialize();
+			newObject->plane->SetModel(models_[ "plane" ]);
+
+			newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/" + objectData.fileName + ".png");
 
 			assert(newObject);
 
 			// 座標
-			newObject->SetPosition({ objectData.trans });
+			newObject->plane->SetPosition({ objectData.trans });
 
 			// 回転角
-			newObject->SetRot({ objectData.rot });
+			newObject->plane->SetRot({ objectData.rot });
 
 			// 座標
-			newObject->SetScale({ objectData.scale });
+			newObject->plane->SetScale({ objectData.scale });
 
 			//std::vector<Model::VertexPosNormalUv> vertices = newObject->GetVertices();
 
@@ -738,16 +740,62 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			//newObject->SetVertices(vertices);
 
-			Vector2 UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
+			if ( objectData.fileName == "plane" )
+			{
+				newObject->UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
 
-			UVSift_.push_back(UVSift);
+				newObject->UVSiftSpeed = { 0.02f ,0 };
+			}
+			else
+			{
+				newObject->UVSift = { 0,0 };
 
-			Vector2 UVSiftSpeed = { ( float ) ( rand() % 100)/3000 ,0};
-
-			UVSiftSpeed_.push_back(UVSiftSpeed);
-
+				newObject->UVSiftSpeed = { 0,0 };
+			}
 			// 配列に登録
 			planes_.push_back(std::move(newObject));
+		}
+		if ( objectData.tagName == "goalSwitch" )
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<GoalSwitch> newObject = std::make_unique<GoalSwitch>();
+			newObject->obj = std::make_unique<Object3d>();
+			newObject->obj->Initialize();
+			newObject->obj->SetModel(models_[ objectData.fileName ]);
+
+			assert(newObject);
+
+			// 座標
+			newObject->obj->SetPosition({ objectData.trans });
+
+			// 回転角
+			newObject->obj->SetRot({ objectData.rot });
+
+			// 座標
+			newObject->obj->SetScale({ objectData.scale });
+
+			newObject->light = std::make_unique<Object3d>();
+
+			newObject->light->Initialize();
+
+			newObject->light->SetPosition(objectData.trans);
+
+			for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
+			{
+				if ( light_->GetPointActive(i) == false )
+				{
+					newObject->lightIndex = i;
+
+					break;
+				}
+			}
+			newObject->obj->Update();
+
+			newObject->light->Update();
+
+			light_->SetPointActive(newObject->lightIndex,false);
+		// 配列に登録
+			goalSwitchs_.push_back(std::move(newObject));
 		}
 		if ( objectData.tagName == "Spawn" )
 		{
@@ -770,6 +818,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			// 座標
 			goalObj_->SetScale({ objectData.scale });
+
+			goalObj_->SetColor({ 0,0,0 });
 
 			goalObj_->Update();
 
@@ -837,7 +887,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 座標
 			stage1Obj_->SetPosition({ objectData.trans });
 
-			stage1BillBoard_->SetPosition({ objectData.trans.x,objectData.trans.y+5.0f,objectData.trans.z });
+			stage1BillBoard_->SetPosition({ objectData.trans.x,objectData.trans.y + 5.0f,objectData.trans.z });
 
 			// 回転角
 			stage1Obj_->SetRot({ objectData.rot });
@@ -920,9 +970,53 @@ void GameScene::ModelLoad()
 	jumpEnemyModel_.reset(Model::LoadFormOBJ("jumpEnemy",true));
 	models_.insert(std::make_pair("jumpEnemy",jumpEnemyModel_.get()));
 
+	tutorialEnemyModel_.reset(Model::LoadFormOBJ("tutorialEnemy",true));
+	models_.insert(std::make_pair("tutorialEnemy",tutorialEnemyModel_.get()));
+
 	stageModel_.reset(Model::LoadFormOBJ("stage",true));
 	models_.insert(std::make_pair("stage",stageModel_.get()));
 
-	planeModel_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/MapTex.png")));
+	planeModel_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/plane.png")));
 	models_.insert(std::make_pair("plane",planeModel_.get()));
+
+	goalSwitchModel_.reset(Model::LoadFormOBJ("GoalSwitch",true));
+	models_.insert(std::make_pair("GoalSwitch",goalSwitchModel_.get()));
+}
+
+void GameScene::GoalSwitchCollsion()
+{
+	std::list<std::unique_ptr<PlayerBullet>> bullets = PlayerBulletManager::Instance()->GetBullets();
+
+	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	{
+		if ( goalSwitch->onOrOff == false )
+		{
+			Collider::Cube mapCube;
+			mapCube.Pos = goalSwitch->obj->GetPosition();
+			mapCube.scale = goalSwitch->obj->GetScale();
+			for ( std::unique_ptr<PlayerBullet>& bullet : bullets )
+			{
+				Collider::Cube bulletCube;
+				bulletCube.Pos = bullet->GetPosition();
+				bulletCube.scale = bullet->GetScale();
+				if ( Collider::CubeAndCube(mapCube,bulletCube,Collider::Collsion) == true )
+				{
+					bullet->OnCollision();
+
+					goalSwitch->onOrOff = true;
+
+					light_->SetPointActive(goalSwitch->lightIndex,true);
+
+					light_->SetPointPos(goalSwitch->lightIndex,goalSwitch->obj->GetPosition());
+
+					light_->SetPointColor(goalSwitch->lightIndex,{ bulletColor_ });
+
+					light_->SetPointAtten(goalSwitch->lightIndex,{ 0.03f,0.01f,0.01f });
+					break;
+				}
+			}
+		}
+	}
+
+
 }

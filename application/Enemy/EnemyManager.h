@@ -3,6 +3,9 @@
 #include"EnemyBullet.h"
 #include"ParticleManager.h"
 #include"Player.h"
+/*
+* エネミーの管理
+*/
 class EnemyManager
 {
 #pragma region Singleton
@@ -19,9 +22,10 @@ public:
 #pragma endregion
 
 public:
-
+	//初期化
 	void Initialize();
 
+	//更新
 	void Update();
 
 	/// <summary>
@@ -29,24 +33,31 @@ public:
 	/// </summary>
 	void ObjectUpdate();
 
+	//モデルの描画
 	void Draw();
 
+	//パーティクルの描画
 	void ParticleDraw();
 
+	//弾の追加
 	void AddBullet(std::unique_ptr<EnemyBullet> newBullet);
 
 	std::list<std::unique_ptr<Enemy>>& GetEnemys() { return Enemys_; }
 
 	std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
+	//敵の追加
 	void AddEnemy(std::unique_ptr<Enemy> newEnemy);
 
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
+	//終了
 	void Fin();
 
+	//衝突チェック
 	void Collision();
 
+	//敵と弾の消去
 	void Clear();
 
 	void SetPlayer(Player* player) { player_ = player; }

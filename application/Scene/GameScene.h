@@ -7,14 +7,33 @@
 #include"Player.h"
 #include"EnemyManager.h"
 #include"BaseScene.h"
+/*
+* ゲームシーン
+*/
 class GameScene :public BaseScene
 {
+	struct Plane
+	{
+		std::unique_ptr<Object3d> plane;
+		uint32_t texHandle = 0;
+		Vector2 UVSift = { 0,0 };
+		Vector2 UVSiftSpeed = { 0,0 };
+	};
 
+	struct GoalSwitch
+	{
+		std::unique_ptr<Object3d> obj;
+		std::unique_ptr<Object3d> light;
+		uint32_t lightIndex=0;
+		bool onOrOff;
+
+	};
 public: // メンバ関数
 	GameScene();
 
 	~GameScene();
 
+	//初期化
 	void Initialize() override;
 	/// <summary>
 	/// 毎フレーム処理
@@ -39,7 +58,10 @@ public: // メンバ関数
 	void MapLoad(std::string mapfullpath);
 
 private:
+	//モデルのロード
 	void ModelLoad();
+
+	void GoalSwitchCollsion();
 
 private:
 #pragma region モデル
@@ -58,8 +80,10 @@ private:
 	std::unique_ptr<Model> enemyModel_;
 	std::unique_ptr<Model> gunEnemyModel_;
 	std::unique_ptr<Model> jumpEnemyModel_;
+	std::unique_ptr<Model> tutorialEnemyModel_;
 
-	std::unique_ptr <Model> planeModel_;
+	std::unique_ptr<Model> planeModel_;
+	std::unique_ptr<Model> goalSwitchModel_;
 
 	std::unique_ptr<Model> stage2Plane_;
 	std::unique_ptr<Model> stage1Plane_;
@@ -72,7 +96,9 @@ private:
 
 	std::vector<std::unique_ptr<Object3d>> objects_;
 
-	std::vector<std::unique_ptr<Object3d>> planes_;
+	std::vector<std::unique_ptr<Plane>> planes_;
+
+	std::vector<std::unique_ptr<GoalSwitch>> goalSwitchs_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
@@ -116,7 +142,7 @@ private:
 
 	Vector3 cameraEnd_ = { 0.0,0.0,0.0 };
 
-	const uint32_t endFrame_ =60;
+	const uint32_t endFrame_ = 60;
 
 	int32_t frame_ = 0;
 
@@ -156,11 +182,7 @@ private:
 
 	Vector3 lightV_ = { 0,-1,0 };
 
-	std::vector<Vector2> UVSift_;
-
-	std::vector<Vector2> UVSiftSpeed_;
-
-	bool retry_=false;
+	bool retry_ = false;
 
 	Sound gameBGM_;
 

@@ -1,6 +1,3 @@
-/*
-* スプライト1枚のクラス
-*/
 #pragma once
 #include"SpriteCommon.h"
 #include"Vector2.h"
@@ -37,20 +34,37 @@ enum VertexNumber {
 	RB,//右下
 	RT,//右上
 };
-
+/*
+* スプライト1枚のクラス
+*/
 class Sprite
 {
-public:
-
+public: // 静的メンバ関数
+	/// <summary>
+	/// 静的初期化
+	/// </summary>
 	void static StaticInitialize(DirectXCommon* dxCommon);
 
-	//初期化
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="textureIndex">テクスチャの識別番号</param>
+	/// <param name="maskTextureIndex">ディゾルブ用のテクスチャの識別番号</param>
 	void Initialize(uint32_t textureIndex = UINT32_MAX,uint32_t maskTextureIndex=0);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// ディゾルブを使った描画
+	/// </summary>
 	void DissolveDraw();
 
 	uint32_t GetTexture() {return textureIndex_ ; }

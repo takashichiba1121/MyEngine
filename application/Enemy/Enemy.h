@@ -2,6 +2,9 @@
 #include"object3d.h"
 #include"EnemyBullet.h"
 #include"Player.h"
+/*
+* エネミーの基底クラス
+*/
 class Enemy
 {
 public:
@@ -14,6 +17,7 @@ public:
 	};
 
 public:
+	//初期化
 	virtual void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number);
 
 	/// <summary>
@@ -27,8 +31,8 @@ public:
 	virtual void Move();
 
 	/// <summary>
-/// 入力は受け付けないがアップデートはする(カメラ座標のみを動かすときなどに使う)
-/// </summary>
+	/// 入力は受け付けないがアップデートはする(カメラ座標のみを動かすときなどに使う)
+	/// </summary>
 	void ObjectUpdate();
 
 	/// <summary>
@@ -61,8 +65,10 @@ public:
 		return number_;
 	}
 
+	//衝突処理
 	void OnCollision();
 
+	//エネミー同士の衝突処理
 	virtual void OnEnemyCollision(Vector3 reject);
 
 	EnemyType GetType() {return enemyType_;}

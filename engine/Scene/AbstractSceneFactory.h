@@ -1,10 +1,10 @@
-/*
-* 抽象的なシーンファクトリー
-*/
 #pragma once
 
 #include"BaseScene.h"
 #include<string>
+/*
+* 抽象的なシーンファクトリー
+*/
 class AbstractSceneFactory
 {
 public:

@@ -2,6 +2,9 @@
 #include "Sprite.h"
 #include"PostEffectCommon.h"
 #include"RenderTarget.h"
+/*
+* 輝度抽出のポストエフェクト
+*/
 class PostEffectLuminance
 {
 #pragma region Singleton
@@ -26,7 +29,7 @@ public:
 		float smoothstepMax;
 		float smoothstepMin;
 	};
-
+	//初期化
     void Initialize();
 
     /// <summary>
@@ -34,10 +37,12 @@ public:
     /// </summary>
     void CreatGraphicsPipelineState();
 
+	//更新
 	void Update(Vector3 LuminanceColor,float smoothstepMax,float smoothstepMin);
 
+	//描画
     void Draw(ID3D12GraphicsCommandList* cmdList,uint32_t textureHandle);
-
+	//終了
 	void Fin();
 
 private://静的メンバ変数

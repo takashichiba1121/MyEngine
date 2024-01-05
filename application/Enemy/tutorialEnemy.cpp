@@ -2,7 +2,7 @@
 
 void TutorialEnemy::Update()
 {
-	if ( isDaed_)
+	if ( isDaed_&&isRevival_==false)
 	{
 		ExplosionFrame_++;
 
@@ -14,7 +14,6 @@ void TutorialEnemy::Update()
 		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
 			isRevival_ = true;
-			isDaed_ = false;
 		}
 	}
 	else if(isRevival_)
@@ -29,6 +28,7 @@ void TutorialEnemy::Update()
 		if ( ExplosionFrame_ <=0 )
 		{
 			isRevival_ = false;
+			isDaed_ = false;
 		}
 	}
 

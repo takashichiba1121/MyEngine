@@ -1,6 +1,3 @@
-/*
-* FBXモデルデータ
-*/
 #pragma once
 #include <cassert>
 #include <string>
@@ -16,7 +13,9 @@
 #include"Vector3.h"
 #include"Vector4.h"
 #include"Matrix4.h"
-
+/*
+* FBXモデルデータ
+*/
 class AssimpModel
 {
 private:
@@ -76,7 +75,7 @@ public:
 		ComPtr<ID3D12Resource> constBuffB1;
 	};
 public:
-	//OBJファイルから3Dモデルを読み込む
+	//FBXファイルから3Dモデルを読み込む
 	static AssimpModel* LoadFormFBX(const std::string& modelname);
 
 	//setter
@@ -85,8 +84,15 @@ public:
 	}
 
 	~AssimpModel();
+
+	/// <summary>
+	/// バッファーの作成
+	/// </summary>
 	void CreateBuffers();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw(ID3D12GraphicsCommandList* cmdList, uint32_t rootParamIndexMaterial);
 
 	void SetMesh(std::unique_ptr<AssimpModel::Mesh> Meshs) { meshs_.push_back(std::move(Meshs)); }

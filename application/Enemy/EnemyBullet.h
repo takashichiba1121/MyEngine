@@ -1,6 +1,8 @@
 #pragma once
 #include"object3d.h"
-
+/*
+* エネミーの弾
+*/
 class EnemyBullet
 {
 public:
@@ -9,7 +11,6 @@ public:
 		Charge,
 		Attack,
 	};
-
 
 public:
 	
@@ -48,7 +49,7 @@ public:
 
 	void SetLight(int32_t lightIndex);
 
-	static void SetLight(LightGroup* light) {light_ = light;}
+	static void SetLightIndex(LightGroup* light) {light_ = light;}
 
 private:
 

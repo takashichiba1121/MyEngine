@@ -1,6 +1,8 @@
 #pragma once
 #include"PlayerBullet.h"
-
+/*
+* プレイヤーの分裂する弾
+*/
 class DivisionPlayerBullet :
     public PlayerBullet
 {

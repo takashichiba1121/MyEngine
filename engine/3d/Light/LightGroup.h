@@ -1,9 +1,9 @@
-/*
-* ライトクラス
-*/
 #pragma once
 #include"DirectionalLight.h"
 #include"PointLight.h"
+/*
+* ライトクラス
+*/
 class LightGroup
 {
 private: // エイリアス
@@ -23,14 +23,16 @@ public://サブクラス
 		float pad1;
 		//平行光源用
 		DirectionalLight::ConstBufferData dirLights[cDirLightNum];
-
+		//点光源用
 		PointLight::ConstBufferData pointLight[ cPointLightNum ];
 	};
-
-private:
-	static ID3D12Device* sDevice;
-public:
+public://静的メンバ関数
+	/// <summary>
+	/// 静的初期化
+	/// </summary>
 	static void StaticInitialize(ID3D12Device* device);
+private://静的メンバ変数
+	static ID3D12Device* sDevice;
 private:
 	ComPtr<ID3D12Resource> constBuff_;
 

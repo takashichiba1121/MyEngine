@@ -1,21 +1,27 @@
 #pragma once
 #include "Enemy.h"
+/*
+* 走るエネミーのクラス
+*/
 class RunEnemy :
 	public Enemy
 {
 
 public:
+	//初期化
 	void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number) override;
 
+	//更新
 	void Update() override;
 
+	//移動
 	void Move() override;
 
-		/// <summary>
-/// 攻撃全般
-/// </summary>
+
+	//攻撃全般
 	void Attack();
 
+	//攻撃の強制終了
 	void AttackOff() override;
 
 private:

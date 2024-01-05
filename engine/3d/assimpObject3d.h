@@ -1,8 +1,4 @@
-/*
-* FBXのオブジェクトクラス
-*/
 #pragma once
-
 #include <Windows.h>
 #include <wrl.h>
 #include <d3d12.h>
@@ -11,10 +7,9 @@
 #include "Model.h"
 #include"assimpModel.h"
 
-
-/// <summary>
-/// 3Dオブジェクト
-/// </summary>
+/*
+* FBXのオブジェクトクラス
+*/
 class assimpObject3d
 {
 
@@ -110,6 +105,9 @@ class assimpObject3d
 
 		static Matrix4 GetMatViewPro();
 
+		/// <summary>
+		/// 終了処理
+		/// </summary>
 		static void Finalize();
 
 	private: // 静的メンバ変数

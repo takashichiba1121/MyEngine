@@ -1,13 +1,16 @@
-/*
-* imguiの制御クラス
-*/
 #pragma once
 #include"WinApp.h"
 #include"DirectXCommon.h"
+/*
+* imguiの制御クラス
+*/
 class imguiManager
 {
-public:
+public: // 静的メンバ関数
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	static void StaticInitialize(WinApp* winApp, DirectXCommon* dxCommon);
 
 	/// <summary>
@@ -15,6 +18,11 @@ public:
 	/// </summary>
 	static void Finalize();
 
+		/// <summary>
+	/// 画面への描画
+	/// </summary>
+	static void Draw();
+public: // メンバ関数
 	/// <summary>
 	/// ImGui受付開始
 	/// </summary>
@@ -25,12 +33,8 @@ public:
 	/// </summary>
 	void End();
 
-	/// <summary>
-	/// 画面への描画
-	/// </summary>
-	static void Draw();
+private://メンバ変数
 
-private:
 	//SRV用デスクリプタヒープ
 	static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> sSrvHeap;
 

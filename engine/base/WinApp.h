@@ -1,9 +1,8 @@
+#pragma once
+#include<Windows.h>
 /*
 * ウィンドウ管理クラス
 */
-
-#pragma once
-#include<Windows.h>
 class WinApp
 {
 public://静的メンバ関数
@@ -12,6 +11,7 @@ public://メンバ関数
 	//初期化
 	void Initialize();
 
+	//終了
 	void Finalize();
 
 	//メッセージの処理

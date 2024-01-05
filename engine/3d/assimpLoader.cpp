@@ -10,6 +10,13 @@
 
 using namespace std;
 
+AssimpLoader* AssimpLoader::Instance()
+{
+	static AssimpLoader instance;
+
+	return &instance;
+}
+
 AssimpModel* AssimpLoader::Load(const std::string& modelname)
 {
 	// モデルと同じ名前のフォルダから読み込む

@@ -105,7 +105,7 @@ AssimpModel* AssimpModel::LoadFormFBX(const std::string& modelname)
 {
 	AssimpModel* assimpModel;
 
-	assimpModel = AssimpLoader::Load(modelname);
+	assimpModel = AssimpLoader::Instance()->Load(modelname);
 
 	assimpModel->CreateBuffers();
 

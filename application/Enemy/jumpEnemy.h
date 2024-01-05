@@ -1,23 +1,29 @@
 #pragma once
 #include "Enemy.h"
+/*
+* 跳ぶエネミーのクラス
+*/
 class jumpEnemy :
     public Enemy
 {
 public:
-
+	//初期化
 	void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number) override;
 
+	//更新
 	void Update() override;
 
+	//移動
 	void Move() override;
 
-		/// <summary>
-/// 攻撃全般
-/// </summary>
+	
+	//攻撃全般
 	void Attack();
 
+	//攻撃の強制終了
 	void AttackOff() override;
 
+	//敵同士の衝突処理
 	void OnEnemyCollision(Vector3 reject) override;
 
 private:

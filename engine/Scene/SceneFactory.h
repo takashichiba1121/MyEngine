@@ -1,5 +1,8 @@
 #pragma once
 #include "AbstractSceneFactory.h"
+/*
+* シーンの生成
+*/
 class SceneFactory :
     public AbstractSceneFactory
 {

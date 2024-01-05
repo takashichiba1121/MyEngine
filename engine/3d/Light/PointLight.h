@@ -1,9 +1,9 @@
-/*
-* 点ライト
-*/
 #pragma once
 #include"Vector3.h"
 #include"DirectXCommon.h"
+/*
+* 点ライト
+*/
 class PointLight
 {
 private: // エイリアス

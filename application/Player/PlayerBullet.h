@@ -1,7 +1,9 @@
 #pragma once 
 #include"object3d.h"
 #include"EnemyBullet.h"
-
+/*
+* プレイヤーの弾の基底クラス
+*/
 class PlayerBullet
 {
 public:
@@ -78,4 +80,6 @@ protected:
 	LightGroup* light_;
 
 	int32_t lightIndex_;
+
+	const Vector3 bulletColor_ = { 1,0.88f,0.59f };
 };

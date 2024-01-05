@@ -1,8 +1,8 @@
+#pragma once
+
 /*
 * 二次元ベクトル
 */
-#pragma once
-
 class Vector2
 {
 public:
@@ -13,10 +13,14 @@ public:
 	Vector2(float x, float y);//x成分,ｙ成分を指定して生成
 
 	//メンバ関数
-	float length() const; //ノルム（長さ）を求める
-	Vector2& normalize(); //　正規化する
-	float dot(const Vector2& v) const; //　内積を求める
-	float cross(const Vector2& v) const; //　外積を求める
+	//ノルム（長さ）を求める
+	float length() const;
+	//　正規化する
+	Vector2& normalize();
+	//　内積を求める
+	float dot(const Vector2& v) const;
+	//　外積を求める
+	float cross(const Vector2& v) const; 
 	
 	//単項演算子オーバーロード
 	Vector2 operator+() const;

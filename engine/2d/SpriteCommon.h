@@ -1,6 +1,3 @@
-/*
-* スプライトの共通部分
-*/
 #pragma once
 #include<d3dcompiler.h>
 #include <tchar.h>
@@ -14,7 +11,9 @@
 #pragma comment(lib,"dxgi.lib")
 #include"DirectXCommon.h"
 #include"Matrix4.h"
-
+/*
+* スプライトの共通部分
+*/
 class SpriteCommon
 {
 #pragma region Singleton
@@ -30,7 +29,9 @@ public:
 	static SpriteCommon* Instance();
 #pragma endregion
 public:
-	//初期化
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize(DirectXCommon* DXCommon);
 
 	/// <summary>
@@ -39,7 +40,7 @@ public:
 	void InitializeGraphicsPipeline();
 
 	/// <summary>
-	/// ディゾルブグラフィックパイプライン生成
+	/// ディゾルブ用グラフィックパイプライン生成
 	/// </summary>
 	void InitializeDissolveGraphicsPipeline();
 
@@ -47,14 +48,29 @@ public:
 
 	Matrix4 GetMatProjection() { return matProjection; }
 
+	/// <summary>
+	/// 描画の準備
+	/// </summary>
 	void PreDraw();
 
+	/// <summary>
+	/// 描画の終了
+	/// </summary>
 	void PostDraw();
 
+	/// <summary>
+	/// ディゾルブ描画の準備
+	/// </summary>
 	void DissolvePreDraw();
 
+	/// <summary>
+	/// ディゾルブ描画の終了
+	/// </summary>
 	void DissolvePostDraw();
 
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	void Finalize();
 private:
 	DirectXCommon* dxCommon=nullptr;

@@ -1,12 +1,12 @@
-/*
-* シーンの管理
-*/
 #pragma once
 #include"BaseScene.h"
 #include"DirectXCommon.h"
 #include"AbstractSceneFactory.h"
 #include<memory>
 
+/*
+* シーンの管理
+*/
 class SceneManager
 {
 #pragma region Singleton

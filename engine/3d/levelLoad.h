@@ -1,6 +1,3 @@
-/*
-* jsonからオブジェクトデータを読みとってまとめる。
-*/
 #pragma once
 #include"json.hpp"
 #include<d3d12.h>
@@ -23,9 +20,17 @@ struct LevelData
 
 	std::list<ObjectData> objects;
 };
-
+/*
+* jsonからオブジェクトデータを読みとってまとめる。
+*/
 class LevelLoad
 {
 public:
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="fullpath">jsonファイルのパス</param>
+	/// <returns>複数のオブジェクトの情報がまとまった専用の構造体</returns>
 	static LevelData* Load(const std::string fullpath); 
 };

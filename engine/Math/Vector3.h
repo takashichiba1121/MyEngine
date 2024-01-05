@@ -1,9 +1,8 @@
+#pragma once
+
 /*
 * 三次元ベクトル
 */
-
-#pragma once
-
 class Vector3
 {
 public:
@@ -17,10 +16,14 @@ public:
 	Vector3(float x, float y, float z);//x成分、ｙ成分、ｚ成分を指定しての生成 
 
 	//メンバ関数
-	float length() const; //ノルム（長さ）を求める
-	Vector3& normalize(); //正規化
-	float dot(const Vector3& v) const;//内積を求める
-	Vector3 cross(const Vector3& v) const;//外積を求める
+	//ノルム（長さ）を求める
+	float length() const;
+	//正規化
+	Vector3& normalize();
+	//内積を求める
+	float dot(const Vector3& v) const;
+	//外積を求める
+	Vector3 cross(const Vector3& v) const;
 
 	//単項演算子オーバーロード
 	Vector3 operator+() const;

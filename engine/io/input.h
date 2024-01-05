@@ -1,7 +1,3 @@
-/*
-* キーボードとPadの入力
-*/
-
 #pragma once
 #define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
 #include<dinput.h>
@@ -21,7 +17,9 @@ enum class PadStick
 	RY,
 }; 
 
-//入力
+/*
+* キーボードとコントローラーの入力
+*/
 class Input
 {
 #pragma region Singleton
@@ -92,14 +90,24 @@ public://メンバ関数(ゲームパッド)
 	bool PadTriggerKey(uint32_t button);
 
 	/// <summary>
-/// コントローラーのボタンの入力状況
-/// </summary>
-/// ///<param name="button">ボタンの種類(XINPUT_GAMEPAD_で始まる定数で指定)</param>
-/// <returns>押されてるか？</returns>
+	/// コントローラーのボタンの入力状況
+	/// </summary>
+	/// ///<param name="button">ボタンの種類(XINPUT_GAMEPAD_で始まる定数で指定)</param>
+	/// <returns>押されてるか？</returns>
 	bool PadPushKey(uint32_t button);
 
+	/// <summary>
+	/// コントローラーのトリガーやステックの入力状況
+	/// </summary>
+	/// <param name="Stick">どの値をとるか？</param>
+	/// <returns>入力の数値</returns>
 	float GetPadStick(PadStick Stick);
 
+	/// <summary>
+	/// 一フレームコントローラーのトリガーやステックの入力状況
+	/// </summary>
+	/// <param name="Stick">どの値をとるか？</param>
+	/// <returns>入力の数値</returns>
 	float GetOldPadStick(PadStick Stick);
 
 private://メンバ変数(ゲームパッド)

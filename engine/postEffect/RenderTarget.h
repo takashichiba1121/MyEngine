@@ -1,6 +1,9 @@
 #pragma once
 #include"DirectXCommon.h"
 #include"Matrix4.h"
+/*
+*レンダーターゲットに使える画像一枚のクラス
+*/
 class RenderTarget
 {
 public:

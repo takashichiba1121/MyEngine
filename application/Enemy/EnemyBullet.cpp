@@ -14,8 +14,6 @@ void EnemyBullet::Initialize(Model* model, Vector3 velocity, Vector3 position)
 	obj_->SetModel(model);
 
 	obj_->SetPosition(position);
-
-	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,100.0f });
 }
 
 void EnemyBullet::Update()

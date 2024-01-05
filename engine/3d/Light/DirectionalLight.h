@@ -1,10 +1,9 @@
-/*
-* 平行光源
-*/
 #pragma once
 #include"Vector3.h"
 #include"DirectXCommon.h"
-
+/*
+* 平行光源
+*/
 class DirectionalLight
 {
 private: // エイリアス

@@ -1,5 +1,8 @@
 #pragma once
 #include "PlayerBullet.h"
+/*
+* プレイヤーの爆発する弾
+*/
 class BombPlayerBullet :
     public PlayerBullet
 {
@@ -28,5 +31,7 @@ protected:
 	float kBulletSpeed_ = 1.0f;
 
 	int32_t bulletLife_ = 90;
+
+	const Vector3 bulletColor_ = { 0.59f,0.88f,1 };
 };
 
