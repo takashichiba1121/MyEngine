@@ -14,6 +14,7 @@
 #include"jumpEnemy.h"
 #include"tutorialEnemy.h"
 #include"Enemy.h"
+#include<iostream>
 
 GameScene::GameScene()
 {
@@ -203,6 +204,15 @@ void GameScene::Initialize()
 
 	player_->SetMapData(&objects_);
 
+	std::vector<Object3d*> a;
+
+	for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
+	{
+		a.push_back(gimmicks_[ i ]->obj.get());
+	}
+
+	player_->SetGimmickData(a);
+
 	EnemyManager::Instance()->SetMapData(&objects_);
 
 	EnemyManager::Instance()->SetPlayer(player_.get());
@@ -212,16 +222,6 @@ void GameScene::Initialize()
 	Enemy::SetLight(light_.get());
 
 	EnemyBullet::SetLightIndex(light_.get());
-
-	gameBGM_.Load("Resources/Sound/GameBgm.wav");
-
-	gameBGM_.Play(true,0.1f);
-
-	reTryBGM_.Load("Resources/Sound/ReTryBGM.wav");
-
-	enterSE_.Load("Resources/Sound/enter.wav");
-
-	goalSE_.Load("Resources/Sound/Goal.wav");
 }
 
 void GameScene::Update()
@@ -300,18 +300,43 @@ void GameScene::Update()
 
 		if ( mapName_ != "Resources/Select.json" )
 		{
-			B.Pos = goalObj_->GetPosition();
-
-			B.scale = goalObj_->GetScale();
-
-			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
+			for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 			{
-				isClear_ = true;
-				sceneChange_ = true;
+				if ( goalSwitch->onOrOff )
+				{
+					goalOpen = Phase::Middle;
+				}
+				else
+				{
+					goalOpen = Phase::Before;
+					break;
+				}
 
-				gameBGM_.Stop();
+			}
+			if ( goalOpen==Phase::Middle )
+			{
+				goalOpenflame++;
 
-				goalSE_.Play(false,0.3f);
+				float f = goalOpenflame / goalOpenMaxFlame;
+
+				goalObj_->SetColor({ f,f,f });
+
+				if (goalOpenflame>=goalOpenMaxFlame )
+				{
+					goalOpen = Phase::After;
+				}
+			}
+			if ( goalOpen == Phase::After)
+			{
+				B.Pos = goalObj_->GetPosition();
+
+				B.scale = goalObj_->GetScale();
+
+				if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
+				{
+					isClear_ = true;
+					sceneChange_ = true;
+				}
 			}
 		}
 		else
@@ -353,10 +378,6 @@ void GameScene::Update()
 		if ( player_->IsDaed() )
 		{
 			sceneChange_ = true;
-
-			gameBGM_.Stop();
-
-			reTryBGM_.Play(false,0.1f);
 		}
 	}
 	else
@@ -407,8 +428,6 @@ void GameScene::Update()
 						if ( retry_ == false )
 						{
 							SceneManager::Instance()->ChangeScene("TITLE");
-
-							enterSE_.Play(false,0.5f);
 						}
 						else
 						{
@@ -417,6 +436,15 @@ void GameScene::Update()
 							player_->Reset();
 
 							player_->SetMapData(&objects_);
+
+							std::vector<Object3d*> a;
+
+							for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
+							{
+								a.push_back(gimmicks_[ i ]->obj.get());
+							}
+
+							player_->SetGimmickData(a);
 
 							EnemyManager::Instance()->SetMapData(&objects_);
 
@@ -429,12 +457,6 @@ void GameScene::Update()
 							sceneChange_ = false;
 
 							retry_ = false;
-
-							reTryBGM_.Stop();
-
-							gameBGM_.Play(true,0.1f);
-
-							enterSE_.Play(false,0.5f);
 						}
 					}
 				}
@@ -446,6 +468,15 @@ void GameScene::Update()
 					MapLoad("Resources/Stage1.json");
 
 					player_->SetMapData(&objects_);
+
+					std::vector<Object3d*> a;
+
+					for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
+					{
+						a.push_back(gimmicks_[ i ]->obj.get());
+					}
+
+					player_->SetGimmickData(a);
 
 					EnemyManager::Instance()->SetMapData(&objects_);
 
@@ -465,6 +496,15 @@ void GameScene::Update()
 
 					player_->SetMapData(&objects_);
 
+					std::vector<Object3d*> a;
+
+					for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
+					{
+						a.push_back(gimmicks_[ i ]->obj.get());
+					}
+
+					player_->SetGimmickData(a);
+
 					EnemyManager::Instance()->SetMapData(&objects_);
 
 					EnemyManager::Instance()->SetPlayer(player_.get());
@@ -482,6 +522,15 @@ void GameScene::Update()
 					MapLoad("Resources/Stage3.json");
 
 					player_->SetMapData(&objects_);
+
+					std::vector<Object3d*> a;
+
+					for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
+					{
+						a.push_back(gimmicks_[ i ]->obj.get());
+					}
+
+					player_->SetGimmickData(a);
 
 					EnemyManager::Instance()->SetMapData(&objects_);
 
@@ -521,6 +570,51 @@ void GameScene::Update()
 		planes_[ i ]->plane->Update();
 	}
 
+	GoalSwitchCollsion();
+
+	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	{
+		goalSwitch->obj->Update();
+		if ( goalSwitch->onOrOff )
+		{
+			goalSwitch->light->Update();
+		}
+	}
+
+	for ( uint32_t i=0;i<switchs_.size();i++ )
+	{
+		switchs_[i]->obj->Update();
+		if ( switchs_[i]->onOrOff )
+		{
+			switchs_[i]->light->Update();
+			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
+			{
+				if ( switchs_[i]->index==gimmicks_[j]->index )
+				{
+					if ( gimmicks_[ j ]->phase == Phase::Before )
+					{
+						gimmicks_[ j ]->phase = Phase::Middle;
+						gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
+					}
+					if ( gimmicks_[ j ]->phase == Phase::Middle )
+					{
+						Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
+
+						pos.y -= 0.1f;
+
+						if ( pos.y <= gimmicks_[ j ]->EndPosY )
+						{
+							pos.y = gimmicks_[ j ]->EndPosY;
+							gimmicks_[ j ]->phase = Phase::After;
+						}
+						gimmicks_[ j ]->obj->SetPosition(pos);
+					}
+				}
+			}
+		}
+		gimmicks_[i]->obj->Update();
+	}
+
 	light_->Update();
 
 	goalObj_->Update();
@@ -552,6 +646,28 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
 		planes_[ i ]->plane->Draw(planes_[ i ]->texHandle);
+	}
+	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	{
+		goalSwitch->obj->Draw();
+		if ( goalSwitch->onOrOff )
+		{
+			goalSwitch->light->Draw();
+		}
+
+	}
+	for ( std::unique_ptr<Switch>& Switch : switchs_ )
+	{
+		Switch->obj->Draw();
+		if ( Switch->onOrOff )
+		{
+			Switch->light->Draw();
+		}
+	}
+
+	for ( std::unique_ptr<Gimmick>& gimmick : gimmicks_ )
+	{
+		gimmick->obj->Draw();
 	}
 
 	EnemyManager::Instance()->Draw();
@@ -607,9 +723,20 @@ void GameScene::MapLoad(std::string mapFullpath)
 	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load(mapFullpath));
 
+	for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
+	{
+		light_->SetPointActive(i,false);
+	}
+
 	objects_.clear();
 
 	planes_.clear();
+
+	goalSwitchs_.clear();
+
+	switchs_.clear();
+
+	gimmicks_.clear();
 
 	EnemyManager::Instance()->Clear();
 
@@ -619,7 +746,13 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 	for ( auto& objectData : levelData->objects )
 	{
-		if ( objectData.tagName == "Map" )
+		std::string tagName;
+
+		std::stringstream tag{ objectData.tagName };
+
+		std::getline(tag,tagName,' ');
+
+		if ( tagName == "Map" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
@@ -703,7 +836,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 配列に登録
 			objects_.push_back(std::move(newObject));
 		}
-		if ( objectData.tagName == "MapPlane" )
+		if ( tagName == "MapPlane" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Plane> newObject = std::make_unique<Plane>();
@@ -755,7 +888,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 配列に登録
 			planes_.push_back(std::move(newObject));
 		}
-		if ( objectData.tagName == "goalSwitch" )
+		if ( tagName == "goalSwitch" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<GoalSwitch> newObject = std::make_unique<GoalSwitch>();
@@ -778,7 +911,13 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			newObject->light->Initialize();
 
-			newObject->light->SetPosition(objectData.trans);
+			newObject->light->SetModel(models_[ "enemyBullet" ]);
+
+			Vector3 pos = objectData.trans;
+
+			pos.y += 2;
+
+			newObject->light->SetPosition(pos);
 
 			for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
 			{
@@ -793,17 +932,84 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			newObject->light->Update();
 
-			light_->SetPointActive(newObject->lightIndex,false);
+			light_->SetPointActive(newObject->lightIndex,true);
 		// 配列に登録
 			goalSwitchs_.push_back(std::move(newObject));
 		}
-		if ( objectData.tagName == "Spawn" )
+		if ( tagName == "Switch" )
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<Switch> newObject = std::make_unique<Switch>();
+			newObject->obj = std::make_unique<Object3d>();
+			newObject->obj->Initialize();
+			newObject->obj->SetModel(models_[ objectData.fileName ]);
+			// 座標
+			newObject->obj->SetPosition({ objectData.trans });
+			// 回転角
+			newObject->obj->SetRot({ objectData.rot });
+			// 座標
+			newObject->obj->SetScale({ objectData.scale });
+
+			newObject->light = std::make_unique<Object3d>();
+			newObject->light->Initialize();
+			newObject->light->SetModel(models_[ "enemyBullet" ]);
+
+			Vector3 pos = objectData.trans;
+			//ライトの位置を中心から少し上に調整
+			pos.y += 2;
+
+			newObject->light->SetPosition(pos);
+
+			for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
+			{
+				if ( light_->GetPointActive(i) == false )
+				{
+					newObject->lightIndex = i;
+
+					break;
+				}
+			}
+			newObject->obj->Update();
+
+			newObject->light->Update();
+
+			light_->SetPointActive(newObject->lightIndex,true);
+
+			std::getline(tag,tagName,' ');
+
+			newObject->index = std::atoi(tagName.c_str());
+			// 配列に登録
+			switchs_.push_back(std::move(newObject));
+		}
+		if ( tagName == "Gimmick" )
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<Gimmick> newObject = std::make_unique<Gimmick>();
+			newObject->obj = std::make_unique<Object3d>();
+			newObject->obj->Initialize();
+			newObject->obj->SetModel(models_[ objectData.fileName ]);
+			// 座標
+			newObject->obj->SetPosition({ objectData.trans });
+			// 回転角
+			newObject->obj->SetRot({ objectData.rot });
+			// 座標
+			newObject->obj->SetScale({ objectData.scale });
+
+			newObject->obj->Update();
+
+			std::getline(tag,tagName,' ');
+
+			newObject->index = std::atoi(tagName.c_str());
+			// 配列に登録
+			gimmicks_.push_back(std::move(newObject));
+		}
+		if ( tagName == "Spawn" )
 		{
 			player_->SetSpawn(objectData.trans);
 
 			cameraEnd_ = objectData.trans;
 		}
-		if ( objectData.tagName == "Goal" )
+		if ( tagName == "Goal" )
 		{
 			//player_->SetGoal(objectData.trans, objectData.scale);
 
@@ -831,7 +1037,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			cameraStart_ = objectData.trans;
 		}
-		if ( objectData.tagName == "GunEnemy" )
+		if ( tagName == "GunEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
@@ -843,7 +1049,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if ( objectData.tagName == "RunEnemy" )
+		if ( tagName == "RunEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
@@ -855,7 +1061,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if ( objectData.tagName == "jumpEnemy" )
+		if ( tagName == "jumpEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
@@ -867,7 +1073,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if ( objectData.tagName == "tutorialEnemy" )
+		if ( tagName == "tutorialEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
@@ -879,7 +1085,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if ( objectData.tagName == "Stage1" )
+		if ( tagName == "Stage1" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			stage1Obj_->SetModel(models_[ objectData.fileName ]);
@@ -899,7 +1105,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			stage1Obj_->Update();
 		}
-		if ( objectData.tagName == "Stage2" )
+		if ( tagName == "Stage2" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			stage2Obj_->SetModel(models_[ objectData.fileName ]);
@@ -919,7 +1125,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			stage2Obj_->Update();
 		}
-		if ( objectData.tagName == "Stage3" )
+		if ( tagName == "Stage3" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
 			stage3Obj_->SetModel(models_[ objectData.fileName ]);
@@ -948,6 +1154,22 @@ void GameScene::MapLoad(std::string mapFullpath)
 	}
 
 	isGoal_ = false;
+
+	std::sort(switchs_.rbegin(),switchs_.rend());
+
+	std::sort(gimmicks_.rbegin(),gimmicks_.rend());
+
+	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	{
+		light_->SetPointActive(goalSwitch->lightIndex,false);
+
+	}
+
+	for ( std::unique_ptr<Switch>& Switch : switchs_ )
+	{
+		light_->SetPointActive(Switch->lightIndex,false);
+
+	}
 }
 
 void GameScene::ModelLoad()
@@ -981,24 +1203,25 @@ void GameScene::ModelLoad()
 
 	goalSwitchModel_.reset(Model::LoadFormOBJ("GoalSwitch",true));
 	models_.insert(std::make_pair("GoalSwitch",goalSwitchModel_.get()));
+
+	fenceModel_.reset(Model::LoadFormOBJ("fence",true));
+	models_.insert(std::make_pair("fence",fenceModel_.get()));
 }
 
 void GameScene::GoalSwitchCollsion()
 {
-	std::list<std::unique_ptr<PlayerBullet>> bullets = PlayerBulletManager::Instance()->GetBullets();
-
-	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
 	{
-		if ( goalSwitch->onOrOff == false )
+		Collider::Cube bulletCube;
+		bulletCube.Pos = bullet->GetPosition();
+		bulletCube.scale = bullet->GetScale();
+		for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 		{
-			Collider::Cube mapCube;
-			mapCube.Pos = goalSwitch->obj->GetPosition();
-			mapCube.scale = goalSwitch->obj->GetScale();
-			for ( std::unique_ptr<PlayerBullet>& bullet : bullets )
+			if ( goalSwitch->onOrOff == false )
 			{
-				Collider::Cube bulletCube;
-				bulletCube.Pos = bullet->GetPosition();
-				bulletCube.scale = bullet->GetScale();
+				Collider::Cube mapCube;
+				mapCube.Pos = goalSwitch->obj->GetPosition();
+				mapCube.scale = goalSwitch->obj->GetScale();
 				if ( Collider::CubeAndCube(mapCube,bulletCube,Collider::Collsion) == true )
 				{
 					bullet->OnCollision();
@@ -1007,16 +1230,38 @@ void GameScene::GoalSwitchCollsion()
 
 					light_->SetPointActive(goalSwitch->lightIndex,true);
 
-					light_->SetPointPos(goalSwitch->lightIndex,goalSwitch->obj->GetPosition());
+					light_->SetPointPos(goalSwitch->lightIndex,goalSwitch->light->GetPosition());
 
-					light_->SetPointColor(goalSwitch->lightIndex,{ bulletColor_ });
+					light_->SetPointColor(goalSwitch->lightIndex,{ 1,0.88f,0.59f });
 
 					light_->SetPointAtten(goalSwitch->lightIndex,{ 0.03f,0.01f,0.01f });
 					break;
 				}
 			}
 		}
+		for ( std::unique_ptr<Switch>& Switch : switchs_ )
+		{
+			if ( Switch->onOrOff == false )
+			{
+				Collider::Cube mapCube;
+				mapCube.Pos = Switch->obj->GetPosition();
+				mapCube.scale = Switch->obj->GetScale();
+				if ( Collider::CubeAndCube(mapCube,bulletCube,Collider::Collsion) == true )
+				{
+					bullet->OnCollision();
+
+					Switch->onOrOff = true;
+
+					light_->SetPointActive(Switch->lightIndex,true);
+
+					light_->SetPointPos(Switch->lightIndex,Switch->light->GetPosition());
+
+					light_->SetPointColor(Switch->lightIndex,{ 1,0.88f,0.59f });
+
+					light_->SetPointAtten(Switch->lightIndex,{ 0.03f,0.01f,0.01f });
+					break;
+				}
+			}
+		}
 	}
-
-
 }

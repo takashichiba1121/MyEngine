@@ -86,16 +86,6 @@ void Player::Initialize()
 	bombAttack->SetColor({ 1,1,1,0.5f });
 
 	bombAttack->Update();
-
-	attackSE_.Load("Resources/Sound/PlayerAttack.wav");
-
-	jampSE_.Load("Resources/Sound/Jamp.wav");
-
-	avoidSE_.Load("Resources/Sound/PlayerAvoid.wav");
-
-	deadSE_.Load("Resources/Sound/Dead.wav");
-
-	landingSE_.Load("Resources/Sound/Landing.wav");
 }
 
 void Player::Update()
@@ -108,7 +98,6 @@ void Player::Update()
 		if ( hp_ <= 0 )
 		{
 			isDaed_ = true;
-			deadSE_.Play(false,0.3f);
 		}
 
 		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP) )
@@ -281,7 +270,6 @@ void Player::Move()
 						//追加
 						paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
 					}
-					jampSE_.Play(false,0.1f);
 				}
 
 			}
@@ -328,8 +316,6 @@ void Player::Move()
 						//追加
 						paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
 					}
-
-					jampSE_.Play(false,0.1f);
 				}
 			}
 
@@ -368,8 +354,6 @@ void Player::Move()
 				Vector3 velocity(0,0,1);
 				avoidVec_ = Matrix4Math::transform(velocity,obj_->GetMatWorld());
 				avoidVec_.normalize();
-
-				avoidSE_.Play(false,0.3f);
 			}
 		}
 		else
@@ -456,7 +440,6 @@ void Player::Attack()
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[0]));
 
-				attackSE_.Play(false,0.3f);
 				break;
 			case Player::AttackType::ThreeWay:
 				for ( int i = 0; i < 3; i++ )
@@ -493,8 +476,6 @@ void Player::Attack()
 					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 				}
 				AttackInterval_ = threeWayAttackInterval_;
-
-				attackSE_.Play(false,0.3f);
 				break;
 			case Player::AttackType::Division:
 				velocity[ 0 ] = { 0,0,1 };
@@ -534,8 +515,6 @@ void Player::Attack()
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
-
-				attackSE_.Play(false,0.3f);
 				break;
 			case Player::AttackType::Bomb:
 
@@ -574,8 +553,6 @@ void Player::Attack()
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
-
-				attackSE_.Play(false,0.3f);
 				break;
 			}
 
@@ -633,8 +610,6 @@ void Player::Attack()
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
-
-				attackSE_.Play(false,0.3f);
 				break;
 			case Player::AttackType::ThreeWay:
 				for ( int i = 0; i < 3; i++ )
@@ -671,8 +646,6 @@ void Player::Attack()
 					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 				}
 				AttackInterval_ = threeWayAttackInterval_;
-
-				attackSE_.Play(false,0.3f);
 				break;
 			case Player::AttackType::Division:
 				velocity[ 0 ] = { 0,0,1 };
@@ -712,8 +685,6 @@ void Player::Attack()
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
-
-				attackSE_.Play(false,0.3f);
 				break;
 			case Player::AttackType::Bomb:
 
@@ -752,8 +723,6 @@ void Player::Attack()
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
-
-				attackSE_.Play(false,0.3f);
 				break;
 			}
 		}
@@ -847,6 +816,11 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	}
 }
 
+void Player::SetGimmickData(std::vector<Object3d*> objects)
+{
+	gimmicks_ = objects;
+}
+
 Vector3 Player::MapCollision()
 {
 	bool Ground = false;
@@ -919,8 +893,121 @@ Vector3 Player::MapCollision()
 			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
 			{
 				bullet->OnCollision();
+			}
+		}
+	}
 
-				landingSE_.Play(false,0.3f);
+	if ( Ground == false && onGround_ == false )
+	{
+		for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
+		{
+
+			Collider::Cube mapCube,objCube;
+			mapCube.Pos = MapObj->GetPosition();
+			mapCube.scale = MapObj->GetScale();
+			objCube.Pos = obj_->GetPosition() + move_;
+			objCube.oldPos = obj_->GetPosition();
+			objCube.scale = obj_->GetScale();
+
+			if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Collsion) )
+			{
+				if ( mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_ )
+				{
+					onGround_ = true;
+
+					Ground = true;
+				}
+				else if ( mapCube.Pos.y - mapCube.scale.y >= objCube.Pos.y + objCube.scale.y - gravityAcceleration_ )
+				{
+					onGround_ = true;
+
+					Ground = true;
+				}
+				else
+				{
+					onGround_ = false;
+
+					fallSpeed_ = 0;
+
+					break;
+				}
+			}
+			else
+			{
+				onGround_ = true;
+
+				Ground = true;
+			}
+		}
+	}
+	for ( const Object3d* MapObj : gimmicks_ )
+	{
+
+		Collider::Cube mapCube,objCube;
+		mapCube.Pos = MapObj->GetPosition();
+		mapCube.scale = MapObj->GetScale();
+		objCube.Pos = obj_->GetPosition() + move_;
+		objCube.oldPos = obj_->GetPosition();
+		objCube.scale = obj_->GetScale();
+		if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
+		{
+			if ( mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround_ )
+			{
+				pos.y = mapCube.Pos.y - ( mapCube.scale.y + objCube.scale.y );
+
+				move_.y = 0;
+
+				fallSpeed_ = 0;
+			}
+			else if ( mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y && onGround_ )
+			{
+				pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
+
+				move_.y = 0;
+
+				onGround_ = false;
+
+				Ground = true;
+			}
+			else
+			{
+
+				if ( mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x )
+				{
+
+					pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x + 0.1f;
+
+					move_.x = 0;
+				}
+				else if ( mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x )
+				{
+					pos.x = mapCube.Pos.x - ( mapCube.scale.x + objCube.scale.x ) - 0.1f;
+
+					move_.x = 0;
+				}
+				if ( mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z )
+				{
+
+					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z + 0.1f;
+
+					move_.z = 0;
+				}
+				else if ( mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z )
+				{
+					pos.z = mapCube.Pos.z - ( mapCube.scale.z + objCube.scale.z ) - 0.1f;
+
+					move_.z = 0;
+				}
+			}
+		}
+
+		for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
+		{
+			objCube.Pos = bullet->GetPosition();
+			objCube.scale = bullet->GetScale();
+			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
+			{
+				bullet->OnCollision();
 			}
 		}
 	}
@@ -996,10 +1083,6 @@ void Player::EnemyCollision()
 						bullet->OnCollision();
 
 						enemy->OnCollision();
-
-						landingSE_.Play(false,0.3f);
-
-						deadSE_.Play(false,0.3f);
 					}
 				}
 			}
@@ -1072,8 +1155,6 @@ void Player::EnemyCollision()
 			}
 
 			bullet->OnCollision();
-
-			landingSE_.Play(false,0.3f);
 		}
 	}
 }

@@ -294,7 +294,7 @@
             "name": "平面.002",
             "transform": {
                 "translation": [
-                    -165.0,
+                    -184.0,
                     85.0,
                     44.099998474121094
                 ],
@@ -330,8 +330,8 @@
             "name": "平面.004",
             "transform": {
                 "translation": [
-                    -165.0,
-                    131.0,
+                    -184.0,
+                    154.0,
                     44.099998474121094
                 ],
                 "rotation": [
@@ -511,7 +511,7 @@
             "transform": {
                 "translation": [
                     -165.0,
-                    154.0,
+                    131.0,
                     45.0
                 ],
                 "rotation": [
@@ -870,12 +870,12 @@
             "name": "立方体.002",
             "transform": {
                 "translation": [
-                    -165.0,
-                    131.0,
-                    46.0
+                    -146.0,
+                    154.0,
+                    45.0
                 ],
                 "rotation": [
-                    90.00000762939453,
+                    0.0,
                     -0.0,
                     0.0
                 ],
@@ -900,6 +900,340 @@
                 ]
             },
             "Tag_name": "goalSwitch"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.007",
+            "transform": {
+                "translation": [
+                    -146.0,
+                    85.0,
+                    44.099998474121094
+                ],
+                "rotation": [
+                    -0.0,
+                    -179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    8.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.005",
+            "transform": {
+                "translation": [
+                    -146.0,
+                    85.0,
+                    -56.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.009",
+            "transform": {
+                "translation": [
+                    -146.0,
+                    154.0,
+                    44.099998474121094
+                ],
+                "rotation": [
+                    180.0,
+                    -5.008956577512436e-06,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    8.0,
+                    0.10000000149011612
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.012",
+            "transform": {
+                "translation": [
+                    -146.0,
+                    154.0,
+                    -56.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.004",
+            "transform": {
+                "translation": [
+                    -184.0,
+                    154.0,
+                    45.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "goalSwitch"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.014",
+            "transform": {
+                "translation": [
+                    -165.0,
+                    69.0,
+                    51.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    12.0,
+                    1.0,
+                    7.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.006",
+            "transform": {
+                "translation": [
+                    -140.2180633544922,
+                    59.369422912597656,
+                    45.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Switch 2"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.007",
+            "transform": {
+                "translation": [
+                    -189.54969787597656,
+                    59.369422912597656,
+                    45.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Switch 1"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.005",
+            "transform": {
+                "translation": [
+                    -185.0,
+                    69.0,
+                    52.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    1.0,
+                    8.0
+                ]
+            },
+            "file_name": "fence",
+            "Tag_name": "Gimmick 1"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.003",
+            "transform": {
+                "translation": [
+                    -145.0,
+                    69.0,
+                    52.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    1.0,
+                    8.0
+                ]
+            },
+            "file_name": "fence",
+            "Tag_name": "Gimmick 2"
         },
         {
             "type": "MESH",
@@ -1158,7 +1492,7 @@
             "name": "Cube.006",
             "transform": {
                 "translation": [
-                    -165.0,
+                    -184.0,
                     85.0,
                     -56.0
                 ],
@@ -1266,8 +1600,8 @@
             "name": "Cube.010",
             "transform": {
                 "translation": [
-                    -165.0,
-                    131.0,
+                    -184.0,
+                    154.0,
                     -56.0
                 ],
                 "rotation": [
@@ -1303,7 +1637,7 @@
             "transform": {
                 "translation": [
                     -165.0,
-                    154.0,
+                    131.0,
                     -56.0
                 ],
                 "rotation": [

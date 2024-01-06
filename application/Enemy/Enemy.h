@@ -109,6 +109,4 @@ protected:
 	EnemyType enemyType_;
 
 	uint32_t number_;
-
-	Sound attackSE_;
 };

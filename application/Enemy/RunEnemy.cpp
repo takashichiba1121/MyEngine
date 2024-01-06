@@ -26,8 +26,6 @@ void RunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& po
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	number_ = number;
-
-	attackSE_.Load("Resources/Sound/PlayerAvoid.wav");
 }
 
 void RunEnemy::Update()
@@ -65,8 +63,6 @@ void RunEnemy::Update()
 			attackVec_.y = 0;
 
 			attackVec_.normalize();
-
-			attackSE_.Play(false,0.3f);
 		}
 
 		if ( isMove_ == false )

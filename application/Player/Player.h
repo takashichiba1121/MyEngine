@@ -78,6 +78,8 @@ public:
 
 	void SetMapData(std::vector<std::unique_ptr<Object3d>>* objects);
 
+	void SetGimmickData(std::vector<Object3d*> objects);
+
 	/// <summary>
 	/// jsonから読み取った地形データとプレイヤーの当たり判定
 	/// </summary>
@@ -134,6 +136,8 @@ private:
 	std::unique_ptr<Model> bulletModel_;
 
 	std::vector<std::unique_ptr<Object3d>>* objects_;
+
+	std::vector<Object3d*> gimmicks_;
 
 	std::unique_ptr<Object3d> obj_;
 
@@ -194,15 +198,5 @@ private:
 	AttackType attackType=AttackType::Normal;
 
 	LightGroup* light_;
-
-	Sound attackSE_;
-
-	Sound jampSE_;
-
-	Sound avoidSE_;
-
-	Sound deadSE_;
-
-	Sound landingSE_;
 };
 

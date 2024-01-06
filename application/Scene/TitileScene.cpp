@@ -91,17 +91,10 @@ void TitileScene::Initialize()
 	particles_->Initialize();
 
 	particles_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
-
-	bgm_.Load("Resources/Sound/titleBGM.wav");
-
-	bgm_.Play(true,0.1f);
-
-	enterSE_.Load("Resources/Sound/enter.wav");
 }
 
 void TitileScene::Finalize()
 {
-	bgm_.Stop();
 }
 
 void TitileScene::Update()
@@ -162,8 +155,6 @@ void TitileScene::Update()
 			if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
 			{
 				sceneChange_ = true;
-
-				enterSE_.Play(false,0.5f);
 			}
 		}
 		else
@@ -172,8 +163,6 @@ void TitileScene::Update()
 			if (Input::Instance()->TriggerKey(DIK_SPACE))
 			{
 				sceneChange_ = true;
-
-				enterSE_.Play(false,0.5f);
 			}
 		}
 	}

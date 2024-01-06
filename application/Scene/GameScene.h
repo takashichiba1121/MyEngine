@@ -12,6 +12,14 @@
 */
 class GameScene :public BaseScene
 {
+public:
+	enum class Phase
+	{
+		Before,
+		Middle,
+		After,
+	};
+
 	struct Plane
 	{
 		std::unique_ptr<Object3d> plane;
@@ -25,8 +33,34 @@ class GameScene :public BaseScene
 		std::unique_ptr<Object3d> obj;
 		std::unique_ptr<Object3d> light;
 		uint32_t lightIndex=0;
-		bool onOrOff;
+		bool onOrOff=false;
+	};
 
+	struct Switch
+	{
+		std::unique_ptr<Object3d> obj;
+		std::unique_ptr<Object3d> light;
+		uint32_t lightIndex = 0;
+		bool onOrOff = false;
+		uint32_t index=0;
+
+		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
+		bool operator<(const Switch& right) const {
+			return index < right.index;
+		}
+	};
+
+	struct Gimmick
+	{
+		std::unique_ptr<Object3d> obj;
+		Phase phase = Phase::Before;
+		uint32_t index = 0;
+		float EndPosY =0;
+
+		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
+		bool operator<(const Gimmick& right) const {
+			return index < right.index;
+		}
 	};
 public: // メンバ関数
 	GameScene();
@@ -84,6 +118,7 @@ private:
 
 	std::unique_ptr<Model> planeModel_;
 	std::unique_ptr<Model> goalSwitchModel_;
+	std::unique_ptr<Model> fenceModel_;
 
 	std::unique_ptr<Model> stage2Plane_;
 	std::unique_ptr<Model> stage1Plane_;
@@ -99,6 +134,10 @@ private:
 	std::vector<std::unique_ptr<Plane>> planes_;
 
 	std::vector<std::unique_ptr<GoalSwitch>> goalSwitchs_;
+
+	std::vector<std::unique_ptr<Switch>> switchs_;
+
+	std::vector<std::unique_ptr<Gimmick>> gimmicks_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
@@ -116,6 +155,9 @@ private:
 	bool isStage3_ = false;
 
 	bool isGoal_ = false;
+	Phase goalOpen = Phase::Before;
+	float goalOpenflame = 0;
+	const float goalOpenMaxFlame=60;
 
 	float ambientColor_[ 3 ] = { 1,1,1 };
 
@@ -183,13 +225,5 @@ private:
 	Vector3 lightV_ = { 0,-1,0 };
 
 	bool retry_ = false;
-
-	Sound gameBGM_;
-
-	Sound reTryBGM_;
-
-	Sound enterSE_;
-
-	Sound goalSE_;
 };
 

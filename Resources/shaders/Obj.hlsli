@@ -18,7 +18,7 @@ cbuffer cbuff1 : register(b1) {
 
 static const uint DIRLIGHT_NUM = 3;
 
-static const uint POINTLIGHT_NUM = 20;
+static const uint POINTLIGHT_NUM = 30;
 
 struct DirLight
 {

@@ -67,9 +67,5 @@ private:
 	std::unique_ptr<ParticleManager> particles_;
 
 	uint32_t ParticleFlame_=0;
-
-	Sound bgm_;
-
-	Sound enterSE_;
 };
 

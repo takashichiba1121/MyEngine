@@ -12,7 +12,7 @@ private: // エイリアス
 public://定数
 	static const uint32_t cDirLightNum = 3;
 
-	static const uint32_t cPointLightNum = 20;
+	static const uint32_t cPointLightNum = 30;
 
 public://サブクラス
 	//定数バッファ用データ構造体

@@ -26,8 +26,6 @@ void GunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& po
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	number_ = number;
-
-	attackSE_.Load("Resources/Sound/PlayerAttack.wav");
 }
 
 void GunEnemy::Update()
@@ -130,8 +128,6 @@ void GunEnemy::Attack()
 		}
 		//弾の登録する
 		EnemyManager::Instance()->AddBullet(std::move(newBullet));
-
-		attackSE_.Play(false,0.3f);
 	}
 }
 

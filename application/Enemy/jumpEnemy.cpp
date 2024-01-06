@@ -24,8 +24,6 @@ void jumpEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& p
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	number_ = number;
-
-	attackSE_.Load("Resources/Sound/Jamp.wav");
 }
 
 void jumpEnemy::Update()
@@ -51,8 +49,6 @@ void jumpEnemy::Update()
 			isAttack_ = true;
 
 			attackTimer_ =0;
-
-			attackSE_.Play(false,0.3f);
 
 			fallSpeed_ = StartJumpSpeed_;
 
