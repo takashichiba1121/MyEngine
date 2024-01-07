@@ -15,20 +15,11 @@ void GameOverScene::Initialize()
 
 	Object3d::SetTarget({ 0.0f,0.0f,1.0f });
 
-	spaceTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/spaceKey.png");
-
 	aTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
 
 	buttonSprite_ = std::make_unique<Sprite>();
 
-	if (Input::Instance()->IsLinkGamePad())
-	{
-		buttonSprite_->Initialize(aTexHandle_);
-	} 
-	else
-	{
-		buttonSprite_->Initialize(spaceTexHandle_);
-	}
+	buttonSprite_->Initialize(aTexHandle_);
 
 	buttonSprite_->SetPosition({ 640.0f,515.0f });
 
@@ -66,7 +57,7 @@ void GameOverScene::Initialize()
 
 	titleSprite_->Update();
 
-	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle", true));
+	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle",true));
 
 	skyObj_ = std::make_unique<Object3d>();
 
@@ -131,7 +122,7 @@ void GameOverScene::Update()
 		}
 	}
 
-	if (sceneStart_)
+	if ( sceneStart_ )
 	{
 		frame_++;
 		float f = ( float ) frame_ / endFrame_;
@@ -148,26 +139,24 @@ void GameOverScene::Update()
 	}
 	else
 	{
-		if (Input::Instance()->IsLinkGamePad())
+		if ( Input::Instance()->IsLinkGamePad() )
 		{
-			buttonSprite_->SetTexture(aTexHandle_);
-			if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) )
 			{
 				sceneChange_ = true;
 			}
 		}
 		else
 		{
-			buttonSprite_->SetTexture(spaceTexHandle_);
-			if (Input::Instance()->TriggerKey(DIK_SPACE))
+			if ( Input::Instance()->TriggerKey(DIK_SPACE) )
 			{
 				sceneChange_ = true;
 			}
 		}
 	}
-	if (sceneChange_)
+	if ( sceneChange_ )
 	{
-		if (frame_ >0)
+		if ( frame_ > 0 )
 		{
 			frame_--;
 
@@ -176,7 +165,7 @@ void GameOverScene::Update()
 			sceneSprite_->SetDissolve(f);
 
 		}
-		else if(frame_<-5)
+		else if ( frame_ < -5 )
 		{
 			SceneManager::Instance()->ChangeScene("TITLE");
 		}

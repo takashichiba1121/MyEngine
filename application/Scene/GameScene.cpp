@@ -30,20 +30,11 @@ void GameScene::Initialize()
 
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	keyTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/spaceKey.png");
-
 	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
 
 	spaceSprite_ = std::make_unique<Sprite>();
 
-	if ( Input::Instance()->IsLinkGamePad() )
-	{
-		spaceSprite_->Initialize(padTexHandle_);
-	}
-	else
-	{
-		spaceSprite_->Initialize(keyTexHandle_);
-	}
+	spaceSprite_->Initialize(padTexHandle_);
 
 	spaceSprite_->SetPosition({ 640.0f,515.0f });
 
@@ -52,8 +43,6 @@ void GameScene::Initialize()
 	spaceSprite_->Update();
 
 	padSousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/PadSousa.png");
-
-	keySousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/KeySousa.png");
 
 	player_ = std::make_unique<Player>();
 
@@ -117,14 +106,7 @@ void GameScene::Initialize()
 
 	sousaSprite_ = std::make_unique<Sprite>();
 
-	if ( Input::Instance()->IsLinkGamePad() )
-	{
-		sousaSprite_->Initialize(padSousaTexHandle_);
-	}
-	else
-	{
-		sousaSprite_->Initialize(keySousaTexHandle_);
-	}
+	sousaSprite_->Initialize(padSousaTexHandle_);
 
 	sousaSprite_->SetAnchorPoint({ 0.0f,0.5f });
 	;
@@ -243,14 +225,7 @@ void GameScene::Update()
 
 	srand(( unsigned int ) time(NULL));
 
-	if ( Input::Instance()->IsLinkGamePad() )
-	{
-		sousaSprite_->SetTexture(padSousaTexHandle_);
-	}
-	else
-	{
-		sousaSprite_->SetTexture(keySousaTexHandle_);
-	}
+	sousaSprite_->SetTexture(padSousaTexHandle_);
 
 	if ( sceneStart_ )
 	{
@@ -313,7 +288,7 @@ void GameScene::Update()
 				}
 
 			}
-			if ( goalOpen==Phase::Middle )
+			if ( goalOpen == Phase::Middle )
 			{
 				goalOpenflame++;
 
@@ -321,12 +296,12 @@ void GameScene::Update()
 
 				goalObj_->SetColor({ f,f,f });
 
-				if (goalOpenflame>=goalOpenMaxFlame )
+				if ( goalOpenflame >= goalOpenMaxFlame )
 				{
 					goalOpen = Phase::After;
 				}
 			}
-			if ( goalOpen == Phase::After)
+			if ( goalOpen == Phase::After )
 			{
 				B.Pos = goalObj_->GetPosition();
 
@@ -414,14 +389,7 @@ void GameScene::Update()
 						yazirusiSprite_->SetPosition({ 848,400 });
 						yazirusiSprite_->Update();
 					}
-					if ( Input::Instance()->IsLinkGamePad() )
-					{
-						spaceSprite_->SetTexture(padTexHandle_);
-					}
-					else
-					{
-						spaceSprite_->SetTexture(keyTexHandle_);
-					}
+					spaceSprite_->SetTexture(padTexHandle_);
 					spaceSprite_->Update();
 					if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) || Input::Instance()->TriggerKey(DIK_SPACE) )
 					{
@@ -581,15 +549,15 @@ void GameScene::Update()
 		}
 	}
 
-	for ( uint32_t i=0;i<switchs_.size();i++ )
+	for ( uint32_t i = 0; i < switchs_.size(); i++ )
 	{
-		switchs_[i]->obj->Update();
-		if ( switchs_[i]->onOrOff )
+		switchs_[ i ]->obj->Update();
+		if ( switchs_[ i ]->onOrOff )
 		{
-			switchs_[i]->light->Update();
+			switchs_[ i ]->light->Update();
 			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
 			{
-				if ( switchs_[i]->index==gimmicks_[j]->index )
+				if ( switchs_[ i ]->index == gimmicks_[ j ]->index )
 				{
 					if ( gimmicks_[ j ]->phase == Phase::Before )
 					{
@@ -612,7 +580,7 @@ void GameScene::Update()
 				}
 			}
 		}
-		gimmicks_[i]->obj->Update();
+		gimmicks_[ i ]->obj->Update();
 	}
 
 	light_->Update();

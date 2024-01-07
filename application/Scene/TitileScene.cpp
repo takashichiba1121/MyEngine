@@ -15,20 +15,11 @@ void TitileScene::Initialize()
 
 	Object3d::SetTarget({ 0.0f,0.0f,1.0f });
 
-	keyTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/spaceKey.png");
-
 	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
 
 	spaceSprite_ = std::make_unique<Sprite>();
 
-	if (Input::Instance()->IsLinkGamePad())
-	{
-		spaceSprite_->Initialize(padTexHandle_);
-	}
-	else 
-	{
-		spaceSprite_->Initialize(keyTexHandle_);
-	}
+	spaceSprite_->Initialize(padTexHandle_);
 
 	spaceSprite_->SetPosition({ 640.0f,515.0f });
 
@@ -66,7 +57,7 @@ void TitileScene::Initialize()
 
 	startSprite_->Update();
 
-	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle", true));
+	skyModel_.reset(Model::LoadFormOBJ("skydomeTitle",true));
 
 	skyObj_ = std::make_unique<Object3d>();
 
@@ -109,7 +100,7 @@ void TitileScene::Update()
 			const float rnd_life = 300.0f;
 			//最低限のライフ
 			const float constlife = 100;
-			uint32_t life = static_cast<uint32_t>( rand() / RAND_MAX * rnd_life + constlife);
+			uint32_t life = static_cast< uint32_t >( rand() / RAND_MAX * rnd_life + constlife );
 
 			//XYZの広がる距離
 			const float rnd_pos = 28.0f;
@@ -119,7 +110,7 @@ void TitileScene::Update()
 			startPos.z = -180;
 
 
-			Vector3 accel = {0,0,0};
+			Vector3 accel = { 0,0,0 };
 
 			//消えるまでの時間
 			const float rndScale = 0.7f;
@@ -132,7 +123,7 @@ void TitileScene::Update()
 	}
 
 
-	if (sceneStart_)
+	if ( sceneStart_ )
 	{
 		frame_++;
 		float f = ( float ) frame_ / endFrame_;
@@ -149,35 +140,23 @@ void TitileScene::Update()
 	}
 	else
 	{
-		if (Input::Instance()->IsLinkGamePad())
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) )
 		{
-			spaceSprite_->SetTexture(padTexHandle_);
-			if (Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A))
-			{
-				sceneChange_ = true;
-			}
-		}
-		else
-		{
-			spaceSprite_->SetTexture(keyTexHandle_);
-			if (Input::Instance()->TriggerKey(DIK_SPACE))
-			{
-				sceneChange_ = true;
-			}
+			sceneChange_ = true;
 		}
 	}
-	if (sceneChange_)
+	if ( sceneChange_ )
 	{
 		if ( frame_ > 0 )
 		{
 			frame_--;
 
-			float f = (float)frame_ / endFrame_;
+			float f = ( float ) frame_ / endFrame_;
 
 			sceneSprite_->SetDissolve(f);
 
 		}
-		else if(frame_<-5)
+		else if ( frame_ < -5 )
 		{
 			frame_ = 0;
 
