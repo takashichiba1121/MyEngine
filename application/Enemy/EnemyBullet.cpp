@@ -123,7 +123,7 @@ void EnemyBullet::SetLight(int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ 1,1,0.1f });
+		light_->SetPointColor(lightIndex_,{ 1,0.88f,0.59f });
 
 		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}

@@ -39,13 +39,13 @@ void Player::Initialize()
 
 	normalAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/normalAttack.png"));
 
-	normalAttack->SetPosition({148,158});
+	normalAttack->SetPosition({ 148,158 });
 
-	normalAttack->SetScale({138,138});
+	normalAttack->SetScale({ 138,138 });
 
 	normalAttack->SetColor({ 1,1,1,1 });
 
-	normalAttack->SetAnchorPoint({0.5f,1});
+	normalAttack->SetAnchorPoint({ 0.5f,1 });
 
 	normalAttack->Update();
 
@@ -57,7 +57,7 @@ void Player::Initialize()
 
 	threeWayAttack->SetScale({ 128,128 });
 
-	threeWayAttack->SetColor({1,1,1,0.5f});
+	threeWayAttack->SetColor({ 1,1,1,0.5f });
 
 	threeWayAttack->SetAnchorPoint({ 1,0.5f });
 
@@ -100,7 +100,7 @@ void Player::Update()
 			isDaed_ = true;
 		}
 
-		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP) )
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP)||Input::Instance()->TriggerKey(DIK_UP) )
 		{
 			normalAttack->SetScale({ 138,138 });
 
@@ -120,7 +120,7 @@ void Player::Update()
 
 			attackType = AttackType::Normal;
 		}
-		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_LEFT) )
+		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_LEFT) || Input::Instance()->TriggerKey(DIK_LEFT) )
 		{
 			normalAttack->SetScale({ 128,128 });
 
@@ -140,7 +140,7 @@ void Player::Update()
 
 			attackType = AttackType::ThreeWay;
 		}
-		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_RIGHT) )
+		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_RIGHT) || Input::Instance()->TriggerKey(DIK_RIGHT) )
 		{
 			normalAttack->SetScale({ 128,128 });
 
@@ -160,7 +160,7 @@ void Player::Update()
 
 			attackType = AttackType::Division;
 		}
-		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_DOWN) )
+		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_DOWN) || Input::Instance()->TriggerKey(DIK_DOWN) )
 		{
 			normalAttack->SetScale({ 128,128 });
 
@@ -391,8 +391,8 @@ void Player::Attack()
 
 		if ( Input::Instance()->GetPadStick(PadStick::RT) >= 0.5 && Input::Instance()->GetOldPadStick(PadStick::RT) < 0.5 )
 		{
-			std::unique_ptr<PlayerBullet> newBullet[3];
-			Vector3 pos[3];
+			std::unique_ptr<PlayerBullet> newBullet[ 3 ];
+			Vector3 pos[ 3 ];
 			Vector3 velocity[ 3 ]
 			{
 				{0,0,1},
@@ -404,41 +404,41 @@ void Player::Attack()
 			{
 			case Player::AttackType::Normal:
 
-				velocity[0] = { 0,0,1 };
-				velocity[0] = Matrix4Math::transform(velocity[0],obj_->GetMatWorld());
-				velocity[0].normalize();
-				velocity[0] *= kBulletSpeed_;
+				velocity[ 0 ] = { 0,0,1 };
+				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
+				velocity[ 0 ].normalize();
+				velocity[ 0 ] *= kBulletSpeed_;
 
-				pos[0] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
 				//弾の生成し、初期化
-				newBullet[0] = std::make_unique<PlayerBullet>();
-				newBullet[0]->Initialize(bulletModel_.get(),{ velocity[0].x,velocity[0].z },pos[0],bulletLife_);
+				newBullet[ 0 ] = std::make_unique<PlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
 
-				newBullet[0]->SetPhase(PlayerBullet::Phase::Charge);
+				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
 
-				newBullet[0]->SetRot(obj_->GetRot());
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
 				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{
 					if ( light_->GetPointActive(i) == false )
 					{
-						newBullet[0]->SetLight(light_,i);
+						newBullet[ 0 ]->SetLight(light_,i);
 
 						break;
 					}
 					if ( i <= 19 )
 					{
-						newBullet[0]->SetLight(light_,-1);
+						newBullet[ 0 ]->SetLight(light_,-1);
 					}
 				}
 
-				newBullet[0]->SetChageTime(normalAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(normalAttackInterval_);
 
 				AttackInterval_ = normalAttackInterval_;
 
 				//弾の登録する
-				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[0]));
+				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
 
 				break;
 			case Player::AttackType::ThreeWay:
@@ -450,9 +450,9 @@ void Player::Attack()
 
 					newBullet[ i ] = std::make_unique<PlayerBullet>();
 
-					pos[i] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
+					pos[ i ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
-					newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },pos[i],bulletLife_);
+					newBullet[ i ]->Initialize(bulletModel_.get(),{ velocity[ i ].x,velocity[ i ].z },pos[ i ],bulletLife_);
 
 					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
@@ -598,7 +598,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= 19 )
+					if ( i == 19 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -791,21 +791,24 @@ void Player::Reset()
 
 	hp_ = maxHp_;
 
-	ExplosionFrame_=0;
+	ExplosionFrame_ = 0;
 
 	obj_->SetDestruction(0);
 
 	obj_->Setalpha(1);
 
 	PlayerBulletManager::Instance()->Clear();
+
+	objects_.clear();
 }
 
 void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 {
 	assert(objects);
-
-	objects_ = objects;
-
+	for ( std::unique_ptr<Object3d>& obj : *objects )
+	{
+		objects_.push_back(obj.get());
+	}
 	paMan_->Clear();
 
 	PlayerBulletManager::Instance()->Clear();
@@ -818,14 +821,17 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 
 void Player::SetGimmickData(std::vector<Object3d*> objects)
 {
-	gimmicks_ = objects;
+	for ( Object3d* obj : objects )
+	{
+		objects_.push_back(obj);
+	}
 }
 
 Vector3 Player::MapCollision()
 {
 	bool Ground = false;
 	Vector3 pos = obj_->GetPosition() + move_;
-	for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
+	for ( Object3d* MapObj : objects_ )
 	{
 
 		Collider::Cube mapCube,objCube;
@@ -899,7 +905,7 @@ Vector3 Player::MapCollision()
 
 	if ( Ground == false && onGround_ == false )
 	{
-		for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
+		for ( Object3d* MapObj : objects_ )
 		{
 
 			Collider::Cube mapCube,objCube;
@@ -940,81 +946,10 @@ Vector3 Player::MapCollision()
 			}
 		}
 	}
-	for ( const Object3d* MapObj : gimmicks_ )
-	{
-
-		Collider::Cube mapCube,objCube;
-		mapCube.Pos = MapObj->GetPosition();
-		mapCube.scale = MapObj->GetScale();
-		objCube.Pos = obj_->GetPosition() + move_;
-		objCube.oldPos = obj_->GetPosition();
-		objCube.scale = obj_->GetScale();
-		if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
-		{
-			if ( mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround_ )
-			{
-				pos.y = mapCube.Pos.y - ( mapCube.scale.y + objCube.scale.y );
-
-				move_.y = 0;
-
-				fallSpeed_ = 0;
-			}
-			else if ( mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y && onGround_ )
-			{
-				pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
-
-				move_.y = 0;
-
-				onGround_ = false;
-
-				Ground = true;
-			}
-			else
-			{
-
-				if ( mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x )
-				{
-
-					pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x + 0.1f;
-
-					move_.x = 0;
-				}
-				else if ( mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x )
-				{
-					pos.x = mapCube.Pos.x - ( mapCube.scale.x + objCube.scale.x ) - 0.1f;
-
-					move_.x = 0;
-				}
-				if ( mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z )
-				{
-
-					pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z + 0.1f;
-
-					move_.z = 0;
-				}
-				else if ( mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z )
-				{
-					pos.z = mapCube.Pos.z - ( mapCube.scale.z + objCube.scale.z ) - 0.1f;
-
-					move_.z = 0;
-				}
-			}
-		}
-
-		for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
-		{
-			objCube.Pos = bullet->GetPosition();
-			objCube.scale = bullet->GetScale();
-			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
-			{
-				bullet->OnCollision();
-			}
-		}
-	}
 
 	if ( Ground == false && onGround_ == false )
 	{
-		for ( const std::unique_ptr<Object3d>& MapObj : *objects_ )
+		for ( Object3d* MapObj : objects_ )
 		{
 
 			Collider::Cube mapCube,objCube;

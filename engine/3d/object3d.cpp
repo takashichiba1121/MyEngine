@@ -624,6 +624,19 @@ void Object3d::SetModel(Model* model)
 	CreateBuffers();
 }
 
+void Object3d::Setalpha(float alpha)
+{
+	alpha_ = alpha;
+	if (alpha_>1.0f )
+	{
+		alpha_ = 1;
+	}
+	if(alpha_<0.0f)
+	{
+		alpha_ = 0;
+	}
+}
+
 void Object3d::SetVertices(std::vector<Model::VertexPosNormalUv> vertices)
 {
 	HRESULT result;

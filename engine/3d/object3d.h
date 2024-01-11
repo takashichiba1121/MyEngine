@@ -224,7 +224,7 @@ public: // メンバ関数
 
 	void SetShininess(float shininess) {shininess_= shininess; }
 
-	void Setalpha(float alpha) { alpha_=alpha; }
+	void Setalpha(float alpha);
 
 	void SetUVShift(Vector2 uvShift) {uvShift_ = uvShift;}
 

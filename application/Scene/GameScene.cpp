@@ -204,6 +204,12 @@ void GameScene::Initialize()
 	Enemy::SetLight(light_.get());
 
 	EnemyBullet::SetLightIndex(light_.get());
+
+	particleManager_ = std::make_unique<ParticleManager>();
+
+	particleManager_->Initialize();
+
+	particleManager_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
 }
 
 void GameScene::Update()
@@ -537,6 +543,35 @@ void GameScene::Update()
 
 		planes_[ i ]->plane->Update();
 	}
+	for ( uint32_t i = 0; i < tutorials_.size(); i++ )
+	{
+		Vector3 vec = player_->GetObj()->GetPosition() - tutorials_[ i ]->obj->GetPosition();
+		vec.x = abs(vec.x);
+		vec.z = abs(vec.z);
+		float A = (vec.x+ vec.z) / 2;
+		float B = (tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z)/2;
+		if (A<B )
+		{
+			tutorials_[ i ]->obj->Setalpha(1.0f);
+		}
+		else
+		{
+			float X = A - B;
+			X=abs(X);
+			X= 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
+			tutorials_[ i ]->obj->Setalpha(X);
+			if (X<0 )
+			{
+				tutorials_[ i ]->isDraw=false;
+			}
+			else
+			{
+				tutorials_[ i ]->isDraw = true;
+			}
+		}
+
+		tutorials_[ i ]->obj->Update();
+	}
 
 	GoalSwitchCollsion();
 
@@ -545,6 +580,27 @@ void GameScene::Update()
 		goalSwitch->obj->Update();
 		if ( goalSwitch->onOrOff )
 		{
+			//for ( int i = 0; i < 50; i++ )
+			//{
+			//	//消えるまでの時間
+			//	const uint32_t rnd_life = 10;
+			//	//最低限のライフ
+			//	const uint32_t constlife = 20;
+			//	uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+			//	//XYZの広がる距離
+			//	Vector3 rnd_pos = goalObj_->GetPosition()-goalSwitch->light->GetPosition();
+			//	const float rndMax = 4;
+			//	Vector3 pos;
+			//	pos.x = ( ( float ) rand() / RAND_MAX * rndMax - rndMax / 2 ) + rnd_pos.x;
+			//	pos.y = ( ( float ) rand() / RAND_MAX * rndMax - rndMax / 2 ) + rnd_pos.y;
+			//	pos.z = ( ( float ) rand() / RAND_MAX * rndMax - rndMax / 2 ) + rnd_pos.z;
+
+			//	pos.normalize();
+
+			//	//追加
+			//	particleManager_->Add(life,goalSwitch->light->GetPosition(),pos/2,{0,0,0},0.5f,0.5f,{1,0.88f,0.59f,1},{1,0.88f,0.59f,1});
+			//}
 			goalSwitch->light->Update();
 		}
 	}
@@ -576,6 +632,27 @@ void GameScene::Update()
 							gimmicks_[ j ]->phase = Phase::After;
 						}
 						gimmicks_[ j ]->obj->SetPosition(pos);
+						//for ( int w = 0; w < 50; w++ )
+						//{
+						//	//消えるまでの時間
+						//	const uint32_t rnd_life = 10;
+						//	//最低限のライフ
+						//	const uint32_t constlife = 20;
+						//	uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+						//	//XYZの広がる距離
+						//	Vector3 rnd_pos = gimmicks_[ j ]->obj->GetPosition() - switchs_[ i ]->light->GetPosition();
+						//	const float rndMax=4;
+						//	pos.x = ( ( float ) rand() / RAND_MAX * rndMax- rndMax/2 ) + rnd_pos.x;
+						//	pos.y = ( ( float ) rand() / RAND_MAX * rndMax - rndMax/2 ) + rnd_pos.y;
+						//	pos.z = ( ( float ) rand() / RAND_MAX * rndMax - rndMax/2 ) + rnd_pos.z;
+
+
+						//	pos.normalize();
+
+						//	//追加
+						//	particleManager_->Add(life,switchs_[ i ]->light->GetPosition(),pos / 2,{ 0,0,0 },0.5f,0.5f,{ 1,0.88f,0.59f,0 },{ 1,0.88f,0.59f ,1 });
+						//}
 					}
 				}
 			}
@@ -598,6 +675,8 @@ void GameScene::Update()
 	stage3Obj_->Update();
 
 	skyObj_->Update();
+
+	particleManager_->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -613,24 +692,31 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
-		planes_[ i ]->plane->Draw(planes_[ i ]->texHandle);
+		planes_[ i ]->plane->Draw();
+	}
+	for ( uint32_t i = 0; i < tutorials_.size(); i++ )
+	{
+		if (tutorials_[i]->isDraw )
+		{
+			tutorials_[ i ]->obj->Draw(tutorials_[ i ]->texHandle);
+		}
 	}
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
-		goalSwitch->obj->Draw();
 		if ( goalSwitch->onOrOff )
 		{
 			goalSwitch->light->Draw();
 		}
-
+		goalSwitch->obj->Draw();
 	}
 	for ( std::unique_ptr<Switch>& Switch : switchs_ )
 	{
-		Switch->obj->Draw();
+
 		if ( Switch->onOrOff )
 		{
 			Switch->light->Draw();
 		}
+		Switch->obj->Draw();
 	}
 
 	for ( std::unique_ptr<Gimmick>& gimmick : gimmicks_ )
@@ -659,6 +745,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	ParticleManager::PreDraw(dxCommon->GetCommandList());
 	player_->ParticleDraw();
 	EnemyManager::Instance()->ParticleDraw();
+	particleManager_->Draw();
 	ParticleManager::PostDraw();
 }
 
@@ -711,6 +798,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 	mapName_ = mapFullpath;
 
 	uint32_t EnemyNumber = 0;
+
+	player_->Reset();
 
 	for ( auto& objectData : levelData->objects )
 	{
@@ -812,10 +901,6 @@ void GameScene::MapLoad(std::string mapFullpath)
 			newObject->plane->Initialize();
 			newObject->plane->SetModel(models_[ "plane" ]);
 
-			newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/" + objectData.fileName + ".png");
-
-			assert(newObject);
-
 			// 座標
 			newObject->plane->SetPosition({ objectData.trans });
 
@@ -825,36 +910,34 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 座標
 			newObject->plane->SetScale({ objectData.scale });
 
-			//std::vector<Model::VertexPosNormalUv> vertices = newObject->GetVertices();
+			newObject->UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
 
-			//vertices[ 0 ].uv.x *= objectData.scale.x;
-			//vertices[ 1 ].uv.x *= objectData.scale.x;
-			//vertices[ 2 ].uv.x *= objectData.scale.x;
-			//vertices[ 3 ].uv.x *= objectData.scale.x;
-
-			//float UVScale = ( float ) ( rand() % 5 + 5 );
-
-			//vertices[ 0 ].uv.x /= UVScale;
-			//vertices[ 1 ].uv.x /= UVScale;
-			//vertices[ 2 ].uv.x /= UVScale;
-			//vertices[ 3 ].uv.x /= UVScale;
-
-			//newObject->SetVertices(vertices);
-
-			if ( objectData.fileName == "plane" )
-			{
-				newObject->UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
-
-				newObject->UVSiftSpeed = { 0.02f ,0 };
-			}
-			else
-			{
-				newObject->UVSift = { 0,0 };
-
-				newObject->UVSiftSpeed = { 0,0 };
-			}
-			// 配列に登録
+			newObject->UVSiftSpeed = { 0.02f ,0 };
+		// 配列に登録
 			planes_.push_back(std::move(newObject));
+		}
+		if ( tagName == "MapTutorial" )
+		{
+			//モデルを指定して3Dオブジェクトを生成
+			std::unique_ptr<Tutorial> newObject = std::make_unique<Tutorial>();
+			newObject->obj = std::make_unique<Object3d>();
+			newObject->obj->Initialize();
+			newObject->obj->SetModel(models_[ "plane" ]);
+
+			newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/" + objectData.fileName + ".png");
+
+			assert(newObject);
+
+			// 座標
+			newObject->obj->SetPosition({ objectData.trans });
+
+			// 回転角
+			newObject->obj->SetRot({ objectData.rot });
+
+			// 座標
+			newObject->obj->SetScale({ objectData.scale });
+			// 配列に登録
+			tutorials_.push_back(std::move(newObject));
 		}
 		if ( tagName == "goalSwitch" )
 		{
@@ -1015,7 +1098,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "RunEnemy" )
 		{
@@ -1027,7 +1110,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "jumpEnemy" )
 		{
@@ -1039,7 +1122,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "tutorialEnemy" )
 		{
@@ -1051,7 +1134,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "Stage1" )
 		{

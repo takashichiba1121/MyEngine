@@ -140,9 +140,19 @@ void TitileScene::Update()
 	}
 	else
 	{
-		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) )
+		if ( Input::Instance()->IsLinkGamePad() )
 		{
-			sceneChange_ = true;
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) )
+			{
+				sceneChange_ = true;
+			}
+		}
+		else
+		{
+			if ( Input::Instance()->TriggerKey(DIK_SPACE) )
+			{
+				sceneChange_ = true;
+			}
 		}
 	}
 	if ( sceneChange_ )

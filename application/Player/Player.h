@@ -135,9 +135,7 @@ private:
 
 	std::unique_ptr<Model> bulletModel_;
 
-	std::vector<std::unique_ptr<Object3d>>* objects_;
-
-	std::vector<Object3d*> gimmicks_;
+	std::vector<Object3d*> objects_;
 
 	std::unique_ptr<Object3d> obj_;
 

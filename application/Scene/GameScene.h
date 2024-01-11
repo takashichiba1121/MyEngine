@@ -23,17 +23,23 @@ public:
 	struct Plane
 	{
 		std::unique_ptr<Object3d> plane;
-		uint32_t texHandle = 0;
 		Vector2 UVSift = { 0,0 };
 		Vector2 UVSiftSpeed = { 0,0 };
+	};
+
+	struct Tutorial
+	{
+		std::unique_ptr<Object3d> obj;
+		uint32_t texHandle = 0;
+		bool isDraw = true;
 	};
 
 	struct GoalSwitch
 	{
 		std::unique_ptr<Object3d> obj;
 		std::unique_ptr<Object3d> light;
-		uint32_t lightIndex=0;
-		bool onOrOff=false;
+		uint32_t lightIndex = 0;
+		bool onOrOff = false;
 	};
 
 	struct Switch
@@ -42,7 +48,7 @@ public:
 		std::unique_ptr<Object3d> light;
 		uint32_t lightIndex = 0;
 		bool onOrOff = false;
-		uint32_t index=0;
+		uint32_t index = 0;
 
 		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
 		bool operator<(const Switch& right) const {
@@ -55,7 +61,7 @@ public:
 		std::unique_ptr<Object3d> obj;
 		Phase phase = Phase::Before;
 		uint32_t index = 0;
-		float EndPosY =0;
+		float EndPosY = 0;
 
 		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
 		bool operator<(const Gimmick& right) const {
@@ -133,6 +139,8 @@ private:
 
 	std::vector<std::unique_ptr<Plane>> planes_;
 
+	std::vector<std::unique_ptr<Tutorial>> tutorials_;
+
 	std::vector<std::unique_ptr<GoalSwitch>> goalSwitchs_;
 
 	std::vector<std::unique_ptr<Switch>> switchs_;
@@ -149,6 +157,8 @@ private:
 	std::unique_ptr<Object3d> stage3Obj_;
 	std::unique_ptr<Object3d> stage3BillBoard_;
 
+	std::unique_ptr<ParticleManager> particleManager_;
+
 	bool isNext_ = false;
 	bool isStage1_ = false;
 	bool isStage2_ = false;
@@ -157,7 +167,7 @@ private:
 	bool isGoal_ = false;
 	Phase goalOpen = Phase::Before;
 	float goalOpenflame = 0;
-	const float goalOpenMaxFlame=60;
+	const float goalOpenMaxFlame = 60;
 
 	float ambientColor_[ 3 ] = { 1,1,1 };
 
