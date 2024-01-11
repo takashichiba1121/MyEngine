@@ -210,6 +210,8 @@ void GameScene::Initialize()
 	particleManager_->Initialize();
 
 	particleManager_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+
+	spotLightTex = TextureManager::Instance()->LoadTexture("Resources/lightplane.png");
 }
 
 void GameScene::Update()
@@ -963,6 +965,12 @@ void GameScene::MapLoad(std::string mapFullpath)
 			newObject->light->Initialize();
 
 			newObject->light->SetModel(models_[ "enemyBullet" ]);
+
+			newObject->spotLight = std::make_unique<Object3d>();
+
+			newObject->spotLight->Initialize();
+
+			newObject->spotLight->SetModel(models_[ "plane" ]);
 
 			Vector3 pos = objectData.trans;
 

@@ -38,6 +38,7 @@ public:
 	{
 		std::unique_ptr<Object3d> obj;
 		std::unique_ptr<Object3d> light;
+		std::unique_ptr<Object3d> spotLight;
 		uint32_t lightIndex = 0;
 		bool onOrOff = false;
 	};
@@ -46,6 +47,7 @@ public:
 	{
 		std::unique_ptr<Object3d> obj;
 		std::unique_ptr<Object3d> light;
+		std::unique_ptr<Object3d> spotLight;
 		uint32_t lightIndex = 0;
 		bool onOrOff = false;
 		uint32_t index = 0;
@@ -235,5 +237,7 @@ private:
 	Vector3 lightV_ = { 0,-1,0 };
 
 	bool retry_ = false;
+
+	uint32_t spotLightTex = 0;
 };
 
