@@ -1106,7 +1106,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "RunEnemy" )
 		{
@@ -1118,7 +1118,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "jumpEnemy" )
 		{
@@ -1130,7 +1130,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "tutorialEnemy" )
 		{
@@ -1142,7 +1142,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->Update();
 
-			//EnemyManager::Instance()->AddEnemy(std::move(enemy));
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
 		if ( tagName == "Stage1" )
 		{
