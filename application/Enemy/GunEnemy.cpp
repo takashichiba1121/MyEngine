@@ -3,7 +3,7 @@
 
 LightGroup* Enemy::light_;
 
-void GunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
+void GunEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,uint32_t number)
 {
 	model_ = enemyModel;
 
@@ -11,15 +11,13 @@ void GunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& po
 
 	player_ = player;
 
-	enemyType_ = enemyType;
+	enemyType_ = EnemyType::Gun;
 
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
 	obj_->SetModel(model_);
-
-	obj_->SetPosition(position);
 
 	obj_->SetRot({ 0,135,0 });
 

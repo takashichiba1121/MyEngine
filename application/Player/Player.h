@@ -83,7 +83,7 @@ public:
 	/// <summary>
 	/// jsonから読み取った地形データとプレイヤーの当たり判定
 	/// </summary>
-	Vector3 MapCollision();
+	void MapCollision();
 
 	/// <summary>
 	/// エネミーとの当たり判定

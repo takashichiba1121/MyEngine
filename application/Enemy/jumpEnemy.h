@@ -8,7 +8,7 @@ class jumpEnemy :
 {
 public:
 	//初期化
-	void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number) override;
+	void Initialize(Model* enemyModel,Model* bulletModel,Player* player,uint32_t number) override;
 
 	//更新
 	void Update() override;

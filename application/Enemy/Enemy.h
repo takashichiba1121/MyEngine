@@ -13,12 +13,13 @@ public:
 		Gun,
 		Run,
 		Jump,
-		Tutorial
+		Tutorial,
+		Wall
 	};
 
 public:
 	//初期化
-	virtual void Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number);
+	virtual void Initialize(Model* enemyModel,Model* bulletModel,Player* player,uint32_t number);
 
 	/// <summary>
 	/// 毎フレーム処理

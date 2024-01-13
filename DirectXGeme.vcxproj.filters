@@ -272,6 +272,9 @@
     <ClCompile Include="application\Player\BombPlayerBullet.cpp">
       <Filter>application\ソース ファイル\player</Filter>
     </ClCompile>
+    <ClCompile Include="application\Enemy\WallEnemy.cpp">
+      <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\2d\Sprite.h">
@@ -429,6 +432,9 @@
     </ClInclude>
     <ClInclude Include="application\Player\BombPlayerBullet.h">
       <Filter>application\ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Enemy\WallEnemy.h">
+      <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

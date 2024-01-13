@@ -162,6 +162,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClCompile Include="engine\Math\Vector4.cpp" />
     <ClCompile Include="engine\base\WinApp.cpp" />
     <ClCompile Include="engine\Scene\SceneFactory.cpp" />
+    <ClCompile Include="application\Enemy\WallEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\Collider\AppCollider.h" />
@@ -216,6 +217,7 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     <ClInclude Include="engine\Math\Vector3.h" />
     <ClInclude Include="engine\Math\Vector4.h" />
     <ClInclude Include="engine\base\WinApp.h" />
+    <ClInclude Include="application\Enemy\WallEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\DissolveSpritePS.hlsl">

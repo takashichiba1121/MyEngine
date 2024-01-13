@@ -3,7 +3,7 @@
 
 
 
-void RunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
+void RunEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,uint32_t number)
 {
 	model_ = enemyModel;
 
@@ -11,15 +11,13 @@ void RunEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& po
 
 	player_ = player;
 
-	enemyType_ = enemyType;
+	enemyType_ = EnemyType::Run;
 
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
 	obj_->SetModel(model_);
-
-	obj_->SetPosition(position);
 
 	obj_->SetRot({ 0,135,0 });
 

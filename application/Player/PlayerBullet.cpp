@@ -16,6 +16,8 @@ void PlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position,uin
 	obj_->SetColor(bulletColor_);
 
 	life_ = life;
+
+	type = Type::Nolmal;
 }
 
 void PlayerBullet::Update()

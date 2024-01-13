@@ -18,6 +18,8 @@ void BombPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position
 	obj_->SetColor({ bulletColor_ });
 
 	life_ = life;
+
+	type = Type::Bomb;
 }
 
 void BombPlayerBullet::Update()

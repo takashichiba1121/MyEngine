@@ -1,7 +1,7 @@
 #include "jumpEnemy.h"
 #include"EnemyManager.h"
 
-void jumpEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& position,Player* player,EnemyType enemyType,uint32_t number)
+void jumpEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,uint32_t number)
 {
 	model_ = enemyModel;
 
@@ -9,15 +9,13 @@ void jumpEnemy::Initialize(Model* enemyModel,Model* bulletModel,const Vector3& p
 
 	player_ = player;
 
-	enemyType_ = enemyType;
+	enemyType_ = EnemyType::Jump;
 
 	obj_ = std::make_unique<Object3d>();
 
 	obj_->Initialize();
 
 	obj_->SetModel(model_);
-
-	obj_->SetPosition(position);
 
 	obj_->SetRot({ 0,135,0 });
 

@@ -103,7 +103,7 @@ private:
 	//モデルのロード
 	void ModelLoad();
 
-	void GoalSwitchCollsion();
+	void SwitchCollsion();
 
 private:
 #pragma region モデル
@@ -123,6 +123,7 @@ private:
 	std::unique_ptr<Model> gunEnemyModel_;
 	std::unique_ptr<Model> jumpEnemyModel_;
 	std::unique_ptr<Model> tutorialEnemyModel_;
+	std::unique_ptr<Model> blockModel_;
 
 	std::unique_ptr<Model> planeModel_;
 	std::unique_ptr<Model> goalSwitchModel_;

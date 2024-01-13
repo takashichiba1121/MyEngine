@@ -14,6 +14,7 @@
 #include"jumpEnemy.h"
 #include"tutorialEnemy.h"
 #include"Enemy.h"
+#include"WallEnemy.h"
 #include<iostream>
 
 GameScene::GameScene()
@@ -166,9 +167,9 @@ void GameScene::Initialize()
 
 	skyObj_->SetModel(skyModel_.get());
 
-	skyObj_->SetPosition({ 0,0,0 });
+	skyObj_->SetPosition({ 100,0,200 });
 
-	skyObj_->SetScale({ 300,300,300 });
+	skyObj_->SetScale({ 200,200,200 });
 
 	skyObj_->SetRot({ 0,0,0 });
 
@@ -575,11 +576,12 @@ void GameScene::Update()
 		tutorials_[ i ]->obj->Update();
 	}
 
-	GoalSwitchCollsion();
+	SwitchCollsion();
 
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
 		goalSwitch->obj->Update();
+		light_->SetPointActive(goalSwitch->lightIndex,true);
 		if ( goalSwitch->onOrOff )
 		{
 			//for ( int i = 0; i < 50; i++ )
@@ -604,6 +606,7 @@ void GameScene::Update()
 			//	particleManager_->Add(life,goalSwitch->light->GetPosition(),pos/2,{0,0,0},0.5f,0.5f,{1,0.88f,0.59f,1},{1,0.88f,0.59f,1});
 			//}
 			goalSwitch->light->Update();
+			goalSwitch->spotLight->Update();
 		}
 	}
 
@@ -613,6 +616,7 @@ void GameScene::Update()
 		if ( switchs_[ i ]->onOrOff )
 		{
 			switchs_[ i ]->light->Update();
+			light_->SetPointActive(switchs_[i]->lightIndex,true);
 			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
 			{
 				if ( switchs_[ i ]->index == gimmicks_[ j ]->index )
@@ -708,6 +712,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		if ( goalSwitch->onOrOff )
 		{
 			goalSwitch->light->Draw();
+			goalSwitch->spotLight->Draw(spotLightTex);
 		}
 		goalSwitch->obj->Draw();
 	}
@@ -1102,7 +1107,9 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Gun,EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+
+			enemy->GetObj()->SetPosition(objectData.trans);
 
 			enemy->Update();
 
@@ -1114,7 +1121,9 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<RunEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Run,EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+
+			enemy->GetObj()->SetPosition(objectData.trans);
 
 			enemy->Update();
 
@@ -1126,7 +1135,9 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<jumpEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Jump,EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+
+			enemy->GetObj()->SetPosition(objectData.trans);
 
 			enemy->Update();
 
@@ -1138,7 +1149,90 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<TutorialEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],{ objectData.trans },player_.get(),Enemy::EnemyType::Tutorial,EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+
+			enemy->GetObj()->SetPosition(objectData.trans);
+
+			enemy->Update();
+
+			EnemyManager::Instance()->AddEnemy(std::move(enemy));
+		}
+		if (tagName=="WallEnemy" )
+		{
+			std::unique_ptr<Enemy> enemy;
+
+			enemy = std::make_unique<WallEnemy>();
+
+			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+
+			enemy->GetObj()->SetPosition(objectData.trans);
+
+			enemy->GetObj()->SetRot(objectData.rot);
+
+			enemy->GetObj()->SetScale(objectData.scale);
+
+			std::vector<Model::VertexPosNormalUv> vertices = enemy->GetObj()->GetVertices();
+
+			for ( int i = 0; i < vertices.size(); i += 3 )
+			{
+				Model::VertexPosNormalUv Vertex0,Vertex1,Vertex2;
+
+				Vertex0 = vertices[ i ];
+				Vertex1 = vertices[ i + 1 ];
+				Vertex2 = vertices[ i + 2 ];
+
+				if ( Vertex0.pos.x == Vertex1.pos.x && Vertex0.pos.x == Vertex2.pos.x )
+				{
+					Vertex0.uv.x *= enemy->GetObj()->GetScale().z;
+					Vertex0.uv.y *= enemy->GetObj()->GetScale().y;
+
+					Vertex1.uv.x *= enemy->GetObj()->GetScale().z;
+					Vertex1.uv.y *= enemy->GetObj()->GetScale().y;
+
+					Vertex2.uv.x *= enemy->GetObj()->GetScale().z;
+					Vertex2.uv.y *= enemy->GetObj()->GetScale().y;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+				else if ( Vertex0.pos.y == Vertex1.pos.y && Vertex0.pos.y == Vertex2.pos.y )
+				{
+					Vertex0.uv.x *= enemy->GetObj()->GetScale().z;
+					Vertex0.uv.y *= enemy->GetObj()->GetScale().x;
+
+					Vertex1.uv.x *= enemy->GetObj()->GetScale().z;
+					Vertex1.uv.y *= enemy->GetObj()->GetScale().x;
+
+					Vertex2.uv.x *= enemy->GetObj()->GetScale().z;
+					Vertex2.uv.y *= enemy->GetObj()->GetScale().x;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+				else if ( Vertex0.pos.z == Vertex1.pos.z && Vertex0.pos.z == Vertex2.pos.z )
+				{
+					Vertex0.uv.x *= enemy->GetObj()->GetScale().y;
+					Vertex0.uv.y *= enemy->GetObj()->GetScale().x;
+
+					Vertex1.uv.x *= enemy->GetObj()->GetScale().y;
+					Vertex1.uv.y *= enemy->GetObj()->GetScale().x;
+
+					Vertex2.uv.x *= enemy->GetObj()->GetScale().y;
+					Vertex2.uv.y *= enemy->GetObj()->GetScale().x;
+
+					Vertex0.uv /= 2;
+					Vertex1.uv /= 2;
+					Vertex2.uv /= 2;
+				}
+
+				vertices[ i ] = Vertex0;
+				vertices[ i + 1 ] = Vertex1;
+				vertices[ i + 2 ] = Vertex2;
+			}
+
+			enemy->GetObj()->SetVertices(vertices);
 
 			enemy->Update();
 
@@ -1265,9 +1359,12 @@ void GameScene::ModelLoad()
 
 	fenceModel_.reset(Model::LoadFormOBJ("fence",true));
 	models_.insert(std::make_pair("fence",fenceModel_.get()));
+
+	blockModel_.reset(Model::LoadFormOBJ("block",true));
+	models_.insert(std::make_pair("block",blockModel_.get()));
 }
 
-void GameScene::GoalSwitchCollsion()
+void GameScene::SwitchCollsion()
 {
 	for ( std::unique_ptr<PlayerBullet>& bullet : PlayerBulletManager::Instance()->GetBullets() )
 	{
@@ -1294,6 +1391,37 @@ void GameScene::GoalSwitchCollsion()
 					light_->SetPointColor(goalSwitch->lightIndex,{ 1,0.88f,0.59f });
 
 					light_->SetPointAtten(goalSwitch->lightIndex,{ 0.03f,0.01f,0.01f });
+
+					Vector3 pos = goalObj_->GetPosition() - goalSwitch->obj->GetPosition();
+
+					pos.y -=1;
+
+					Vector3 cameForward = { 0,0,-1 };
+
+					Vector3  cameRight = { 1,0,0 };
+
+					Vector3 frontVec = { 0,0,0 };
+
+					if (pos.x != 0.0f || pos.z != 0.0f )
+					{
+						frontVec = cameForward * pos.z + cameRight * pos.x;
+					}
+
+					if ( frontVec.x != 0.0f || frontVec.z != 0.0f )
+					{
+						goalSwitch->spotLight->SetRot({ 0, atan2f(frontVec.x, -frontVec.z)-3.14f,3.14f });
+					}
+
+					float a = pos.length()/2.5f;
+
+					goalSwitch->spotLight->SetScale({ a,a,a });
+
+					pos = pos / 2 + goalSwitch->obj->GetPosition();
+
+					goalSwitch->spotLight->SetPosition(pos);
+
+					goalSwitch->spotLight->Setalpha(0.3f);
+
 					break;
 				}
 			}

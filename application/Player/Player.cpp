@@ -100,7 +100,7 @@ void Player::Update()
 			isDaed_ = true;
 		}
 
-		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP)||Input::Instance()->TriggerKey(DIK_UP) )
+		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP) || Input::Instance()->TriggerKey(DIK_UP) )
 		{
 			normalAttack->SetScale({ 138,138 });
 
@@ -183,7 +183,7 @@ void Player::Update()
 
 		EnemyCollision();
 
-		move_ = MapCollision();
+		MapCollision();
 
 		obj_->SetPosition(move_);
 
@@ -827,7 +827,7 @@ void Player::SetGimmickData(std::vector<Object3d*> objects)
 	}
 }
 
-Vector3 Player::MapCollision()
+void Player::MapCollision()
 {
 	bool Ground = false;
 	Vector3 pos = obj_->GetPosition() + move_;
@@ -903,46 +903,66 @@ Vector3 Player::MapCollision()
 		}
 	}
 
-	if ( Ground == false && onGround_ == false )
+	for ( std::unique_ptr<Enemy>& enemy : EnemyManager::Instance()->GetEnemys() )
 	{
-		for ( Object3d* MapObj : objects_ )
+		if (enemy->GetType()==Enemy::EnemyType::Wall&& !enemy->IsDaed())
 		{
-
 			Collider::Cube mapCube,objCube;
-			mapCube.Pos = MapObj->GetPosition();
-			mapCube.scale = MapObj->GetScale();
+			mapCube.Pos = enemy->GetObj()->GetPosition();
+			mapCube.scale = enemy->GetObj()->GetScale();
 			objCube.Pos = obj_->GetPosition() + move_;
 			objCube.oldPos = obj_->GetPosition();
 			objCube.scale = obj_->GetScale();
-
-			if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Collsion) )
+			if ( Collider::CubeAndCube(mapCube,objCube,Collider::Collsion) == true )
 			{
-				if ( mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_ )
+				if ( mapCube.Pos.y - mapCube.scale.y >= objCube.oldPos.y + objCube.scale.y && onGround_ )
 				{
-					onGround_ = true;
+					pos.y = mapCube.Pos.y - ( mapCube.scale.y + objCube.scale.y );
 
-					Ground = true;
+					move_.y = 0;
+
+					fallSpeed_ = 0;
 				}
-				else if ( mapCube.Pos.y - mapCube.scale.y >= objCube.Pos.y + objCube.scale.y - gravityAcceleration_ )
+				else if ( mapCube.Pos.y + mapCube.scale.y <= objCube.oldPos.y - objCube.scale.y && onGround_ )
 				{
-					onGround_ = true;
+					pos.y = mapCube.Pos.y + mapCube.scale.y + objCube.scale.y;
+
+					move_.y = 0;
+
+					onGround_ = false;
 
 					Ground = true;
 				}
 				else
 				{
-					onGround_ = false;
 
-					fallSpeed_ = 0;
+					if ( mapCube.Pos.x + mapCube.scale.x <= objCube.oldPos.x - objCube.scale.x )
+					{
 
-					break;
+						pos.x = mapCube.Pos.x + mapCube.scale.x + objCube.scale.x + 0.1f;
+
+						move_.x = 0;
+					}
+					else if ( mapCube.Pos.x - mapCube.scale.x >= objCube.oldPos.x + objCube.scale.x )
+					{
+						pos.x = mapCube.Pos.x - ( mapCube.scale.x + objCube.scale.x ) - 0.1f;
+
+						move_.x = 0;
+					}
+					if ( mapCube.Pos.z + mapCube.scale.z <= objCube.oldPos.z - objCube.scale.z )
+					{
+
+						pos.z = mapCube.Pos.z + mapCube.scale.z + objCube.scale.z + 0.1f;
+
+						move_.z = 0;
+					}
+					else if ( mapCube.Pos.z - mapCube.scale.z >= objCube.oldPos.z + objCube.scale.z )
+					{
+						pos.z = mapCube.Pos.z - ( mapCube.scale.z + objCube.scale.z ) - 0.1f;
+
+						move_.z = 0;
+					}
 				}
-			}
-			else
-			{
-				onGround_ = true;
-
-				Ground = true;
 			}
 		}
 	}
@@ -990,11 +1010,56 @@ Vector3 Player::MapCollision()
 			}
 		}
 	}
-	return pos;
+
+	if ( Ground == false && onGround_ == false )
+	{
+		for ( Object3d* MapObj : objects_ )
+		{
+
+			Collider::Cube mapCube,objCube;
+			mapCube.Pos = MapObj->GetPosition();
+			mapCube.scale = MapObj->GetScale();
+			objCube.Pos = obj_->GetPosition() + move_;
+			objCube.oldPos = obj_->GetPosition();
+			objCube.scale = obj_->GetScale();
+
+			if ( Collider::QuadAndQuad(mapCube,objCube,Collider::Collsion) )
+			{
+				if ( mapCube.Pos.y + mapCube.scale.y <= objCube.Pos.y - objCube.scale.y - gravityAcceleration_ )
+				{
+					onGround_ = true;
+
+					Ground = true;
+				}
+				else if ( mapCube.Pos.y - mapCube.scale.y >= objCube.Pos.y + objCube.scale.y - gravityAcceleration_ )
+				{
+					onGround_ = true;
+
+					Ground = true;
+				}
+				else
+				{
+					onGround_ = false;
+
+					fallSpeed_ = 0;
+
+					break;
+				}
+			}
+			else
+			{
+				onGround_ = true;
+
+				Ground = true;
+			}
+		}
+	}
+	move_ = pos;
 }
 
 void Player::EnemyCollision()
 {
+	Vector3 pos{};
 	for ( std::unique_ptr<Enemy>& enemy : EnemyManager::Instance()->GetEnemys() )
 	{
 		if ( enemy->IsDaed() == false )
@@ -1010,10 +1075,22 @@ void Player::EnemyCollision()
 
 				bulletCube.Pos = bullet->GetPosition();
 				bulletCube.scale = bullet->GetScale();
-				if ( ( bulletCube.Pos.x + bulletCube.Pos.y + bulletCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) <= 3
-					&& ( bulletCube.Pos.x + bulletCube.Pos.y + bulletCube.Pos.z / 3 ) - ( enemyCube.Pos.x + enemyCube.Pos.y + enemyCube.Pos.z / 3 ) >= -3 )
+				if ( Collider::CubeAndCube(enemyCube,bulletCube,Collider::Collsion) == true )
 				{
-					if ( Collider::CubeAndCube(enemyCube,bulletCube,Collider::Collsion) == true )
+					if ( Enemy::EnemyType::Wall == enemy->GetType() )
+					{
+						if (bullet->GetType()==PlayerBullet::Type::Bomb)
+						{
+							bullet->OnCollision();
+
+							enemy->OnCollision();
+						}
+						else
+						{
+							bullet->OnCollision();
+						}
+					}
+					else
 					{
 						bullet->OnCollision();
 
@@ -1028,27 +1105,30 @@ void Player::EnemyCollision()
 				{
 					if ( Collider::CubeAndCube(enemyCube,playerCube,Collider::Collsion) == true )
 					{
-						hp_--;
-
-						for ( int i = 0; i < 10; i++ )
+						if ( Enemy::EnemyType::Wall != enemy->GetType() )
 						{
-							//消えるまでの時間
-							const uint32_t rnd_life = 10;
-							//最低限のライフ
-							const uint32_t constlife = 60;
-							uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
-							//XYZの広がる距離
-							const float rnd_pos = 0.1f;
-							Vector3 pos{};
-							pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-							pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-							pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+							hp_--;
 
-							//pos.normalize();
+							for ( int i = 0; i < 10; i++ )
+							{
+								//消えるまでの時間
+								const uint32_t rnd_life = 10;
+								//最低限のライフ
+								const uint32_t constlife = 60;
+								uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
-							//追加
-							paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+								//XYZの広がる距離
+								const float rnd_pos = 0.1f;
+								pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+								pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
+								pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+
+								//pos.normalize();
+
+								//追加
+								paMan_->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+							}
 						}
 					}
 				}
@@ -1078,7 +1158,6 @@ void Player::EnemyCollision()
 
 				//XYZの広がる距離
 				const float rnd_pos = 0.1f;
-				Vector3 pos{};
 				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
 				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
 				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;

@@ -18,6 +18,8 @@ void DivisionPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 posi
 	obj_->SetColor({ 0.88f,1,0.59f });
 
 	life_ = life;
+
+	type = Type::Division;
 }
 
 void DivisionPlayerBullet::Update()

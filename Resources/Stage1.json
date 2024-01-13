@@ -330,7 +330,7 @@
             "name": "平面.004",
             "transform": {
                 "translation": [
-                    -184.0,
+                    -232.0,
                     154.0,
                     44.099998474121094
                 ],
@@ -476,42 +476,6 @@
                 "translation": [
                     -175.0,
                     57.57503128051758,
-                    45.0
-                ],
-                "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "GunEnemy",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "GunEnemy"
-        },
-        {
-            "type": "MESH",
-            "name": "NURBSパス.008",
-            "transform": {
-                "translation": [
-                    -165.0,
-                    131.0,
                     45.0
                 ],
                 "rotation": [
@@ -870,7 +834,7 @@
             "name": "立方体.002",
             "transform": {
                 "translation": [
-                    -146.0,
+                    -94.0,
                     154.0,
                     45.0
                 ],
@@ -978,7 +942,7 @@
             "name": "平面.009",
             "transform": {
                 "translation": [
-                    -146.0,
+                    -94.0,
                     154.0,
                     44.099998474121094
                 ],
@@ -1014,7 +978,7 @@
             "name": "Cube.012",
             "transform": {
                 "translation": [
-                    -146.0,
+                    -94.0,
                     154.0,
                     -56.0
                 ],
@@ -1050,7 +1014,7 @@
             "name": "立方体.004",
             "transform": {
                 "translation": [
-                    -184.0,
+                    -232.0,
                     154.0,
                     45.0
                 ],
@@ -1237,6 +1201,150 @@
         },
         {
             "type": "MESH",
+            "name": "Cube.011",
+            "transform": {
+                "translation": [
+                    -216.0,
+                    131.0,
+                    -56.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.015",
+            "transform": {
+                "translation": [
+                    -110.0,
+                    131.0,
+                    -56.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.016",
+            "transform": {
+                "translation": [
+                    -33.0,
+                    16.0,
+                    37.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    2.0,
+                    6.0,
+                    1.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.017",
+            "transform": {
+                "translation": [
+                    -190.0,
+                    177.0,
+                    52.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    2.0,
+                    8.0,
+                    8.0
+                ]
+            },
+            "file_name": "block",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "WallEnemy"
+        },
+        {
+            "type": "MESH",
             "name": "Cube",
             "transform": {
                 "translation": [
@@ -1278,7 +1386,7 @@
                 "translation": [
                     15.0,
                     0.0,
-                    21.0
+                    22.0
                 ],
                 "rotation": [
                     0.0,
@@ -1456,9 +1564,9 @@
             "name": "Cube.004",
             "transform": {
                 "translation": [
-                    -33.0,
-                    16.0,
-                    37.0
+                    -140.0,
+                    177.0,
+                    52.0
                 ],
                 "rotation": [
                     0.0,
@@ -1467,11 +1575,11 @@
                 ],
                 "scaling": [
                     2.0,
-                    6.0,
-                    1.0
+                    8.0,
+                    8.0
                 ]
             },
-            "file_name": "Map",
+            "file_name": "block",
             "colider": {
                 "type": "BOX",
                 "center": [
@@ -1485,7 +1593,7 @@
                     2.0
                 ]
             },
-            "Tag_name": "Map"
+            "Tag_name": "WallEnemy"
         },
         {
             "type": "MESH",
@@ -1528,7 +1636,7 @@
             "name": "Cube.008",
             "transform": {
                 "translation": [
-                    -146.0,
+                    -128.0,
                     108.0,
                     -56.0
                 ],
@@ -1564,7 +1672,7 @@
             "name": "Cube.009",
             "transform": {
                 "translation": [
-                    -184.0,
+                    -200.0,
                     108.0,
                     -56.0
                 ],
@@ -1600,7 +1708,7 @@
             "name": "Cube.010",
             "transform": {
                 "translation": [
-                    -184.0,
+                    -232.0,
                     154.0,
                     -56.0
                 ],
@@ -1611,42 +1719,6 @@
                 ],
                 "scaling": [
                     8.0,
-                    8.0,
-                    100.0
-                ]
-            },
-            "file_name": "Map",
-            "colider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "Tag_name": "Map"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.011",
-            "transform": {
-                "translation": [
-                    -165.0,
-                    131.0,
-                    -56.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    16.0,
                     8.0,
                     100.0
                 ]
@@ -1682,7 +1754,7 @@
                     0.0
                 ],
                 "scaling": [
-                    16.0,
+                    70.0,
                     8.0,
                     100.0
                 ]

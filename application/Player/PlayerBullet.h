@@ -13,6 +13,13 @@ public:
 		Attack,
 		Delete,
 	};
+
+	enum class Type
+	{
+		Nolmal,
+		Division,
+		Bomb
+	};
 public:
 	
 	///<summary>
@@ -57,6 +64,10 @@ public:
 		obj_->SetRot(rot);
 	}
 
+	Type GetType() {
+		return type;
+	}
+
 protected:
 
 	std::unique_ptr<Object3d> obj_;
@@ -82,4 +93,6 @@ protected:
 	int32_t lightIndex_;
 
 	const Vector3 bulletColor_ = { 1,0.88f,0.59f };
+
+	Type type;
 };
