@@ -39,8 +39,9 @@ public:
 		std::unique_ptr<Object3d> obj;
 		std::unique_ptr<Object3d> light;
 		std::unique_ptr<Object3d> spotLight;
+		uint32_t lightFrame;
 		uint32_t lightIndex = 0;
-		bool onOrOff = false;
+		Phase phase=Phase::Before;
 	};
 
 	struct Switch
@@ -49,7 +50,8 @@ public:
 		std::unique_ptr<Object3d> light;
 		std::unique_ptr<Object3d> spotLight;
 		uint32_t lightIndex = 0;
-		bool onOrOff = false;
+		uint32_t lightFrame;
+		Phase phase = Phase::Before;
 		uint32_t index = 0;
 
 		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
@@ -240,5 +242,9 @@ private:
 	bool retry_ = false;
 
 	uint32_t spotLightTex = 0;
+
+	const uint32_t spotLightMaxFrame=30;
+
+	const uint32_t lightMaxFrame = 30;
 };
 

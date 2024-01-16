@@ -229,6 +229,8 @@ void GameScene::Update()
 		EnemyManager::Instance()->Clear();
 
 		MapLoad(mapName_);
+
+		player_->SetMapData(&objects_);
 	}
 #endif
 
@@ -286,7 +288,7 @@ void GameScene::Update()
 		{
 			for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 			{
-				if ( goalSwitch->onOrOff )
+				if ( goalSwitch->phase == Phase::After )
 				{
 					goalOpen = Phase::Middle;
 				}
@@ -551,21 +553,21 @@ void GameScene::Update()
 		Vector3 vec = player_->GetObj()->GetPosition() - tutorials_[ i ]->obj->GetPosition();
 		vec.x = abs(vec.x);
 		vec.z = abs(vec.z);
-		float A = (vec.x+ vec.z) / 2;
-		float B = (tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z)/2;
-		if (A<B )
+		float A = ( vec.x + vec.z ) / 2;
+		float B = ( tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z ) / 2;
+		if ( A < B )
 		{
 			tutorials_[ i ]->obj->Setalpha(1.0f);
 		}
 		else
 		{
 			float X = A - B;
-			X=abs(X);
-			X= 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
+			X = abs(X);
+			X = 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
 			tutorials_[ i ]->obj->Setalpha(X);
-			if (X<0 )
+			if ( X < 0 )
 			{
-				tutorials_[ i ]->isDraw=false;
+				tutorials_[ i ]->isDraw = false;
 			}
 			else
 			{
@@ -581,30 +583,31 @@ void GameScene::Update()
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
 		goalSwitch->obj->Update();
-		light_->SetPointActive(goalSwitch->lightIndex,true);
-		if ( goalSwitch->onOrOff )
+		if ( goalSwitch->phase == Phase::Middle )
 		{
-			//for ( int i = 0; i < 50; i++ )
-			//{
-			//	//消えるまでの時間
-			//	const uint32_t rnd_life = 10;
-			//	//最低限のライフ
-			//	const uint32_t constlife = 20;
-			//	uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+			goalSwitch->lightFrame++;
+			float a = goalSwitch->spotLight->GetScale().z;
 
-			//	//XYZの広がる距離
-			//	Vector3 rnd_pos = goalObj_->GetPosition()-goalSwitch->light->GetPosition();
-			//	const float rndMax = 4;
-			//	Vector3 pos;
-			//	pos.x = ( ( float ) rand() / RAND_MAX * rndMax - rndMax / 2 ) + rnd_pos.x;
-			//	pos.y = ( ( float ) rand() / RAND_MAX * rndMax - rndMax / 2 ) + rnd_pos.y;
-			//	pos.z = ( ( float ) rand() / RAND_MAX * rndMax - rndMax / 2 ) + rnd_pos.z;
+			float f = ( float )goalSwitch->lightFrame / lightMaxFrame;
 
-			//	pos.normalize();
+			goalSwitch->spotLight->SetScale({ f*(a/5),1,a });
 
-			//	//追加
-			//	particleManager_->Add(life,goalSwitch->light->GetPosition(),pos/2,{0,0,0},0.5f,0.5f,{1,0.88f,0.59f,1},{1,0.88f,0.59f,1});
-			//}
+			f *= 1.5f;
+
+			goalSwitch->light->SetScale({f,f,f});
+
+			if ( goalSwitch->lightFrame >= lightMaxFrame)
+			{
+				goalSwitch->phase = Phase::After;
+			}
+
+			light_->SetPointActive(goalSwitch->lightIndex,true);
+			goalSwitch->light->Update();
+			goalSwitch->spotLight->Update();
+		}
+		else if ( goalSwitch->phase == Phase::After )
+		{
+			light_->SetPointActive(goalSwitch->lightIndex,true);
 			goalSwitch->light->Update();
 			goalSwitch->spotLight->Update();
 		}
@@ -613,10 +616,25 @@ void GameScene::Update()
 	for ( uint32_t i = 0; i < switchs_.size(); i++ )
 	{
 		switchs_[ i ]->obj->Update();
-		if ( switchs_[ i ]->onOrOff )
+		if ( switchs_[ i ]->phase != Phase::Before )
 		{
 			switchs_[ i ]->light->Update();
-			light_->SetPointActive(switchs_[i]->lightIndex,true);
+			light_->SetPointActive(switchs_[ i ]->lightIndex,true);
+			if ( switchs_[ i ]->phase == Phase::Middle )
+			{
+				switchs_[ i ]->lightFrame++;
+
+				float f = ( float ) switchs_[ i ]->lightFrame / spotLightMaxFrame;
+
+				f *= 1.5f;
+
+				switchs_[ i ]->light->SetScale({ f,f,f });
+
+				if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
+				{
+					switchs_[ i ]->phase = Phase::After;
+				}
+			}
 			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
 			{
 				if ( switchs_[ i ]->index == gimmicks_[ j ]->index )
@@ -638,27 +656,6 @@ void GameScene::Update()
 							gimmicks_[ j ]->phase = Phase::After;
 						}
 						gimmicks_[ j ]->obj->SetPosition(pos);
-						//for ( int w = 0; w < 50; w++ )
-						//{
-						//	//消えるまでの時間
-						//	const uint32_t rnd_life = 10;
-						//	//最低限のライフ
-						//	const uint32_t constlife = 20;
-						//	uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
-
-						//	//XYZの広がる距離
-						//	Vector3 rnd_pos = gimmicks_[ j ]->obj->GetPosition() - switchs_[ i ]->light->GetPosition();
-						//	const float rndMax=4;
-						//	pos.x = ( ( float ) rand() / RAND_MAX * rndMax- rndMax/2 ) + rnd_pos.x;
-						//	pos.y = ( ( float ) rand() / RAND_MAX * rndMax - rndMax/2 ) + rnd_pos.y;
-						//	pos.z = ( ( float ) rand() / RAND_MAX * rndMax - rndMax/2 ) + rnd_pos.z;
-
-
-						//	pos.normalize();
-
-						//	//追加
-						//	particleManager_->Add(life,switchs_[ i ]->light->GetPosition(),pos / 2,{ 0,0,0 },0.5f,0.5f,{ 1,0.88f,0.59f,0 },{ 1,0.88f,0.59f ,1 });
-						//}
 					}
 				}
 			}
@@ -702,24 +699,15 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	}
 	for ( uint32_t i = 0; i < tutorials_.size(); i++ )
 	{
-		if (tutorials_[i]->isDraw )
+		if ( tutorials_[ i ]->isDraw )
 		{
 			tutorials_[ i ]->obj->Draw(tutorials_[ i ]->texHandle);
 		}
 	}
-	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
-	{
-		if ( goalSwitch->onOrOff )
-		{
-			goalSwitch->light->Draw();
-			goalSwitch->spotLight->Draw(spotLightTex);
-		}
-		goalSwitch->obj->Draw();
-	}
 	for ( std::unique_ptr<Switch>& Switch : switchs_ )
 	{
 
-		if ( Switch->onOrOff )
+		if ( Switch->phase != Phase::Before )
 		{
 			Switch->light->Draw();
 		}
@@ -745,6 +733,15 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	else
 	{
 		goalObj_->Draw();
+	}
+	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	{
+		if ( goalSwitch->phase != Phase::Before )
+		{
+			goalSwitch->light->Draw();
+			goalSwitch->spotLight->Draw(spotLightTex);
+		}
+		goalSwitch->obj->Draw();
 	}
 
 	Object3d::PostDraw();
@@ -1157,7 +1154,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if (tagName=="WallEnemy" )
+		if ( tagName == "WallEnemy" )
 		{
 			std::unique_ptr<Enemy> enemy;
 
@@ -1373,7 +1370,7 @@ void GameScene::SwitchCollsion()
 		bulletCube.scale = bullet->GetScale();
 		for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 		{
-			if ( goalSwitch->onOrOff == false )
+			if ( goalSwitch->phase == Phase::Before )
 			{
 				Collider::Cube mapCube;
 				mapCube.Pos = goalSwitch->obj->GetPosition();
@@ -1382,7 +1379,7 @@ void GameScene::SwitchCollsion()
 				{
 					bullet->OnCollision();
 
-					goalSwitch->onOrOff = true;
+					goalSwitch->phase = Phase::Middle;
 
 					light_->SetPointActive(goalSwitch->lightIndex,true);
 
@@ -1394,7 +1391,7 @@ void GameScene::SwitchCollsion()
 
 					Vector3 pos = goalObj_->GetPosition() - goalSwitch->obj->GetPosition();
 
-					pos.y -=1;
+					pos.y -= 1;
 
 					Vector3 cameForward = { 0,0,-1 };
 
@@ -1402,19 +1399,19 @@ void GameScene::SwitchCollsion()
 
 					Vector3 frontVec = { 0,0,0 };
 
-					if (pos.x != 0.0f || pos.z != 0.0f )
+					if ( pos.x != 0.0f || pos.z != 0.0f )
 					{
 						frontVec = cameForward * pos.z + cameRight * pos.x;
 					}
 
 					if ( frontVec.x != 0.0f || frontVec.z != 0.0f )
 					{
-						goalSwitch->spotLight->SetRot({ 0, atan2f(frontVec.x, -frontVec.z)-3.14f,3.14f });
+						goalSwitch->spotLight->SetRot({ 0, atan2f(frontVec.x, -frontVec.z) - 3.14f,3.14f });
 					}
 
-					float a = pos.length()/2.5f;
+					float a = pos.length() / 2.5f;
 
-					goalSwitch->spotLight->SetScale({ a,a,a });
+					goalSwitch->spotLight->SetScale({ a/5,1,a });
 
 					pos = pos / 2 + goalSwitch->obj->GetPosition();
 
@@ -1428,7 +1425,7 @@ void GameScene::SwitchCollsion()
 		}
 		for ( std::unique_ptr<Switch>& Switch : switchs_ )
 		{
-			if ( Switch->onOrOff == false )
+			if ( Switch->phase == Phase::Before )
 			{
 				Collider::Cube mapCube;
 				mapCube.Pos = Switch->obj->GetPosition();
@@ -1437,7 +1434,9 @@ void GameScene::SwitchCollsion()
 				{
 					bullet->OnCollision();
 
-					Switch->onOrOff = true;
+					Switch->phase = Phase::Middle;
+
+					Switch->light->SetScale({ 0,0,0});
 
 					light_->SetPointActive(Switch->lightIndex,true);
 
