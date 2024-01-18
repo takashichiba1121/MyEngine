@@ -4,6 +4,18 @@ void WallEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,u
 {
 	model_ = enemyModel;
 
+	for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+	{
+		particle_[i].reset(new Object3d);
+
+		particle_[ i ]->Initialize();
+
+		particle_[ i ]->SetModel(model_);
+
+		//particle_[ i ]->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
+
+		particle_[ i ]->SetIsDraw(false);
+	}
 	bulletModel_ = bulletModel;
 
 	player_ = player;
@@ -16,32 +28,62 @@ void WallEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,u
 
 	obj_->SetModel(model_);
 
-	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
+	//obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	number_ = number;
 }
 
 void WallEnemy::Update()
 {
-	if ( isDaed_)
+	if ( isDaed_ )
 	{
+		obj_->SetIsDraw(false);
+
 		ExplosionFrame_++;
 
-		float a = ExplosionFrame_ / ExplosionMaxFrame_;
+		for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+		{
+			Vector3 pos = particle_[ i ]->GetPosition();
 
-		obj_->SetDestruction(a);
+			pos += vec_[ i ]/3;
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+			particle_[ i ]->SetPosition(pos);
 
-		Vector3 pos = obj_->GetPosition();
+			Vector3 rot = particle_[ i ]->GetRot();
 
-		pos.y -= 0.5f;
+			rot +={0.5f,0.5f,0.5f};
 
-		obj_->SetPosition(pos);
+			particle_[ i ]->SetRot(rot);
+
+			particle_[ i ]->Update();
+
+			particle_[ i ]->SetIsDraw(true);
+		}
+
 		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
 		{
 			isDelete_ = true;
 		}
 	}
 	obj_->Update();
+}
+
+void WallEnemy::Draw()
+{
+	obj_->Draw();
+
+	for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+	{
+		particle_[ i ]->Draw();
+	}
+}
+
+void WallEnemy::OnCollision()
+{
+	isDaed_ = true;
+
+	for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+	{
+		particle_[ i ]->SetPosition(obj_->GetPosition());
+	}
 }

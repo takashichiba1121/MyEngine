@@ -39,7 +39,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	virtual void Draw();
 
 	bool IsDaed()
 	{
@@ -67,7 +67,7 @@ public:
 	}
 
 	//衝突処理
-	void OnCollision();
+	virtual void OnCollision();
 
 	//エネミー同士の衝突処理
 	virtual void OnEnemyCollision(Vector3 reject);
@@ -110,4 +110,23 @@ protected:
 	EnemyType enemyType_;
 
 	uint32_t number_;
+#pragma region 壁用変数群
+	static const uint32_t PartiacleNum_ = 10;
+
+	std::array<std::unique_ptr<Object3d>,PartiacleNum_> particle_;
+
+	const Vector3 vec_[ PartiacleNum_ ] =
+	{
+		{  0   , 1, 0   },
+		{  0.5f, 1, 0.5f},
+		{  0.5f, 1,-0.5f},
+		{ -0.5f, 1, 0.5f},
+		{ -0.5f, 1,-0.5f},
+		{  0   ,-1, 0   },
+		{  0.5f,-1, 0.5f},
+		{  0.5f,-1,-0.5f},
+		{ -0.5f,-1, 0.5f},
+		{ -0.5f,-1,-0.5f},
+	};
+#pragma endregion
 };

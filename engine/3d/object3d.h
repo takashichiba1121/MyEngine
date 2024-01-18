@@ -236,6 +236,8 @@ public: // メンバ関数
 
 	void SetBillBoard(bool isBillBoard) {isBillboard_ =isBillBoard;}
 
+	void SetIsDraw(bool isDraw) {isDraw_ =isDraw ;}
+
 private: // メンバ変数
 		// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
@@ -278,6 +280,8 @@ private: // メンバ変数
 	Vector3 color_ = { 1,1,1 };
 
 	bool isBillboard_=false;
+
+	bool isDraw_=true;
 };
 
 float ToRadian(float angle);

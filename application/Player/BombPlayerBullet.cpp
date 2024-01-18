@@ -65,13 +65,13 @@ void BombPlayerBullet::Update()
 		break;
 	case Phase::Delete:
 		chageTimer_++;
-		f = ( float ) chageTimer_ / 5;
+		f = ( float ) chageTimer_ / 10;
 
-		f *= 5;
+		f *= 10;
 
 		obj_->SetScale({ f,f,f });
 
-		if ( chageTimer_ >= 5 )
+		if ( chageTimer_ >= 10 )
 		{
 			isDead_ = true;
 			if ( lightIndex_ >= 0 )
