@@ -12,8 +12,6 @@ void WallEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,u
 
 		particle_[ i ]->SetModel(model_);
 
-		//particle_[ i ]->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
-
 		particle_[ i ]->SetIsDraw(false);
 	}
 	bulletModel_ = bulletModel;
@@ -27,8 +25,6 @@ void WallEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,u
 	obj_->Initialize();
 
 	obj_->SetModel(model_);
-
-	//obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	number_ = number;
 }
@@ -45,7 +41,7 @@ void WallEnemy::Update()
 		{
 			Vector3 pos = particle_[ i ]->GetPosition();
 
-			pos += vec_[ i ]/3;
+			pos += vec_[ i ]/particleSpeed_;
 
 			particle_[ i ]->SetPosition(pos);
 

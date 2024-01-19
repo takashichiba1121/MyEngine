@@ -17,5 +17,7 @@ public:
 	void OnCollision() override;
 
 private:
+
+	const float particleSpeed_=3.0f;
 };
 

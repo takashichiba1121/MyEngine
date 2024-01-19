@@ -185,6 +185,8 @@ private:
 
 	uint32_t avoidTime_=0;
 
+	const uint32_t avoidMaxTime_=20;
+
 	Vector3 avoidVec_ = {0,0,0};
 
 	const float avoidSpeed_ = 0.5f;

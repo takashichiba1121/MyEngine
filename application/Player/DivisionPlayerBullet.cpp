@@ -124,7 +124,7 @@ void DivisionPlayerBullet::OnCollision()
 
 		newBullet[ i ]->SetPhase(PlayerBullet::Phase::Attack);
 
-		for ( int j = 0; j < 20; j++ )
+		for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 		{
 			if ( light_->GetPointActive(j) == false )
 			{
@@ -132,7 +132,7 @@ void DivisionPlayerBullet::OnCollision()
 
 				break;
 			}
-			if ( i >= 19 )
+			if ( i >= LightGroup::cPointLightNum-1 )
 			{
 				newBullet[ i ]->SetLight(light_,-1);
 			}

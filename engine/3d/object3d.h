@@ -17,17 +17,16 @@ public: // サブクラス
 	// 定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
 	{
-		//XMFLOAT4 color;	// 色 (RGBA)
-		Matrix4 viewproj;	// ３Ｄ変換行列
-		Matrix4 world;
-		Vector3 cameraPos;
+		Matrix4 viewproj;//カメラ行列
+		Matrix4 world;//3Ｄ変換行列
+		Vector3 cameraPos;//カメラ位置
 		float shininess;//光沢度
 		float alpha; //透明度
-		Vector2 uvShift;
+		Vector2 uvShift;//UVの移動
 		float pad1;
-		Vector3 color;
+		Vector3 color;// 色 (RGBA)
 	};
-	// 定数バッファ用データ構造体
+	// 定数バッファ用データ構造体(ポリゴン爆散用)
 	struct ConstBufferPolygonExplosion
 	{
 		float _Destruction = 0.0f;

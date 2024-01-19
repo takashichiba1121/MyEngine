@@ -427,7 +427,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= 19 )
+					if ( i <= LightGroup::cPointLightNum-1 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -466,7 +466,7 @@ void Player::Attack()
 
 							break;
 						}
-						if ( i >= 19 )
+						if ( i >= LightGroup::cPointLightNum-1 )
 						{
 							newBullet[ i ]->SetLight(light_,-1);
 						}
@@ -503,7 +503,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= 19 )
+					if ( i <= LightGroup::cPointLightNum-1 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -541,7 +541,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= 19 )
+					if ( i <= LightGroup::cPointLightNum-1 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -598,7 +598,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i == 19 )
+					if ( i == LightGroup::cPointLightNum )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -636,7 +636,7 @@ void Player::Attack()
 
 							break;
 						}
-						if ( i >= 19 )
+						if ( i >= LightGroup::cPointLightNum )
 						{
 							newBullet[ i ]->SetLight(light_,-1);
 						}
@@ -673,7 +673,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= 19 )
+					if ( i <= LightGroup::cPointLightNum )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -711,7 +711,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= 19 )
+					if ( i <= LightGroup::cPointLightNum )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -736,23 +736,17 @@ void Player::Avoid()
 		avoidTime_++;
 		move_ += avoidVec_ * avoidSpeed_;
 
-		obj_->SetRot({ 0,obj_->GetRot().y - 0.314f,0 });
+		obj_->SetRot({ 0,obj_->GetRot().y - float(6.28/avoidMaxTime_),0 });
 
 		const uint32_t constlife = 10;
 		uint32_t life = constlife;
 
-		//XYZの広がる距離
-		Vector3 verocity{};
-		verocity.x = 0;
-		verocity.y = -0;
-		verocity.z = 0;
-
 		Vector3 pos = obj_->GetPosition();
 
 		//追加
-		paMan_->Add(life,pos,verocity,{ 0,0,0 },1.0f,0.0f,{ 1,1,1,1 },{ 1,1,1,1 });
+		paMan_->Add(life,pos,{ 0,0,0 },{ 0,0,0 },1.0f,0.0f,{ 1,1,1,1 },{ 1,1,1,1 });
 
-		if ( avoidTime_ >= 20 )
+		if ( avoidTime_ >= avoidMaxTime_ )
 		{
 			avoidTime_ = 0;
 			obj_->SetRot(initialRot_);
