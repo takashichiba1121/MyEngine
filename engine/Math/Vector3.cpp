@@ -117,3 +117,8 @@ const Vector3 operator/(const Vector3& v, float s)
 	Vector3 temp(v);
 	return temp /= s;
 }
+
+const bool operator==(const Vector3& v, const Vector3& s)
+{
+	return v.x==s.x&& v.y == s.y&& v.z == s.z;
+}

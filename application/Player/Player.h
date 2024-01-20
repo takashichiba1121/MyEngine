@@ -95,8 +95,6 @@ public:
 	/// </summary>
 	void SetSpawn(Vector3 spawnPosition);
 
-	void SetCameraPos(const Vector3 cameraPos) {cameraPos_=cameraPos ; }
-
 	bool GetOnGround() {return onGround_;}
 
 	Object3d* GetObj() { return obj_.get(); }
@@ -106,6 +104,14 @@ public:
 	void SetLight(LightGroup* light) {light_ = light;}
 
 	LightGroup* GetLight() {return light_;}
+
+	void SetCameraPos(Vector3 cameraPos);
+
+	Vector3 GetEndCameraPos() {return endCameraPos_;}
+
+	void CameraPosChange();
+
+
 private:
 #pragma region パラメーター
 
@@ -113,7 +119,7 @@ private:
 
 	float StartJumpSpeed_ = -0.7f;
 
-	int32_t resetPoint_ = 0;
+	int32_t resetPoint_ = -10;
 
 	float kBulletSpeed_ = 1.0f;
 
@@ -198,5 +204,19 @@ private:
 	AttackType attackType=AttackType::Normal;
 
 	LightGroup* light_;
+
+#pragma region カメラ回転用変数
+	bool isChangCamera_ = false;
+
+	Vector3 startCameraPos_;
+
+	Vector3 endCameraPos_;
+
+	uint32_t cameraChangeFrame_;
+
+	const uint32_t cameraCgangeMaxFrame_=60;
+
+	uint32_t playerNuwCamera_=0;
+#pragma endregion
 };
 

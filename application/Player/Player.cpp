@@ -181,6 +181,8 @@ void Player::Update()
 			attackType = AttackType::Bomb;
 		}
 
+		CameraPosChange();
+
 		EnemyCollision();
 
 		MapCollision();
@@ -227,7 +229,7 @@ void Player::Update()
 	ImGui::SliderFloat("kBulletSpeed",&kBulletSpeed_,0.0f,1.0f,"%1.2f");
 	ImGui::SliderInt("bulletLife",&bulletLife_,0,300);
 
-	ImGui::SliderFloat3("camera",&cameraPos_.x,-100,100,"%3.0f");
+	ImGui::SliderFloat3("camera",&cameraPos_.x,-40,40,"%3.0f");
 
 	ImGui::End();
 
@@ -242,8 +244,22 @@ void Player::Move()
 		{
 			if ( Input::Instance()->IsLinkGamePad() )
 			{
-
-				move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
+				if (cameraPos_.x==0&&cameraPos_.z==-40 )
+				{
+					move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
+				}
+				else if ( cameraPos_.x == 0 && cameraPos_.z == 40 )
+				{
+					move_ += {-Input::Instance()->GetPadStick(PadStick::LX),0,-Input::Instance()->GetPadStick(PadStick::LY)};
+				}
+				else if ( cameraPos_.x == -40 && cameraPos_.z == 0 )
+				{
+					move_ += {Input::Instance()->GetPadStick(PadStick::LY),0,-Input::Instance()->GetPadStick(PadStick::LX)};
+				}
+				else if ( cameraPos_.x == 40 && cameraPos_.z == 0 )
+				{
+					move_ += {-Input::Instance()->GetPadStick(PadStick::LY),0,Input::Instance()->GetPadStick(PadStick::LX)};
+				}
 
 				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) && onGround_ == false )
 				{
@@ -1184,3 +1200,38 @@ void Player::SetSpawn(Vector3 spawnPosition)
 
 	obj_->Update();
 }
+
+void Player::SetCameraPos(Vector3 cameraPos)
+{
+	isChangCamera_ = true;
+
+	startCameraPos_ = cameraPos_;
+
+	endCameraPos_ = cameraPos;
+
+	cameraChangeFrame_ = 0;
+
+
+}
+
+void Player::CameraPosChange()
+{
+	if (isChangCamera_ )
+	{
+		cameraChangeFrame_++;
+
+		float f = static_cast<float>( cameraChangeFrame_) / static_cast< float >( cameraCgangeMaxFrame_);
+
+				//赤の線形補間
+		cameraPos_ = ( endCameraPos_ - startCameraPos_) * f;
+		cameraPos_ += startCameraPos_;
+
+		if (cameraChangeFrame_>=cameraCgangeMaxFrame_ )
+		{
+			isChangCamera_ = false;
+		}
+
+	}
+}
+
+

@@ -360,6 +360,42 @@
                 ]
             },
             "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.006",
+            "transform": {
+                "translation": [
+                    40.0,
+                    0.0,
+                    19.200000762939453
+                ],
+                "rotation": [
+                    -0.0,
+                    -179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    2.5,
+                    10.0,
+                    1.0
+                ]
+            },
+            "file_name": "Sousa1",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapTutorial"
         }
     ]
 }

@@ -19,8 +19,6 @@ void GunEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,ui
 
 	obj_->SetModel(model_);
 
-	obj_->SetRot({ 0,135,0 });
-
 	obj_->SetPolygonExplosion({ 0.0f,1.0f,6.28f,20.0f });
 
 	number_ = number;

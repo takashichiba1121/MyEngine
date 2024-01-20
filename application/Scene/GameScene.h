@@ -72,6 +72,13 @@ public:
 			return index < right.index;
 		}
 	};
+
+	struct Camera
+	{
+		Vector3 pos;
+		Vector3 rot;
+		Vector3 scale;
+	};
 public: // メンバ関数
 	GameScene();
 
@@ -151,6 +158,8 @@ private:
 	std::vector<std::unique_ptr<Switch>> switchs_;
 
 	std::vector<std::unique_ptr<Gimmick>> gimmicks_;
+
+	std::vector<std::unique_ptr<Camera>> cameras_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;

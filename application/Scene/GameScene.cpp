@@ -121,7 +121,7 @@ void GameScene::Initialize()
 	retrySprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/retry.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
 
 	retrySprite_->SetAnchorPoint({ 0.5f,0.5f });
-	;
+
 	retrySprite_->SetPosition({ 612,300 });
 
 	retrySprite_->Update();
@@ -170,7 +170,7 @@ void GameScene::Initialize()
 
 	skyObj_->SetPosition({ 100,0,200 });
 
-	skyObj_->SetScale({ 200,200,200 });
+	skyObj_->SetScale({ 300,300,300 });
 
 	skyObj_->SetRot({ 0,0,0 });
 
@@ -589,15 +589,15 @@ void GameScene::Update()
 			goalSwitch->lightFrame++;
 			float a = goalSwitch->spotLight->GetScale().z;
 
-			float f = ( float )goalSwitch->lightFrame / lightMaxFrame;
+			float f = ( float ) goalSwitch->lightFrame / lightMaxFrame;
 
-			goalSwitch->spotLight->SetScale({ f*(a/5),1,a });
+			goalSwitch->spotLight->SetScale({ f * ( a / 5 ),1,a });
 
 			f *= 1.5f;
 
-			goalSwitch->light->SetScale({f,f,f});
+			goalSwitch->light->SetScale({ f,f,f });
 
-			if ( goalSwitch->lightFrame >= lightMaxFrame)
+			if ( goalSwitch->lightFrame >= lightMaxFrame )
 			{
 				goalSwitch->phase = Phase::After;
 			}
@@ -636,32 +636,32 @@ void GameScene::Update()
 					switchs_[ i ]->phase = Phase::After;
 				}
 			}
-			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
+		}
+		for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
+		{
+			if ( switchs_[ i ]->index == gimmicks_[ j ]->index&& switchs_[ i ]->phase != Phase::Before )
 			{
-				if ( switchs_[ i ]->index == gimmicks_[ j ]->index )
+				if ( gimmicks_[ j ]->phase == Phase::Before )
 				{
-					if ( gimmicks_[ j ]->phase == Phase::Before )
-					{
-						gimmicks_[ j ]->phase = Phase::Middle;
-						gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
-					}
-					if ( gimmicks_[ j ]->phase == Phase::Middle )
-					{
-						Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
+					gimmicks_[ j ]->phase = Phase::Middle;
+					gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
+				}
+				if ( gimmicks_[ j ]->phase == Phase::Middle )
+				{
+					Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
 
-						pos.y -= 0.1f;
+					pos.y -= 0.1f;
 
-						if ( pos.y <= gimmicks_[ j ]->EndPosY )
-						{
-							pos.y = gimmicks_[ j ]->EndPosY;
-							gimmicks_[ j ]->phase = Phase::After;
-						}
-						gimmicks_[ j ]->obj->SetPosition(pos);
+					if ( pos.y <= gimmicks_[ j ]->EndPosY )
+					{
+						pos.y = gimmicks_[ j ]->EndPosY;
+						gimmicks_[ j ]->phase = Phase::After;
 					}
+					gimmicks_[ j ]->obj->SetPosition(pos);
 				}
 			}
+			gimmicks_[ j ]->obj->Update();
 		}
-		gimmicks_[ i ]->obj->Update();
 	}
 
 	light_->Update();
@@ -797,6 +797,10 @@ void GameScene::MapLoad(std::string mapFullpath)
 	switchs_.clear();
 
 	gimmicks_.clear();
+
+	tutorials_.clear();
+
+	cameras_.clear();
 
 	EnemyManager::Instance()->Clear();
 
@@ -1065,6 +1069,20 @@ void GameScene::MapLoad(std::string mapFullpath)
 			// 配列に登録
 			gimmicks_.push_back(std::move(newObject));
 		}
+		if (tagName=="camera" )
+		{
+			std::unique_ptr<Camera> camera;
+
+			camera = std::make_unique<Camera>();
+
+			camera->pos = objectData.trans;
+
+			camera->rot = objectData.rot;
+
+			camera->scale = objectData.scale;
+
+			cameras_.push_back(std::move(camera));
+		}
 		if ( tagName == "Spawn" )
 		{
 			player_->SetSpawn(objectData.trans);
@@ -1109,6 +1127,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
+			enemy->GetObj()->SetRot(objectData.rot);
+
 			enemy->Update();
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
@@ -1122,6 +1142,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
+
+			enemy->GetObj()->SetRot(objectData.rot);
 
 			enemy->Update();
 
@@ -1137,6 +1159,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
+			enemy->GetObj()->SetRot(objectData.rot);
+
 			enemy->Update();
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
@@ -1150,6 +1174,8 @@ void GameScene::MapLoad(std::string mapFullpath)
 			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
+
+			enemy->GetObj()->SetRot(objectData.rot);
 
 			enemy->Update();
 
@@ -1412,7 +1438,7 @@ void GameScene::SwitchCollsion()
 
 					float a = pos.length() / 2.5f;
 
-					goalSwitch->spotLight->SetScale({ a/5,1,a });
+					goalSwitch->spotLight->SetScale({ a / 5,1,a });
 
 					pos = pos / 2 + goalSwitch->obj->GetPosition();
 
@@ -1437,7 +1463,7 @@ void GameScene::SwitchCollsion()
 
 					Switch->phase = Phase::Middle;
 
-					Switch->light->SetScale({ 0,0,0});
+					Switch->light->SetScale({ 0,0,0 });
 
 					light_->SetPointActive(Switch->lightIndex,true);
 
@@ -1448,6 +1474,26 @@ void GameScene::SwitchCollsion()
 					light_->SetPointAtten(Switch->lightIndex,{ 0.03f,0.01f,0.01f });
 					break;
 				}
+			}
+		}
+	}
+	Collider::Cube playerCube;
+	playerCube.Pos = player_->GetObj()->GetPosition();
+	playerCube.scale = player_->GetObj()->GetScale();
+	for (uint32_t i=0;i<cameras_.size();i++ )
+	{
+		Vector3 pos = cameras_[ i ]->rot / 1.57f;
+
+		pos *= 40;
+
+		if ( player_->GetEndCameraPos()!=pos )
+		{
+			Collider::Cube cameraCube;
+			cameraCube.Pos = cameras_[ i ]->pos;
+			cameraCube.scale = cameras_[ i ]->scale;
+			if ( Collider::CubeAndCube(playerCube,cameraCube,Collider::Collsion) == true )
+			{
+				player_->SetCameraPos(pos);
 			}
 		}
 	}

@@ -72,10 +72,11 @@ LevelData* LevelLoad::Load(const std::string fullpath)
 			objectData.trans.x = (float)transform["translation"][1];
 			objectData.trans.y = (float)transform["translation"][2];
 			objectData.trans.z = -(float)transform["translation"][0];
+
 			//回転角
-			objectData.rot.x = -(float)transform["rotation"][1];
-			objectData.rot.y = -(float)transform["rotation"][2];
-			objectData.rot.z = (float)transform["rotation"][0];
+			objectData.rot.x = -( float ) transform[ "rotation" ][ 1 ];
+			objectData.rot.y = -( float ) transform[ "rotation" ][ 2 ];
+			objectData.rot.z = ( float ) transform[ "rotation" ][ 0 ];
 			//スケール
 			objectData.scale.x = (float)transform["scaling"][1];
 			objectData.scale.y = (float)transform["scaling"][2];
