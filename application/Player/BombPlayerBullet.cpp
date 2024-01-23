@@ -15,7 +15,7 @@ void BombPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor({ bulletColor_ });
+	obj_->SetColor({ bulletColor_/2 });
 
 	life_ = life;
 

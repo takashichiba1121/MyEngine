@@ -205,7 +205,7 @@ void GameScene::Initialize()
 
 	Enemy::SetLight(light_.get());
 
-	EnemyBullet::SetLightIndex(light_.get());
+	EnemyBullet::SetLight(light_.get());
 
 	particleManager_ = std::make_unique<ParticleManager>();
 
@@ -1411,7 +1411,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 void GameScene::ModelLoad()
 {
 	std::unique_ptr<Model> bulletModel_;
-	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet",true));
+	bulletModel_.reset(Model::LoadFormOBJ("Bullet",true));
 	models_.insert(std::make_pair("enemyBullet",std::move(bulletModel_)));
 	
 	std::unique_ptr<Model> mapModel_;

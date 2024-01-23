@@ -31,7 +31,7 @@ void Player::Initialize()
 
 	obj_->Update();
 
-	bulletModel_.reset(Model::LoadFormOBJ("playerBullet",true));
+	bulletModel_.reset(Model::LoadFormOBJ("Bullet",true));
 
 	PlayerBulletManager::Instance()->Initialize();
 

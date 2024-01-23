@@ -49,7 +49,7 @@ public:
 
 	void SetLight(int32_t lightIndex);
 
-	static void SetLightIndex(LightGroup* light) {light_ = light;}
+	static void SetLight(LightGroup* light) {light_ = light;}
 
 private:
 
@@ -74,4 +74,6 @@ private:
 	Phase phase_=Phase::Charge;
 
 	int32_t lightIndex_;
+
+	const Vector3 bulletColor_ = { 0.39f,0.88f,0.39f };
 };

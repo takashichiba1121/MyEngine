@@ -14,6 +14,8 @@ void EnemyBullet::Initialize(Model* model, Vector3 velocity, Vector3 position)
 	obj_->SetModel(model);
 
 	obj_->SetPosition(position);
+
+	obj_->SetColor(bulletColor_/2);
 }
 
 void EnemyBullet::Update()
@@ -65,9 +67,7 @@ void EnemyBullet::Update()
 
 void EnemyBullet::Draw()
 {
-		Object3d::ChangePipeLine(Object3d::Light);
 		obj_->Draw();
-		Object3d::ChangePipeLine(Object3d::CullBack);
 }
 
 void EnemyBullet::OnCollision()
@@ -95,8 +95,12 @@ void EnemyBullet::OnCollision()
 
 		//pos.normalize();
 
+		const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,1 };
+
+		const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
+
 		//追加
-		EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,{ 3,3,1,1 },{ 3,3,0.5,1 });
+		EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,startColor,endColor);
 	}
 }
 
@@ -123,7 +127,7 @@ void EnemyBullet::SetLight(int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ 1,0.88f,0.59f });
+		light_->SetPointColor(lightIndex_,bulletColor_);
 
 		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}
