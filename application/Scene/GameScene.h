@@ -41,7 +41,7 @@ public:
 		std::unique_ptr<Object3d> spotLight;
 		uint32_t lightFrame;
 		uint32_t lightIndex = 0;
-		Phase phase=Phase::Before;
+		Phase phase = Phase::Before;
 	};
 
 	struct Switch
@@ -79,6 +79,14 @@ public:
 		Vector3 rot;
 		Vector3 scale;
 	};
+
+	struct Middle
+	{
+		std::unique_ptr<Object3d> obj;
+		Phase phase = Phase::Before;
+
+		uint32_t Frame=0;
+	};
 public: // メンバ関数
 	GameScene();
 
@@ -106,7 +114,7 @@ public: // メンバ関数
 	/// <summary>
 	/// マップデータのロード
 	/// </summary>
-	void MapLoad(std::string mapfullpath);
+	void MapLoad(std::string mapfullpath,bool middleSwitchRLoad);
 
 private:
 	//モデルのロード
@@ -117,27 +125,9 @@ private:
 private:
 #pragma region モデル
 
-	std::map<std::string,Model*> models_;
-
-	std::unique_ptr <Model> mapModel_;
-	std::unique_ptr <Model> stageModel_;
-	std::unique_ptr <Model> goalModel_;
-	std::unique_ptr <Model> bulletModel_;
-
-	std::unique_ptr<Model> GroundModel_;
+	std::map<std::string,std::unique_ptr<Model>> models_;
 
 	std::unique_ptr<Model> skyModel_;
-
-	std::unique_ptr<Model> enemyModel_;
-	std::unique_ptr<Model> gunEnemyModel_;
-	std::unique_ptr<Model> jumpEnemyModel_;
-	std::unique_ptr<Model> tutorialEnemyModel_;
-	std::unique_ptr<Model> blockModel_;
-
-	std::unique_ptr<Model> planeModel_;
-	std::unique_ptr<Model> goalSwitchModel_;
-	std::unique_ptr<Model> fenceModel_;
-
 	std::unique_ptr<Model> stage2Plane_;
 	std::unique_ptr<Model> stage1Plane_;
 
@@ -160,6 +150,8 @@ private:
 	std::vector<std::unique_ptr<Gimmick>> gimmicks_;
 
 	std::vector<std::unique_ptr<Camera>> cameras_;
+
+	std::vector<std::unique_ptr<Middle>> middles_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
@@ -252,7 +244,7 @@ private:
 
 	uint32_t spotLightTex = 0;
 
-	const uint32_t spotLightMaxFrame=30;
+	const uint32_t spotLightMaxFrame = 30;
 
 	const uint32_t lightMaxFrame = 30;
 };

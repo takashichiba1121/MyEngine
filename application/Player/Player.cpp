@@ -291,21 +291,81 @@ void Player::Move()
 			}
 			else
 			{
-				if ( Input::Instance()->PushKey(DIK_W) )
+				if ( cameraPos_.x == 0 && cameraPos_.z == -40 )
 				{
-					move_ += {0,0,1};
+					if ( Input::Instance()->PushKey(DIK_W) )
+					{
+						move_ += {0,0,1};
+					}
+					if ( Input::Instance()->PushKey(DIK_A) )
+					{
+						move_ += {-1,0,0};
+					}
+					if ( Input::Instance()->PushKey(DIK_S) )
+					{
+						move_ += {0,0,-1};
+					}
+					if ( Input::Instance()->PushKey(DIK_D) )
+					{
+						move_ += {1,0,0};
+					}
 				}
-				if ( Input::Instance()->PushKey(DIK_A) )
+				else if ( cameraPos_.x == 0 && cameraPos_.z == 40 )
 				{
-					move_ += {-1,0,0};
+					if ( Input::Instance()->PushKey(DIK_W) )
+					{
+						move_ += {0,0,-1};
+					}
+					if ( Input::Instance()->PushKey(DIK_A) )
+					{
+						move_ += {1,0,0};
+					}
+					if ( Input::Instance()->PushKey(DIK_S) )
+					{
+						move_ += {0,0,1};
+					}
+					if ( Input::Instance()->PushKey(DIK_D) )
+					{
+						move_ += {-1,0,0};
+					}
 				}
-				if ( Input::Instance()->PushKey(DIK_S) )
+				else if ( cameraPos_.x == -40 && cameraPos_.z == 0 )
 				{
-					move_ += {0,0,-1};
+					if ( Input::Instance()->PushKey(DIK_W) )
+					{
+						move_ += {1,0,0};
+					}
+					if ( Input::Instance()->PushKey(DIK_A) )
+					{
+						move_ += {0,0,1};
+					}
+					if ( Input::Instance()->PushKey(DIK_S) )
+					{
+						move_ += {-1,0,0};
+					}
+					if ( Input::Instance()->PushKey(DIK_D) )
+					{
+						move_ += {0,0,-1};
+					}
 				}
-				if ( Input::Instance()->PushKey(DIK_D) )
+				else if ( cameraPos_.x == 40 && cameraPos_.z == 0 )
 				{
-					move_ += {1,0,0};
+					if ( Input::Instance()->PushKey(DIK_W) )
+					{
+						move_ += {-1,0,0};
+					}
+					if ( Input::Instance()->PushKey(DIK_A) )
+					{
+						move_ += {0,0,-1};
+					}
+					if ( Input::Instance()->PushKey(DIK_S) )
+					{
+						move_ += {1,0,0};
+					}
+					if ( Input::Instance()->PushKey(DIK_D) )
+					{
+						move_ += {0,0,1};
+					}
 				}
 				if ( Input::Instance()->TriggerKey(DIK_SPACE) && onGround_ == false )
 				{
@@ -1190,10 +1250,13 @@ void Player::EnemyCollision()
 //	goalScale_ = goalScale;
 //}
 
-void Player::SetSpawn(Vector3 spawnPosition)
+void Player::SetSpawnPos(Vector3 spawnPosition)
 {
 	spawnPosition_ = spawnPosition;
+}
 
+void Player::RSpawn()
+{
 	obj_->SetPosition(spawnPosition_);
 
 	obj_->SetRot({ 0,0,0 });

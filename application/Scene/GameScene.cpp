@@ -182,7 +182,7 @@ void GameScene::Initialize()
 
 	player_->Initialize();
 
-	MapLoad("Resources/Select.json");
+	MapLoad("Resources/Select.json",false);
 
 	player_->SetLight(light_.get());
 
@@ -229,7 +229,7 @@ void GameScene::Update()
 	{
 		EnemyManager::Instance()->Clear();
 
-		MapLoad(mapName_);
+		MapLoad(mapName_,false);
 
 		player_->SetMapData(&objects_);
 	}
@@ -411,7 +411,7 @@ void GameScene::Update()
 						}
 						else
 						{
-							MapLoad(mapName_);
+							MapLoad(mapName_,true);
 
 							player_->Reset();
 
@@ -445,7 +445,7 @@ void GameScene::Update()
 			{
 				if ( isStage1_ == true )
 				{
-					MapLoad("Resources/Stage1.json");
+					MapLoad("Resources/Stage1.json",false);
 
 					player_->SetMapData(&objects_);
 
@@ -472,7 +472,7 @@ void GameScene::Update()
 				}
 				else if ( isStage2_ == true )
 				{
-					MapLoad("Resources/Stage2.json");
+					MapLoad("Resources/Stage2.json",false);
 
 					player_->SetMapData(&objects_);
 
@@ -499,7 +499,7 @@ void GameScene::Update()
 				}
 				else
 				{
-					MapLoad("Resources/Stage3.json");
+					MapLoad("Resources/Stage3.json",false);
 
 					player_->SetMapData(&objects_);
 
@@ -664,6 +664,25 @@ void GameScene::Update()
 		}
 	}
 
+	for ( uint32_t i = 0; i < middles_.size(); i++ )
+	{
+		if ( middles_[i]->phase == Phase::Middle )
+		{
+			middles_[ i ]->Frame++;
+
+			float f = middles_[ i ]->Frame  / goalOpenMaxFlame;
+
+			middles_[ i ]->obj->SetColor({ f,f,f });
+
+			if ( middles_[ i ]->Frame >= goalOpenMaxFlame )
+			{
+				middles_[ i ]->phase = Phase::After;
+			}
+		}
+
+		middles_[ i ]->obj->Update();
+	}
+
 	light_->Update();
 
 	goalObj_->Update();
@@ -718,6 +737,11 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	for ( std::unique_ptr<Gimmick>& gimmick : gimmicks_ )
 	{
 		gimmick->obj->Draw();
+	}
+
+	for ( uint32_t i = 0; i < middles_.size(); i++ )
+	{
+		middles_[ i ]->obj->Draw();
 	}
 
 	EnemyManager::Instance()->Draw();
@@ -778,7 +802,7 @@ void GameScene::Finalize()
 	PlayerBulletManager::Instance()->Fin();
 }
 
-void GameScene::MapLoad(std::string mapFullpath)
+void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 {
 	std::unique_ptr<LevelData> levelData;
 	levelData.reset(LevelLoad::Load(mapFullpath));
@@ -802,6 +826,11 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 	cameras_.clear();
 
+	if (!middleSwitchRLoad)
+	{
+		middles_.clear();
+	}
+
 	EnemyManager::Instance()->Clear();
 
 	mapName_ = mapFullpath;
@@ -823,7 +852,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			//モデルを指定して3Dオブジェクトを生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			newObject->Initialize();
-			newObject->SetModel(models_[ objectData.fileName ]);
+			newObject->SetModel(models_[ objectData.fileName ].get());
 
 			assert(newObject);
 
@@ -908,7 +937,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			std::unique_ptr<Plane> newObject = std::make_unique<Plane>();
 			newObject->plane = std::make_unique<Object3d>();
 			newObject->plane->Initialize();
-			newObject->plane->SetModel(models_[ "plane" ]);
+			newObject->plane->SetModel(models_[ "plane" ].get());
 
 			// 座標
 			newObject->plane->SetPosition({ objectData.trans });
@@ -931,7 +960,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			std::unique_ptr<Tutorial> newObject = std::make_unique<Tutorial>();
 			newObject->obj = std::make_unique<Object3d>();
 			newObject->obj->Initialize();
-			newObject->obj->SetModel(models_[ "plane" ]);
+			newObject->obj->SetModel(models_[ "plane" ].get());
 
 			newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/" + objectData.fileName + ".png");
 
@@ -954,7 +983,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			std::unique_ptr<GoalSwitch> newObject = std::make_unique<GoalSwitch>();
 			newObject->obj = std::make_unique<Object3d>();
 			newObject->obj->Initialize();
-			newObject->obj->SetModel(models_[ objectData.fileName ]);
+			newObject->obj->SetModel(models_[ objectData.fileName ].get());
 
 			assert(newObject);
 
@@ -971,13 +1000,13 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			newObject->light->Initialize();
 
-			newObject->light->SetModel(models_[ "enemyBullet" ]);
+			newObject->light->SetModel(models_[ "enemyBullet" ].get());
 
 			newObject->spotLight = std::make_unique<Object3d>();
 
 			newObject->spotLight->Initialize();
 
-			newObject->spotLight->SetModel(models_[ "plane" ]);
+			newObject->spotLight->SetModel(models_[ "plane" ].get());
 
 			Vector3 pos = objectData.trans;
 
@@ -1008,7 +1037,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			std::unique_ptr<Switch> newObject = std::make_unique<Switch>();
 			newObject->obj = std::make_unique<Object3d>();
 			newObject->obj->Initialize();
-			newObject->obj->SetModel(models_[ objectData.fileName ]);
+			newObject->obj->SetModel(models_[ objectData.fileName ].get());
 			// 座標
 			newObject->obj->SetPosition({ objectData.trans });
 			// 回転角
@@ -1018,7 +1047,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			newObject->light = std::make_unique<Object3d>();
 			newObject->light->Initialize();
-			newObject->light->SetModel(models_[ "enemyBullet" ]);
+			newObject->light->SetModel(models_[ "enemyBullet" ].get());
 
 			Vector3 pos = objectData.trans;
 			//ライトの位置を中心から少し上に調整
@@ -1053,7 +1082,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			std::unique_ptr<Gimmick> newObject = std::make_unique<Gimmick>();
 			newObject->obj = std::make_unique<Object3d>();
 			newObject->obj->Initialize();
-			newObject->obj->SetModel(models_[ objectData.fileName ]);
+			newObject->obj->SetModel(models_[ objectData.fileName ].get());
 			// 座標
 			newObject->obj->SetPosition({ objectData.trans });
 			// 回転角
@@ -1083,10 +1112,40 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			cameras_.push_back(std::move(camera));
 		}
+		if ( !middleSwitchRLoad )
+		{
+			if ( tagName == "Middle" )
+			{
+				std::unique_ptr<Middle> newObject = std::make_unique<Middle>();
+				newObject->obj = std::make_unique<Object3d>();
+
+				newObject->obj->Initialize();
+				newObject->obj->SetModel(models_[ objectData.fileName ].get());
+				// 座標
+				newObject->obj->SetPosition({ objectData.trans });
+				// 回転角
+				newObject->obj->SetRot({ objectData.rot });
+				// 座標
+				newObject->obj->SetScale({ objectData.scale });
+
+				newObject->obj->SetColor({0,0,0});
+
+				middles_.push_back(std::move(newObject));
+
+			}
+		}
 		if ( tagName == "Spawn" )
 		{
-			player_->SetSpawn(objectData.trans);
+			if ( !middleSwitchRLoad )
+			{
+				player_->SetSpawnPos(objectData.trans);
 
+				player_->RSpawn();
+			}
+			else
+			{
+				player_->RSpawn();
+			}
 			cameraEnd_ = objectData.trans;
 		}
 		if ( tagName == "Goal" )
@@ -1094,7 +1153,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 			//player_->SetGoal(objectData.trans, objectData.scale);
 
 			//モデルを指定して3Dオブジェクトを生成
-			goalObj_->SetModel(models_[ objectData.fileName ]);
+			goalObj_->SetModel(models_[ objectData.fileName ].get());
 
 			// 座標
 			goalObj_->SetPosition({ objectData.trans });
@@ -1123,7 +1182,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<GunEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ].get(),models_[ "enemyBullet" ].get(),player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
@@ -1139,7 +1198,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<RunEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ].get(),models_[ "enemyBullet" ].get(),player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
@@ -1155,7 +1214,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<jumpEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ].get(),models_[ "enemyBullet" ].get(),player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
@@ -1171,7 +1230,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<TutorialEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ].get(),models_[ "enemyBullet" ].get(),player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
@@ -1187,7 +1246,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 			enemy = std::make_unique<WallEnemy>();
 
-			enemy->Initialize(models_[ objectData.fileName ],models_[ "enemyBullet" ],player_.get(),EnemyNumber++);
+			enemy->Initialize(models_[ objectData.fileName ].get(),models_[ "enemyBullet" ].get(),player_.get(),EnemyNumber++);
 
 			enemy->GetObj()->SetPosition(objectData.trans);
 
@@ -1265,7 +1324,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 		if ( tagName == "Stage1" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			stage1Obj_->SetModel(models_[ objectData.fileName ]);
+			stage1Obj_->SetModel(models_[ objectData.fileName ].get());
 
 			// 座標
 			stage1Obj_->SetPosition({ objectData.trans });
@@ -1285,7 +1344,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 		if ( tagName == "Stage2" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			stage2Obj_->SetModel(models_[ objectData.fileName ]);
+			stage2Obj_->SetModel(models_[ objectData.fileName ].get());
 
 			// 座標
 			stage2Obj_->SetPosition({ objectData.trans });
@@ -1305,7 +1364,7 @@ void GameScene::MapLoad(std::string mapFullpath)
 		if ( tagName == "Stage3" )
 		{
 			//モデルを指定して3Dオブジェクトを生成
-			stage3Obj_->SetModel(models_[ objectData.fileName ]);
+			stage3Obj_->SetModel(models_[ objectData.fileName ].get());
 
 			// 座標
 			stage3Obj_->SetPosition({ objectData.trans });
@@ -1351,41 +1410,53 @@ void GameScene::MapLoad(std::string mapFullpath)
 
 void GameScene::ModelLoad()
 {
+	std::unique_ptr<Model> bulletModel_;
 	bulletModel_.reset(Model::LoadFormOBJ("enemyBullet",true));
-	models_.insert(std::make_pair("enemyBullet",bulletModel_.get()));
-
+	models_.insert(std::make_pair("enemyBullet",std::move(bulletModel_)));
+	
+	std::unique_ptr<Model> mapModel_;
 	mapModel_.reset(Model::LoadFormOBJ("Map",true));
-	models_.insert(std::make_pair("Map",mapModel_.get()));
+	models_.insert(std::make_pair("Map",std::move(mapModel_)));
 
+	std::unique_ptr<Model> goalModel_;
 	goalModel_.reset(Model::LoadFormOBJ("Goal",true));
-	models_.insert(std::make_pair("Goal",goalModel_.get()));
+	models_.insert(std::make_pair("Goal",std::move(goalModel_)));
 
+	std::unique_ptr<Model> enemyModel_;
 	enemyModel_.reset(Model::LoadFormOBJ("RunEnemy",true));
-	models_.insert(std::make_pair("RunEnemy",enemyModel_.get()));
+	models_.insert(std::make_pair("RunEnemy",std::move(enemyModel_)));
 
+	std::unique_ptr<Model> gunEnemyModel_;
 	gunEnemyModel_.reset(Model::LoadFormOBJ("GunEnemy",true));
-	models_.insert(std::make_pair("GunEnemy",gunEnemyModel_.get()));
+	models_.insert(std::make_pair("GunEnemy",std::move(gunEnemyModel_)));
 
+	std::unique_ptr<Model> jumpEnemyModel_;
 	jumpEnemyModel_.reset(Model::LoadFormOBJ("jumpEnemy",true));
-	models_.insert(std::make_pair("jumpEnemy",jumpEnemyModel_.get()));
+	models_.insert(std::make_pair("jumpEnemy",std::move(jumpEnemyModel_)));
 
+	std::unique_ptr<Model> tutorialEnemyModel_;
 	tutorialEnemyModel_.reset(Model::LoadFormOBJ("tutorialEnemy",true));
-	models_.insert(std::make_pair("tutorialEnemy",tutorialEnemyModel_.get()));
+	models_.insert(std::make_pair("tutorialEnemy",std::move(tutorialEnemyModel_)));
 
+	std::unique_ptr<Model> stageModel_;
 	stageModel_.reset(Model::LoadFormOBJ("stage",true));
-	models_.insert(std::make_pair("stage",stageModel_.get()));
+	models_.insert(std::make_pair("stage",std::move(stageModel_)));
 
+	std::unique_ptr<Model> planeModel_;
 	planeModel_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/plane.png")));
-	models_.insert(std::make_pair("plane",planeModel_.get()));
+	models_.insert(std::make_pair("plane",std::move(planeModel_)));
 
+	std::unique_ptr<Model> goalSwitchModel_;
 	goalSwitchModel_.reset(Model::LoadFormOBJ("GoalSwitch",true));
-	models_.insert(std::make_pair("GoalSwitch",goalSwitchModel_.get()));
+	models_.insert(std::make_pair("GoalSwitch",std::move(goalSwitchModel_)));
 
+	std::unique_ptr<Model> fenceModel_;
 	fenceModel_.reset(Model::LoadFormOBJ("fence",true));
-	models_.insert(std::make_pair("fence",fenceModel_.get()));
+	models_.insert(std::make_pair("fence",std::move(fenceModel_)));
 
+	std::unique_ptr<Model> blockModel_;
 	blockModel_.reset(Model::LoadFormOBJ("block",true));
-	models_.insert(std::make_pair("block",blockModel_.get()));
+	models_.insert(std::make_pair("block",std::move(blockModel_)));
 }
 
 void GameScene::SwitchCollsion()
@@ -1418,8 +1489,6 @@ void GameScene::SwitchCollsion()
 
 					Vector3 pos = goalObj_->GetPosition() - goalSwitch->obj->GetPosition();
 
-					pos.y -= 1;
-
 					Vector3 cameForward = { 0,0,-1 };
 
 					Vector3  cameRight = { 1,0,0 };
@@ -1441,6 +1510,8 @@ void GameScene::SwitchCollsion()
 					goalSwitch->spotLight->SetScale({ a / 5,1,a });
 
 					pos = pos / 2 + goalSwitch->obj->GetPosition();
+
+					pos.y = goalSwitch->obj->GetPosition().y+0.1f;
 
 					goalSwitch->spotLight->SetPosition(pos);
 
@@ -1494,6 +1565,22 @@ void GameScene::SwitchCollsion()
 			if ( Collider::CubeAndCube(playerCube,cameraCube,Collider::Collsion) == true )
 			{
 				player_->SetCameraPos(pos);
+			}
+		}
+	}
+
+	for ( uint32_t i = 0; i < middles_.size(); i++ )
+	{
+		if ( middles_[i]->phase==Phase::Before )
+		{
+			Collider::Cube middleCube;
+			middleCube.Pos = middles_[ i ]->obj->GetPosition();
+			middleCube.scale = middles_[ i ]->obj->GetScale();
+			if ( Collider::CubeAndCube(playerCube,middleCube,Collider::Collsion) == true )
+			{
+				middles_[ i ]->phase=Phase::Middle;
+
+				player_->SetSpawnPos(middles_[i]->obj->GetPosition());
 			}
 		}
 	}

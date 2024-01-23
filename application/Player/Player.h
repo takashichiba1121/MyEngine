@@ -93,7 +93,12 @@ public:
 	/// <summary>
 	/// スポーン位置の設定
 	/// </summary>
-	void SetSpawn(Vector3 spawnPosition);
+	void SetSpawnPos(Vector3 spawnPosition);
+
+	/// <summary>
+	/// スポーン位置にプレイヤーを戻す
+	/// </summary>
+	void RSpawn();
 
 	bool GetOnGround() {return onGround_;}
 
