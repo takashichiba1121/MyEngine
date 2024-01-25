@@ -182,7 +182,9 @@ void GameScene::Initialize()
 
 	player_->Initialize();
 
-	MapLoad("Resources/Select.json",false);
+	MapLoad("Resources/Stage1.json",false);
+
+	nowStage = Stage::Stage1;
 
 	player_->SetLight(light_.get());
 
@@ -285,80 +287,41 @@ void GameScene::Update()
 
 		A.scale = player_->GetObj()->GetScale();
 
-		if ( mapName_ != "Resources/Select.json" )
+		for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 		{
-			for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+			if ( goalSwitch->phase == Phase::After )
 			{
-				if ( goalSwitch->phase == Phase::After )
-				{
-					goalOpen = Phase::Middle;
-				}
-				else
-				{
-					goalOpen = Phase::Before;
-					break;
-				}
-
+				goalOpen = Phase::Middle;
 			}
-			if ( goalOpen == Phase::Middle )
+			else
 			{
-				goalOpenflame++;
-
-				float f = goalOpenflame / goalOpenMaxFlame;
-
-				goalObj_->SetColor({ f,f,f });
-
-				if ( goalOpenflame >= goalOpenMaxFlame )
-				{
-					goalOpen = Phase::After;
-				}
+				goalOpen = Phase::Before;
+				break;
 			}
-			if ( goalOpen == Phase::After )
+
+		}
+		if ( goalOpen == Phase::Middle )
+		{
+			goalOpenflame++;
+
+			float f = goalOpenflame / goalOpenMaxFlame;
+
+			goalObj_->SetColor({ f,f,f });
+
+			if ( goalOpenflame >= goalOpenMaxFlame )
 			{
-				B.Pos = goalObj_->GetPosition();
-
-				B.scale = goalObj_->GetScale();
-
-				if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
-				{
-					isClear_ = true;
-					sceneChange_ = true;
-				}
+				goalOpen = Phase::After;
 			}
 		}
-		else
+		if ( goalOpen == Phase::After )
 		{
+			B.Pos = goalObj_->GetPosition();
 
-			B.Pos = stage1Obj_->GetPosition();
-
-			B.scale = stage1Obj_->GetScale();
-
-			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
-			{
-				isNext_ = true;
-				isStage1_ = true;
-				sceneChange_ = true;
-			}
-
-			B.Pos = stage2Obj_->GetPosition();
-
-			B.scale = stage2Obj_->GetScale();
+			B.scale = goalObj_->GetScale();
 
 			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
 			{
-				isNext_ = true;
-				isStage2_ = true;
-				sceneChange_ = true;
-			}
-
-			B.Pos = stage3Obj_->GetPosition();
-
-			B.scale = stage3Obj_->GetScale();
-
-			if ( Collider::CubeAndCube(A,B,Collider::Collsion) )
-			{
-				isNext_ = true;
-				isStage3_ = true;
+				isClear_ = true;
 				sceneChange_ = true;
 			}
 		}
@@ -381,103 +344,17 @@ void GameScene::Update()
 		}
 		else if ( frame_ <= 0 )
 		{
-			if ( mapName_ != "Resources/Select.json" )
+			if ( isClear_ )
 			{
-				if ( isClear_ )
+				std::vector<Object3d*> a;
+
+				switch ( nowStage )
 				{
-					SceneManager::Instance()->ChangeScene("RESULT");
-				}
-				else if ( player_->IsDaed() )
-				{
-					if ( Input::Instance()->GetPadStick(PadStick::LX) <= -0.5 || Input::Instance()->TriggerKey(DIK_A) )
-					{
-						retry_ = true;
-						yazirusiSprite_->SetPosition({ 240,400 });
-						yazirusiSprite_->Update();
-					}
-					else if ( Input::Instance()->GetPadStick(PadStick::LX) >= 0.5 || Input::Instance()->TriggerKey(DIK_D) )
-					{
-						retry_ = false;
-						yazirusiSprite_->SetPosition({ 848,400 });
-						yazirusiSprite_->Update();
-					}
-					spaceSprite_->SetTexture(padTexHandle_);
-					spaceSprite_->Update();
-					if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) || Input::Instance()->TriggerKey(DIK_SPACE) )
-					{
-						if ( retry_ == false )
-						{
-							SceneManager::Instance()->ChangeScene("TITLE");
-						}
-						else
-						{
-							MapLoad(mapName_,true);
-
-							player_->Reset();
-
-							player_->SetMapData(&objects_);
-
-							std::vector<Object3d*> a;
-
-							for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
-							{
-								a.push_back(gimmicks_[ i ]->obj.get());
-							}
-
-							player_->SetGimmickData(a);
-
-							EnemyManager::Instance()->SetMapData(&objects_);
-
-							EnemyManager::Instance()->SetPlayer(player_.get());
-							//player_->Update();
-							EnemyManager::Instance()->Update();
-
-							sceneStart_ = true;
-
-							sceneChange_ = false;
-
-							retry_ = false;
-						}
-					}
-				}
-			}
-			else
-			{
-				if ( isStage1_ == true )
-				{
-					MapLoad("Resources/Stage1.json",false);
-
-					player_->SetMapData(&objects_);
-
-					std::vector<Object3d*> a;
-
-					for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
-					{
-						a.push_back(gimmicks_[ i ]->obj.get());
-					}
-
-					player_->SetGimmickData(a);
-
-					EnemyManager::Instance()->SetMapData(&objects_);
-
-					EnemyManager::Instance()->SetPlayer(player_.get());
-					//player_->Update();
-					EnemyManager::Instance()->Update();
-
-					IsCameraSet_ = true;
-
-					sceneStart_ = true;
-
-					sceneChange_ = false;
-				}
-				else if ( isStage2_ == true )
-				{
+				case GameScene::Stage::Stage1:
 					MapLoad("Resources/Stage2.json",false);
 
 					player_->SetMapData(&objects_);
 
-					std::vector<Object3d*> a;
-
 					for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
 					{
 						a.push_back(gimmicks_[ i ]->obj.get());
@@ -496,15 +373,14 @@ void GameScene::Update()
 					sceneStart_ = true;
 
 					sceneChange_ = false;
-				}
-				else
-				{
+
+					nowStage = Stage::Stage2;
+					break;
+				case GameScene::Stage::Stage2:
 					MapLoad("Resources/Stage3.json",false);
 
 					player_->SetMapData(&objects_);
 
-					std::vector<Object3d*> a;
-
 					for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
 					{
 						a.push_back(gimmicks_[ i ]->obj.get());
@@ -523,6 +399,67 @@ void GameScene::Update()
 					sceneStart_ = true;
 
 					sceneChange_ = false;
+
+					nowStage = Stage::Stage3;
+					break;
+				case GameScene::Stage::Stage3:
+					SceneManager::Instance()->ChangeScene("RESULT");
+					break;
+				default:
+					break;
+				};
+			}
+			else if ( player_->IsDaed() )
+			{
+				if ( Input::Instance()->GetPadStick(PadStick::LX) <= -0.5 || Input::Instance()->TriggerKey(DIK_A) )
+				{
+					retry_ = true;
+					yazirusiSprite_->SetPosition({ 240,400 });
+					yazirusiSprite_->Update();
+				}
+				else if ( Input::Instance()->GetPadStick(PadStick::LX) >= 0.5 || Input::Instance()->TriggerKey(DIK_D) )
+				{
+					retry_ = false;
+					yazirusiSprite_->SetPosition({ 848,400 });
+					yazirusiSprite_->Update();
+				}
+				spaceSprite_->SetTexture(padTexHandle_);
+				spaceSprite_->Update();
+				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_A) || Input::Instance()->TriggerKey(DIK_SPACE) )
+				{
+					if ( retry_ == false )
+					{
+						SceneManager::Instance()->ChangeScene("TITLE");
+					}
+					else
+					{
+						MapLoad(mapName_,true);
+
+						player_->Reset();
+
+						player_->SetMapData(&objects_);
+
+						std::vector<Object3d*> a;
+
+						for ( uint32_t i = 0; i < gimmicks_.size(); i++ )
+						{
+							a.push_back(gimmicks_[ i ]->obj.get());
+						}
+
+						player_->SetGimmickData(a);
+
+						EnemyManager::Instance()->SetMapData(&objects_);
+
+						EnemyManager::Instance()->SetPlayer(player_.get());
+						//player_->Update();
+						EnemyManager::Instance()->Update();
+
+						sceneStart_ = true;
+
+						sceneChange_ = false;
+
+						retry_ = false;
+					}
 				}
 			}
 		}
@@ -639,7 +576,7 @@ void GameScene::Update()
 		}
 		for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
 		{
-			if ( switchs_[ i ]->index == gimmicks_[ j ]->index&& switchs_[ i ]->phase != Phase::Before )
+			if ( switchs_[ i ]->index == gimmicks_[ j ]->index && switchs_[ i ]->phase != Phase::Before )
 			{
 				if ( gimmicks_[ j ]->phase == Phase::Before )
 				{
@@ -666,11 +603,11 @@ void GameScene::Update()
 
 	for ( uint32_t i = 0; i < middles_.size(); i++ )
 	{
-		if ( middles_[i]->phase == Phase::Middle )
+		if ( middles_[ i ]->phase == Phase::Middle )
 		{
 			middles_[ i ]->Frame++;
 
-			float f = middles_[ i ]->Frame  / goalOpenMaxFlame;
+			float f = middles_[ i ]->Frame / goalOpenMaxFlame;
 
 			middles_[ i ]->obj->SetColor({ f,f,f });
 
@@ -826,7 +763,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 	cameras_.clear();
 
-	if (!middleSwitchRLoad)
+	if ( !middleSwitchRLoad )
 	{
 		middles_.clear();
 	}
@@ -1098,7 +1035,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 			// 配列に登録
 			gimmicks_.push_back(std::move(newObject));
 		}
-		if (tagName=="camera" )
+		if ( tagName == "camera" )
 		{
 			std::unique_ptr<Camera> camera;
 
@@ -1106,7 +1043,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 			camera->pos = objectData.trans;
 
-			camera->rot = objectData.rot;
+			camera->rot = objectData.size;
 
 			camera->scale = objectData.scale;
 
@@ -1128,7 +1065,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 				// 座標
 				newObject->obj->SetScale({ objectData.scale });
 
-				newObject->obj->SetColor({0,0,0});
+				newObject->obj->SetColor({ 0,0,0 });
 
 				middles_.push_back(std::move(newObject));
 
@@ -1413,7 +1350,7 @@ void GameScene::ModelLoad()
 	std::unique_ptr<Model> bulletModel_;
 	bulletModel_.reset(Model::LoadFormOBJ("Bullet",true));
 	models_.insert(std::make_pair("enemyBullet",std::move(bulletModel_)));
-	
+
 	std::unique_ptr<Model> mapModel_;
 	mapModel_.reset(Model::LoadFormOBJ("Map",true));
 	models_.insert(std::make_pair("Map",std::move(mapModel_)));
@@ -1511,7 +1448,7 @@ void GameScene::SwitchCollsion()
 
 					pos = pos / 2 + goalSwitch->obj->GetPosition();
 
-					pos.y = goalSwitch->obj->GetPosition().y+0.1f;
+					pos.y = goalSwitch->obj->GetPosition().y + 0.1f;
 
 					goalSwitch->spotLight->SetPosition(pos);
 
@@ -1551,13 +1488,13 @@ void GameScene::SwitchCollsion()
 	Collider::Cube playerCube;
 	playerCube.Pos = player_->GetObj()->GetPosition();
 	playerCube.scale = player_->GetObj()->GetScale();
-	for (uint32_t i=0;i<cameras_.size();i++ )
+	for ( uint32_t i = 0; i < cameras_.size(); i++ )
 	{
-		Vector3 pos = cameras_[ i ]->rot / 1.57f;
+		Vector3 pos = cameras_[ i ]->rot;
 
 		pos *= 40;
 
-		if ( player_->GetEndCameraPos()!=pos )
+		if ( player_->GetEndCameraPos() != pos )
 		{
 			Collider::Cube cameraCube;
 			cameraCube.Pos = cameras_[ i ]->pos;
@@ -1571,16 +1508,16 @@ void GameScene::SwitchCollsion()
 
 	for ( uint32_t i = 0; i < middles_.size(); i++ )
 	{
-		if ( middles_[i]->phase==Phase::Before )
+		if ( middles_[ i ]->phase == Phase::Before )
 		{
 			Collider::Cube middleCube;
 			middleCube.Pos = middles_[ i ]->obj->GetPosition();
 			middleCube.scale = middles_[ i ]->obj->GetScale();
 			if ( Collider::CubeAndCube(playerCube,middleCube,Collider::Collsion) == true )
 			{
-				middles_[ i ]->phase=Phase::Middle;
+				middles_[ i ]->phase = Phase::Middle;
 
-				player_->SetSpawnPos(middles_[i]->obj->GetPosition());
+				player_->SetSpawnPos(middles_[ i ]->obj->GetPosition());
 			}
 		}
 	}

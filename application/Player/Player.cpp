@@ -887,6 +887,8 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	{
 		light_->SetPointActive(i,false);
 	}
+
+	cameraPos_ = { 0.0f,40.0f,-40.0f };
 }
 
 void Player::SetGimmickData(std::vector<Object3d*> objects)

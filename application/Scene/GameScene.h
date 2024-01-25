@@ -20,6 +20,13 @@ public:
 		After,
 	};
 
+	enum class Stage
+	{
+		Stage1,
+		Stage2,
+		Stage3
+	};
+
 	struct Plane
 	{
 		std::unique_ptr<Object3d> plane;
@@ -247,5 +254,7 @@ private:
 	const uint32_t spotLightMaxFrame = 30;
 
 	const uint32_t lightMaxFrame = 30;
+
+	Stage nowStage;
 };
 
