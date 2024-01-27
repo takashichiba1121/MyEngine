@@ -229,8 +229,6 @@ private:
 	uint32_t padSousaTexHandle_ = 0;
 	uint32_t keySousaTexHandle_ = 0;
 
-	std::unique_ptr<Sprite> sousaSprite_;
-
 	std::unique_ptr<Sprite> retrySprite_;
 	std::unique_ptr<Sprite> yesSprite_;
 	std::unique_ptr<Sprite> noSprite_;

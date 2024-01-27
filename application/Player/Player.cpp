@@ -887,8 +887,6 @@ void Player::SetMapData(std::vector<std::unique_ptr<Object3d>>* objects)
 	{
 		light_->SetPointActive(i,false);
 	}
-
-	cameraPos_ = { 0.0f,40.0f,-40.0f };
 }
 
 void Player::SetGimmickData(std::vector<Object3d*> objects)
@@ -1266,7 +1264,7 @@ void Player::RSpawn()
 	obj_->Update();
 }
 
-void Player::SetCameraPos(Vector3 cameraPos)
+void Player::SetCameraMove(Vector3 cameraPos)
 {
 	isChangCamera_ = true;
 
@@ -1287,7 +1285,6 @@ void Player::CameraPosChange()
 
 		float f = static_cast<float>( cameraChangeFrame_) / static_cast< float >( cameraCgangeMaxFrame_);
 
-				//赤の線形補間
 		cameraPos_ = ( endCameraPos_ - startCameraPos_) * f;
 		cameraPos_ += startCameraPos_;
 

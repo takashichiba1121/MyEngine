@@ -44,8 +44,6 @@ void GameScene::Initialize()
 
 	spaceSprite_->Update();
 
-	padSousaTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/PadSousa.png");
-
 	player_ = std::make_unique<Player>();
 
 	goalObj_ = std::make_unique<Object3d>();
@@ -105,16 +103,6 @@ void GameScene::Initialize()
 	sceneSprite_->SetScale({ 1280,720 });
 
 	sceneSprite_->Update();
-
-	sousaSprite_ = std::make_unique<Sprite>();
-
-	sousaSprite_->Initialize(padSousaTexHandle_);
-
-	sousaSprite_->SetAnchorPoint({ 0.0f,0.5f });
-	;
-	sousaSprite_->SetPosition({ 25,645 });
-
-	sousaSprite_->Update();
 
 	retrySprite_ = std::make_unique<Sprite>();
 
@@ -182,9 +170,9 @@ void GameScene::Initialize()
 
 	player_->Initialize();
 
-	MapLoad("Resources/Stage1.json",false);
+	MapLoad("Resources/Map/Stage1.json",false);
 
-	nowStage = Stage::Stage1;
+	nowStage = Stage::Stage3;
 
 	player_->SetLight(light_.get());
 
@@ -238,8 +226,6 @@ void GameScene::Update()
 #endif
 
 	srand(( unsigned int ) time(NULL));
-
-	sousaSprite_->SetTexture(padSousaTexHandle_);
 
 	if ( sceneStart_ )
 	{
@@ -351,7 +337,7 @@ void GameScene::Update()
 				switch ( nowStage )
 				{
 				case GameScene::Stage::Stage1:
-					MapLoad("Resources/Stage2.json",false);
+					MapLoad("Resources/Map/Stage2.json",false);
 
 					player_->SetMapData(&objects_);
 
@@ -377,7 +363,7 @@ void GameScene::Update()
 					nowStage = Stage::Stage2;
 					break;
 				case GameScene::Stage::Stage2:
-					MapLoad("Resources/Stage3.json",false);
+					MapLoad("Resources/Map/Stage3.json",false);
 
 					player_->SetMapData(&objects_);
 
@@ -438,6 +424,8 @@ void GameScene::Update()
 						player_->Reset();
 
 						player_->SetMapData(&objects_);
+
+						//player_->SetCameraPos({ 0.0f,40.0f,-40.0f });
 
 						std::vector<Object3d*> a;
 
@@ -718,7 +706,6 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 void GameScene::SpriteDraw()
 {
 	SpriteCommon::Instance()->PreDraw();
-	sousaSprite_->Draw();
 	player_->SpriteDraw();
 	sceneSprite_->DissolveDraw();
 	if ( frame_ <= 0 && player_->IsDaed() )
@@ -1352,7 +1339,7 @@ void GameScene::ModelLoad()
 	models_.insert(std::make_pair("enemyBullet",std::move(bulletModel_)));
 
 	std::unique_ptr<Model> mapModel_;
-	mapModel_.reset(Model::LoadFormOBJ("Map",true));
+	mapModel_.reset(Model::LoadFormOBJ("MapBlock",true));
 	models_.insert(std::make_pair("Map",std::move(mapModel_)));
 
 	std::unique_ptr<Model> goalModel_;
@@ -1501,7 +1488,7 @@ void GameScene::SwitchCollsion()
 			cameraCube.scale = cameras_[ i ]->scale;
 			if ( Collider::CubeAndCube(playerCube,cameraCube,Collider::Collsion) == true )
 			{
-				player_->SetCameraPos(pos);
+				player_->SetCameraMove(pos);
 			}
 		}
 	}

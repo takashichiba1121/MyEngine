@@ -167,7 +167,7 @@ void ResultScene::Update()
 		}
 		else if ( frame_ < -5 )
 		{
-			SceneManager::Instance()->ChangeScene("GAME");
+			SceneManager::Instance()->ChangeScene("TITLE");
 		}
 		else
 		{

@@ -110,7 +110,12 @@ public:
 
 	LightGroup* GetLight() {return light_;}
 
-	void SetCameraPos(Vector3 cameraPos);
+	void SetCameraMove(Vector3 cameraPos);
+
+	void SetCameraPos(Vector3 cameraPos) {
+		endCameraPos_ = cameraPos;
+		cameraPos_=cameraPos;
+	}
 
 	Vector3 GetEndCameraPos() {return endCameraPos_;}
 
