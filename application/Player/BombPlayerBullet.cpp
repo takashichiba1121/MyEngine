@@ -100,7 +100,7 @@ void BombPlayerBullet::Update()
 				const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
 
 				//追加
-				PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,{ 0,0,0 },1.5f,1.5f,{ startColor },{ endColor });
+				PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,{ 0,0,0 },1.5f,1.5f,{ startColor*2 },{ endColor*2 });
 			}
 		}
 		break;
@@ -131,6 +131,6 @@ void BombPlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointColor(lightIndex_,{ bulletColor_ });
 
-		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
+		light_->SetPointAtten(lightIndex_,{ 0.015f,0.005f,0.005f });
 	}
 }

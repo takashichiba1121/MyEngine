@@ -672,18 +672,8 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	EnemyManager::Instance()->Draw();
 
 	player_->Draw();
-	if ( mapName_ == "Resources/Select.json" )
-	{
-		stage1Obj_->Draw();
-		stage1BillBoard_->Draw();
-		stage2Obj_->Draw();
-		stage2BillBoard_->Draw();
-		stage3Obj_->Draw();
-	}
-	else
-	{
-		goalObj_->Draw();
-	}
+
+	goalObj_->Draw();
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
 		if ( goalSwitch->phase != Phase::Before )
