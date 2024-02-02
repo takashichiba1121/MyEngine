@@ -50,46 +50,6 @@ void GameScene::Initialize()
 
 	goalObj_->Initialize();
 
-	stage1Obj_ = std::make_unique<Object3d>();
-
-	stage1Obj_->Initialize();
-
-	stage1Plane_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/1-1.png")));
-
-	stage1BillBoard_ = std::make_unique<Object3d>();
-
-	stage1BillBoard_->Initialize();
-
-	stage1BillBoard_->SetModel(stage1Plane_.get());
-
-	stage1BillBoard_->SetScale({ 2,4,1 });
-
-	stage1BillBoard_->SetRot({ 45,0,0 });
-
-	stage1BillBoard_->SetBillBoard(true);
-
-	stage2Plane_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/1-2.png")));
-
-	stage2BillBoard_ = std::make_unique<Object3d>();
-
-	stage2BillBoard_->Initialize();
-
-	stage2BillBoard_->SetModel(stage2Plane_.get());
-
-	stage2BillBoard_->SetScale({ 2,4,1 });
-
-	stage2BillBoard_->SetRot({ 45,0,0 });
-
-	stage2BillBoard_->SetBillBoard(true);
-
-	stage2Obj_ = std::make_unique<Object3d>();
-
-	stage2Obj_->Initialize();
-
-	stage3Obj_ = std::make_unique<Object3d>();
-
-	stage3Obj_->Initialize();
-
 	light_.reset(LightGroup::Create());
 
 	Object3d::SetLight(light_.get());
@@ -348,6 +308,8 @@ void GameScene::Update()
 
 					player_->SetGimmickData(a);
 
+					player_->SetCameraPos({ 0.0f,40.0f,-40.0f });
+
 					EnemyManager::Instance()->SetMapData(&objects_);
 
 					EnemyManager::Instance()->SetPlayer(player_.get());
@@ -374,6 +336,8 @@ void GameScene::Update()
 
 					player_->SetGimmickData(a);
 
+					player_->SetCameraPos({ 0.0f,40.0f,-40.0f });
+
 					EnemyManager::Instance()->SetMapData(&objects_);
 
 					EnemyManager::Instance()->SetPlayer(player_.get());
@@ -387,6 +351,8 @@ void GameScene::Update()
 					sceneChange_ = false;
 
 					nowStage = Stage::Stage3;
+
+
 					break;
 				case GameScene::Stage::Stage3:
 					SceneManager::Instance()->ChangeScene("RESULT");
@@ -394,6 +360,8 @@ void GameScene::Update()
 				default:
 					break;
 				};
+
+				isClear_=false;
 			}
 			else if ( player_->IsDaed() )
 			{
@@ -425,7 +393,7 @@ void GameScene::Update()
 
 						player_->SetMapData(&objects_);
 
-						//player_->SetCameraPos({ 0.0f,40.0f,-40.0f });
+						player_->SetCameraPos({ 0.0f,40.0f,-40.0f });
 
 						std::vector<Object3d*> a;
 
@@ -612,16 +580,6 @@ void GameScene::Update()
 
 	goalObj_->Update();
 
-	stage1Obj_->Update();
-
-	stage1BillBoard_->Update();
-
-	stage2BillBoard_->Update();
-
-	stage2Obj_->Update();
-
-	stage3Obj_->Update();
-
 	skyObj_->Update();
 
 	particleManager_->Update();
@@ -672,18 +630,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	EnemyManager::Instance()->Draw();
 
 	player_->Draw();
-	if ( mapName_ == "Resources/Select.json" )
-	{
-		stage1Obj_->Draw();
-		stage1BillBoard_->Draw();
-		stage2Obj_->Draw();
-		stage2BillBoard_->Draw();
-		stage3Obj_->Draw();
-	}
-	else
-	{
-		goalObj_->Draw();
-	}
+	goalObj_->Draw();
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
 		if ( goalSwitch->phase != Phase::Before )
@@ -1245,64 +1192,6 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
-		if ( tagName == "Stage1" )
-		{
-			//モデルを指定して3Dオブジェクトを生成
-			stage1Obj_->SetModel(models_[ objectData.fileName ].get());
-
-			// 座標
-			stage1Obj_->SetPosition({ objectData.trans });
-
-			stage1BillBoard_->SetPosition({ objectData.trans.x,objectData.trans.y + 5.0f,objectData.trans.z });
-
-			// 回転角
-			stage1Obj_->SetRot({ objectData.rot });
-
-			// 座標
-			stage1Obj_->SetScale({ objectData.scale });
-
-			stage1Obj_->Setalpha(0.3f);
-
-			stage1Obj_->Update();
-		}
-		if ( tagName == "Stage2" )
-		{
-			//モデルを指定して3Dオブジェクトを生成
-			stage2Obj_->SetModel(models_[ objectData.fileName ].get());
-
-			// 座標
-			stage2Obj_->SetPosition({ objectData.trans });
-
-			stage2BillBoard_->SetPosition({ objectData.trans.x,objectData.trans.y + 5.0f,objectData.trans.z });
-
-			// 回転角
-			stage2Obj_->SetRot({ objectData.rot });
-
-			// 座標
-			stage2Obj_->SetScale({ objectData.scale });
-
-			stage2Obj_->Setalpha(0.3f);
-
-			stage2Obj_->Update();
-		}
-		if ( tagName == "Stage3" )
-		{
-			//モデルを指定して3Dオブジェクトを生成
-			stage3Obj_->SetModel(models_[ objectData.fileName ].get());
-
-			// 座標
-			stage3Obj_->SetPosition({ objectData.trans });
-
-			// 回転角
-			stage3Obj_->SetRot({ objectData.rot });
-
-			// 座標
-			stage3Obj_->SetScale({ objectData.scale });
-
-			stage3Obj_->Setalpha(0.3f);
-
-			stage3Obj_->Update();
-		}
 	}
 	if ( isGoal_ == false )
 	{
@@ -1377,6 +1266,10 @@ void GameScene::ModelLoad()
 	std::unique_ptr<Model> fenceModel_;
 	fenceModel_.reset(Model::LoadFormOBJ("fence",true));
 	models_.insert(std::make_pair("fence",std::move(fenceModel_)));
+
+	std::unique_ptr<Model> fence2Model_;
+	fenceModel_.reset(Model::LoadFormOBJ("fence2",true));
+	models_.insert(std::make_pair("fence2",std::move(fenceModel_)));
 
 	std::unique_ptr<Model> blockModel_;
 	blockModel_.reset(Model::LoadFormOBJ("block",true));

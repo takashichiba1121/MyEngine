@@ -1,0 +1,805 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "MESH",
+            "name": "立方体",
+            "transform": {
+                "translation": [
+                    -17.92546844482422,
+                    0.0,
+                    102.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000762939453
+                ],
+                "scaling": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "file_name": "Goal",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Goal"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.001",
+            "transform": {
+                "translation": [
+                    170.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    30.0,
+                    20.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.001",
+            "transform": {
+                "translation": [
+                    190.0,
+                    0.0,
+                    101.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "start",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Spawn"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.004",
+            "transform": {
+                "translation": [
+                    10.0,
+                    15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.007",
+            "transform": {
+                "translation": [
+                    10.0,
+                    5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.011",
+            "transform": {
+                "translation": [
+                    10.0,
+                    -5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.012",
+            "transform": {
+                "translation": [
+                    10.0,
+                    -15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.021",
+            "transform": {
+                "translation": [
+                    140.0,
+                    -50.0,
+                    100.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Switch 2"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.002",
+            "transform": {
+                "translation": [
+                    117.06649017333984,
+                    0.0,
+                    100.0999984741211
+                ],
+                "rotation": [
+                    -0.0,
+                    -179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.002",
+            "transform": {
+                "translation": [
+                    90.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    50.0,
+                    50.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.022",
+            "transform": {
+                "translation": [
+                    140.0,
+                    50.0,
+                    100.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Switch 1"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.023",
+            "transform": {
+                "translation": [
+                    40.0,
+                    50.0,
+                    100.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Switch 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.024",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -50.0,
+                    100.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Switch 3"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.003",
+            "transform": {
+                "translation": [
+                    10.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    30.0,
+                    20.0,
+                    100.0
+                ]
+            },
+            "file_name": "Map",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "Map"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.002",
+            "transform": {
+                "translation": [
+                    20.0,
+                    -15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 3"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.003",
+            "transform": {
+                "translation": [
+                    20.0,
+                    -5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 3"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.005",
+            "transform": {
+                "translation": [
+                    20.0,
+                    5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 3"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.006",
+            "transform": {
+                "translation": [
+                    20.0,
+                    15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 3"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.008",
+            "transform": {
+                "translation": [
+                    30.0,
+                    -15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 2"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.009",
+            "transform": {
+                "translation": [
+                    30.0,
+                    -5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.010",
+            "transform": {
+                "translation": [
+                    30.0,
+                    5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.013",
+            "transform": {
+                "translation": [
+                    30.0,
+                    15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 4"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.014",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 1"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.015",
+            "transform": {
+                "translation": [
+                    40.0,
+                    -5.0,
+                    105.64488220214844
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 2"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.016",
+            "transform": {
+                "translation": [
+                    40.0,
+                    5.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 2"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.017",
+            "transform": {
+                "translation": [
+                    40.0,
+                    15.0,
+                    105.6845474243164
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    5.0,
+                    10.0
+                ]
+            },
+            "file_name": "fence2",
+            "Tag_name": "Gimmick 2"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.018",
+            "transform": {
+                "translation": [
+                    -16.393230438232422,
+                    -16.452255249023438,
+                    100.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "GoalSwitch",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "goalSwitch"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.001",
+            "transform": {
+                "translation": [
+                    90.0,
+                    -25.0,
+                    100.17135620117188
+                ],
+                "rotation": [
+                    180.0,
+                    -5.008956577512436e-06,
+                    -90.00000762939453
+                ],
+                "scaling": [
+                    0.20000000298023224,
+                    50.0,
+                    1.0
+                ]
+            },
+            "file_name": "plane",
+            "colider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "Tag_name": "MapPlane"
+        }
+    ]
+}

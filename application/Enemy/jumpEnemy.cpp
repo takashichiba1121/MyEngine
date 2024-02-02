@@ -40,7 +40,7 @@ void jumpEnemy::Update()
 
 		isMove_ = ( distance <= attackRange_&&(playerPos.y == enemyPos.y));
 
-		if ( distance <= 20&& isAttack_ == false&&player_->GetOnGround()==false)
+		if ( distance <= 20&& isAttack_ == false&&player_->GetOnGround()==false&& ( playerPos.y == enemyPos.y ) )
 		{
 			isAttack_ = true;
 
