@@ -15,8 +15,6 @@ void PlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position,uin
 
 	obj_->SetColor(bulletColor_);
 
-	obj_->SetUVShift({ 0.5f,0.5f });
-
 	life_ = life;
 
 	type = Type::Nolmal;

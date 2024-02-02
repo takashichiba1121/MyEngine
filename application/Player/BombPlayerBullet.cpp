@@ -115,6 +115,12 @@ void BombPlayerBullet::Update()
 		break;
 	}
 
+	Vector2 objUV = obj_->GetUVShift();
+
+	objUV += {0.01f,-0.01f};
+
+	obj_->SetUVShift(objUV);
+
 	obj_->Update();
 }
 

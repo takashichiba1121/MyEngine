@@ -75,5 +75,5 @@ private:
 
 	int32_t lightIndex_;
 
-	const Vector3 bulletColor_ = { 0.39f,0.88f,0.39f };
+	const Vector3 bulletColor_ = { 0.1f,1.0f,0.1f };
 };
