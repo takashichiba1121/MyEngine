@@ -361,7 +361,7 @@ void GameScene::Update()
 					break;
 				};
 
-				isClear_=false;
+				isClear_ = false;
 			}
 			else if ( player_->IsDaed() )
 			{
@@ -631,16 +631,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	player_->Draw();
 	goalObj_->Draw();
-		stage1Obj_->Draw();
-		stage1BillBoard_->Draw();
-		stage2Obj_->Draw();
-		stage2BillBoard_->Draw();
-		stage3Obj_->Draw();
-	}
-	else
-	{
-		goalObj_->Draw();
-	}
+	goalObj_->Draw();
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
 		if ( goalSwitch->phase != Phase::Before )
@@ -895,15 +886,6 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 			newObject->light->SetPosition(pos);
 
-			for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
-			{
-				if ( light_->GetPointActive(i) == false )
-				{
-					newObject->lightIndex = i;
-
-					break;
-				}
-			}
 			newObject->obj->Update();
 
 			newObject->light->Update();
@@ -948,8 +930,6 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 			newObject->obj->Update();
 
 			newObject->light->Update();
-
-			light_->SetPointActive(newObject->lightIndex,true);
 
 			std::getline(tag,tagName,' ');
 
@@ -1217,18 +1197,6 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 	std::sort(switchs_.rbegin(),switchs_.rend());
 
 	std::sort(gimmicks_.rbegin(),gimmicks_.rend());
-
-	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
-	{
-		light_->SetPointActive(goalSwitch->lightIndex,false);
-
-	}
-
-	for ( std::unique_ptr<Switch>& Switch : switchs_ )
-	{
-		light_->SetPointActive(Switch->lightIndex,false);
-
-	}
 }
 
 void GameScene::ModelLoad()
@@ -1306,6 +1274,16 @@ void GameScene::SwitchCollsion()
 
 					goalSwitch->phase = Phase::Middle;
 
+					for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
+					{
+						if ( light_->GetPointActive(i) == false )
+						{
+							goalSwitch->lightIndex = i;
+
+							break;
+						}
+					}
+
 					light_->SetPointActive(goalSwitch->lightIndex,true);
 
 					light_->SetPointPos(goalSwitch->lightIndex,goalSwitch->light->GetPosition());
@@ -1358,6 +1336,16 @@ void GameScene::SwitchCollsion()
 				if ( Collider::CubeAndCube(mapCube,bulletCube,Collider::Collsion) == true )
 				{
 					bullet->OnCollision();
+
+					for ( int i = 0; i < LightGroup::cPointLightNum; i++ )
+					{
+						if ( light_->GetPointActive(i) == false )
+						{
+							Switch->lightIndex = i;
+
+							break;
+						}
+					}
 
 					Switch->phase = Phase::Middle;
 

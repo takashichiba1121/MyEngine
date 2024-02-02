@@ -78,7 +78,7 @@ void BombPlayerBullet::Update()
 			{
 				light_->SetPointActive(lightIndex_,false);
 			}
-			for ( int i = 0; i < 50; i++ )
+			for ( int i = 0; i < 100; i++ )
 			{
 				//消えるまでの時間
 				const uint32_t rnd_life = 10;
@@ -87,20 +87,27 @@ void BombPlayerBullet::Update()
 				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 				//XYZの広がる距離
-				const float rnd_velocity = 0.3f;
+				const float rnd_velocity = 0.6f;
 				Vector3 velocity{};
 				velocity.x = ( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2;
 				velocity.y = ( ( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2 );
-				velocity.z = -abs(( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2);
+				velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2 );
+
+						//XYZの広がる距離
+				//const float rnd_accel = 0.05f;
+				Vector3 accel = { 0,0,0 };
+				//accel.x = ( float ) rand() / RAND_MAX * rnd_accel - rnd_accel / 2;
+				//accel.y = ( ( float ) rand() / RAND_MAX * rnd_accel - rnd_accel / 2 );
+				//accel.z = ( ( float ) rand() / RAND_MAX * rnd_accel - rnd_accel / 2 );
 
 				//pos.normalize();
 
 				const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,1 };
 
-				const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
+				const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
 
 				//追加
-				PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,{ 0,0,0 },1.5f,1.5f,{ startColor*2 },{ endColor*2 });
+				PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
 			}
 		}
 		break;

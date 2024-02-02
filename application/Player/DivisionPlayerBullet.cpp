@@ -15,7 +15,7 @@ void DivisionPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 posi
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor({ 0.88f,1,0.59f });
+	obj_->SetColor({ bulletColor_ });
 
 	life_ = life;
 
@@ -78,26 +78,6 @@ void DivisionPlayerBullet::OnCollision()
 	{
 		light_->SetPointActive(lightIndex_,false);
 	}
-	//for ( int i = 0; i < 50; i++ )
-	//{
-	//	//消えるまでの時間
-	//	const uint32_t rnd_life = 10;
-	//	//最低限のライフ
-	//	const uint32_t constlife = 30;
-	//	uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
-
-	//	//XYZの広がる距離
-	//	const float rnd_pos = 0.3f;
-	//	Vector3 pos{};
-	//	pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-	//	pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-	//	pos.z = -abs(( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2);
-
-	//	//pos.normalize();
-
-	//	//追加
-	//	PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },1.0f,1.0f,{  0.88f,1,0.59f,1 },{  0.88f,1,0.59f,0.5f });
-	//}
 
 	//弾の生成し、初期化
 	std::unique_ptr<PlayerBullet> newBullet[ 3 ];
@@ -156,7 +136,7 @@ void DivisionPlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ 0.88f,1,0.59f });
+		light_->SetPointColor(lightIndex_,{ bulletColor_ });
 
 		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}
