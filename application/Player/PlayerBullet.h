@@ -92,7 +92,7 @@ protected:
 
 	int32_t lightIndex_;
 
-	const Vector3 bulletColor_ = { 0.88f,0.78f,0.39f };
+	const Vector3 bulletColor_ = { 1.0f,0.1f,0.0f };
 
 	Type type;
 };

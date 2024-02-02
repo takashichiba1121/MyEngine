@@ -227,6 +227,8 @@ public: // メンバ関数
 
 	void SetUVShift(Vector2 uvShift) {uvShift_ = uvShift;}
 
+	Vector2 GetUVShift() {return uvShift_;}
+
 	void SetColor(Vector3 color) {color_ = color;}
 
 	std::vector<Model::VertexPosNormalUv> GetVertices() {return initialVertices_;}
