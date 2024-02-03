@@ -54,6 +54,33 @@ void PlayerBullet::Update()
 
 		obj_->SetPosition(move);
 
+		for ( int i = 0; i < 5; i++ )
+		{
+			//最低限のライフ
+			const uint32_t constlife = 7;
+			uint32_t life =  constlife;
+
+			//XYZの広がる距離
+			const float rnd_velocityX = 0.05f;
+			const float rnd_velocityZ = 0.05f;
+			Vector3 velocity{};
+			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
+			velocity.y = 0;
+			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
+
+					//XYZの広がる距離
+			Vector3 accel = { 0,0,0 };
+
+			//pos.normalize();
+
+			const Vector4 startColor = { particleColor.x,particleColor.y,particleColor.z,0.5f };
+
+			const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,0 };
+
+			//追加
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
+		}
+
 		if ( lightIndex_ >= 0 )
 		{
 			light_->SetPointPos(lightIndex_,obj_->GetPosition());
@@ -97,12 +124,12 @@ void PlayerBullet::OnCollision()
 	if ( phase_ == Phase::Attack )
 	{
 		phase_ = Phase::Delete;
-		for ( int i = 0; i < 50; i++ )
+		for ( int i = 0; i < 70; i++ )
 		{
 			//消えるまでの時間
 			const uint32_t rnd_life = 10;
 			//最低限のライフ
-			const uint32_t constlife = 30;
+			const uint32_t constlife = 60;
 			uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 			//XYZの広がる距離
@@ -123,28 +150,28 @@ void PlayerBullet::OnCollision()
 
 			//pos.normalize();
 
-			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,1 };
+			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
 
 			const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
 
 			//追加
-			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,0.0f,startColor,endColor);
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.5f,0.0f,startColor,endColor);
 		}
-		for ( int i = 0; i < 50; i++ )
+		for ( int i = 0; i < 30; i++ )
 		{
 			//消えるまでの時間
 			const uint32_t rnd_life = 10;
 			//最低限のライフ
-			const uint32_t constlife = 10;
+			const uint32_t constlife = 20;
 			uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 			//XYZの広がる距離
 			const float rnd_velocityY = 0.3f;
-			const float rnd_velocityX = 0.15f;
-			const float rnd_velocityZ = 0.05f;
+			const float rnd_velocityX = 0.3f;
+			const float rnd_velocityZ = 0.3f;
 			Vector3 velocity{};
 			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
-			velocity.y = abs(( float ) rand() / RAND_MAX * rnd_velocityY);
+			velocity.y = (( float ) rand() / RAND_MAX * rnd_velocityY - rnd_velocityY / 2 );
 			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
 
 					//XYZの広がる距離
@@ -156,12 +183,12 @@ void PlayerBullet::OnCollision()
 
 			//pos.normalize();
 
-			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,1 };
+			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
 
 			const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
 
 			//追加
-			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,0.0f,startColor,endColor);
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,10.0f,1.0f,startColor,endColor);
 		}
 	}
 }
@@ -191,7 +218,7 @@ void PlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ bulletColor_ * 2 });
+		light_->SetPointColor(lightIndex_,{ bulletColor_ });
 
 		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}

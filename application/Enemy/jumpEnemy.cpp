@@ -48,25 +48,39 @@ void jumpEnemy::Update()
 
 			fallSpeed_ = StartJumpSpeed_;
 
-			for ( int i = 0; i < 10; i++ )
+			Vector3 velocity[ 12 ] =
+			{
+				{1,0,0},
+				{-1,0,0},
+				{0,0,1},
+				{0,0,-1},
+				{0.5f,0,1},
+				{0.5f,0,-1},
+				{1,0,0.5f},
+				{1,0,-0.5f},
+				{-0.5f,0,1},
+				{-0.5f,0,-1},
+				{-1,0,0.5f},
+				{-1,0,-0.5f},
+			};
+
+			for ( int i = 0; i < 12; i++ )
 			{
 				//消えるまでの時間
 				const uint32_t rnd_life = 10;
 				//最低限のライフ
-				const uint32_t constlife = 60;
+				const uint32_t constlife = 30;
 				uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 				//XYZの広がる距離
-				const float rnd_pos = 0.1f;
-				Vector3 pos{};
-				pos.x = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
-				pos.y = ( ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2 );
-				pos.z = ( float ) rand() / RAND_MAX * rnd_pos - rnd_pos / 2;
+				const float constPos = 0.1f;
+				Vector3 pos = velocity[ i ] * constPos;
+
 
 				//pos.normalize();
 
 				//追加
-				EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{ 0,0,0 },0.5f,0.5f,{ 1,1,1,1 },{ 1,1,1,1 });
+				EnemyManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),pos,{0,0,0},0.5f,0.5f,{1,1,1,1},{1,1,1,1});
 			}
 		}
 

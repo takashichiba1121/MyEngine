@@ -15,7 +15,7 @@ void BombPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor({ bulletColor_/2 });
+	obj_->SetColor({ bulletColor_ });
 
 	life_ = life;
 
@@ -142,7 +142,7 @@ void BombPlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ bulletColor_ });
+		light_->SetPointColor(lightIndex_,{ bulletColor_/2 });
 
 		light_->SetPointAtten(lightIndex_,{ 0.015f,0.005f,0.005f });
 	}

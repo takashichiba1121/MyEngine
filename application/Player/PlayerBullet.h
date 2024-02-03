@@ -94,5 +94,7 @@ protected:
 
 	const Vector3 bulletColor_ = { 1.0f,0.1f,0.0f };
 
+	const Vector3 particleColor = { 1.0f,0.3f,0.1f };
+
 	Type type;
 };

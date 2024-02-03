@@ -133,7 +133,7 @@ void RunEnemy::Attack()
 			//XYZの広がる距離
 			Vector3 verocity{};
 			verocity.x = 0;
-			verocity.y = -0;
+			verocity.y = 0;
 			verocity.z = 0;
 
 			Vector3 pos = obj_->GetPosition();
