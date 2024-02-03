@@ -48,14 +48,14 @@
     <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(SolutionDir)External\include;$(SolutionDir)External\json;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)External\DirectXTex;$(SolutionDir)External\imgui;$(ProjectDir)External\include;$(SolutionDir)External\json;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -76,9 +76,9 @@
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)lib\assimp-vc143-mtd.dll" "$(TargetDir)assimp-vc143-mtd.dll"
-copy "$(SolutionDir)lib\zlibd1.dll" "$(TargetDir)zlibd1.dll"
-copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
+      <Command>copy "$(SolutionDir)External\lib\assimp-vc143-mtd.dll" "$(TargetDir)assimp-vc143-mtd.dll"
+copy "$(SolutionDir)External\lib\zlibd1.dll" "$(TargetDir)zlibd1.dll"
+copy "$(SolutionDir)External\lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,9 +105,9 @@ copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-mtd.dll"
-copy "$(SolutionDir)lib\zlibd1.dll" "$(TargetDir)zlibd1.dll"
-copy "$(SolutionDir)lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command>
+      <Command>copy "$(SolutionDir)External\lib\zlibd1.dll" "$(TargetDir)zlibd1.dll"
+copy "$(SolutionDir)External\lib\pugixml.dll" "$(TargetDir)pugixml.dll"
+copy "$(SolutionDir)External\lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-mt.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

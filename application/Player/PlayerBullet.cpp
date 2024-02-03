@@ -97,7 +97,7 @@ void PlayerBullet::OnCollision()
 	if ( phase_ == Phase::Attack )
 	{
 		phase_ = Phase::Delete;
-		for ( int i = 0; i < 100; i++ )
+		for ( int i = 0; i < 50; i++ )
 		{
 			//消えるまでの時間
 			const uint32_t rnd_life = 10;
@@ -106,11 +106,13 @@ void PlayerBullet::OnCollision()
 			uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
 
 			//XYZの広がる距離
-			const float rnd_velocity = 0.6f;
+			const float rnd_velocityY = 0.3f;
+			const float rnd_velocityX = 0.15f;
+			const float rnd_velocityZ = 0.05f;
 			Vector3 velocity{};
-			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2;
-			velocity.y = ( ( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2 );
-			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocity - rnd_velocity / 2 );
+			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
+			velocity.y =abs( ( float ) rand() / RAND_MAX * rnd_velocityY);
+			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
 
 					//XYZの広がる距離
 			//const float rnd_accel = 0.05f;
@@ -126,7 +128,40 @@ void PlayerBullet::OnCollision()
 			const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
 
 			//追加
-			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,0.0f,startColor,endColor);
+		}
+		for ( int i = 0; i < 50; i++ )
+		{
+			//消えるまでの時間
+			const uint32_t rnd_life = 10;
+			//最低限のライフ
+			const uint32_t constlife = 10;
+			uint32_t life = ( rand() / RAND_MAX * rnd_life ) + constlife;
+
+			//XYZの広がる距離
+			const float rnd_velocityY = 0.3f;
+			const float rnd_velocityX = 0.15f;
+			const float rnd_velocityZ = 0.05f;
+			Vector3 velocity{};
+			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
+			velocity.y = abs(( float ) rand() / RAND_MAX * rnd_velocityY);
+			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
+
+					//XYZの広がる距離
+			//const float rnd_accel = 0.05f;
+			Vector3 accel = { 0,0,0 };
+			//accel.x = ( float ) rand() / RAND_MAX * rnd_accel - rnd_accel / 2;
+			//accel.y = ( ( float ) rand() / RAND_MAX * rnd_accel - rnd_accel / 2 );
+			//accel.z = ( ( float ) rand() / RAND_MAX * rnd_accel - rnd_accel / 2 );
+
+			//pos.normalize();
+
+			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,1 };
+
+			const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
+
+			//追加
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,0.0f,startColor,endColor);
 		}
 	}
 }
