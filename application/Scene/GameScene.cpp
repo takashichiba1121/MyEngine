@@ -63,7 +63,7 @@ void GameScene::Initialize()
 	sceneSprite_->SetScale({ 1280,720 });
 
 	sceneSprite_->Update();
-
+#pragma region リトライ用スプライトの設定
 	retrySprite_ = std::make_unique<Sprite>();
 
 	retrySprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/retry.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
@@ -103,6 +103,37 @@ void GameScene::Initialize()
 	yazirusiSprite_->SetPosition({ 240,400 });
 
 	yazirusiSprite_->Update();
+#pragma endregion
+
+#pragma region ポーズ中のチュートリアル用スプライトの設定
+
+	tutorial1Sprite_ = std::make_unique<Sprite>();
+	tutorial2Sprite_ = std::make_unique<Sprite>();
+	tutorial3Sprite_ = std::make_unique<Sprite>();
+	tutorial4Sprite_ = std::make_unique<Sprite>();
+
+	tutorial1Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Sousa1.png"));
+	tutorial2Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Sousa2.png"));
+	tutorial3Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/attackSousa.png"));
+	tutorial4Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial.png"));
+
+	tutorial1Sprite_->SetPosition({ 640,100 });
+	tutorial1Sprite_->SetAnchorPoint({ 0.5f,0.5f });
+	tutorial1Sprite_->Update();
+
+	tutorial2Sprite_->SetPosition({ 640,250 });
+	tutorial2Sprite_->SetAnchorPoint({ 0.5f,0.5f });
+	tutorial2Sprite_->Update();
+
+	tutorial3Sprite_->SetPosition({ 640,400 });
+	tutorial3Sprite_->SetAnchorPoint({ 0.5f,0.5f });
+	tutorial3Sprite_->Update();
+
+	tutorial4Sprite_->SetPosition({ 1260,700 });
+	tutorial4Sprite_->SetAnchorPoint({ 1.0f,1.0f });
+	tutorial4Sprite_->Update();
+
+#pragma endregion
 
 	light_->Update();
 
@@ -224,9 +255,29 @@ void GameScene::Update()
 	}
 	else if ( sceneChange_ == false )
 	{
-		player_->Update();
-		EnemyManager::Instance()->Update();
+		if ( pause )
+		{
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
+			{
+				pause = false;
+				sceneSprite_->SetColor({ 1,1,1,1 });
+			}
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_BACK) || Input::Instance()->TriggerKey(DIK_3) )
+			{
+				SceneManager::Instance()->ChangeScene("TITLE");
+			}
 
+		}
+		else
+		{
+			player_->Update();
+			EnemyManager::Instance()->Update();
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
+			{
+				pause = true;
+				sceneSprite_->SetColor({ 1,1,1,0.5f });
+			}
+		}
 		Collider::Cube A,B;
 
 		A.Pos = player_->GetObj()->GetPosition();
@@ -422,167 +473,168 @@ void GameScene::Update()
 
 		sceneSprite_->Update();
 	}
-
-	for ( std::unique_ptr<Object3d>& obj : objects_ )
+	if ( pause == false )
 	{
-		obj->Update();
-
-	}
-
-	for ( uint32_t i = 0; i < planes_.size(); i++ )
-	{
-		planes_[ i ]->UVSift += planes_[ i ]->UVSiftSpeed;
-
-		if ( planes_[ i ]->UVSift.x >= 1 )
+		for ( std::unique_ptr<Object3d>& obj : objects_ )
 		{
-			planes_[ i ]->UVSift.x = 0;
+			obj->Update();
+
 		}
 
-		planes_[ i ]->plane->SetUVShift(planes_[ i ]->UVSift);
+		for ( uint32_t i = 0; i < planes_.size(); i++ )
+		{
+			planes_[ i ]->UVSift += planes_[ i ]->UVSiftSpeed;
 
-		planes_[ i ]->plane->Update();
-	}
-	for ( uint32_t i = 0; i < tutorials_.size(); i++ )
-	{
-		Vector3 vec = player_->GetObj()->GetPosition() - tutorials_[ i ]->obj->GetPosition();
-		vec.x = abs(vec.x);
-		vec.z = abs(vec.z);
-		float A = ( vec.x + vec.z ) / 2;
-		float B = ( tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z ) / 2;
-		if ( A < B )
-		{
-			tutorials_[ i ]->obj->Setalpha(1.0f);
-		}
-		else
-		{
-			float X = A - B;
-			X = abs(X);
-			X = 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
-			tutorials_[ i ]->obj->Setalpha(X);
-			if ( X < 0 )
+			if ( planes_[ i ]->UVSift.x >= 1 )
 			{
-				tutorials_[ i ]->isDraw = false;
+				planes_[ i ]->UVSift.x = 0;
+			}
+
+			planes_[ i ]->plane->SetUVShift(planes_[ i ]->UVSift);
+
+			planes_[ i ]->plane->Update();
+		}
+		for ( uint32_t i = 0; i < tutorials_.size(); i++ )
+		{
+			Vector3 vec = player_->GetObj()->GetPosition() - tutorials_[ i ]->obj->GetPosition();
+			vec.x = abs(vec.x);
+			vec.z = abs(vec.z);
+			float A = ( vec.x + vec.z ) / 2;
+			float B = ( tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z ) / 2;
+			if ( A < B )
+			{
+				tutorials_[ i ]->obj->Setalpha(1.0f);
 			}
 			else
 			{
-				tutorials_[ i ]->isDraw = true;
-			}
-		}
-
-		tutorials_[ i ]->obj->Update();
-	}
-
-	SwitchCollsion();
-
-	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
-	{
-		goalSwitch->obj->Update();
-		if ( goalSwitch->phase == Phase::Middle )
-		{
-			goalSwitch->lightFrame++;
-			float a = goalSwitch->spotLight->GetScale().z;
-
-			float f = ( float ) goalSwitch->lightFrame / lightMaxFrame;
-
-			goalSwitch->spotLight->SetScale({ f * ( a / 5 ),1,a });
-
-			f *= 1.5f;
-
-			goalSwitch->light->SetScale({ f,f,f });
-
-			if ( goalSwitch->lightFrame >= lightMaxFrame )
-			{
-				goalSwitch->phase = Phase::After;
+				float X = A - B;
+				X = abs(X);
+				X = 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
+				tutorials_[ i ]->obj->Setalpha(X);
+				if ( X < 0 )
+				{
+					tutorials_[ i ]->isDraw = false;
+				}
+				else
+				{
+					tutorials_[ i ]->isDraw = true;
+				}
 			}
 
-			light_->SetPointActive(goalSwitch->lightIndex,true);
-			goalSwitch->light->Update();
-			goalSwitch->spotLight->Update();
+			tutorials_[ i ]->obj->Update();
 		}
-		else if ( goalSwitch->phase == Phase::After )
-		{
-			light_->SetPointActive(goalSwitch->lightIndex,true);
-			goalSwitch->light->Update();
-			goalSwitch->spotLight->Update();
-		}
-	}
 
-	for ( uint32_t i = 0; i < switchs_.size(); i++ )
-	{
-		switchs_[ i ]->obj->Update();
-		if ( switchs_[ i ]->phase != Phase::Before )
+		SwitchCollsion();
+
+		for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 		{
-			switchs_[ i ]->light->Update();
-			light_->SetPointActive(switchs_[ i ]->lightIndex,true);
-			if ( switchs_[ i ]->phase == Phase::Middle )
+			goalSwitch->obj->Update();
+			if ( goalSwitch->phase == Phase::Middle )
 			{
-				switchs_[ i ]->lightFrame++;
+				goalSwitch->lightFrame++;
+				float a = goalSwitch->spotLight->GetScale().z;
 
-				float f = ( float ) switchs_[ i ]->lightFrame / spotLightMaxFrame;
+				float f = ( float ) goalSwitch->lightFrame / lightMaxFrame;
+
+				goalSwitch->spotLight->SetScale({ f * ( a / 5 ),1,a });
 
 				f *= 1.5f;
 
-				switchs_[ i ]->light->SetScale({ f,f,f });
+				goalSwitch->light->SetScale({ f,f,f });
 
-				if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
+				if ( goalSwitch->lightFrame >= lightMaxFrame )
 				{
-					switchs_[ i ]->phase = Phase::After;
+					goalSwitch->phase = Phase::After;
 				}
+
+				light_->SetPointActive(goalSwitch->lightIndex,true);
+				goalSwitch->light->Update();
+				goalSwitch->spotLight->Update();
+			}
+			else if ( goalSwitch->phase == Phase::After )
+			{
+				light_->SetPointActive(goalSwitch->lightIndex,true);
+				goalSwitch->light->Update();
+				goalSwitch->spotLight->Update();
 			}
 		}
-		for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
+
+		for ( uint32_t i = 0; i < switchs_.size(); i++ )
 		{
-			if ( switchs_[ i ]->index == gimmicks_[ j ]->index && switchs_[ i ]->phase != Phase::Before )
+			switchs_[ i ]->obj->Update();
+			if ( switchs_[ i ]->phase != Phase::Before )
 			{
-				if ( gimmicks_[ j ]->phase == Phase::Before )
+				switchs_[ i ]->light->Update();
+				light_->SetPointActive(switchs_[ i ]->lightIndex,true);
+				if ( switchs_[ i ]->phase == Phase::Middle )
 				{
-					gimmicks_[ j ]->phase = Phase::Middle;
-					gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
-				}
-				if ( gimmicks_[ j ]->phase == Phase::Middle )
-				{
-					Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
+					switchs_[ i ]->lightFrame++;
 
-					pos.y -= 0.1f;
+					float f = ( float ) switchs_[ i ]->lightFrame / spotLightMaxFrame;
 
-					if ( pos.y <= gimmicks_[ j ]->EndPosY )
+					f *= 1.5f;
+
+					switchs_[ i ]->light->SetScale({ f,f,f });
+
+					if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
 					{
-						pos.y = gimmicks_[ j ]->EndPosY;
-						gimmicks_[ j ]->phase = Phase::After;
+						switchs_[ i ]->phase = Phase::After;
 					}
-					gimmicks_[ j ]->obj->SetPosition(pos);
 				}
 			}
-			gimmicks_[ j ]->obj->Update();
-		}
-	}
-
-	for ( uint32_t i = 0; i < middles_.size(); i++ )
-	{
-		if ( middles_[ i ]->phase == Phase::Middle )
-		{
-			middles_[ i ]->Frame++;
-
-			float f = middles_[ i ]->Frame / goalOpenMaxFlame;
-
-			middles_[ i ]->obj->SetColor({ f,f,f });
-
-			if ( middles_[ i ]->Frame >= goalOpenMaxFlame )
+			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
 			{
-				middles_[ i ]->phase = Phase::After;
+				if ( switchs_[ i ]->index == gimmicks_[ j ]->index && switchs_[ i ]->phase != Phase::Before )
+				{
+					if ( gimmicks_[ j ]->phase == Phase::Before )
+					{
+						gimmicks_[ j ]->phase = Phase::Middle;
+						gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
+					}
+					if ( gimmicks_[ j ]->phase == Phase::Middle )
+					{
+						Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
+
+						pos.y -= 0.1f;
+
+						if ( pos.y <= gimmicks_[ j ]->EndPosY )
+						{
+							pos.y = gimmicks_[ j ]->EndPosY;
+							gimmicks_[ j ]->phase = Phase::After;
+						}
+						gimmicks_[ j ]->obj->SetPosition(pos);
+					}
+				}
+				gimmicks_[ j ]->obj->Update();
 			}
 		}
 
-		middles_[ i ]->obj->Update();
+		for ( uint32_t i = 0; i < middles_.size(); i++ )
+		{
+			if ( middles_[ i ]->phase == Phase::Middle )
+			{
+				middles_[ i ]->Frame++;
+
+				float f = middles_[ i ]->Frame / goalOpenMaxFlame;
+
+				middles_[ i ]->obj->SetColor({ f,f,f });
+
+				if ( middles_[ i ]->Frame >= goalOpenMaxFlame )
+				{
+					middles_[ i ]->phase = Phase::After;
+				}
+			}
+
+			middles_[ i ]->obj->Update();
+		}
+		light_->Update();
+
+		goalObj_->Update();
+
+		skyObj_->Update();
+
+		particleManager_->Update();
 	}
-
-	light_->Update();
-
-	goalObj_->Update();
-
-	skyObj_->Update();
-
-	particleManager_->Update();
 }
 
 void GameScene::Draw(DirectXCommon* dxCommon)
@@ -600,11 +652,14 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	{
 		planes_[ i ]->plane->Draw();
 	}
-	for ( uint32_t i = 0; i < tutorials_.size(); i++ )
+	if ( pause == false )
 	{
-		if ( tutorials_[ i ]->isDraw )
+		for ( uint32_t i = 0; i < tutorials_.size(); i++ )
 		{
-			tutorials_[ i ]->obj->Draw(tutorials_[ i ]->texHandle);
+			if ( tutorials_[ i ]->isDraw )
+			{
+				tutorials_[ i ]->obj->Draw(tutorials_[ i ]->texHandle);
+			}
 		}
 	}
 	for ( std::unique_ptr<Switch>& Switch : switchs_ )
@@ -663,6 +718,14 @@ void GameScene::SpriteDraw()
 		noSprite_->Draw();
 		yazirusiSprite_->Draw();
 		spaceSprite_->Draw();
+	}
+	if ( pause )
+	{
+		sceneSprite_->Draw();
+		tutorial1Sprite_->Draw();
+		tutorial2Sprite_->Draw();
+		tutorial3Sprite_->Draw();
+		tutorial4Sprite_->Draw();
 	}
 	SpriteCommon::Instance()->PostDraw();
 }

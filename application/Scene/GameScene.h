@@ -223,6 +223,12 @@ private:
 	std::unique_ptr<Sprite> yesSprite_;
 	std::unique_ptr<Sprite> noSprite_;
 	std::unique_ptr<Sprite> yazirusiSprite_;
+
+	std::unique_ptr<Sprite> tutorial1Sprite_;
+	std::unique_ptr<Sprite> tutorial2Sprite_;
+	std::unique_ptr<Sprite> tutorial3Sprite_;
+	std::unique_ptr<Sprite> tutorial4Sprite_;
+
 	uint32_t keyTexHandle_;
 
 	uint32_t padTexHandle_;
@@ -244,5 +250,7 @@ private:
 	const uint32_t lightMaxFrame = 30;
 
 	Stage nowStage;
+
+	bool pause=false;
 };
 

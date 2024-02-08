@@ -190,6 +190,7 @@ void EnemyManager::Collision()
 
 					if ( Collider::SphereAndSphere(A,B,Collider::Type::Collsion,&reject) )
 					{
+						reject.y = 0;
 
 						enemy1->OnEnemyCollision(reject);
 					}
