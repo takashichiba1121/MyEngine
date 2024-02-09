@@ -17,6 +17,8 @@
 #include"PostEffectBlur.h"
 #include"PostEffectMixeds.h"
 
+using namespace MyEngine;
+
 void Framework::Initialize()
 {
 	winApp_ = std::make_unique<WinApp>();

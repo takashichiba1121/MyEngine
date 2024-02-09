@@ -36,7 +36,7 @@ protected:
 
 	bool endRequst_ = false;
 
-	std::unique_ptr<WinApp> winApp_;
+	std::unique_ptr<MyEngine::WinApp> winApp_;
 
 	std::unique_ptr<DirectXCommon> dxCommon_=nullptr;
 

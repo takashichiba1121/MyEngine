@@ -1,6 +1,8 @@
 #include "SpriteCommon.h"
 #include"TextureManager.h"
 
+using namespace MyEngine;
+
 SpriteCommon* SpriteCommon::Instance()
 {
 	static SpriteCommon instance;

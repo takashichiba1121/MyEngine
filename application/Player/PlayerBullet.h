@@ -35,6 +35,12 @@ public:
 	///</summary>
 	virtual void Update();
 
+	void Charge();
+
+	void Attack();
+
+	void Delete();
+
 	///<summary>
 	///描画
 	///</summary>

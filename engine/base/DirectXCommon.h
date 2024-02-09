@@ -12,7 +12,7 @@ class DirectXCommon
 {
 public://メンバ関数
 	//初期化
-	void Initialize(WinApp* WinApp);
+	void Initialize(MyEngine::WinApp* WinApp);
 
 	void InitializeDevice();
 
@@ -21,9 +21,9 @@ public://メンバ関数
 	void InitializeSwapchain();
 
 	void InitializeRenderTargetView();
-	 
+
 	void InitializeDepthBuffer();
-	 
+
 	void IntializeFence();
 
 	/// <summary>
@@ -37,25 +37,43 @@ public://メンバ関数
 	void PostDrow();
 
 	//デバイス取得
-	ID3D12Device* GetDevice() const { return device_.Get(); }
+	ID3D12Device* GetDevice() const {
+		return device_.Get();
+	}
 
-	//コマンドリスト取得
-	ID3D12GraphicsCommandList* GetCommandList() const { return commandList_.Get(); }
+//コマンドリスト取得
+	ID3D12GraphicsCommandList* GetCommandList() const {
+		return commandList_.Get();
+	}
 
-	WinApp* getWinApp() const { return winApp_; }
+	MyEngine::WinApp* getWinApp() const {
+		return winApp_;
+	}
 
-	//バックバッファの数を取得
-	size_t GetBackBufferCount() const {return backBuffers_.size(); }
+//バックバッファの数を取得
+	size_t GetBackBufferCount() const {
+		return backBuffers_.size();
+	}
 
-	ID3D12CommandQueue* GetCommandQueue() const { return commandQueue_.Get(); }
+	ID3D12CommandQueue* GetCommandQueue() const {
+		return commandQueue_.Get();
+	}
 
-	void PreIncrimentFenceValue() {++fenceVal_ ; }
+	void PreIncrimentFenceValue() {
+		++fenceVal_;
+	}
 
-	ID3D12Fence* GetFence() const { return fence_.Get(); }
-	
-	uint32_t GetFenceValue() { return fenceVal_; }
+	ID3D12Fence* GetFence() const {
+		return fence_.Get();
+	}
 
-	ID3D12CommandAllocator* GetCommandAllocator() {return commandAllocator_.Get(); }
+	uint32_t GetFenceValue() {
+		return fenceVal_;
+	}
+
+	ID3D12CommandAllocator* GetCommandAllocator() {
+		return commandAllocator_.Get();
+	}
 private://メンバ関数
 	//FPS固定初期化
 	void InitializeFixFPS();
@@ -87,6 +105,6 @@ private:
 	std::chrono::steady_clock::time_point reference_;
 
 	//WindowsAPI
-	WinApp* winApp_ = nullptr;
+	MyEngine::WinApp* winApp_ = nullptr;
 };
 

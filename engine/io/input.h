@@ -41,7 +41,7 @@ public:
 public://メンバ関数
 
 	//初期化
-	void Initialize(WinApp* winApp);
+	void Initialize(MyEngine::WinApp* winApp);
 	//更新
 	void Update();
 
@@ -68,7 +68,7 @@ private://メイン変数
 	BYTE keyPre[256] = {};
 
 	//WindowAPI
-	WinApp* winApp=nullptr;
+	MyEngine::WinApp* winApp=nullptr;
 
 public://メンバ関数(ゲームパッド)
 	/// <summary>

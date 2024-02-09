@@ -6,6 +6,7 @@
 #pragma comment(lib,"dxgi.lib")
 
 using namespace Microsoft::WRL;
+using namespace MyEngine;
 
 void DirectXCommon::Initialize(WinApp* WinApp)
 {

@@ -24,82 +24,16 @@ void PlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position,uin
 
 void PlayerBullet::Update()
 {
-	Vector3 move;
-
-	float f;
 	switch ( phase_ )
 	{
 	case Phase::Charge:
-		chageTimer_++;
-		f = ( float ) chageTimer_ / chageTime_;
-
-		obj_->SetScale({ f,f,f });
-
-		if ( chageTimer_ >= chageTime_ )
-		{
-			chageTimer_ = 5;
-			phase_ = Phase::Attack;
-		}
-
+		Charge();
 		break;
 	case Phase::Attack:
-		if ( --life_ <= 0 )
-		{
-			phase_ = Phase::Delete;
-		}
-
-		move = obj_->GetPosition();
-
-		move += {velocity_.x,0,velocity_.y};
-
-		obj_->SetPosition(move);
-
-		for ( int i = 0; i < 5; i++ )
-		{
-			//最低限のライフ
-			const uint32_t constlife = 7;
-			uint32_t life =  constlife;
-
-			//XYZの広がる距離
-			const float rnd_velocityX = 0.05f;
-			const float rnd_velocityZ = 0.05f;
-			Vector3 velocity{};
-			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
-			velocity.y = 0;
-			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
-
-					//XYZの広がる距離
-			Vector3 accel = { 0,0,0 };
-
-			//pos.normalize();
-
-			const Vector4 startColor = { particleColor.x,particleColor.y,particleColor.z,0.5f };
-
-			const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,0 };
-
-			//追加
-			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
-		}
-
-		if ( lightIndex_ >= 0 )
-		{
-			light_->SetPointPos(lightIndex_,obj_->GetPosition());
-		}
+		Attack();
 		break;
 	case Phase::Delete:
-		chageTimer_--;
-		f = ( float ) chageTimer_ / 5;
-
-		obj_->SetScale({ f,f,f });
-
-		if ( chageTimer_ <= 0 )
-		{
-			isDead_ = true;
-			if ( lightIndex_ >= 0 )
-			{
-				light_->SetPointActive(lightIndex_,false);
-			}
-		}
+		Delete();
 		break;
 	default:
 		break;
@@ -112,6 +46,89 @@ void PlayerBullet::Update()
 	obj_->SetUVShift(objUV);
 
 	obj_->Update();
+}
+
+void PlayerBullet::Charge()
+{
+	float f;
+
+	chageTimer_++;
+	f = ( float ) chageTimer_ / chageTime_;
+
+	obj_->SetScale({ f,f,f });
+
+	if ( chageTimer_ >= chageTime_ )
+	{
+		chageTimer_ = 5;
+		phase_ = Phase::Attack;
+	}
+}
+
+void PlayerBullet::Attack()
+{
+	Vector3 move;
+
+	if ( --life_ <= 0 )
+	{
+		phase_ = Phase::Delete;
+	}
+
+	move = obj_->GetPosition();
+
+	move += {velocity_.x,0,velocity_.y};
+
+	obj_->SetPosition(move);
+
+	for ( int i = 0; i < 5; i++ )
+	{
+		//最低限のライフ
+		const uint32_t constlife = 7;
+		uint32_t life = constlife;
+
+		//XYZの広がる距離
+		const float rnd_velocityX = 0.05f;
+		const float rnd_velocityZ = 0.05f;
+		Vector3 velocity{};
+		velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
+		velocity.y = 0;
+		velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
+
+				//XYZの広がる距離
+		Vector3 accel = { 0,0,0 };
+
+		//pos.normalize();
+
+		const Vector4 startColor = { particleColor.x,particleColor.y,particleColor.z,0.5f };
+
+		const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,0 };
+
+		//追加
+		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
+	}
+
+	if ( lightIndex_ >= 0 )
+	{
+		light_->SetPointPos(lightIndex_,obj_->GetPosition());
+	}
+}
+
+void PlayerBullet::Delete()
+{
+	float f;
+
+	chageTimer_--;
+	f = ( float ) chageTimer_ / 5;
+
+	obj_->SetScale({ f,f,f });
+
+	if ( chageTimer_ <= 0 )
+	{
+		isDead_ = true;
+		if ( lightIndex_ >= 0 )
+		{
+			light_->SetPointActive(lightIndex_,false);
+		}
+	}
 }
 
 void PlayerBullet::Draw()

@@ -4,6 +4,8 @@
 #include<cassert>
 #include"PostEffectCommon.h"
 
+using namespace MyEngine;
+
 //静的メンバ変数の実体
 ID3D12Device* RenderTarget::sDevice = nullptr;
 

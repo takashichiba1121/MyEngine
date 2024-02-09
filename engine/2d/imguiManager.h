@@ -11,7 +11,7 @@ public: // 静的メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	static void StaticInitialize(WinApp* winApp, DirectXCommon* dxCommon);
+	static void StaticInitialize(MyEngine::WinApp* winApp, DirectXCommon* dxCommon);
 
 	/// <summary>
 	/// 終了
@@ -40,6 +40,6 @@ private://メンバ変数
 
 	static DirectXCommon* sDxCommon;
 
-	static WinApp* sWinApp;
+	static MyEngine::WinApp* sWinApp;
 };
 

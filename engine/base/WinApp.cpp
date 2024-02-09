@@ -1,6 +1,7 @@
  #include "WinApp.h"
 #pragma comment(lib,"winmm.lib")
 #include<imgui_impl_win32.h>
+using namespace MyEngine;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd,UINT msg,WPARAM waram,LPARAM lparam);
 
