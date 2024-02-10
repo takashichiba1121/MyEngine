@@ -214,6 +214,9 @@ private:
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite_;
 
+	std::unique_ptr<Sprite> pauseSprite_;
+	std::unique_ptr<Sprite> pauseTutorialSprite_;
+
 #pragma endregion
 
 	uint32_t padSousaTexHandle_ = 0;
@@ -224,9 +227,7 @@ private:
 	std::unique_ptr<Sprite> noSprite_;
 	std::unique_ptr<Sprite> yazirusiSprite_;
 
-	std::unique_ptr<Sprite> tutorial1Sprite_;
-	std::unique_ptr<Sprite> tutorial2Sprite_;
-	std::unique_ptr<Sprite> tutorial3Sprite_;
+	std::unique_ptr<Sprite> tutorial0Sprite_;
 	std::unique_ptr<Sprite> tutorial4Sprite_;
 
 	uint32_t keyTexHandle_;
@@ -251,6 +252,12 @@ private:
 
 	Stage nowStage;
 
-	bool pause=false;
+	Phase pause=Phase::Before;
+
+	Phase oldPause = Phase::Before;
+
+	uint32_t pauseFrame_=0;
+
+	bool pauseTitle=false;
 };
 
