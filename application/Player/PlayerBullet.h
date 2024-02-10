@@ -103,4 +103,8 @@ protected:
 	const Vector3 particleColor = { 1.0f,0.3f,0.1f };
 
 	Type type;
+
+	std::vector<std::unique_ptr<Object3d>> part;
+
+	uint32_t partFrame = 0;
 };
