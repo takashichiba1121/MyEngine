@@ -107,27 +107,29 @@ void GameScene::Initialize()
 
 #pragma region ポーズ中のチュートリアル用スプライトの設定
 
-	tutorial1Sprite_ = std::make_unique<Sprite>();
-	tutorial2Sprite_ = std::make_unique<Sprite>();
-	tutorial3Sprite_ = std::make_unique<Sprite>();
+	pauseSprite_ = std::make_unique<Sprite>();
+	pauseSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene1.png"));
+	pauseSprite_->SetAnchorPoint({ 0.5f,0.5f });
+	pauseSprite_->SetScale({ 0,0 });
+	pauseSprite_->SetPosition({ 640,360 });
+	pauseSprite_->SetColor({1,1,1,0.8f});
+	pauseSprite_->Update();
+
+	pauseTutorialSprite_ = std::make_unique<Sprite>();
+	pauseTutorialSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial.png"));
+	pauseTutorialSprite_->SetAnchorPoint({ 0.5f,0.5f });
+	pauseTutorialSprite_->SetPosition({ 400,360 });
+	pauseTutorialSprite_->Update();
+
+	tutorial0Sprite_ = std::make_unique<Sprite>();
 	tutorial4Sprite_ = std::make_unique<Sprite>();
 
-	tutorial1Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Sousa1.png"));
-	tutorial2Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Sousa2.png"));
-	tutorial3Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/attackSousa.png"));
-	tutorial4Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial.png"));
+	tutorial0Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial2.png"));
+	tutorial4Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial1.png"));
 
-	tutorial1Sprite_->SetPosition({ 640,100 });
-	tutorial1Sprite_->SetAnchorPoint({ 0.5f,0.5f });
-	tutorial1Sprite_->Update();
-
-	tutorial2Sprite_->SetPosition({ 640,250 });
-	tutorial2Sprite_->SetAnchorPoint({ 0.5f,0.5f });
-	tutorial2Sprite_->Update();
-
-	tutorial3Sprite_->SetPosition({ 640,400 });
-	tutorial3Sprite_->SetAnchorPoint({ 0.5f,0.5f });
-	tutorial3Sprite_->Update();
+	tutorial0Sprite_->SetPosition({ 1260,700 });
+	tutorial0Sprite_->SetAnchorPoint({ 1.0f,1.0f });
+	tutorial0Sprite_->Update();
 
 	tutorial4Sprite_->SetPosition({ 1260,700 });
 	tutorial4Sprite_->SetAnchorPoint({ 1.0f,1.0f });
@@ -255,28 +257,61 @@ void GameScene::Update()
 	}
 	else if ( sceneChange_ == false )
 	{
-		if ( pause )
+		if ( pause==Phase::After )
 		{
-			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
+			if (pauseTitle )
 			{
-				pause = false;
-				sceneSprite_->SetColor({ 1,1,1,1 });
+
 			}
-			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_BACK) || Input::Instance()->TriggerKey(DIK_3) )
+			else
 			{
-				SceneManager::Instance()->ChangeScene("TITLE");
+				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
+				{
+					pause = Phase::Middle;
+					oldPause = Phase::After;
+					sceneSprite_->SetColor({ 1,1,1,1 });
+				}
+				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_BACK) || Input::Instance()->TriggerKey(DIK_3) )
+				{
+					sceneChange_ = true;
+				}
 			}
 
 		}
-		else
+		else if ( pause == Phase::Before )
 		{
 			player_->Update();
 			EnemyManager::Instance()->Update();
 			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
 			{
-				pause = true;
+				pause = Phase::Middle;
+				oldPause = Phase::Before;
 				sceneSprite_->SetColor({ 1,1,1,0.5f });
 			}
+		}
+		else
+		{
+			if ( oldPause == Phase::After )
+			{
+				pauseFrame_--;
+				float f = (float)pauseFrame_ / 10;
+				pauseSprite_->SetScale({ 1280 * f,720*f });
+				if (pauseFrame_<=0 )
+				{
+					pause = Phase::Before;
+				}
+			}
+			if ( oldPause == Phase::Before )
+			{
+				pauseFrame_++;
+				float f = ( float ) pauseFrame_ / 10;
+				pauseSprite_->SetScale({ 1280 * f,720 * f });
+				if ( pauseFrame_ >= 10 )
+				{
+					pause = Phase::After;
+				}
+			}
+			pauseSprite_->Update();
 		}
 		Collider::Cube A,B;
 
@@ -469,11 +504,15 @@ void GameScene::Update()
 					}
 				}
 			}
+			else
+			{
+				SceneManager::Instance()->ChangeScene("TITLE");
+			}
 		}
 
 		sceneSprite_->Update();
 	}
-	if ( pause == false )
+	if ( pause ==Phase::Before )
 	{
 		for ( std::unique_ptr<Object3d>& obj : objects_ )
 		{
@@ -652,7 +691,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	{
 		planes_[ i ]->plane->Draw();
 	}
-	if ( pause == false )
+	if ( pause ==Phase::Before )
 	{
 		for ( uint32_t i = 0; i < tutorials_.size(); i++ )
 		{
@@ -710,6 +749,19 @@ void GameScene::SpriteDraw()
 {
 	SpriteCommon::Instance()->PreDraw();
 	player_->SpriteDraw();
+	if ( pause == Phase::After || pause == Phase::Middle )
+	{
+		pauseSprite_->Draw();
+	}
+	if ( pause == Phase::After )
+	{
+		tutorial4Sprite_->Draw();
+		pauseTutorialSprite_->Draw();
+	}
+	if ( pause == Phase::Before )
+	{
+		tutorial0Sprite_->Draw();
+	}
 	sceneSprite_->DissolveDraw();
 	if ( frame_ <= 0 && player_->IsDaed() )
 	{
@@ -718,14 +770,6 @@ void GameScene::SpriteDraw()
 		noSprite_->Draw();
 		yazirusiSprite_->Draw();
 		spaceSprite_->Draw();
-	}
-	if ( pause )
-	{
-		sceneSprite_->Draw();
-		tutorial1Sprite_->Draw();
-		tutorial2Sprite_->Draw();
-		tutorial3Sprite_->Draw();
-		tutorial4Sprite_->Draw();
 	}
 	SpriteCommon::Instance()->PostDraw();
 }
