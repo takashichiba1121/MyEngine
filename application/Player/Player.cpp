@@ -674,11 +674,10 @@ void Player::Attack()
 
 				//弾の生成し、初期化
 				newBullet[ 0 ] = std::make_unique<PlayerBullet>();
+				newBullet[ 0 ]->SetRot(obj_->GetRot());
 				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
 
 				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
-
-				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
 				for ( uint32_t i = 0; i < LightGroup::cPointLightNum; i++ )
 				{

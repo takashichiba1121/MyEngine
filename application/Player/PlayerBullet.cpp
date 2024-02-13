@@ -1,5 +1,6 @@
 #include"PlayerBullet.h"
 #include"PlayerBulletManager.h"
+#include"TextureManager.h"
 
 void PlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position,uint32_t life)
 {
@@ -61,6 +62,26 @@ void PlayerBullet::Charge()
 	{
 		chageTimer_ = 5;
 		phase_ = Phase::Attack;
+
+		std::unique_ptr<Object3d> newObuject = std::make_unique<Object3d>();
+
+		newObuject->Initialize();
+
+		newObuject->SetModel(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/circle.png")));
+
+		newObuject->SetBillBoard(true);
+
+		Vector3 rot = { 45,0,0 };
+	
+		rot.y = obj_->GetRot().y;
+
+		newObuject->SetRot(rot);
+
+		newObuject->SetPosition(obj_->GetPosition());
+
+		newObuject->SetScale({ 0,0,0 });
+
+		part.push_back(std::move(newObuject));
 	}
 }
 
@@ -82,7 +103,7 @@ void PlayerBullet::Attack()
 	for ( int i = 0; i < 5; i++ )
 	{
 		//最低限のライフ
-		const uint32_t constlife = 7;
+		const uint32_t constlife = 20;
 		uint32_t life = constlife;
 
 		//XYZの広がる距離
@@ -110,6 +131,23 @@ void PlayerBullet::Attack()
 	{
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 	}
+
+	partFrame++;
+	if (partFrame<=10 )
+	{
+		float f = ( float ) partFrame / 10;
+
+		Vector3 scale = { 3,3,3 };
+
+		scale *= f;
+
+		for (uint32_t i=0;i< part.size();i++ )
+		{
+			part[ i ]->SetScale(scale);
+			part[ i ]->Update();
+		}
+
+	}
 }
 
 void PlayerBullet::Delete()
@@ -134,6 +172,11 @@ void PlayerBullet::Delete()
 void PlayerBullet::Draw()
 {
 	obj_->Draw();
+
+	for ( uint32_t i = 0; i < part.size(); i++ )
+	{
+		//part[ i ]->Draw();
+	}
 }
 
 void PlayerBullet::OnCollision()

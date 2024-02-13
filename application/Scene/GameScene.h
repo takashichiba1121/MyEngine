@@ -49,6 +49,8 @@ public:
 		uint32_t lightFrame;
 		uint32_t lightIndex = 0;
 		Phase phase = Phase::Before;
+
+		uint32_t partFrame;
 	};
 
 	struct Switch
@@ -60,6 +62,8 @@ public:
 		uint32_t lightFrame;
 		Phase phase = Phase::Before;
 		uint32_t index = 0;
+
+		uint32_t partFrame;
 
 		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
 		bool operator<(const Switch& right) const {
@@ -259,5 +263,7 @@ private:
 	uint32_t pauseFrame_=0;
 
 	bool pauseTitle=false;
+
+	const uint32_t SwitchPartMaxFrame = 15;
 };
 

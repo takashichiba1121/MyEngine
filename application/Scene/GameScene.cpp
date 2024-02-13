@@ -595,6 +595,12 @@ void GameScene::Update()
 				light_->SetPointActive(goalSwitch->lightIndex,true);
 				goalSwitch->light->Update();
 				goalSwitch->spotLight->Update();
+				goalSwitch->partFrame++;
+				if ( goalSwitch->partFrame >= SwitchPartMaxFrame )
+				{
+					particleManager_->Add(90,goalSwitch->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
+					goalSwitch->partFrame = 0;
+				}
 			}
 		}
 
@@ -618,6 +624,15 @@ void GameScene::Update()
 					if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
 					{
 						switchs_[ i ]->phase = Phase::After;
+					}
+				}
+				else
+				{
+					switchs_[ i ]->partFrame++;
+					if ( switchs_[ i ]->partFrame>=SwitchPartMaxFrame )
+					{
+						particleManager_->Add(90,switchs_[ i ]->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
+						switchs_[ i ]->partFrame=0;
 					}
 				}
 			}
