@@ -96,7 +96,8 @@ void DirectXCommon::InitializeDevice()
 #ifdef _DEBUG
 
 	ID3D12InfoQueue* infoQueue;
-	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
+	HRESULT result = device_->QueryInterface(IID_PPV_ARGS(&infoQueue));
+	if (SUCCEEDED(result)) {
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);//やばいエラーの時に止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);//エラー時に止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);//エラー時に止まる
@@ -121,7 +122,7 @@ void DirectXCommon::InitializeDevice()
 	filter.DenyList.NumSeverities = _countof(severities);
 	filter.DenyList.pSeverityList = severities;
 	//指定したエラーの表示を抑制する
-	infoQueue->PushStorageFilter(&filter);
+	//infoQueue->PushStorageFilter(&filter);
 #endif
 }
 

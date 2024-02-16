@@ -133,7 +133,7 @@ private:
 
 	float kBulletSpeed_ = 1.0f;
 
-	int32_t bulletLife_ = 90;
+	int32_t bulletLife_ = 45;
 
 	int32_t maxHp_ = 1;
 

@@ -497,7 +497,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_;
+				velocity[ 0 ] *= kBulletSpeed_/1.5f;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -571,7 +571,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_;
+				velocity[ 0 ] *= kBulletSpeed_/2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -611,7 +611,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_;
+				velocity[ 0 ] *= kBulletSpeed_/2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -674,8 +674,8 @@ void Player::Attack()
 
 				//弾の生成し、初期化
 				newBullet[ 0 ] = std::make_unique<PlayerBullet>();
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_/2);
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
-				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_);
 
 				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
 
@@ -705,7 +705,7 @@ void Player::Attack()
 				{
 					velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
 					velocity[ i ].normalize();
-					velocity[ i ] *= kBulletSpeed_;
+					velocity[ i ] *= kBulletSpeed_/2;
 
 					newBullet[ i ] = std::make_unique<PlayerBullet>();
 
@@ -740,7 +740,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_;
+				velocity[ 0 ] *= kBulletSpeed_/2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -780,7 +780,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_;
+				velocity[ 0 ] *= kBulletSpeed_/2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
