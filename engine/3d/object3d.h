@@ -42,6 +42,13 @@ public: // サブクラス
 		Light
 	};
 
+	enum Billboard
+	{
+		None,
+		On,
+		YBillboardOn,
+	};
+
 public: // 静的メンバ関数
 	/// <summary>
 	/// 静的初期化
@@ -142,6 +149,8 @@ private: // 静的メンバ変数
 	static Matrix4 sMatProjection;
 
 	static Matrix4 sMatBillboard;
+
+	static Matrix4 sYMatBillboard;
 	// 視点座標
 	static Vector3 sEye;
 	// 注視点座標
@@ -235,7 +244,7 @@ public: // メンバ関数
 
 	void SetVertices(std::vector<Model::VertexPosNormalUv> vertices);
 
-	void SetBillBoard(bool isBillBoard) {isBillboard_ =isBillBoard;}
+	void SetBillBoard(Billboard isBillBoard) {isBillboard_ =isBillBoard;}
 
 	void SetIsDraw(bool isDraw) {isDraw_ =isDraw ;}
 
@@ -280,7 +289,7 @@ private: // メンバ変数
 
 	Vector3 color_ = { 1,1,1 };
 
-	bool isBillboard_=false;
+	Billboard isBillboard_=Billboard::None;
 
 	bool isDraw_=true;
 };

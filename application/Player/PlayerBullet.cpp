@@ -69,11 +69,11 @@ void PlayerBullet::Charge()
 
 		newObuject->SetModel(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/circle.png")));
 
-		newObuject->SetBillBoard(true);
+		newObuject->SetBillBoard(Object3d::Billboard::On);
 
-		Vector3 rot = { 45,0,0 };
-	
-		rot.y = obj_->GetRot().y;
+		Vector3 rot = { 90,0,0 };
+
+		//rot.y = obj_->GetRot().y;
 
 		newObuject->SetRot(rot);
 
@@ -100,10 +100,10 @@ void PlayerBullet::Attack()
 
 	obj_->SetPosition(move);
 
-	for ( int i = 0; i < 5; i++ )
+	for ( int i = 0; i < 60; i++ )
 	{
 		//最低限のライフ
-		const uint32_t constlife = 20;
+		const uint32_t constlife = 10;
 		uint32_t life = constlife;
 
 		//XYZの広がる距離
@@ -133,20 +133,56 @@ void PlayerBullet::Attack()
 	}
 
 	partFrame++;
-	if (partFrame<=10 )
+	if ( partFrame >= 5 )
 	{
-		float f = ( float ) partFrame / 10;
+		partFrame = 0;
 
-		Vector3 scale = { 3,3,3 };
-
-		scale *= f;
-
-		for (uint32_t i=0;i< part.size();i++ )
+		Vector3 vec[ 16 ] =
 		{
-			part[ i ]->SetScale(scale);
-			part[ i ]->Update();
-		}
+		{1.0f,0.0f,0.0f},
+		{0.75f,0.25f,0.0f},
+		{0.5f,0.5f,0.0f},
+		{0.25f,0.75f,0.0f},
 
+		{-0.0f,1.0f,0.0f},
+		{-0.25f,0.75f,0.0f},
+		{-0.5f,0.5f,0.0f},
+		{-0.75f,0.25f,0.0f},
+
+		{-1.0f,0.0f,0.0f},
+		{-0.75f,-0.25f,0.0f},
+		{-0.5f,-0.5f,0.0f},
+		{-0.25f,-0.75f,0.0f},
+
+		{0.0f,-1.0f,0.0f},
+		{0.25f,-0.75f,0.0f},
+		{0.5f,-0.5f,0.0f},
+		{0.75f,-0.25f,0.0f},
+		};
+
+		for ( int i = 0; i < 16; i++ )
+		{
+			//最低限のライフ
+			const uint32_t constlife = 10;
+			uint32_t life = constlife;
+
+			//XYZの広がる距離
+			Vector3 velocity = Matrix4Math::transform(vec[i],obj_->GetMatWorld());
+
+			velocity = velocity.normalize() / 10;
+
+					//XYZの広がる距離
+			Vector3 accel = { 0,0,0 };
+
+			//pos.normalize();
+
+			const Vector4 startColor = { particleColor.x,particleColor.y,particleColor.z,1 };
+
+			const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,1 };
+
+			//追加
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,1.0f,startColor,endColor);
+		}
 	}
 }
 
@@ -175,7 +211,7 @@ void PlayerBullet::Draw()
 
 	for ( uint32_t i = 0; i < part.size(); i++ )
 	{
-		//part[ i ]->Draw();
+		part[ i ]->Draw();
 	}
 }
 
@@ -198,7 +234,7 @@ void PlayerBullet::OnCollision()
 			const float rnd_velocityZ = 0.05f;
 			Vector3 velocity{};
 			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
-			velocity.y =abs( ( float ) rand() / RAND_MAX * rnd_velocityY);
+			velocity.y = abs(( float ) rand() / RAND_MAX * rnd_velocityY);
 			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
 
 					//XYZの広がる距離
@@ -231,7 +267,7 @@ void PlayerBullet::OnCollision()
 			const float rnd_velocityZ = 0.3f;
 			Vector3 velocity{};
 			velocity.x = ( float ) rand() / RAND_MAX * rnd_velocityX - rnd_velocityX / 2;
-			velocity.y = (( float ) rand() / RAND_MAX * rnd_velocityY - rnd_velocityY / 2 );
+			velocity.y = ( ( float ) rand() / RAND_MAX * rnd_velocityY - rnd_velocityY / 2 );
 			velocity.z = ( ( float ) rand() / RAND_MAX * rnd_velocityZ - rnd_velocityZ / 2 );
 
 					//XYZの広がる距離

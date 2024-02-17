@@ -28,6 +28,7 @@ ComPtr<ID3D12PipelineState> Object3d::sPipelinestateLight;
 Matrix4 Object3d::sMatView{};
 Matrix4 Object3d::sMatProjection{};
 Matrix4 Object3d::sMatBillboard{};
+Matrix4 Object3d::sYMatBillboard{};
 Vector3 Object3d::sEye = { 0, 0, 0.0f };
 Vector3 Object3d::sTarget = { 0, 0, 0 };
 Vector3 Object3d::sUp = { 0, 1, 0 };
@@ -402,6 +403,29 @@ void Object3d::UpdateViewMatrix()
 	sMatBillboard.m[ 2 ][ 0 ] = cameraAxisZ.x;
 	sMatBillboard.m[ 2 ][ 1 ] = cameraAxisZ.y;
 	sMatBillboard.m[ 2 ][ 2 ] = cameraAxisZ.z;
+	sMatBillboard.m[ 3 ][ 3 ] = 1;
+
+		//カメラ軸、Y軸、Z軸
+	Vector3 ybillCameraAxisX,ybillCameraAxisY,ybillCameraAxisZ;
+
+	//X軸は共通
+	ybillCameraAxisX = cameraAxisX;
+	//Y軸はワールド座標系のY軸
+	ybillCameraAxisY = upVector.normalize();
+	//Z軸はX軸→Y軸の外積で求まる
+	ybillCameraAxisZ = ybillCameraAxisX.cross(ybillCameraAxisY);
+
+		//Y軸ビルボード行列
+	sYMatBillboard.m[ 0 ][ 0 ] = ybillCameraAxisX.x;
+	sYMatBillboard.m[ 0 ][ 1 ] = ybillCameraAxisX.y;
+	sYMatBillboard.m[ 0 ][ 2 ] = ybillCameraAxisX.z;
+	sYMatBillboard.m[ 1 ][ 0 ] = ybillCameraAxisY.x;
+	sYMatBillboard.m[ 1 ][ 1 ] = ybillCameraAxisY.y;
+	sYMatBillboard.m[ 1 ][ 2 ] = ybillCameraAxisY.z;
+	sYMatBillboard.m[ 2 ][ 0 ] = ybillCameraAxisZ.x;
+	sYMatBillboard.m[ 2 ][ 1 ] = ybillCameraAxisZ.y;
+	sYMatBillboard.m[ 2 ][ 2 ] = ybillCameraAxisZ.z;
+	sYMatBillboard.m[ 3 ][ 3 ] = 1;
 }
 
 void Object3d::Finalize()
@@ -485,9 +509,14 @@ void Object3d::Update()
 	matWorld_ = Matrix4Math::identity(); // 変形をリセット
 	matWorld_ = matWorld_ * matScale; // ワールド行列にスケーリングを反映
 	matWorld_ = matWorld_ * matRot; // ワールド行列に回転を反映
-	if ( isBillboard_ )
+	switch ( isBillboard_ )
 	{
+	case Object3d::On:
 		matWorld_ = matWorld_ * sMatBillboard;
+		break;
+	case Object3d::YBillboardOn:
+		matWorld_ = matWorld_ * sYMatBillboard;
+		break;
 	}
 	matWorld_ = matWorld_ * matTrans; // ワールド行列に平行移動を反映
 
