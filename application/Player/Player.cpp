@@ -223,13 +223,15 @@ void Player::Update()
 
 	ImGui::Begin("player");
 
+	ImGui::Text("PlayerPos:%f,%f,%f",obj_->GetPosition().x,obj_->GetPosition().y,obj_->GetPosition().z);
+
 	ImGui::SliderFloat("gravityAcceleration",&gravityAcceleration_,0.0f,0.1f,"%1.2f");
 	ImGui::SliderFloat("StartJumpSpeed",&StartJumpSpeed_,-1.0f,0.0f,"%1.2f");
 	ImGui::SliderInt("resetPoint",&resetPoint_,-15,15);
 	ImGui::SliderFloat("kBulletSpeed",&kBulletSpeed_,0.0f,1.0f,"%1.2f");
 	ImGui::SliderInt("bulletLife",&bulletLife_,0,300);
 
-	ImGui::SliderFloat3("camera",&cameraPos_.x,-40,40,"%3.0f");
+	ImGui::SliderFloat3("camera",&cameraPos_.x,-100,100,"%3.0f");
 
 	ImGui::End();
 
@@ -244,19 +246,19 @@ void Player::Move()
 		{
 			if ( Input::Instance()->IsLinkGamePad() )
 			{
-				if (cameraPos_.x==0&&cameraPos_.z==-40 )
+				if (cameraPos_.x==0&&cameraPos_.z==-30 )
 				{
 					move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
 				}
-				else if ( cameraPos_.x == 0 && cameraPos_.z == 40 )
+				else if ( cameraPos_.x == 0 && cameraPos_.z == 30 )
 				{
 					move_ += {-Input::Instance()->GetPadStick(PadStick::LX),0,-Input::Instance()->GetPadStick(PadStick::LY)};
 				}
-				else if ( cameraPos_.x == -40 && cameraPos_.z == 0 )
+				else if ( cameraPos_.x == -30 && cameraPos_.z == 0 )
 				{
 					move_ += {Input::Instance()->GetPadStick(PadStick::LY),0,-Input::Instance()->GetPadStick(PadStick::LX)};
 				}
-				else if ( cameraPos_.x == 40 && cameraPos_.z == 0 )
+				else if ( cameraPos_.x == 30 && cameraPos_.z == 0 )
 				{
 					move_ += {-Input::Instance()->GetPadStick(PadStick::LY),0,Input::Instance()->GetPadStick(PadStick::LX)};
 				}
@@ -305,7 +307,7 @@ void Player::Move()
 			}
 			else
 			{
-				if ( cameraPos_.x == 0 && cameraPos_.z == -40 )
+				if ( cameraPos_.x == 0 && cameraPos_.z == -30 )
 				{
 					if ( Input::Instance()->PushKey(DIK_W) )
 					{
@@ -324,7 +326,7 @@ void Player::Move()
 						move_ += {1,0,0};
 					}
 				}
-				else if ( cameraPos_.x == 0 && cameraPos_.z == 40 )
+				else if ( cameraPos_.x == 0 && cameraPos_.z == 30 )
 				{
 					if ( Input::Instance()->PushKey(DIK_W) )
 					{
@@ -343,7 +345,7 @@ void Player::Move()
 						move_ += {-1,0,0};
 					}
 				}
-				else if ( cameraPos_.x == -40 && cameraPos_.z == 0 )
+				else if ( cameraPos_.x == -30 && cameraPos_.z == 0 )
 				{
 					if ( Input::Instance()->PushKey(DIK_W) )
 					{
@@ -362,7 +364,7 @@ void Player::Move()
 						move_ += {0,0,-1};
 					}
 				}
-				else if ( cameraPos_.x == 40 && cameraPos_.z == 0 )
+				else if ( cameraPos_.x == 30 && cameraPos_.z == 0 )
 				{
 					if ( Input::Instance()->PushKey(DIK_W) )
 					{

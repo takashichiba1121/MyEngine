@@ -1,5 +1,6 @@
 #include "PlayerBulletManager.h"
 #include"TextureManager.h"
+#include"imgui.h"
 
 PlayerBulletManager* PlayerBulletManager::Instance()
 {
@@ -30,6 +31,16 @@ void PlayerBulletManager::Update()
 	}
 
 	particle_->Update();
+
+#ifdef _DEBUG
+
+	ImGui::Begin("playerBullet");
+
+	ImGui::Text("particleSize%d",particle_->GetParticlesListSize());
+
+	ImGui::End();
+
+#endif
 }
 
 void PlayerBulletManager::Draw()

@@ -30,6 +30,7 @@ public:
 	struct Plane
 	{
 		std::unique_ptr<Object3d> plane;
+		uint32_t texHandle = 0;
 		Vector2 UVSift = { 0,0 };
 		Vector2 UVSiftSpeed = { 0,0 };
 	};
@@ -133,6 +134,16 @@ private:
 
 	void SwitchCollsion();
 
+	void planeUpdate();
+
+	void tutorialUpdate();
+
+	void goalSwitchUpdate();
+
+	void switchUpdate();
+
+	void middleUpdate();
+
 private:
 #pragma region モデル
 
@@ -148,6 +159,7 @@ private:
 	std::vector<std::unique_ptr<Object3d>> objects_;
 
 	std::vector<std::unique_ptr<Plane>> planes_;
+	uint32_t planeDrawNum=0;
 
 	std::vector<std::unique_ptr<Tutorial>> tutorials_;
 
@@ -265,5 +277,7 @@ private:
 	bool pauseTitle=false;
 
 	const uint32_t SwitchPartMaxFrame = 15;
+
+	Vector3 cameraScale_ = { 80,80,80 };
 };
 

@@ -102,10 +102,6 @@ private: // 静的メンバ変数
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> sRootsignature;
 	// パイプラインステートオブジェクト
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> sPipelinestate;
-	// 頂点バッファ
-	static Microsoft::WRL::ComPtr<ID3D12Resource> sVertBuff;
-	// 頂点バッファビュー
-	static D3D12_VERTEX_BUFFER_VIEW sVbView;
 	//ビルボード行列
 	static Matrix4 sMatBillboard;
 
@@ -120,7 +116,7 @@ private:// 静的メンバ関数
 	/// <summary>
 	/// 頂点バッファの初期化
 	/// </summary>
-	static void InitializeVerticeBuff();
+	void InitializeVerticeBuff();
 
 public: // メンバ関数
 	void Initialize();
@@ -154,6 +150,11 @@ public: // メンバ関数
 	void Add(uint32_t life,const Vector3& startPosition,const Vector3& velocity,const Vector3& accel, float startScale, float endScale,const Vector4& startColor,const Vector4& endColor);
 
 private: // メンバ変数
+		// 頂点バッファ
+	Microsoft::WRL::ComPtr<ID3D12Resource> VertBuff;
+	// 頂点バッファビュー
+	D3D12_VERTEX_BUFFER_VIEW VbView;
+
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 
 	//パーティクル配列

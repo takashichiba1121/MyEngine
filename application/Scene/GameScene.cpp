@@ -202,11 +202,6 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 #ifdef _DEBUG
-	ImGui::Begin("Scene");
-
-	ImGui::SliderFloat3("light",&lightV_.x,-1,1,"%3.1f");
-
-	ImGui::End();
 
 	if ( Input::Instance()->TriggerKey(DIK_0) )
 	{
@@ -520,167 +515,28 @@ void GameScene::Update()
 
 		}
 
-		for ( uint32_t i = 0; i < planes_.size(); i++ )
-		{
-			planes_[ i ]->UVSift += planes_[ i ]->UVSiftSpeed;
+		planeUpdate();
 
-			if ( planes_[ i ]->UVSift.x >= 1 )
-			{
-				planes_[ i ]->UVSift.x = 0;
-			}
-
-			planes_[ i ]->plane->SetUVShift(planes_[ i ]->UVSift);
-
-			planes_[ i ]->plane->Update();
-		}
-		for ( uint32_t i = 0; i < tutorials_.size(); i++ )
-		{
-			Vector3 vec = player_->GetObj()->GetPosition() - tutorials_[ i ]->obj->GetPosition();
-			vec.x = abs(vec.x);
-			vec.z = abs(vec.z);
-			float A = ( vec.x + vec.z ) / 2;
-			float B = ( tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z ) / 2;
-			if ( A < B )
-			{
-				tutorials_[ i ]->obj->Setalpha(1.0f);
-			}
-			else
-			{
-				float X = A - B;
-				X = abs(X);
-				X = 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
-				tutorials_[ i ]->obj->Setalpha(X);
-				if ( X < 0 )
-				{
-					tutorials_[ i ]->isDraw = false;
-				}
-				else
-				{
-					tutorials_[ i ]->isDraw = true;
-				}
-			}
-
-			tutorials_[ i ]->obj->Update();
-		}
+		tutorialUpdate();
 
 		SwitchCollsion();
 
-		for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
-		{
-			goalSwitch->obj->Update();
-			if ( goalSwitch->phase == Phase::Middle )
-			{
-				goalSwitch->lightFrame++;
-				float a = goalSwitch->spotLight->GetScale().z;
+		goalSwitchUpdate();
 
-				float f = ( float ) goalSwitch->lightFrame / lightMaxFrame;
+		switchUpdate();
 
-				goalSwitch->spotLight->SetScale({ f * ( a / 5 ),1,a });
+		middleUpdate();
+#ifdef _DEBUG
+		ImGui::Begin("Scene");
 
-				f *= 1.5f;
+		ImGui::Text("planeDrawNum:%d",planeDrawNum);
 
-				goalSwitch->light->SetScale({ f,f,f });
+		ImGui::SliderFloat3("camera",&cameraScale_.x,0,80,"%3.0f");
 
-				if ( goalSwitch->lightFrame >= lightMaxFrame )
-				{
-					goalSwitch->phase = Phase::After;
-				}
+		ImGui::End();
+#endif
 
-				light_->SetPointActive(goalSwitch->lightIndex,true);
-				goalSwitch->light->Update();
-				goalSwitch->spotLight->Update();
-			}
-			else if ( goalSwitch->phase == Phase::After )
-			{
-				light_->SetPointActive(goalSwitch->lightIndex,true);
-				goalSwitch->light->Update();
-				goalSwitch->spotLight->Update();
-				goalSwitch->partFrame++;
-				if ( goalSwitch->partFrame >= SwitchPartMaxFrame )
-				{
-					particleManager_->Add(90,goalSwitch->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
-					goalSwitch->partFrame = 0;
-				}
-			}
-		}
 
-		for ( uint32_t i = 0; i < switchs_.size(); i++ )
-		{
-			switchs_[ i ]->obj->Update();
-			if ( switchs_[ i ]->phase != Phase::Before )
-			{
-				switchs_[ i ]->light->Update();
-				light_->SetPointActive(switchs_[ i ]->lightIndex,true);
-				if ( switchs_[ i ]->phase == Phase::Middle )
-				{
-					switchs_[ i ]->lightFrame++;
-
-					float f = ( float ) switchs_[ i ]->lightFrame / spotLightMaxFrame;
-
-					f *= 1.5f;
-
-					switchs_[ i ]->light->SetScale({ f,f,f });
-
-					if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
-					{
-						switchs_[ i ]->phase = Phase::After;
-					}
-				}
-				else
-				{
-					switchs_[ i ]->partFrame++;
-					if ( switchs_[ i ]->partFrame>=SwitchPartMaxFrame )
-					{
-						particleManager_->Add(90,switchs_[ i ]->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
-						switchs_[ i ]->partFrame=0;
-					}
-				}
-			}
-			for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
-			{
-				if ( switchs_[ i ]->index == gimmicks_[ j ]->index && switchs_[ i ]->phase != Phase::Before )
-				{
-					if ( gimmicks_[ j ]->phase == Phase::Before )
-					{
-						gimmicks_[ j ]->phase = Phase::Middle;
-						gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
-					}
-					if ( gimmicks_[ j ]->phase == Phase::Middle )
-					{
-						Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
-
-						pos.y -= 0.1f;
-
-						if ( pos.y <= gimmicks_[ j ]->EndPosY )
-						{
-							pos.y = gimmicks_[ j ]->EndPosY;
-							gimmicks_[ j ]->phase = Phase::After;
-						}
-						gimmicks_[ j ]->obj->SetPosition(pos);
-					}
-				}
-				gimmicks_[ j ]->obj->Update();
-			}
-		}
-
-		for ( uint32_t i = 0; i < middles_.size(); i++ )
-		{
-			if ( middles_[ i ]->phase == Phase::Middle )
-			{
-				middles_[ i ]->Frame++;
-
-				float f = middles_[ i ]->Frame / goalOpenMaxFlame;
-
-				middles_[ i ]->obj->SetColor({ f,f,f });
-
-				if ( middles_[ i ]->Frame >= goalOpenMaxFlame )
-				{
-					middles_[ i ]->phase = Phase::After;
-				}
-			}
-
-			middles_[ i ]->obj->Update();
-		}
 		light_->Update();
 
 		goalObj_->Update();
@@ -704,7 +560,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
-		planes_[ i ]->plane->Draw();
+		planes_[ i ]->plane->Draw(planes_[i]->texHandle);
 	}
 	if ( pause ==Phase::Before )
 	{
@@ -739,7 +595,6 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	EnemyManager::Instance()->Draw();
 
 	player_->Draw();
-	goalObj_->Draw();
 	goalObj_->Draw();
 	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
 	{
@@ -942,9 +797,22 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 			// 座標
 			newObject->plane->SetScale({ objectData.scale });
 
-			newObject->UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
+			if ( objectData.scale.z<=1.0f )
+			{
+				newObject->UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
 
-			newObject->UVSiftSpeed = { 0.02f ,0 };
+				newObject->UVSiftSpeed = { 0.02f ,0 };
+
+				newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/plane.png");
+			}
+			else
+			{
+				newObject->UVSift = { 0,( float ) ( rand() % 1000 ) / 1000 };
+
+				newObject->UVSiftSpeed = { 0,0.02f };
+
+				newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/plane2.png");
+			}
 		// 配列に登録
 			planes_.push_back(std::move(newObject));
 		}
@@ -1492,7 +1360,7 @@ void GameScene::SwitchCollsion()
 	{
 		Vector3 pos = cameras_[ i ]->rot;
 
-		pos *= 40;
+		pos *= 30;
 
 		if ( player_->GetEndCameraPos() != pos )
 		{
@@ -1519,6 +1387,276 @@ void GameScene::SwitchCollsion()
 
 				player_->SetSpawnPos(middles_[ i ]->obj->GetPosition());
 			}
+		}
+	}
+}
+
+void GameScene::planeUpdate()
+{
+	planeDrawNum = 0;
+	for ( uint32_t i = 0; i < planes_.size(); i++ )
+	{
+		planes_[ i ]->UVSift += planes_[ i ]->UVSiftSpeed;
+
+		if ( planes_[ i ]->UVSift.x >= 1 )
+		{
+			planes_[ i ]->UVSift.x = 0;
+		}
+
+		planes_[ i ]->plane->SetUVShift(planes_[ i ]->UVSift);
+
+		planes_[ i ]->plane->Update();
+
+		Vector3 planePos = planes_[ i ]->plane->GetPosition();
+		Vector3 cameraPos = Object3d::GetEye();
+		if ( planePos.y <=cameraPos.y )
+		{
+			Collider::Cube planeCube = { {planePos},{planePos},{planes_[ i ]->plane->GetScale()}};
+			Collider::Cube cameraCube = { {cameraPos},{cameraPos},{cameraScale_} };
+			if (Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
+			{
+				planes_[ i ]->plane->SetIsDraw(true);
+				planeDrawNum++;
+			}
+			else
+			{
+				planes_[ i ]->plane->SetIsDraw(false);
+			}
+		}
+		else
+		{
+			planes_[ i ]->plane->SetIsDraw(false);
+		}
+	}
+}
+
+void GameScene::tutorialUpdate()
+{
+	for ( uint32_t i = 0; i < tutorials_.size(); i++ )
+	{
+		Vector3 vec = player_->GetObj()->GetPosition() - tutorials_[ i ]->obj->GetPosition();
+		vec.x = abs(vec.x);
+		vec.z = abs(vec.z);
+		float A = ( vec.x + vec.z ) / 2;
+		float B = ( tutorials_[ i ]->obj->GetScale().x + tutorials_[ i ]->obj->GetScale().z ) / 2;
+		if ( A < B )
+		{
+			tutorials_[ i ]->obj->Setalpha(1.0f);
+		}
+		else
+		{
+			float X = A - B;
+			X = abs(X);
+			X = 1.0f / ( 0.7f + 0.7f * X + 0.7f * X * X );
+			tutorials_[ i ]->obj->Setalpha(X);
+			if ( X < 0 )
+			{
+				tutorials_[ i ]->isDraw = false;
+			}
+			else
+			{
+				tutorials_[ i ]->isDraw = true;
+			}
+		}
+
+		tutorials_[ i ]->obj->Update();
+	}
+}
+
+void GameScene::goalSwitchUpdate()
+{
+	for ( std::unique_ptr<GoalSwitch>& goalSwitch : goalSwitchs_ )
+	{
+		goalSwitch->obj->Update();
+		if ( goalSwitch->phase == Phase::Middle )
+		{
+			goalSwitch->lightFrame++;
+			float a = goalSwitch->spotLight->GetScale().z;
+
+			float f = ( float ) goalSwitch->lightFrame / lightMaxFrame;
+
+			goalSwitch->spotLight->SetScale({ f * ( a / 5 ),1,a });
+
+			f *= 1.5f;
+
+			goalSwitch->light->SetScale({ f,f,f });
+
+			if ( goalSwitch->lightFrame >= lightMaxFrame )
+			{
+				goalSwitch->phase = Phase::After;
+			}
+
+			light_->SetPointActive(goalSwitch->lightIndex,true);
+			goalSwitch->light->Update();
+			goalSwitch->spotLight->Update();
+		}
+		else if ( goalSwitch->phase == Phase::After )
+		{
+			light_->SetPointActive(goalSwitch->lightIndex,true);
+			goalSwitch->light->Update();
+			goalSwitch->spotLight->Update();
+			goalSwitch->partFrame++;
+			if ( goalSwitch->partFrame >= SwitchPartMaxFrame )
+			{
+				particleManager_->Add(90,goalSwitch->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
+				goalSwitch->partFrame = 0;
+			}
+		}
+
+		Vector3 planePos = goalSwitch->obj->GetPosition();
+		Vector3 cameraPos = Object3d::GetEye();
+		if ( planePos.y <= cameraPos.y )
+		{
+			Collider::Cube planeCube = { {planePos},{planePos},{goalSwitch->obj->GetScale()} };
+			Collider::Cube cameraCube = { {cameraPos},{cameraPos},{cameraScale_} };
+			if ( Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
+			{
+				goalSwitch->obj->SetIsDraw(true);
+				goalSwitch->light->SetIsDraw(true);
+				goalSwitch->spotLight->SetIsDraw(true);
+				planeDrawNum++;
+			}
+			else
+			{
+				goalSwitch->obj->SetIsDraw(false);
+				goalSwitch->light->SetIsDraw(false);
+				goalSwitch->spotLight->SetIsDraw(false);
+			}
+		}
+		else
+		{
+			goalSwitch->obj->SetIsDraw(false);
+			goalSwitch->light->SetIsDraw(false);
+			goalSwitch->spotLight->SetIsDraw(false);
+		}
+	}
+}
+
+void GameScene::switchUpdate()
+{
+	for ( uint32_t i = 0; i < switchs_.size(); i++ )
+	{
+		switchs_[ i ]->obj->Update();
+		if ( switchs_[ i ]->phase != Phase::Before )
+		{
+			switchs_[ i ]->light->Update();
+			light_->SetPointActive(switchs_[ i ]->lightIndex,true);
+			if ( switchs_[ i ]->phase == Phase::Middle )
+			{
+				switchs_[ i ]->lightFrame++;
+
+				float f = ( float ) switchs_[ i ]->lightFrame / spotLightMaxFrame;
+
+				f *= 1.5f;
+
+				switchs_[ i ]->light->SetScale({ f,f,f });
+
+				if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
+				{
+					switchs_[ i ]->phase = Phase::After;
+				}
+			}
+			else
+			{
+				switchs_[ i ]->partFrame++;
+				if ( switchs_[ i ]->partFrame >= SwitchPartMaxFrame )
+				{
+					particleManager_->Add(90,switchs_[ i ]->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
+					switchs_[ i ]->partFrame = 0;
+				}
+			}
+		}
+		for ( uint32_t j = 0; j < gimmicks_.size(); j++ )
+		{
+			if ( switchs_[ i ]->index == gimmicks_[ j ]->index && switchs_[ i ]->phase != Phase::Before )
+			{
+				if ( gimmicks_[ j ]->phase == Phase::Before )
+				{
+					gimmicks_[ j ]->phase = Phase::Middle;
+					gimmicks_[ j ]->EndPosY = gimmicks_[ j ]->obj->GetPosition().y - gimmicks_[ j ]->obj->GetScale().y * 2;
+				}
+				if ( gimmicks_[ j ]->phase == Phase::Middle )
+				{
+					Vector3 pos = gimmicks_[ j ]->obj->GetPosition();
+
+					pos.y -= 0.1f;
+
+					if ( pos.y <= gimmicks_[ j ]->EndPosY )
+					{
+						pos.y = gimmicks_[ j ]->EndPosY;
+						gimmicks_[ j ]->phase = Phase::After;
+						gimmicks_[ j ]->obj->SetIsDraw(false);
+					}
+					gimmicks_[ j ]->obj->SetPosition(pos);
+				}
+			}
+			gimmicks_[ j ]->obj->Update();
+		}
+		Vector3 planePos = switchs_[ i ]->obj->GetPosition();
+		Vector3 cameraPos = Object3d::GetEye();
+		if ( planePos.y <= cameraPos.y )
+		{
+			Collider::Cube planeCube = { {planePos},{planePos},{switchs_[ i ]->obj->GetScale()} };
+			Collider::Cube cameraCube = { {cameraPos},{cameraPos},{cameraScale_} };
+			if ( Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
+			{
+				switchs_[ i ]->obj->SetIsDraw(true);
+				switchs_[ i ]->light->SetIsDraw(true);
+				planeDrawNum++;
+			}
+			else
+			{
+				switchs_[ i ]->obj->SetIsDraw(false);
+				switchs_[ i ]->light->SetIsDraw(true);
+			}
+		}
+		else
+		{
+			switchs_[ i ]->obj->SetIsDraw(false);
+			switchs_[ i ]->light->SetIsDraw(true);
+		}
+	}
+}
+
+void GameScene::middleUpdate()
+{
+	for ( uint32_t i = 0; i < middles_.size(); i++ )
+	{
+		if ( middles_[ i ]->phase == Phase::Middle )
+		{
+			middles_[ i ]->Frame++;
+
+			float f = middles_[ i ]->Frame / goalOpenMaxFlame;
+
+			middles_[ i ]->obj->SetColor({ f,f,f });
+
+			if ( middles_[ i ]->Frame >= goalOpenMaxFlame )
+			{
+				middles_[ i ]->phase = Phase::After;
+			}
+		}
+
+		middles_[ i ]->obj->Update();
+
+		Vector3 planePos = middles_[ i ]->obj->GetPosition();
+		Vector3 cameraPos = Object3d::GetEye();
+		if ( planePos.y <= cameraPos.y )
+		{
+			Collider::Cube planeCube = { {planePos},{planePos},{middles_[ i ]->obj->GetScale()} };
+			Collider::Cube cameraCube = { {cameraPos},{cameraPos},{cameraScale_} };
+			if ( Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
+			{
+				middles_[ i ]->obj->SetIsDraw(true);
+				planeDrawNum++;
+			}
+			else
+			{
+				middles_[ i ]->obj->SetIsDraw(false);
+			}
+		}
+		else
+		{
+			middles_[ i ]->obj->SetIsDraw(false);
 		}
 	}
 }

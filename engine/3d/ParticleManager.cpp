@@ -21,10 +21,6 @@ ID3D12Device* ParticleManager::sDevice = nullptr;
 ID3D12GraphicsCommandList* ParticleManager::sCmdList = nullptr;
 ComPtr<ID3D12RootSignature> ParticleManager::sRootsignature;
 ComPtr<ID3D12PipelineState> ParticleManager::sPipelinestate;
-ComPtr<ID3D12Resource> ParticleManager::sVertBuff;
-//ComPtr<ID3D12Resource> Object3d::indexBuff;
-D3D12_VERTEX_BUFFER_VIEW ParticleManager::sVbView{};
-
 void ParticleManager::StaticInitialize(ID3D12Device* device)
 {
 	// nullptrチェック
@@ -34,8 +30,6 @@ void ParticleManager::StaticInitialize(ID3D12Device* device)
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
-
-	InitializeVerticeBuff();
 
 }
 
@@ -65,7 +59,6 @@ void ParticleManager::Finalize()
 {
 	sPipelinestate = nullptr;
 	sRootsignature = nullptr;
-	sVertBuff = nullptr;
 }
 
 void ParticleManager::InitializeGraphicsPipeline()
@@ -247,7 +240,7 @@ void ParticleManager::InitializeVerticeBuff()
 
 	HRESULT result;
 
-	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPos)) * 1024;
+	uint32_t sizeVB = static_cast<uint32_t>(sizeof(VertexPos)) * 4096;
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -257,13 +250,13 @@ void ParticleManager::InitializeVerticeBuff()
 	// 頂点バッファ生成
 	result = sDevice->CreateCommittedResource(
 		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&sVertBuff));
+		IID_PPV_ARGS(&VertBuff));
 	assert(SUCCEEDED(result));
 
 	// 頂点バッファビューの作成
-	sVbView.BufferLocation = sVertBuff->GetGPUVirtualAddress();
-	sVbView.SizeInBytes = sizeVB;
-	sVbView.StrideInBytes = sizeof(VertexPos);
+	VbView.BufferLocation = VertBuff->GetGPUVirtualAddress();
+	VbView.SizeInBytes = sizeVB;
+	VbView.StrideInBytes = sizeof(VertexPos);
 }
 void ParticleManager::Initialize()
 {
@@ -281,6 +274,8 @@ void ParticleManager::Initialize()
 		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuff));
 	assert(SUCCEEDED(result));
+
+	InitializeVerticeBuff();
 }
 
 void ParticleManager::Update()
@@ -323,7 +318,7 @@ void ParticleManager::Update()
 	}
 	//頂点バッファへデータ転送
 	VertexPos* vertMap = nullptr;
-	result = sVertBuff->Map(0, nullptr, (void**)&vertMap);
+	result = VertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result))
 	{
 		//パーティクルの情報を1つずつ反映
@@ -336,7 +331,7 @@ void ParticleManager::Update()
 			//次の頂点へ
 			vertMap++;
 		}
-		sVertBuff->Unmap(0, nullptr);
+		VertBuff->Unmap(0, nullptr);
 	}
 }
 
@@ -357,7 +352,7 @@ void ParticleManager::Draw()
 	assert(ParticleManager::sCmdList);
 
 	// 頂点バッファの設定
-	sCmdList->IASetVertexBuffers(0, 1, &sVbView);
+	sCmdList->IASetVertexBuffers(0, 1, &VbView);
 	//// インデックスバッファの設定
 	//cmdList->IASetIndexBuffer(&ibView);
 

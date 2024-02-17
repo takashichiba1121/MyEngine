@@ -554,7 +554,7 @@ void Object3d::Draw(uint32_t texHandle)
 	assert(Object3d::sCmdList);
 
 	//モデルがセットされていなければ描画をスキップ
-	if ( model_ == nullptr )
+	if ( model_ == nullptr||isDraw_==false )
 	{
 		return;
 	}
