@@ -94,6 +94,12 @@ void DivisionPlayerBullet::OnCollision()
 		{1,0,0},
 		{-1,0,0},
 	};
+	Vector3 rot[ 3 ]
+	{
+		{0,0,0},
+		{0,90.0f,0},
+		{0,-90.0f,0},
+	};
 	for ( int i = 0; i < 3; i++ )
 	{
 		velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
@@ -109,6 +115,8 @@ void DivisionPlayerBullet::OnCollision()
 		newBullet[ i ]->Initialize(model_,{ velocity[ i ].x,velocity[ i ].z },pos,bulletLife_);
 
 		newBullet[ i ]->SetPhase(PlayerBullet::Phase::Attack);
+
+		newBullet[ i ]->SetRot(obj_->GetRot() + rot[ i ]);
 
 		for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 		{

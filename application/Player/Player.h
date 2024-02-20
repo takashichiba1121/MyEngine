@@ -175,7 +175,7 @@ private:
 	Vector3 goalScale_ = { 0,0,0 };
 
 	//プレイヤーから見たカメラの位置
-	Vector3 cameraPos_ = { 0.0f,40.0f,-40.0f };
+	Vector3 cameraPos_ = { 0.0f,30.0f,-30.0f };
 
 	const float cameraSpeed_ = 0.1f;
 

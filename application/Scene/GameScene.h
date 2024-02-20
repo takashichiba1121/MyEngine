@@ -195,7 +195,7 @@ private:
 	float lightColor_[ 3 ] = { 1,1,1 };
 	float lightAtten_[ 3 ] = { 0.3f,0.1f,0.1f };
 
-	const Vector3 cameraPos_ = { 0.0f,40.0f,-40.0f };
+	const Vector3 cameraPos_ = { 0.0f,30.0f,-30.0f };
 
 	std::unique_ptr<Player> player_;
 

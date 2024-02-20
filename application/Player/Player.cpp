@@ -491,6 +491,12 @@ void Player::Attack()
 				{0.3f,0,1},
 				{-0.3f,0,1},
 			};
+			Vector3 rot[ 3 ]
+			{
+				{0,0,0},
+				{0,54.0f,0},
+				{0,-54.0f,0},
+			};
 
 			switch ( attackType )
 			{
@@ -549,6 +555,8 @@ void Player::Attack()
 					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
 					newBullet[ i ]->SetChageTime(threeWayAttackInterval_);
+
+					newBullet[ i ]->SetRot(obj_->GetRot()+rot[i]);
 
 					for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 					{

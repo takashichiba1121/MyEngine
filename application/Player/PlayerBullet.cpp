@@ -62,26 +62,6 @@ void PlayerBullet::Charge()
 	{
 		chageTimer_ = 5;
 		phase_ = Phase::Attack;
-
-		std::unique_ptr<Object3d> newObuject = std::make_unique<Object3d>();
-
-		newObuject->Initialize();
-
-		newObuject->SetModel(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/circle.png")));
-
-		newObuject->SetBillBoard(Object3d::Billboard::On);
-
-		Vector3 rot = { 90,0,0 };
-
-		//rot.y = obj_->GetRot().y;
-
-		newObuject->SetRot(rot);
-
-		newObuject->SetPosition(obj_->GetPosition());
-
-		newObuject->SetScale({ 0,0,0 });
-
-		part.push_back(std::move(newObuject));
 	}
 }
 
@@ -100,10 +80,10 @@ void PlayerBullet::Attack()
 
 	obj_->SetPosition(move);
 
-	for ( int i = 0; i < 60; i++ )
+	for ( int i = 0; i < 10; i++ )
 	{
 		//最低限のライフ
-		const uint32_t constlife = 10;
+		const uint32_t constlife = 5;
 		uint32_t life = constlife;
 
 		//XYZの広がる距離
@@ -163,7 +143,7 @@ void PlayerBullet::Attack()
 		for ( int i = 0; i < 16; i++ )
 		{
 			//最低限のライフ
-			const uint32_t constlife = 10;
+			const uint32_t constlife = 20;
 			uint32_t life = constlife;
 
 			//XYZの広がる距離
@@ -181,7 +161,7 @@ void PlayerBullet::Attack()
 			const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,1 };
 
 			//追加
-			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,1.0f,startColor,endColor);
+			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,0.5f,startColor,endColor);
 		}
 	}
 }
