@@ -95,6 +95,21 @@ void Player::Update()
 	if ( isDaed_ == false )
 	{
 		Move();
+
+		if ( move_.x == 0 && move_.y == 0 && move_.z == 0 )
+		{
+			notMovingFrame++;
+		}
+		else
+		{
+			notMovingFrame = 0;
+		}
+
+		if ( notMovingFrame == 512 )
+		{
+			notMovingFrame = 1;
+		}
+
 		if ( hp_ <= 0 )
 		{
 			isDaed_ = true;
@@ -246,7 +261,7 @@ void Player::Move()
 		{
 			if ( Input::Instance()->IsLinkGamePad() )
 			{
-				if (cameraPos_.x==0&&cameraPos_.z==-30 )
+				if ( cameraPos_.x == 0 && cameraPos_.z == -30 )
 				{
 					move_ += {Input::Instance()->GetPadStick(PadStick::LX),0,Input::Instance()->GetPadStick(PadStick::LY)};
 				}
@@ -294,8 +309,8 @@ void Player::Move()
 
 						//XYZの広がる距離
 						const float constPos = 0.1f;
-						Vector3 pos= velocity[i]*constPos;
-						
+						Vector3 pos = velocity[ i ] * constPos;
+
 
 						//pos.normalize();
 
@@ -505,7 +520,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_/1.5f;
+				velocity[ 0 ] *= kBulletSpeed_ / 1.5f;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -525,7 +540,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= LightGroup::cPointLightNum-1 )
+					if ( i <= LightGroup::cPointLightNum - 1 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -544,7 +559,7 @@ void Player::Attack()
 				{
 					velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
 					velocity[ i ].normalize();
-					velocity[ i ] *= kBulletSpeed_/2;
+					velocity[ i ] *= kBulletSpeed_ / 2;
 
 					newBullet[ i ] = std::make_unique<PlayerBullet>();
 
@@ -556,7 +571,7 @@ void Player::Attack()
 
 					newBullet[ i ]->SetChageTime(threeWayAttackInterval_);
 
-					newBullet[ i ]->SetRot(obj_->GetRot()+rot[i]);
+					newBullet[ i ]->SetRot(obj_->GetRot() + rot[ i ]);
 
 					for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 					{
@@ -566,7 +581,7 @@ void Player::Attack()
 
 							break;
 						}
-						if ( i >= LightGroup::cPointLightNum-1 )
+						if ( i >= LightGroup::cPointLightNum - 1 )
 						{
 							newBullet[ i ]->SetLight(light_,-1);
 						}
@@ -581,7 +596,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_/2;
+				velocity[ 0 ] *= kBulletSpeed_ / 2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -603,7 +618,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= LightGroup::cPointLightNum-1 )
+					if ( i <= LightGroup::cPointLightNum - 1 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -621,7 +636,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_/2;
+				velocity[ 0 ] *= kBulletSpeed_ / 2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -641,7 +656,7 @@ void Player::Attack()
 
 						break;
 					}
-					if ( i <= LightGroup::cPointLightNum-1 )
+					if ( i <= LightGroup::cPointLightNum - 1 )
 					{
 						newBullet[ 0 ]->SetLight(light_,-1);
 					}
@@ -684,7 +699,7 @@ void Player::Attack()
 
 				//弾の生成し、初期化
 				newBullet[ 0 ] = std::make_unique<PlayerBullet>();
-				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_/2);
+				newBullet[ 0 ]->Initialize(bulletModel_.get(),{ velocity[ 0 ].x,velocity[ 0 ].z },pos[ 0 ],bulletLife_ / 2);
 				newBullet[ 0 ]->SetRot(obj_->GetRot());
 
 				newBullet[ 0 ]->SetPhase(PlayerBullet::Phase::Charge);
@@ -715,7 +730,7 @@ void Player::Attack()
 				{
 					velocity[ i ] = Matrix4Math::transform(velocity[ i ],obj_->GetMatWorld());
 					velocity[ i ].normalize();
-					velocity[ i ] *= kBulletSpeed_/2;
+					velocity[ i ] *= kBulletSpeed_ / 2;
 
 					newBullet[ i ] = std::make_unique<PlayerBullet>();
 
@@ -750,7 +765,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_/2;
+				velocity[ 0 ] *= kBulletSpeed_ / 2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -790,7 +805,7 @@ void Player::Attack()
 				velocity[ 0 ] = { 0,0,1 };
 				velocity[ 0 ] = Matrix4Math::transform(velocity[ 0 ],obj_->GetMatWorld());
 				velocity[ 0 ].normalize();
-				velocity[ 0 ] *= kBulletSpeed_/2;
+				velocity[ 0 ] *= kBulletSpeed_ / 2;
 
 				pos[ 0 ] = obj_->GetPosition() + ( velocity[ 0 ] * 5 );
 
@@ -835,7 +850,7 @@ void Player::Avoid()
 		avoidTime_++;
 		move_ += avoidVec_ * avoidSpeed_;
 
-		obj_->SetRot({ 0,obj_->GetRot().y - float(6.28/avoidMaxTime_),0 });
+		obj_->SetRot({ 0,obj_->GetRot().y - float(6.28 / avoidMaxTime_),0 });
 
 		const uint32_t constlife = 10;
 		uint32_t life = constlife;
@@ -998,7 +1013,7 @@ void Player::MapCollision()
 
 	for ( std::unique_ptr<Enemy>& enemy : EnemyManager::Instance()->GetEnemys() )
 	{
-		if (enemy->GetType()==Enemy::EnemyType::Wall&& !enemy->IsDaed())
+		if ( enemy->GetType() == Enemy::EnemyType::Wall && !enemy->IsDaed() )
 		{
 			Collider::Cube mapCube,objCube;
 			mapCube.Pos = enemy->GetObj()->GetPosition();
@@ -1172,7 +1187,7 @@ void Player::EnemyCollision()
 				{
 					if ( Enemy::EnemyType::Wall == enemy->GetType() )
 					{
-						if (bullet->GetType()==PlayerBullet::Type::Bomb)
+						if ( bullet->GetType() == PlayerBullet::Type::Bomb )
 						{
 							bullet->OnCollision();
 
@@ -1282,16 +1297,16 @@ void Player::SetCameraMove(Vector3 cameraPos)
 
 void Player::CameraPosChange()
 {
-	if (isChangCamera_ )
+	if ( isChangCamera_ )
 	{
 		cameraChangeFrame_++;
 
-		float f = static_cast<float>( cameraChangeFrame_) / static_cast< float >( cameraCgangeMaxFrame_);
+		float f = static_cast< float >( cameraChangeFrame_ ) / static_cast< float >( cameraCgangeMaxFrame_ );
 
-		cameraPos_ = ( endCameraPos_ - startCameraPos_) * f;
+		cameraPos_ = ( endCameraPos_ - startCameraPos_ ) * f;
 		cameraPos_ += startCameraPos_;
 
-		if (cameraChangeFrame_>=cameraCgangeMaxFrame_ )
+		if ( cameraChangeFrame_ >= cameraCgangeMaxFrame_ )
 		{
 			isChangCamera_ = false;
 		}

@@ -56,7 +56,7 @@ void GameScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene2.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 
@@ -108,11 +108,11 @@ void GameScene::Initialize()
 #pragma region ポーズ中のチュートリアル用スプライトの設定
 
 	pauseSprite_ = std::make_unique<Sprite>();
-	pauseSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene1.png"));
+	pauseSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene2.png"));
 	pauseSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	pauseSprite_->SetScale({ 0,0 });
 	pauseSprite_->SetPosition({ 640,360 });
-	pauseSprite_->SetColor({1,1,1,0.8f});
+	pauseSprite_->SetColor({ 1,1,1,0 });
 	pauseSprite_->Update();
 
 	pauseTutorialSprite_ = std::make_unique<Sprite>();
@@ -127,8 +127,8 @@ void GameScene::Initialize()
 	tutorial0Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial2.png"));
 	tutorial4Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial1.png"));
 
-	tutorial0Sprite_->SetPosition({ 1260,700 });
-	tutorial0Sprite_->SetAnchorPoint({ 1.0f,1.0f });
+	tutorial0Sprite_->SetPosition({ 860,636 });
+	tutorial0Sprite_->SetAnchorPoint({ 0.0f,0.0f });
 	tutorial0Sprite_->Update();
 
 	tutorial4Sprite_->SetPosition({ 1260,700 });
@@ -217,12 +217,12 @@ void GameScene::Update()
 
 	if ( sceneStart_ )
 	{
-		frame_++;
+		frame_--;
 		float f = ( float ) frame_ / endFrame_;
 
-		sceneSprite_->SetDissolve(f);
+		sceneSprite_->SetColor({ 1,1,1,f });
 
-		if ( frame_ >= ( int32_t ) endFrame_ )
+		if ( frame_ <= 0 )
 		{
 			sceneStart_ = false;
 
@@ -252,9 +252,9 @@ void GameScene::Update()
 	}
 	else if ( sceneChange_ == false )
 	{
-		if ( pause==Phase::After )
+		if ( pause == Phase::After )
 		{
-			if (pauseTitle )
+			if ( pauseTitle )
 			{
 
 			}
@@ -264,7 +264,6 @@ void GameScene::Update()
 				{
 					pause = Phase::Middle;
 					oldPause = Phase::After;
-					sceneSprite_->SetColor({ 1,1,1,1 });
 				}
 				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_BACK) || Input::Instance()->TriggerKey(DIK_3) )
 				{
@@ -281,7 +280,6 @@ void GameScene::Update()
 			{
 				pause = Phase::Middle;
 				oldPause = Phase::Before;
-				sceneSprite_->SetColor({ 1,1,1,0.5f });
 			}
 		}
 		else
@@ -289,9 +287,10 @@ void GameScene::Update()
 			if ( oldPause == Phase::After )
 			{
 				pauseFrame_--;
-				float f = (float)pauseFrame_ / 10;
-				pauseSprite_->SetScale({ 1280 * f,720*f });
-				if (pauseFrame_<=0 )
+				float f = ( float ) pauseFrame_ / 10;
+				pauseSprite_->SetScale({ 1280 * f,720 * f });
+				pauseSprite_->SetColor({ 1,1,1, 0.5f * f });
+				if ( pauseFrame_ <= 0 )
 				{
 					pause = Phase::Before;
 				}
@@ -301,6 +300,7 @@ void GameScene::Update()
 				pauseFrame_++;
 				float f = ( float ) pauseFrame_ / 10;
 				pauseSprite_->SetScale({ 1280 * f,720 * f });
+				pauseSprite_->SetColor({ 1,1,1, 0.5f * f });
 				if ( pauseFrame_ >= 10 )
 				{
 					pause = Phase::After;
@@ -308,6 +308,37 @@ void GameScene::Update()
 			}
 			pauseSprite_->Update();
 		}
+		uint32_t playerMoving = player_->GetMoving();
+
+		if ( playerMoving <= 30 )
+		{
+			uiMovingFrame--;
+
+			if ( uiMovingFrame <= 0 )
+			{
+				uiMovingFrame = 0;
+			}
+		}
+		else
+		{
+			uiMovingFrame++;
+
+			if ( uiMovingFrame >= ( int32_t ) maxUiMovingFrame )
+			{
+				uiMovingFrame = maxUiMovingFrame;
+			}
+		}
+		{
+			float f = static_cast< float >( uiMovingFrame ) / static_cast< float >( maxUiMovingFrame );
+
+			Vector2 MenuPosition = ( endMenuPosition - startMenuPosition ) * f;
+			MenuPosition += startMenuPosition;
+
+			tutorial0Sprite_->SetPosition(MenuPosition);
+
+			tutorial0Sprite_->Update();
+		}
+
 		Collider::Cube A,B;
 
 		A.Pos = player_->GetObj()->GetPosition();
@@ -359,17 +390,17 @@ void GameScene::Update()
 	}
 	else
 	{
-		if ( frame_ > 0 )
+		if ( frame_ < endFrame_+5 )
 		{
-			frame_--;
+			frame_++;
 
 			float f = ( float ) frame_ / endFrame_;
 
-			sceneSprite_->SetDissolve(f);
+			sceneSprite_->SetColor({ 1,1,1,f });
 
 			retry_ = true;
 		}
-		else if ( frame_ <= 0 )
+		else
 		{
 			if ( isClear_ )
 			{
@@ -507,7 +538,7 @@ void GameScene::Update()
 
 		sceneSprite_->Update();
 	}
-	if ( pause ==Phase::Before )
+	if ( pause == Phase::Before )
 	{
 		for ( std::unique_ptr<Object3d>& obj : objects_ )
 		{
@@ -560,9 +591,9 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 
 	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
-		planes_[ i ]->plane->Draw(planes_[i]->texHandle);
+		planes_[ i ]->plane->Draw(planes_[ i ]->texHandle);
 	}
-	if ( pause ==Phase::Before )
+	if ( pause == Phase::Before )
 	{
 		for ( uint32_t i = 0; i < tutorials_.size(); i++ )
 		{
@@ -632,8 +663,8 @@ void GameScene::SpriteDraw()
 	{
 		tutorial0Sprite_->Draw();
 	}
-	sceneSprite_->DissolveDraw();
-	if ( frame_ <= 0 && player_->IsDaed() )
+	sceneSprite_->Draw();
+	if ( frame_ >= endFrame_ && player_->IsDaed() )
 	{
 		retrySprite_->Draw();
 		yesSprite_->Draw();
@@ -797,7 +828,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 			// 座標
 			newObject->plane->SetScale({ objectData.scale });
 
-			if ( objectData.scale.z<=1.0f )
+			if ( objectData.scale.z <= 1.0f )
 			{
 				newObject->UVSift = { ( float ) ( rand() % 1000 ) / 1000,0 };
 
@@ -1409,11 +1440,11 @@ void GameScene::planeUpdate()
 
 		Vector3 planePos = planes_[ i ]->plane->GetPosition();
 		Vector3 cameraPos = Object3d::GetEye();
-		if ( planePos.y <=cameraPos.y )
+		if ( planePos.y <= cameraPos.y )
 		{
-			Collider::Cube planeCube = { {planePos},{planePos},{planes_[ i ]->plane->GetScale()}};
+			Collider::Cube planeCube = { {planePos},{planePos},{planes_[ i ]->plane->GetScale()} };
 			Collider::Cube cameraCube = { {cameraPos},{cameraPos},{cameraScale_} };
-			if (Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
+			if ( Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
 			{
 				planes_[ i ]->plane->SetIsDraw(true);
 				planeDrawNum++;

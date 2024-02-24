@@ -34,9 +34,9 @@ private:
 
 	bool sceneChange_ = false;
 
-	const uint32_t endFrame_ = 60;
+	const uint32_t endFrame_ = 30;
 
-	int32_t frame_ = 0;
+	uint32_t frame_ = endFrame_;
 
 	//シーン遷移のスプライトの開始地点
 	const float startSpriteY_ = -720;

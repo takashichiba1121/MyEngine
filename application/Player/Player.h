@@ -104,6 +104,8 @@ public:
 
 	Object3d* GetObj() { return obj_.get(); }
 
+	uint32_t GetMoving() {return notMovingFrame;}
+
 	bool IsDaed() { return isDelete_; }
 
 	void SetLight(LightGroup* light) {light_ = light;}
@@ -228,5 +230,7 @@ private:
 
 	uint32_t playerNuwCamera_=0;
 #pragma endregion
+
+	uint32_t notMovingFrame=0;
 };
 

@@ -29,7 +29,7 @@ void TitileScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene2.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve5.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 
@@ -125,18 +125,17 @@ void TitileScene::Update()
 
 	if ( sceneStart_ )
 	{
-		frame_++;
+		frame_--;
 		float f = ( float ) frame_ / endFrame_;
 
-		sceneSprite_->SetDissolve(f);
+		sceneSprite_->SetColor({1,1,1,f});
 
-		if ( frame_ >= ( int32_t ) endFrame_ )
+		if ( frame_ <=0 )
 		{
 			sceneStart_ = false;
 
-			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve3.png"));
+			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve5.png"));
 		}
-		sceneSprite_->Update();
 	}
 	else
 	{
@@ -157,16 +156,16 @@ void TitileScene::Update()
 	}
 	if ( sceneChange_ )
 	{
-		if ( frame_ > 0 )
+		if ( frame_ < endFrame_ )
 		{
-			frame_--;
+			frame_++;
 
 			float f = ( float ) frame_ / endFrame_;
 
-			sceneSprite_->SetDissolve(f);
+			sceneSprite_->SetColor({ 1,1,1,f });
 
 		}
-		else if ( frame_ < -5 )
+		else if ( frame_ < endFrame_+5 )
 		{
 			frame_ = 0;
 
@@ -178,7 +177,7 @@ void TitileScene::Update()
 		}
 		else
 		{
-			frame_--;
+			frame_++;
 		}
 	}
 	sceneSprite_->Update();
@@ -207,6 +206,6 @@ void TitileScene::SpriteDraw()
 	spaceSprite_->Draw();
 	startSprite_->Draw();
 	titleSprite_->Draw();
-	sceneSprite_->DissolveDraw();
+	sceneSprite_->Draw();
 	SpriteCommon::Instance()->PostDraw();
 }

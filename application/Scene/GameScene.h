@@ -213,9 +213,9 @@ private:
 
 	Vector3 cameraEnd_ = { 0.0,0.0,0.0 };
 
-	const uint32_t endFrame_ = 60;
+	const uint32_t endFrame_ = 30;
 
-	int32_t frame_ = 0;
+	uint32_t frame_ = endFrame_;
 
 	const uint32_t cameraEndFrame_ = 120;
 
@@ -245,6 +245,14 @@ private:
 
 	std::unique_ptr<Sprite> tutorial0Sprite_;
 	std::unique_ptr<Sprite> tutorial4Sprite_;
+
+	const Vector2 startMenuPosition= { 1280,720 };
+
+	const Vector2 endMenuPosition = { 860,636 };
+
+	const uint32_t maxUiMovingFrame=10;
+
+	int32_t uiMovingFrame;
 
 	uint32_t keyTexHandle_;
 
