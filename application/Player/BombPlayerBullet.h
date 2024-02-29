@@ -32,6 +32,6 @@ protected:
 
 	int32_t bulletLife_ = 90;
 
-	const Vector3 bulletColor_ = { 0,0.5f,1 };
+	const Vector3 cBulletColor_ = { 0,0.5f,1 };
 };
 

@@ -14,11 +14,11 @@ void PlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position,uin
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor(bulletColor_);
+	obj_->SetColor(cBulletColor_);
 
 	life_ = life;
 
-	type = Type::Nolmal;
+	type_ = Type::Nolmal;
 
 	chageTimer_ = 5;
 }
@@ -99,9 +99,9 @@ void PlayerBullet::Attack()
 
 		//pos.normalize();
 
-		const Vector4 startColor = { particleColor.x,particleColor.y,particleColor.z,0.5f };
+		const Vector4 startColor = { cParticleColor_.x,cParticleColor_.y,cParticleColor_.z,0.5f };
 
-		const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,0 };
+		const Vector4 endColor = { cParticleColor_.x,cParticleColor_.y,cParticleColor_.z,0 };
 
 		//追加
 		PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
@@ -112,10 +112,10 @@ void PlayerBullet::Attack()
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 	}
 
-	partFrame++;
-	if ( partFrame >= 5 )
+	circlePartFrame_++;
+	if ( circlePartFrame_ >= cMaxCirclePartFrame_ )
 	{
-		partFrame = 0;
+		circlePartFrame_ = 0;
 
 		Vector3 vec[ 16 ] =
 		{
@@ -156,9 +156,9 @@ void PlayerBullet::Attack()
 
 			//pos.normalize();
 
-			const Vector4 startColor = { particleColor.x,particleColor.y,particleColor.z,1 };
+			const Vector4 startColor = { cParticleColor_.x,cParticleColor_.y,cParticleColor_.z,0.5f };
 
-			const Vector4 endColor = { particleColor.x,particleColor.y,particleColor.z,1 };
+			const Vector4 endColor = { cParticleColor_.x,cParticleColor_.y,cParticleColor_.z,0 };
 
 			//追加
 			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.0f,0.5f,startColor,endColor);
@@ -189,9 +189,9 @@ void PlayerBullet::Draw()
 {
 	obj_->Draw();
 
-	for ( uint32_t i = 0; i < part.size(); i++ )
+	for ( uint32_t i = 0; i < part_.size(); i++ )
 	{
-		part[ i ]->Draw();
+		part_[ i ]->Draw();
 	}
 }
 
@@ -226,9 +226,9 @@ void PlayerBullet::OnCollision()
 
 			//pos.normalize();
 
-			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
+			const Vector4 startColor = { cParticleColor_.x,cParticleColor_.y,cParticleColor_.z,0.5f };
 
-			const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
+			const Vector4 endColor = { cParticleColor_.x,cParticleColor_.y,cParticleColor_.z,0 };
 
 			//追加
 			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,1.5f,0.0f,startColor,endColor);
@@ -259,9 +259,9 @@ void PlayerBullet::OnCollision()
 
 			//pos.normalize();
 
-			const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0.5f };
+			const Vector4 startColor = { cBulletColor_.x,cBulletColor_.y,cBulletColor_.z,0.5f };
 
-			const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
+			const Vector4 endColor = { cBulletColor_.x,cBulletColor_.y,cBulletColor_.z,0 };
 
 			//追加
 			PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,10.0f,1.0f,startColor,endColor);
@@ -294,7 +294,7 @@ void PlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ bulletColor_ });
+		light_->SetPointColor(lightIndex_,{ cBulletColor_ });
 
 		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}

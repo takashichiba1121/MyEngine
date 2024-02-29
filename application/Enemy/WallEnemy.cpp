@@ -4,7 +4,7 @@ void WallEnemy::Initialize(Model* enemyModel,Model* bulletModel,Player* player,u
 {
 	model_ = enemyModel;
 
-	for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+	for ( uint32_t i = 0; i < cPartiacleNum_; i++ )
 	{
 		particle_[i].reset(new Object3d);
 
@@ -37,11 +37,11 @@ void WallEnemy::Update()
 
 		ExplosionFrame_++;
 
-		for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+		for ( uint32_t i = 0; i < cPartiacleNum_; i++ )
 		{
 			Vector3 pos = particle_[ i ]->GetPosition();
 
-			pos += vec_[ i ]/particleSpeed_;
+			pos += cVec_[ i ]/particleSpeed_;
 
 			particle_[ i ]->SetPosition(pos);
 
@@ -56,7 +56,7 @@ void WallEnemy::Update()
 			particle_[ i ]->SetIsDraw(true);
 		}
 
-		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
+		if ( ExplosionFrame_ >= cEndExplosionFrame_ )
 		{
 			isDelete_ = true;
 		}
@@ -68,7 +68,7 @@ void WallEnemy::Draw()
 {
 	obj_->Draw();
 
-	for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+	for ( uint32_t i = 0; i < cPartiacleNum_; i++ )
 	{
 		particle_[ i ]->Draw();
 	}
@@ -78,7 +78,7 @@ void WallEnemy::OnCollision()
 {
 	isDaed_ = true;
 
-	for ( uint32_t i = 0; i < PartiacleNum_; i++ )
+	for ( uint32_t i = 0; i < cPartiacleNum_; i++ )
 	{
 		particle_[ i ]->SetPosition(obj_->GetPosition());
 	}

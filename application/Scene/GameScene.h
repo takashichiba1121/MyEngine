@@ -159,7 +159,7 @@ private:
 	std::vector<std::unique_ptr<Object3d>> objects_;
 
 	std::vector<std::unique_ptr<Plane>> planes_;
-	uint32_t planeDrawNum=0;
+	uint32_t planeDrawNum_=0;
 
 	std::vector<std::unique_ptr<Tutorial>> tutorials_;
 
@@ -184,9 +184,9 @@ private:
 	bool isStage3_ = false;
 
 	bool isGoal_ = false;
-	Phase goalOpen = Phase::Before;
-	float goalOpenflame = 0;
-	const float goalOpenMaxFlame = 60;
+	Phase goalOpen_ = Phase::Before;
+	float goalOpenFlame_ = 0;
+	const float cEndGoalOpenFlame_ = 60;
 
 	float ambientColor_[ 3 ] = { 1,1,1 };
 
@@ -195,7 +195,7 @@ private:
 	float lightColor_[ 3 ] = { 1,1,1 };
 	float lightAtten_[ 3 ] = { 0.3f,0.1f,0.1f };
 
-	const Vector3 cameraPos_ = { 0.0f,30.0f,-30.0f };
+	const Vector3 cCameraPos_ = { 0.0f,30.0f,-30.0f };
 
 	std::unique_ptr<Player> player_;
 
@@ -213,19 +213,19 @@ private:
 
 	Vector3 cameraEnd_ = { 0.0,0.0,0.0 };
 
-	const uint32_t endFrame_ = 30;
+	const uint32_t cEndSceneChangeFrame_ = 30;
 
-	uint32_t frame_ = endFrame_;
+	uint32_t SceneChangeFrame_ = cEndSceneChangeFrame_;
 
-	const uint32_t cameraEndFrame_ = 120;
+	const uint32_t cEndCameraFrame_ = 120;
 
 	int32_t cameraFrame_ = 0;
 
 	//シーン遷移のスプライトの開始地点
-	const float startSpriteY_ = -720;
+	const float cStartSpriteY_ = -720;
 
 	//シーン遷移のスプライトの終了地点
-	const uint32_t endSpriteY_ = 0;
+	const uint32_t cEndSpriteY_ = 0;
 
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite_;
@@ -246,13 +246,13 @@ private:
 	std::unique_ptr<Sprite> tutorial0Sprite_;
 	std::unique_ptr<Sprite> tutorial4Sprite_;
 
-	const Vector2 startMenuPosition= { 1280,720 };
+	const Vector2 cStartMenuPosition_= { 1280,720 };
 
-	const Vector2 endMenuPosition = { 860,636 };
+	const Vector2 cEndMenuPosition_ = { 860,636 };
 
-	const uint32_t maxUiMovingFrame=10;
+	const uint32_t cEndUiMovingFrame_=10;
 
-	int32_t uiMovingFrame;
+	int32_t uiMovingFrame_;
 
 	uint32_t keyTexHandle_;
 
@@ -268,23 +268,21 @@ private:
 
 	bool retry_ = false;
 
-	uint32_t spotLightTex = 0;
+	uint32_t spotLightTex_ = 0;
 
-	const uint32_t spotLightMaxFrame = 30;
+	const uint32_t cEndSpotLightFrame_ = 30;
 
-	const uint32_t lightMaxFrame = 30;
+	const uint32_t cEndLightFrame_ = 30;
 
-	Stage nowStage;
+	Stage nowStage_=Stage::Stage3;
 
-	Phase pause=Phase::Before;
+	Phase pause_=Phase::Before;
 
-	Phase oldPause = Phase::Before;
+	Phase oldPause_ = Phase::Before;
 
 	uint32_t pauseFrame_=0;
 
-	bool pauseTitle=false;
-
-	const uint32_t SwitchPartMaxFrame = 15;
+	const uint32_t cEndSwitchPartFrame = 15;
 
 	Vector3 cameraScale_ = { 80,80,80 };
 };

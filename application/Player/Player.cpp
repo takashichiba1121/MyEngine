@@ -35,57 +35,57 @@ void Player::Initialize()
 
 	PlayerBulletManager::Instance()->Initialize();
 
-	normalAttack = std::make_unique<Sprite>();
+	normalAttack_ = std::make_unique<Sprite>();
 
-	normalAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/normalAttack.png"));
+	normalAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/normalAttack_.png"));
 
-	normalAttack->SetPosition({ 148,158 });
+	normalAttack_->SetPosition({ 148,158 });
 
-	normalAttack->SetScale({ 138,138 });
+	normalAttack_->SetScale({ 138,138 });
 
-	normalAttack->SetColor({ 1,1,1,1 });
+	normalAttack_->SetColor({ 1,1,1,1 });
 
-	normalAttack->SetAnchorPoint({ 0.5f,1 });
+	normalAttack_->SetAnchorPoint({ 0.5f,1 });
 
-	normalAttack->Update();
+	normalAttack_->Update();
 
-	threeWayAttack = std::make_unique<Sprite>();
+	threeWayAttack_ = std::make_unique<Sprite>();
 
-	threeWayAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/3WayAttack.png"));
+	threeWayAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/3WayAttack.png"));
 
-	threeWayAttack->SetPosition({ 148,158 });
+	threeWayAttack_->SetPosition({ 148,158 });
 
-	threeWayAttack->SetScale({ 128,128 });
+	threeWayAttack_->SetScale({ 128,128 });
 
-	threeWayAttack->SetColor({ 1,1,1,0.5f });
+	threeWayAttack_->SetColor({ 1,1,1,0.5f });
 
-	threeWayAttack->SetAnchorPoint({ 1,0.5f });
+	threeWayAttack_->SetAnchorPoint({ 1,0.5f });
 
-	threeWayAttack->Update();
+	threeWayAttack_->Update();
 
-	divisionAttack = std::make_unique<Sprite>();
+	divisionAttack_ = std::make_unique<Sprite>();
 
-	divisionAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/DivisionAttack.png"));
+	divisionAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/divisionAttack_.png"));
 
-	divisionAttack->SetPosition({ 148,158 });
+	divisionAttack_->SetPosition({ 148,158 });
 
-	divisionAttack->SetColor({ 1,1,1,0.5f });
+	divisionAttack_->SetColor({ 1,1,1,0.5f });
 
-	divisionAttack->SetAnchorPoint({ 0,0.5f });
+	divisionAttack_->SetAnchorPoint({ 0,0.5f });
 
-	divisionAttack->Update();
+	divisionAttack_->Update();
 
-	bombAttack = std::make_unique<Sprite>();
+	bombAttack_ = std::make_unique<Sprite>();
 
-	bombAttack->Initialize(TextureManager::Instance()->LoadTexture("Resources/BombAttack.png"));
+	bombAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/bombAttack_.png"));
 
-	bombAttack->SetPosition({ 148,158 });
+	bombAttack_->SetPosition({ 148,158 });
 
-	bombAttack->SetAnchorPoint({ 0.5f,0 });
+	bombAttack_->SetAnchorPoint({ 0.5f,0 });
 
-	bombAttack->SetColor({ 1,1,1,0.5f });
+	bombAttack_->SetColor({ 1,1,1,0.5f });
 
-	bombAttack->Update();
+	bombAttack_->Update();
 }
 
 void Player::Update()
@@ -98,16 +98,16 @@ void Player::Update()
 
 		if ( move_.x == 0 && move_.y == 0 && move_.z == 0 )
 		{
-			notMovingFrame++;
+			notMovingFrame_++;
 		}
 		else
 		{
-			notMovingFrame = 0;
+			notMovingFrame_ = 0;
 		}
 
-		if ( notMovingFrame == 512 )
+		if ( notMovingFrame_ == 512 )
 		{
-			notMovingFrame = 1;
+			notMovingFrame_ = 1;
 		}
 
 		if ( hp_ <= 0 )
@@ -117,83 +117,83 @@ void Player::Update()
 
 		if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_UP) || Input::Instance()->TriggerKey(DIK_UP) )
 		{
-			normalAttack->SetScale({ 138,138 });
+			normalAttack_->SetScale({ 138,138 });
 
-			normalAttack->SetColor({ 1,1,1,1 });
+			normalAttack_->SetColor({ 1,1,1,1 });
 
-			threeWayAttack->SetScale({ 128,128 });
+			threeWayAttack_->SetScale({ 128,128 });
 
-			threeWayAttack->SetColor({ 1,1,1,0.5f });
+			threeWayAttack_->SetColor({ 1,1,1,0.5f });
 
-			divisionAttack->SetScale({ 128,128 });
+			divisionAttack_->SetScale({ 128,128 });
 
-			divisionAttack->SetColor({ 1,1,1,0.5f });
+			divisionAttack_->SetColor({ 1,1,1,0.5f });
 
-			bombAttack->SetScale({ 128,128 });
+			bombAttack_->SetScale({ 128,128 });
 
-			bombAttack->SetColor({ 1,1,1,0.5f });
+			bombAttack_->SetColor({ 1,1,1,0.5f });
 
-			attackType = AttackType::Normal;
+			attackType_ = AttackType::Normal;
 		}
 		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_LEFT) || Input::Instance()->TriggerKey(DIK_LEFT) )
 		{
-			normalAttack->SetScale({ 128,128 });
+			normalAttack_->SetScale({ 128,128 });
 
-			normalAttack->SetColor({ 1,1,1,0.5f });
+			normalAttack_->SetColor({ 1,1,1,0.5f });
 
-			threeWayAttack->SetScale({ 138,138 });
+			threeWayAttack_->SetScale({ 138,138 });
 
-			threeWayAttack->SetColor({ 1,1,1,1 });
+			threeWayAttack_->SetColor({ 1,1,1,1 });
 
-			divisionAttack->SetScale({ 128,128 });
+			divisionAttack_->SetScale({ 128,128 });
 
-			divisionAttack->SetColor({ 1,1,1,0.5f });
+			divisionAttack_->SetColor({ 1,1,1,0.5f });
 
-			bombAttack->SetScale({ 128,128 });
+			bombAttack_->SetScale({ 128,128 });
 
-			bombAttack->SetColor({ 1,1,1,0.5f });
-
-			attackType = AttackType::ThreeWay;
+			bombAttack_->SetColor({ 1,1,1,0.5f });
+			
+			attackType_ = AttackType::ThreeWay;
 		}
 		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_RIGHT) || Input::Instance()->TriggerKey(DIK_RIGHT) )
 		{
-			normalAttack->SetScale({ 128,128 });
+			normalAttack_->SetScale({ 128,128 });
 
-			normalAttack->SetColor({ 1,1,1,0.5f });
+			normalAttack_->SetColor({ 1,1,1,0.5f });
 
-			threeWayAttack->SetScale({ 128,128 });
+			threeWayAttack_->SetScale({ 128,128 });
 
-			threeWayAttack->SetColor({ 1,1,1,0.5f });
+			threeWayAttack_->SetColor({ 1,1,1,0.5f });
 
-			divisionAttack->SetScale({ 138,138 });
+			divisionAttack_->SetScale({ 138,138 });
 
-			divisionAttack->SetColor({ 1,1,1,1 });
+			divisionAttack_->SetColor({ 1,1,1,1 });
 
-			bombAttack->SetScale({ 128,128 });
+			bombAttack_->SetScale({ 128,128 });
 
-			bombAttack->SetColor({ 1,1,1,0.5f });
+			bombAttack_->SetColor({ 1,1,1,0.5f });
 
-			attackType = AttackType::Division;
+			attackType_ = AttackType::Division;
 		}
 		else if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_DPAD_DOWN) || Input::Instance()->TriggerKey(DIK_DOWN) )
 		{
-			normalAttack->SetScale({ 128,128 });
+			normalAttack_->SetScale({ 128,128 });
 
-			normalAttack->SetColor({ 1,1,1,0.5f });
+			normalAttack_->SetColor({ 1,1,1,0.5f });
 
-			threeWayAttack->SetScale({ 128,128 });
+			threeWayAttack_->SetScale({ 128,128 });
 
-			threeWayAttack->SetColor({ 1,1,1,0.5f });
+			threeWayAttack_->SetColor({ 1,1,1,0.5f });
 
-			divisionAttack->SetScale({ 128,128 });
+			divisionAttack_->SetScale({ 128,128 });
 
-			divisionAttack->SetColor({ 1,1,1,0.5f });
+			divisionAttack_->SetColor({ 1,1,1,0.5f });
 
-			bombAttack->SetScale({ 138,138 });
+			bombAttack_->SetScale({ 138,138 });
 
-			bombAttack->SetColor({ 1,1,1,1 });
+			bombAttack_->SetColor({ 1,1,1,1 });
 
-			attackType = AttackType::Bomb;
+			attackType_ = AttackType::Bomb;
 		}
 
 		CameraPosChange();
@@ -204,7 +204,7 @@ void Player::Update()
 
 		obj_->SetPosition(move_);
 
-		Object3d::SetTarget(Object3d::GetTarget() + ( ( obj_->GetPosition() - Object3d::GetTarget() ) * cameraSpeed_ ));
+		Object3d::SetTarget(Object3d::GetTarget() + ( ( obj_->GetPosition() - Object3d::GetTarget() ) * cCameraSpeed_ ));
 
 		Object3d::SetEye(Object3d::GetTarget() + cameraPos_);
 	}
@@ -212,12 +212,12 @@ void Player::Update()
 	{
 		ExplosionFrame_++;
 
-		float a = ExplosionFrame_ / ExplosionMaxFrame_;
+		float a = ExplosionFrame_ / cEndExplosionFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
-		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
+		obj_->Setalpha(static_cast< float >( ( cEndExplosionFrame_ - ExplosionFrame_ ) / cEndExplosionFrame_ ));
+		if ( ExplosionFrame_ >= cEndExplosionFrame_ )
 		{
 			isDelete_ = true;
 		}
@@ -229,10 +229,10 @@ void Player::Update()
 
 	paMan_->Update();
 
-	normalAttack->Update();
-	threeWayAttack->Update();
-	divisionAttack->Update();
-	bombAttack->Update();
+	normalAttack_->Update();
+	threeWayAttack_->Update();
+	divisionAttack_->Update();
+	bombAttack_->Update();
 
 #ifdef _DEBUG
 
@@ -447,14 +447,14 @@ void Player::Move()
 				obj_->SetRot({ 0, atan2f(frontVec.x, -frontVec.z),0 });
 			}
 		}
-		move_ = move_.normalize() * moveSpeed_;
+		move_ = move_.normalize() * cMoveSpeed_;
 		if ( avoidInterval_ == 0 )
 		{
 			if ( isAvoid_ == false && Input::Instance()->TriggerKey(DIK_Q) || Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_X) )
 			{
 				isAvoid_ = true;
 
-				avoidInterval_ = maxAvoidInterval_;
+				avoidInterval_ = cEndAvoidInterval_;
 
 				initialRot_ = obj_->GetRot();
 
@@ -513,7 +513,7 @@ void Player::Attack()
 				{0,-54.0f,0},
 			};
 
-			switch ( attackType )
+			switch ( attackType_ )
 			{
 			case Player::AttackType::Normal:
 
@@ -546,9 +546,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(normalAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(cNormalAttackInterval_);
 
-				AttackInterval_ = normalAttackInterval_;
+				AttackInterval_ = cNormalAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -569,7 +569,7 @@ void Player::Attack()
 
 					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-					newBullet[ i ]->SetChageTime(threeWayAttackInterval_);
+					newBullet[ i ]->SetChageTime(cThreeWayAttackInterval_);
 
 					newBullet[ i ]->SetRot(obj_->GetRot() + rot[ i ]);
 
@@ -590,7 +590,7 @@ void Player::Attack()
 								//弾の登録する
 					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 				}
-				AttackInterval_ = threeWayAttackInterval_;
+				AttackInterval_ = cThreeWayAttackInterval_;
 				break;
 			case Player::AttackType::Division:
 				velocity[ 0 ] = { 0,0,1 };
@@ -624,9 +624,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(divisionAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(cDivisionAttackInterval_);
 
-				AttackInterval_ = divisionAttackInterval_;
+				AttackInterval_ = cDivisionAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -662,9 +662,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(bombAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(cBombAttackInterval_);
 
-				AttackInterval_ = bombAttackInterval_;
+				AttackInterval_ = cBombAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -686,7 +686,7 @@ void Player::Attack()
 				{-0.3f,0,1},
 			};
 
-			switch ( attackType )
+			switch ( attackType_ )
 			{
 			case Player::AttackType::Normal:
 
@@ -718,9 +718,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(normalAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(cNormalAttackInterval_);
 
-				AttackInterval_ = normalAttackInterval_;
+				AttackInterval_ = cNormalAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -740,7 +740,7 @@ void Player::Attack()
 
 					newBullet[ i ]->SetPhase(PlayerBullet::Phase::Charge);
 
-					newBullet[ i ]->SetChageTime(threeWayAttackInterval_);
+					newBullet[ i ]->SetChageTime(cThreeWayAttackInterval_);
 
 					for ( int j = 0; j < LightGroup::cPointLightNum; j++ )
 					{
@@ -759,7 +759,7 @@ void Player::Attack()
 								//弾の登録する
 					PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ i ]));
 				}
-				AttackInterval_ = threeWayAttackInterval_;
+				AttackInterval_ = cThreeWayAttackInterval_;
 				break;
 			case Player::AttackType::Division:
 				velocity[ 0 ] = { 0,0,1 };
@@ -793,9 +793,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(divisionAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(cDivisionAttackInterval_);
 
-				AttackInterval_ = divisionAttackInterval_;
+				AttackInterval_ = cDivisionAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -831,9 +831,9 @@ void Player::Attack()
 					}
 				}
 
-				newBullet[ 0 ]->SetChageTime(bombAttackInterval_);
+				newBullet[ 0 ]->SetChageTime(cBombAttackInterval_);
 
-				AttackInterval_ = bombAttackInterval_;
+				AttackInterval_ = cBombAttackInterval_;
 
 				//弾の登録する
 				PlayerBulletManager::Instance()->AddBullet(std::move(newBullet[ 0 ]));
@@ -848,9 +848,9 @@ void Player::Avoid()
 	if ( isAvoid_ )
 	{
 		avoidTime_++;
-		move_ += avoidVec_ * avoidSpeed_;
+		move_ += avoidVec_ * cAvoidSpeed_;
 
-		obj_->SetRot({ 0,obj_->GetRot().y - float(6.28 / avoidMaxTime_),0 });
+		obj_->SetRot({ 0,obj_->GetRot().y - float(6.28 / cEndAvoidTime_),0 });
 
 		const uint32_t constlife = 10;
 		uint32_t life = constlife;
@@ -860,7 +860,7 @@ void Player::Avoid()
 		//追加
 		paMan_->Add(life,pos,{ 0,0,0 },{ 0,0,0 },1.0f,0.0f,{ 1,1,1,1 },{ 1,1,1,1 });
 
-		if ( avoidTime_ >= avoidMaxTime_ )
+		if ( avoidTime_ >= cEndAvoidTime_ )
 		{
 			avoidTime_ = 0;
 			obj_->SetRot(initialRot_);
@@ -885,10 +885,10 @@ void Player::ParticleDraw()
 
 void Player::SpriteDraw()
 {
-	normalAttack->Draw();
-	threeWayAttack->Draw();
-	divisionAttack->Draw();
-	bombAttack->Draw();
+	normalAttack_->Draw();
+	threeWayAttack_->Draw();
+	divisionAttack_->Draw();
+	bombAttack_->Draw();
 }
 
 void Player::Reset()
@@ -1301,12 +1301,12 @@ void Player::CameraPosChange()
 	{
 		cameraChangeFrame_++;
 
-		float f = static_cast< float >( cameraChangeFrame_ ) / static_cast< float >( cameraCgangeMaxFrame_ );
+		float f = static_cast< float >( cameraChangeFrame_ ) / static_cast< float >( cEndCameraCgangeFrame_ );
 
 		cameraPos_ = ( endCameraPos_ - startCameraPos_ ) * f;
 		cameraPos_ += startCameraPos_;
 
-		if ( cameraChangeFrame_ >= cameraCgangeMaxFrame_ )
+		if ( cameraChangeFrame_ >= cEndCameraCgangeFrame_ )
 		{
 			isChangCamera_ = false;
 		}

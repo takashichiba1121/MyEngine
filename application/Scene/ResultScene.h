@@ -33,15 +33,9 @@ private:
 
 	bool sceneChange_ = false;
 
-	const uint32_t endFrame_ = 30;
+	const uint32_t  cEndSceneChangeFrame_ = 30;
 
-	uint32_t frame_ = endFrame_;
-
-	//シーン遷移のスプライトの開始地点
-	const float startSpriteY_ = -720;
-
-	//シーン遷移のスプライトの終了地点
-	const uint32_t endSpriteY_ = 0;
+	uint32_t  SceneChangeFrame_ = cEndSceneChangeFrame_;
 
 	//シーン遷移用のスプライト
 	std::unique_ptr<Sprite> sceneSprite_;
@@ -55,7 +49,6 @@ private:
 
 	std::unique_ptr<Sprite> titleSprite_;
 
-	uint32_t keyTexHandle_;
 	uint32_t padTexHandle_;
 
 	std::unique_ptr<Model> skyModel_;

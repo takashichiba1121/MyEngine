@@ -104,7 +104,7 @@ public:
 
 	Object3d* GetObj() { return obj_.get(); }
 
-	uint32_t GetMoving() {return notMovingFrame;}
+	uint32_t GetMoving() {return notMovingFrame_;}
 
 	bool IsDaed() { return isDelete_; }
 
@@ -139,13 +139,13 @@ private:
 
 	int32_t maxHp_ = 1;
 
-	const uint32_t normalAttackInterval_ = 10;
+	const uint32_t cNormalAttackInterval_ = 10;
 
-	const uint32_t threeWayAttackInterval_ = 20;
+	const uint32_t cThreeWayAttackInterval_ = 20;
 
-	const uint32_t divisionAttackInterval_ = 30;
+	const uint32_t cDivisionAttackInterval_ = 30;
 
-	const uint32_t bombAttackInterval_ = 30;
+	const uint32_t cBombAttackInterval_ = 30;
 
 #pragma endregion
 
@@ -157,10 +157,10 @@ private:
 
 	std::unique_ptr<Object3d> obj_;
 
-	std::unique_ptr<Sprite> normalAttack;
-	std::unique_ptr<Sprite> threeWayAttack;
-	std::unique_ptr<Sprite> divisionAttack;
-	std::unique_ptr<Sprite> bombAttack;
+	std::unique_ptr<Sprite> normalAttack_;
+	std::unique_ptr<Sprite> threeWayAttack_;
+	std::unique_ptr<Sprite> divisionAttack_;
+	std::unique_ptr<Sprite> bombAttack_;
 
 	Vector3 move_;
 
@@ -179,11 +179,11 @@ private:
 	//プレイヤーから見たカメラの位置
 	Vector3 cameraPos_ = { 0.0f,30.0f,-30.0f };
 
-	const float cameraSpeed_ = 0.1f;
+	const float cCameraSpeed_ = 0.1f;
 
-	const float moveSpeed_ = 0.25f;
+	const float cMoveSpeed_ = 0.25f;
 
-	const uint32_t maxAvoidInterval_=30;
+	const uint32_t cEndAvoidInterval_=30;
 
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
@@ -195,7 +195,7 @@ private:
 
 	float ExplosionFrame_ = 0;
 
-	const float ExplosionMaxFrame_ = 60;
+	const float cEndExplosionFrame_ = 60;
 
 	uint32_t AttackInterval_=0;
 
@@ -203,17 +203,17 @@ private:
 
 	uint32_t avoidTime_=0;
 
-	const uint32_t avoidMaxTime_=20;
+	const uint32_t cEndAvoidTime_=20;
 
 	Vector3 avoidVec_ = {0,0,0};
 
-	const float avoidSpeed_ = 0.5f;
+	const float cAvoidSpeed_ = 0.5f;
 
 	Vector3 initialRot_ = {0,0,0};
 
 	uint32_t avoidInterval_ = 0;
 
-	AttackType attackType=AttackType::Normal;
+	AttackType attackType_=AttackType::Normal;
 
 	LightGroup* light_;
 
@@ -226,11 +226,11 @@ private:
 
 	uint32_t cameraChangeFrame_;
 
-	const uint32_t cameraCgangeMaxFrame_=60;
+	const uint32_t cEndCameraCgangeFrame_=60;
 
 	uint32_t playerNuwCamera_=0;
 #pragma endregion
 
-	uint32_t notMovingFrame=0;
+	uint32_t notMovingFrame_=0;
 };
 

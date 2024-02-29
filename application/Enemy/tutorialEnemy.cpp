@@ -29,12 +29,12 @@ void TutorialEnemy::Update()
 	{
 		ExplosionFrame_++;
 
-		float a = ExplosionFrame_ / ExplosionMaxFrame_;
+		float a = ExplosionFrame_ / cEndExplosionFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
-		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
+		obj_->Setalpha(static_cast< float >( ( cEndExplosionFrame_ - ExplosionFrame_ ) / cEndExplosionFrame_ ));
+		if ( ExplosionFrame_ >= cEndExplosionFrame_ )
 		{
 			isRevival_ = true;
 		}
@@ -43,11 +43,11 @@ void TutorialEnemy::Update()
 	{
 		ExplosionFrame_--;
 
-		float a = ExplosionFrame_ / ExplosionMaxFrame_;
+		float a = ExplosionFrame_ / cEndExplosionFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
+		obj_->Setalpha(static_cast< float >( ( cEndExplosionFrame_ - ExplosionFrame_ ) / cEndExplosionFrame_ ));
 		if ( ExplosionFrame_ <=0 )
 		{
 			isRevival_ = false;

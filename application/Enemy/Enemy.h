@@ -94,14 +94,14 @@ protected:
 
 	float ExplosionFrame_ = 0;
 
-	const float ExplosionMaxFrame_ = 60;
+	const float cEndExplosionFrame_ = 60;
 
 	float attackRange_ = 25.0f;
 
 			//攻撃間隔
-	const uint32_t kIntervalTime_ = 120;
+	const uint32_t cIntervalTime_ = 120;
 
-	uint32_t IntervalTimer_ = kIntervalTime_ / 2;
+	uint32_t IntervalTimer_ = cIntervalTime_ / 2;
 
 	bool isMove_ = false;
 
@@ -111,11 +111,11 @@ protected:
 
 	uint32_t number_;
 #pragma region 壁用変数群
-	static const uint32_t PartiacleNum_ = 10;
+	static const uint32_t cPartiacleNum_ = 10;
 
-	std::array<std::unique_ptr<Object3d>,PartiacleNum_> particle_;
+	std::array<std::unique_ptr<Object3d>,cPartiacleNum_> particle_;
 
-	const Vector3 vec_[ PartiacleNum_ ] =
+	const Vector3 cVec_[ cPartiacleNum_ ] =
 	{
 		{  0   , 1, 0   },
 		{  0.5f, 1, 0.5f},

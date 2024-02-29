@@ -62,12 +62,12 @@ void GunEnemy::Update()
 	{
 		ExplosionFrame_++;
 
-		float a = ExplosionFrame_ / ExplosionMaxFrame_;
+		float a = ExplosionFrame_ / cEndExplosionFrame_;
 
 		obj_->SetDestruction(a);
 
-		obj_->Setalpha(static_cast< float >( ( ExplosionMaxFrame_ - ExplosionFrame_ ) / ExplosionMaxFrame_ ));
-		if ( ExplosionFrame_ >= ExplosionMaxFrame_ )
+		obj_->Setalpha(static_cast< float >( ( cEndExplosionFrame_ - ExplosionFrame_ ) / cEndExplosionFrame_ ));
+		if ( ExplosionFrame_ >= cEndExplosionFrame_ )
 		{
 			isDelete_ = true;
 		}
@@ -93,7 +93,7 @@ void GunEnemy::Attack()
 
 	if ( IntervalTimer_ <= 0 )
 	{
-		IntervalTimer_ = kIntervalTime_;
+		IntervalTimer_ = cIntervalTime_;
 
 		Vector3 bulletPosition = { obj_->GetPosition().x ,obj_->GetPosition().y + 3 ,obj_->GetPosition().z };
 

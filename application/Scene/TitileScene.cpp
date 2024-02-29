@@ -125,12 +125,12 @@ void TitileScene::Update()
 
 	if ( sceneStart_ )
 	{
-		frame_--;
-		float f = ( float ) frame_ / endFrame_;
+		SceneChangeFrame_--;
+		float f = ( float ) SceneChangeFrame_ / cEndSceneChangeFrame_;
 
 		sceneSprite_->SetColor({1,1,1,f});
 
-		if ( frame_ <=0 )
+		if ( SceneChangeFrame_ <=0 )
 		{
 			sceneStart_ = false;
 
@@ -156,18 +156,18 @@ void TitileScene::Update()
 	}
 	if ( sceneChange_ )
 	{
-		if ( frame_ < endFrame_ )
+		if ( SceneChangeFrame_ < cEndSceneChangeFrame_ )
 		{
-			frame_++;
+			SceneChangeFrame_++;
 
-			float f = ( float ) frame_ / endFrame_;
+			float f = ( float ) SceneChangeFrame_ / cEndSceneChangeFrame_;
 
 			sceneSprite_->SetColor({ 1,1,1,f });
 
 		}
-		else if ( frame_ < endFrame_+5 )
+		else if ( SceneChangeFrame_ < cEndSceneChangeFrame_ +5 )
 		{
-			frame_ = 0;
+			SceneChangeFrame_ = 0;
 
 			sceneStart_ = true;
 
@@ -177,7 +177,7 @@ void TitileScene::Update()
 		}
 		else
 		{
-			frame_++;
+			SceneChangeFrame_++;
 		}
 	}
 	sceneSprite_->Update();

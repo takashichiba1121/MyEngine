@@ -71,7 +71,7 @@ public:
 	}
 
 	Type GetType() {
-		return type;
+		return type_;
 	}
 
 protected:
@@ -98,13 +98,15 @@ protected:
 
 	int32_t lightIndex_;
 
-	const Vector3 bulletColor_ = { 1.0f,0.1f,0.0f };
+	const Vector3 cBulletColor_ = { 1.0f,0.1f,0.0f };
 
-	const Vector3 particleColor = { 1.0f,0.3f,0.1f };
+	const Vector3 cParticleColor_ = { 1.0f,0.3f,0.1f };
 
-	Type type;
+	Type type_;
 
-	std::vector<std::unique_ptr<Object3d>> part;
+	std::vector<std::unique_ptr<Object3d>> part_;
 
-	uint32_t partFrame = 0;
+	const uint32_t cMaxCirclePartFrame_ = 5;
+
+	uint32_t circlePartFrame_ = 0;
 };

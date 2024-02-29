@@ -15,11 +15,11 @@ void DivisionPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 posi
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor({ bulletColor_ });
+	obj_->SetColor({cBulletColor_ });
 
 	life_ = life;
 
-	type = Type::Division;
+	type_ = Type::Division;
 }
 
 void DivisionPlayerBullet::Update()
@@ -150,7 +150,7 @@ void DivisionPlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ bulletColor_ });
+		light_->SetPointColor(lightIndex_,{ cBulletColor_ });
 
 		light_->SetPointAtten(lightIndex_,{ 0.03f,0.01f,0.01f });
 	}

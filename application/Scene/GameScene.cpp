@@ -165,7 +165,7 @@ void GameScene::Initialize()
 
 	MapLoad("Resources/Map/Stage1.json",false);
 
-	nowStage = Stage::Stage3;
+	nowStage_ = Stage::Stage3;
 
 	player_->SetLight(light_.get());
 
@@ -196,7 +196,7 @@ void GameScene::Initialize()
 
 	particleManager_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
 
-	spotLightTex = TextureManager::Instance()->LoadTexture("Resources/lightplane.png");
+	spotLightTex_ = TextureManager::Instance()->LoadTexture("Resources/lightplane.png");
 }
 
 void GameScene::Update()
@@ -217,12 +217,12 @@ void GameScene::Update()
 
 	if ( sceneStart_ )
 	{
-		frame_--;
-		float f = ( float ) frame_ / endFrame_;
+		SceneChangeFrame_--;
+		float f = ( float ) SceneChangeFrame_ / cEndSceneChangeFrame_;
 
 		sceneSprite_->SetColor({ 1,1,1,f });
 
-		if ( frame_ <= 0 )
+		if ( SceneChangeFrame_ <= 0 )
 		{
 			sceneStart_ = false;
 
@@ -233,15 +233,15 @@ void GameScene::Update()
 	else if ( IsCameraSet_ )
 	{
 		cameraFrame_++;
-		float f = ( float ) cameraFrame_ / cameraEndFrame_;
+		float f = ( float ) cameraFrame_ / cEndCameraFrame_;
 
 		Vector3 traget = ( ( cameraEnd_ - cameraStart_ ) * f ) + cameraStart_;
 
 		Object3d::SetTarget(traget);
 
-		Object3d::SetEye(traget + cameraPos_);
+		Object3d::SetEye(traget + cCameraPos_);
 
-		if ( cameraFrame_ >= ( int32_t ) cameraEndFrame_ )
+		if ( cameraFrame_ >= ( int32_t ) cEndCameraFrame_ )
 		{
 			IsCameraSet_ = false;
 			cameraFrame_ = 0;
@@ -252,39 +252,32 @@ void GameScene::Update()
 	}
 	else if ( sceneChange_ == false )
 	{
-		if ( pause == Phase::After )
+		if ( pause_ == Phase::After )
 		{
-			if ( pauseTitle )
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
 			{
-
+				pause_ = Phase::Middle;
+				oldPause_ = Phase::After;
 			}
-			else
+			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_BACK) || Input::Instance()->TriggerKey(DIK_3) )
 			{
-				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
-				{
-					pause = Phase::Middle;
-					oldPause = Phase::After;
-				}
-				if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_BACK) || Input::Instance()->TriggerKey(DIK_3) )
-				{
-					sceneChange_ = true;
-				}
+				sceneChange_ = true;
 			}
 
 		}
-		else if ( pause == Phase::Before )
+		else if ( pause_ == Phase::Before )
 		{
 			player_->Update();
 			EnemyManager::Instance()->Update();
 			if ( Input::Instance()->PadTriggerKey(XINPUT_GAMEPAD_START) || Input::Instance()->TriggerKey(DIK_2) )
 			{
-				pause = Phase::Middle;
-				oldPause = Phase::Before;
+				pause_ = Phase::Middle;
+				oldPause_ = Phase::Before;
 			}
 		}
 		else
 		{
-			if ( oldPause == Phase::After )
+			if ( oldPause_ == Phase::After )
 			{
 				pauseFrame_--;
 				float f = ( float ) pauseFrame_ / 10;
@@ -292,10 +285,10 @@ void GameScene::Update()
 				pauseSprite_->SetColor({ 1,1,1, 0.5f * f });
 				if ( pauseFrame_ <= 0 )
 				{
-					pause = Phase::Before;
+					pause_ = Phase::Before;
 				}
 			}
-			if ( oldPause == Phase::Before )
+			if ( oldPause_ == Phase::Before )
 			{
 				pauseFrame_++;
 				float f = ( float ) pauseFrame_ / 10;
@@ -303,7 +296,7 @@ void GameScene::Update()
 				pauseSprite_->SetColor({ 1,1,1, 0.5f * f });
 				if ( pauseFrame_ >= 10 )
 				{
-					pause = Phase::After;
+					pause_ = Phase::After;
 				}
 			}
 			pauseSprite_->Update();
@@ -312,27 +305,27 @@ void GameScene::Update()
 
 		if ( playerMoving <= 30 )
 		{
-			uiMovingFrame--;
+			uiMovingFrame_--;
 
-			if ( uiMovingFrame <= 0 )
+			if ( uiMovingFrame_ <= 0 )
 			{
-				uiMovingFrame = 0;
+				uiMovingFrame_ = 0;
 			}
 		}
 		else
 		{
-			uiMovingFrame++;
+			uiMovingFrame_++;
 
-			if ( uiMovingFrame >= ( int32_t ) maxUiMovingFrame )
+			if ( uiMovingFrame_ >= ( int32_t ) cEndUiMovingFrame_ )
 			{
-				uiMovingFrame = maxUiMovingFrame;
+				uiMovingFrame_ = cEndUiMovingFrame_;
 			}
 		}
 		{
-			float f = static_cast< float >( uiMovingFrame ) / static_cast< float >( maxUiMovingFrame );
+			float f = static_cast< float >( uiMovingFrame_ ) / static_cast< float >( cEndUiMovingFrame_ );
 
-			Vector2 MenuPosition = ( endMenuPosition - startMenuPosition ) * f;
-			MenuPosition += startMenuPosition;
+			Vector2 MenuPosition = ( cEndMenuPosition_ - cStartMenuPosition_ ) * f;
+			MenuPosition += cStartMenuPosition_;
 
 			tutorial0Sprite_->SetPosition(MenuPosition);
 
@@ -349,29 +342,29 @@ void GameScene::Update()
 		{
 			if ( goalSwitch->phase == Phase::After )
 			{
-				goalOpen = Phase::Middle;
+				goalOpen_ = Phase::Middle;
 			}
 			else
 			{
-				goalOpen = Phase::Before;
+				goalOpen_ = Phase::Before;
 				break;
 			}
 
 		}
-		if ( goalOpen == Phase::Middle )
+		if ( goalOpen_ == Phase::Middle )
 		{
-			goalOpenflame++;
+			goalOpenFlame_++;
 
-			float f = goalOpenflame / goalOpenMaxFlame;
+			float f = goalOpenFlame_ / cEndGoalOpenFlame_;
 
 			goalObj_->SetColor({ f,f,f });
 
-			if ( goalOpenflame >= goalOpenMaxFlame )
+			if ( goalOpenFlame_ >= cEndGoalOpenFlame_ )
 			{
-				goalOpen = Phase::After;
+				goalOpen_ = Phase::After;
 			}
 		}
-		if ( goalOpen == Phase::After )
+		if ( goalOpen_ == Phase::After )
 		{
 			B.Pos = goalObj_->GetPosition();
 
@@ -390,11 +383,11 @@ void GameScene::Update()
 	}
 	else
 	{
-		if ( frame_ < endFrame_+5 )
+		if ( SceneChangeFrame_ < cEndSceneChangeFrame_ + 5 )
 		{
-			frame_++;
+			SceneChangeFrame_++;
 
-			float f = ( float ) frame_ / endFrame_;
+			float f = ( float ) SceneChangeFrame_ / cEndSceneChangeFrame_;
 
 			sceneSprite_->SetColor({ 1,1,1,f });
 
@@ -406,7 +399,7 @@ void GameScene::Update()
 			{
 				std::vector<Object3d*> a;
 
-				switch ( nowStage )
+				switch ( nowStage_ )
 				{
 				case GameScene::Stage::Stage1:
 					MapLoad("Resources/Map/Stage2.json",false);
@@ -434,7 +427,7 @@ void GameScene::Update()
 
 					sceneChange_ = false;
 
-					nowStage = Stage::Stage2;
+					nowStage_ = Stage::Stage2;
 					break;
 				case GameScene::Stage::Stage2:
 					MapLoad("Resources/Map/Stage3.json",false);
@@ -462,7 +455,7 @@ void GameScene::Update()
 
 					sceneChange_ = false;
 
-					nowStage = Stage::Stage3;
+					nowStage_ = Stage::Stage3;
 
 
 					break;
@@ -538,7 +531,7 @@ void GameScene::Update()
 
 		sceneSprite_->Update();
 	}
-	if ( pause == Phase::Before )
+	if ( pause_ == Phase::Before )
 	{
 		for ( std::unique_ptr<Object3d>& obj : objects_ )
 		{
@@ -560,7 +553,7 @@ void GameScene::Update()
 #ifdef _DEBUG
 		ImGui::Begin("Scene");
 
-		ImGui::Text("planeDrawNum:%d",planeDrawNum);
+		ImGui::Text("planeDrawNum:%d",planeDrawNum_);
 
 		ImGui::SliderFloat3("camera",&cameraScale_.x,0,80,"%3.0f");
 
@@ -593,7 +586,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 	{
 		planes_[ i ]->plane->Draw(planes_[ i ]->texHandle);
 	}
-	if ( pause == Phase::Before )
+	if ( pause_ == Phase::Before )
 	{
 		for ( uint32_t i = 0; i < tutorials_.size(); i++ )
 		{
@@ -632,7 +625,7 @@ void GameScene::Draw(DirectXCommon* dxCommon)
 		if ( goalSwitch->phase != Phase::Before )
 		{
 			goalSwitch->light->Draw();
-			goalSwitch->spotLight->Draw(spotLightTex);
+			goalSwitch->spotLight->Draw(spotLightTex_);
 		}
 		goalSwitch->obj->Draw();
 	}
@@ -650,21 +643,21 @@ void GameScene::SpriteDraw()
 {
 	SpriteCommon::Instance()->PreDraw();
 	player_->SpriteDraw();
-	if ( pause == Phase::After || pause == Phase::Middle )
+	if ( pause_ == Phase::After || pause_ == Phase::Middle )
 	{
 		pauseSprite_->Draw();
 	}
-	if ( pause == Phase::After )
+	if ( pause_ == Phase::After )
 	{
 		tutorial4Sprite_->Draw();
 		pauseTutorialSprite_->Draw();
 	}
-	if ( pause == Phase::Before )
+	if ( pause_ == Phase::Before )
 	{
 		tutorial0Sprite_->Draw();
 	}
 	sceneSprite_->Draw();
-	if ( frame_ >= endFrame_ && player_->IsDaed() )
+	if ( SceneChangeFrame_ >= cEndSceneChangeFrame_ && player_->IsDaed() )
 	{
 		retrySprite_->Draw();
 		yesSprite_->Draw();
@@ -1050,7 +1043,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 			goalObj_->Update();
 
-			Object3d::SetEye(objectData.trans + cameraPos_);
+			Object3d::SetEye(objectData.trans + cCameraPos_);
 
 			Object3d::SetTarget(objectData.trans);
 
@@ -1206,7 +1199,7 @@ void GameScene::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 	}
 	if ( isGoal_ == false )
 	{
-		Object3d::SetEye(player_->GetObj()->GetPosition() + cameraPos_);
+		Object3d::SetEye(player_->GetObj()->GetPosition() + cCameraPos_);
 
 		Object3d::SetTarget(player_->GetObj()->GetPosition());
 
@@ -1424,7 +1417,7 @@ void GameScene::SwitchCollsion()
 
 void GameScene::planeUpdate()
 {
-	planeDrawNum = 0;
+	planeDrawNum_ = 0;
 	for ( uint32_t i = 0; i < planes_.size(); i++ )
 	{
 		planes_[ i ]->UVSift += planes_[ i ]->UVSiftSpeed;
@@ -1447,7 +1440,7 @@ void GameScene::planeUpdate()
 			if ( Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
 			{
 				planes_[ i ]->plane->SetIsDraw(true);
-				planeDrawNum++;
+				planeDrawNum_++;
 			}
 			else
 			{
@@ -1504,7 +1497,7 @@ void GameScene::goalSwitchUpdate()
 			goalSwitch->lightFrame++;
 			float a = goalSwitch->spotLight->GetScale().z;
 
-			float f = ( float ) goalSwitch->lightFrame / lightMaxFrame;
+			float f = ( float ) goalSwitch->lightFrame / cEndLightFrame_;
 
 			goalSwitch->spotLight->SetScale({ f * ( a / 5 ),1,a });
 
@@ -1512,7 +1505,7 @@ void GameScene::goalSwitchUpdate()
 
 			goalSwitch->light->SetScale({ f,f,f });
 
-			if ( goalSwitch->lightFrame >= lightMaxFrame )
+			if ( goalSwitch->lightFrame >= cEndLightFrame_ )
 			{
 				goalSwitch->phase = Phase::After;
 			}
@@ -1527,7 +1520,7 @@ void GameScene::goalSwitchUpdate()
 			goalSwitch->light->Update();
 			goalSwitch->spotLight->Update();
 			goalSwitch->partFrame++;
-			if ( goalSwitch->partFrame >= SwitchPartMaxFrame )
+			if ( goalSwitch->partFrame >= cEndSwitchPartFrame )
 			{
 				particleManager_->Add(90,goalSwitch->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
 				goalSwitch->partFrame = 0;
@@ -1545,7 +1538,7 @@ void GameScene::goalSwitchUpdate()
 				goalSwitch->obj->SetIsDraw(true);
 				goalSwitch->light->SetIsDraw(true);
 				goalSwitch->spotLight->SetIsDraw(true);
-				planeDrawNum++;
+				planeDrawNum_++;
 			}
 			else
 			{
@@ -1576,13 +1569,13 @@ void GameScene::switchUpdate()
 			{
 				switchs_[ i ]->lightFrame++;
 
-				float f = ( float ) switchs_[ i ]->lightFrame / spotLightMaxFrame;
+				float f = ( float ) switchs_[ i ]->lightFrame / cEndSpotLightFrame_;
 
 				f *= 1.5f;
 
 				switchs_[ i ]->light->SetScale({ f,f,f });
 
-				if ( switchs_[ i ]->lightFrame >= lightMaxFrame )
+				if ( switchs_[ i ]->lightFrame >= cEndLightFrame_ )
 				{
 					switchs_[ i ]->phase = Phase::After;
 				}
@@ -1590,7 +1583,7 @@ void GameScene::switchUpdate()
 			else
 			{
 				switchs_[ i ]->partFrame++;
-				if ( switchs_[ i ]->partFrame >= SwitchPartMaxFrame )
+				if ( switchs_[ i ]->partFrame >= cEndSwitchPartFrame )
 				{
 					particleManager_->Add(90,switchs_[ i ]->obj->GetPosition(),{ 0,0.5f,0 },{ 0,0,0 },1,1,{ 1,1,1,1 },{ 1,1,1,1 });
 					switchs_[ i ]->partFrame = 0;
@@ -1633,7 +1626,7 @@ void GameScene::switchUpdate()
 			{
 				switchs_[ i ]->obj->SetIsDraw(true);
 				switchs_[ i ]->light->SetIsDraw(true);
-				planeDrawNum++;
+				planeDrawNum_++;
 			}
 			else
 			{
@@ -1657,11 +1650,11 @@ void GameScene::middleUpdate()
 		{
 			middles_[ i ]->Frame++;
 
-			float f = middles_[ i ]->Frame / goalOpenMaxFlame;
+			float f = middles_[ i ]->Frame / cEndGoalOpenFlame_;
 
 			middles_[ i ]->obj->SetColor({ f,f,f });
 
-			if ( middles_[ i ]->Frame >= goalOpenMaxFlame )
+			if ( middles_[ i ]->Frame >= cEndGoalOpenFlame_ )
 			{
 				middles_[ i ]->phase = Phase::After;
 			}
@@ -1678,7 +1671,7 @@ void GameScene::middleUpdate()
 			if ( Collider::QuadAndQuad(planeCube,cameraCube,Collider::Type::Collsion) )
 			{
 				middles_[ i ]->obj->SetIsDraw(true);
-				planeDrawNum++;
+				planeDrawNum_++;
 			}
 			else
 			{

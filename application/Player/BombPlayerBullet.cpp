@@ -15,11 +15,11 @@ void BombPlayerBullet::Initialize(Model* model,Vector2 velocity,Vector3 position
 
 	obj_->SetPosition(position);
 
-	obj_->SetColor({ bulletColor_ });
+	obj_->SetColor({ cBulletColor_ });
 
 	life_ = life;
 
-	type = Type::Bomb;
+	type_ = Type::Bomb;
 }
 
 void BombPlayerBullet::Update()
@@ -102,9 +102,9 @@ void BombPlayerBullet::Update()
 
 				//pos.normalize();
 
-				const Vector4 startColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,1 };
+				const Vector4 startColor = { cBulletColor_.x,cBulletColor_.y,cBulletColor_.z,1 };
 
-				const Vector4 endColor = { bulletColor_.x,bulletColor_.y,bulletColor_.z,0 };
+				const Vector4 endColor = { cBulletColor_.x,cBulletColor_.y,cBulletColor_.z,0 };
 
 				//追加
 				PlayerBulletManager::Instance()->GetParticle()->Add(life,obj_->GetPosition(),velocity,accel,3.0f,1.0f,startColor,endColor);
@@ -142,7 +142,7 @@ void BombPlayerBullet::SetLight(LightGroup* light,int32_t lightIndex)
 
 		light_->SetPointPos(lightIndex_,obj_->GetPosition());
 
-		light_->SetPointColor(lightIndex_,{ bulletColor_/2 });
+		light_->SetPointColor(lightIndex_,{ cBulletColor_/2 });
 
 		light_->SetPointAtten(lightIndex_,{ 0.015f,0.005f,0.005f });
 	}
