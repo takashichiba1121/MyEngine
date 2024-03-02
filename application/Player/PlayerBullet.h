@@ -1,6 +1,5 @@
 #pragma once 
 #include"object3d.h"
-#include"EnemyBullet.h"
 /*
 * プレイヤーの弾の基底クラス
 */
@@ -74,6 +73,10 @@ public:
 		return type_;
 	}
 
+	void SetEnemyPos(Object3d* enemyPos) {
+		enemyPos_ = enemyPos;
+	}
+
 protected:
 
 	std::unique_ptr<Object3d> obj_;
@@ -109,4 +112,6 @@ protected:
 	const uint32_t cMaxCirclePartFrame_ = 5;
 
 	uint32_t circlePartFrame_ = 0;
+
+	Object3d* enemyPos_ = nullptr;
 };

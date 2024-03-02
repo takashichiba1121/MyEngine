@@ -2,24 +2,17 @@
 #include"object3d.h"
 #include"Sprite.h"
 #include"Sound.h"
-#include"ParticleManager.h"
 #include"LightGroup.h"
 #include"Player.h"
-#include"EnemyManager.h"
+#include"ParticleManager.h"
 #include"BaseScene.h"
+#include"Map.h"
 /*
 * ゲームシーン
 */
 class GameScene :public BaseScene
 {
 public:
-	enum class Phase
-	{
-		Before,
-		Middle,
-		After,
-	};
-
 	enum class Stage
 	{
 		Stage1,
@@ -27,77 +20,11 @@ public:
 		Stage3
 	};
 
-	struct Plane
+	enum class SceneFlow
 	{
-		std::unique_ptr<Object3d> plane;
-		uint32_t texHandle = 0;
-		Vector2 UVSift = { 0,0 };
-		Vector2 UVSiftSpeed = { 0,0 };
-	};
-
-	struct Tutorial
-	{
-		std::unique_ptr<Object3d> obj;
-		uint32_t texHandle = 0;
-		bool isDraw = true;
-	};
-
-	struct GoalSwitch
-	{
-		std::unique_ptr<Object3d> obj;
-		std::unique_ptr<Object3d> light;
-		std::unique_ptr<Object3d> spotLight;
-		uint32_t lightFrame;
-		uint32_t lightIndex = 0;
-		Phase phase = Phase::Before;
-
-		uint32_t partFrame;
-	};
-
-	struct Switch
-	{
-		std::unique_ptr<Object3d> obj;
-		std::unique_ptr<Object3d> light;
-		std::unique_ptr<Object3d> spotLight;
-		uint32_t lightIndex = 0;
-		uint32_t lightFrame;
-		Phase phase = Phase::Before;
-		uint32_t index = 0;
-
-		uint32_t partFrame;
-
-		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
-		bool operator<(const Switch& right) const {
-			return index < right.index;
-		}
-	};
-
-	struct Gimmick
-	{
-		std::unique_ptr<Object3d> obj;
-		Phase phase = Phase::Before;
-		uint32_t index = 0;
-		float EndPosY = 0;
-
-		// 最後のconstを忘れると"instantiated from here"というエラーが出てコンパイルできないので注意
-		bool operator<(const Gimmick& right) const {
-			return index < right.index;
-		}
-	};
-
-	struct Camera
-	{
-		Vector3 pos;
-		Vector3 rot;
-		Vector3 scale;
-	};
-
-	struct Middle
-	{
-		std::unique_ptr<Object3d> obj;
-		Phase phase = Phase::Before;
-
-		uint32_t Frame=0;
+		Start,
+		Play,
+		End
 	};
 public: // メンバ関数
 	GameScene();
@@ -111,6 +38,12 @@ public: // メンバ関数
 	/// </summary>
 	void Update() override;
 
+	void StartUpdate();
+
+	void PlayUpdate();
+
+	void EndUpdate();
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -123,31 +56,8 @@ public: // メンバ関数
 
 	void Finalize() override;
 
-	/// <summary>
-	/// マップデータのロード
-	/// </summary>
-	void MapLoad(std::string mapfullpath,bool middleSwitchRLoad);
-
-private:
-	//モデルのロード
-	void ModelLoad();
-
-	void SwitchCollsion();
-
-	void planeUpdate();
-
-	void tutorialUpdate();
-
-	void goalSwitchUpdate();
-
-	void switchUpdate();
-
-	void middleUpdate();
-
 private:
 #pragma region モデル
-
-	std::map<std::string,std::unique_ptr<Model>> models_;
 
 	std::unique_ptr<Model> skyModel_;
 #pragma endregion
@@ -156,37 +66,14 @@ private:
 
 	uint32_t texHandle_ = 0;
 
-	std::vector<std::unique_ptr<Object3d>> objects_;
-
-	std::vector<std::unique_ptr<Plane>> planes_;
-	uint32_t planeDrawNum_=0;
-
-	std::vector<std::unique_ptr<Tutorial>> tutorials_;
-
-	std::vector<std::unique_ptr<GoalSwitch>> goalSwitchs_;
-
-	std::vector<std::unique_ptr<Switch>> switchs_;
-
-	std::vector<std::unique_ptr<Gimmick>> gimmicks_;
-
-	std::vector<std::unique_ptr<Camera>> cameras_;
-
-	std::vector<std::unique_ptr<Middle>> middles_;
-
-	std::unique_ptr<Object3d> goalObj_;
-	std::unique_ptr<Object3d> spawnObj_;
-
 	std::unique_ptr<ParticleManager> particleManager_;
+
+	std::unique_ptr<Map> map;
 
 	bool isNext_ = false;
 	bool isStage1_ = false;
 	bool isStage2_ = false;
 	bool isStage3_ = false;
-
-	bool isGoal_ = false;
-	Phase goalOpen_ = Phase::Before;
-	float goalOpenFlame_ = 0;
-	const float cEndGoalOpenFlame_ = 60;
 
 	float ambientColor_[ 3 ] = { 1,1,1 };
 
@@ -198,8 +85,6 @@ private:
 	const Vector3 cCameraPos_ = { 0.0f,30.0f,-30.0f };
 
 	std::unique_ptr<Player> player_;
-
-	bool isClear_ = false;
 
 #pragma region シーン遷移用変数
 
@@ -252,11 +137,11 @@ private:
 
 	const uint32_t cEndUiMovingFrame_=10;
 
-	int32_t uiMovingFrame_;
+	int32_t uiMovingFrame_=0;
 
-	uint32_t keyTexHandle_;
+	uint32_t keyTexHandle_=0;
 
-	uint32_t padTexHandle_;
+	uint32_t padTexHandle_=0;
 
 	std::unique_ptr<Sprite> spaceSprite_;
 
@@ -268,22 +153,14 @@ private:
 
 	bool retry_ = false;
 
-	uint32_t spotLightTex_ = 0;
-
-	const uint32_t cEndSpotLightFrame_ = 30;
-
-	const uint32_t cEndLightFrame_ = 30;
-
 	Stage nowStage_=Stage::Stage3;
 
-	Phase pause_=Phase::Before;
+	Map::Phase pause_= Map::Phase::Before;
 
-	Phase oldPause_ = Phase::Before;
+	Map::Phase oldPause_ = Map::Phase::Before;
 
 	uint32_t pauseFrame_=0;
 
-	const uint32_t cEndSwitchPartFrame = 15;
-
-	Vector3 cameraScale_ = { 80,80,80 };
+	SceneFlow sceneFlow=SceneFlow::Start;
 };
 

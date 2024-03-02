@@ -74,6 +74,16 @@ void PlayerBullet::Attack()
 		phase_ = Phase::Delete;
 	}
 
+	if ( enemyPos_ !=nullptr )
+	{
+		Vector3 vec = enemyPos_->GetPosition() - obj_->GetPosition();
+		vec.normalize();
+
+		Vector2 vec2 = { vec.x,vec.z };
+
+		velocity_ = velocity_ + ( ( vec2 - velocity_ ) * 0.1f );
+	}
+
 	move = obj_->GetPosition();
 
 	move += {velocity_.x,0,velocity_.y};

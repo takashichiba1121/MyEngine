@@ -1,8 +1,6 @@
 #pragma once
 #include"Enemy.h"
-#include"EnemyBullet.h"
 #include"ParticleManager.h"
-#include"Player.h"
 /*
 * エネミーの管理
 */
@@ -60,8 +58,6 @@ public:
 	//敵と弾の消去
 	void Clear();
 
-	void SetPlayer(Player* player) { player_ = player; }
-
 	ParticleManager* GetParticle() {return particle_.get() ;}
 private:
 	std::list<std::unique_ptr<Enemy>> Enemys_;
@@ -71,8 +67,6 @@ private:
 	std::vector<std::unique_ptr<Object3d>>* objects_=nullptr;
 
 	std::unique_ptr<ParticleManager> particle_;
-
-	Player* player_=nullptr;
 
 	float attackRange_ = 40.0f;
 };

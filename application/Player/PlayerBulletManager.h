@@ -1,5 +1,5 @@
 #pragma once
-#include"Player.h"
+#include"ParticleManager.h"
 #include"PlayerBullet.h"
 #include"LightGroup.h"
 /*
@@ -21,7 +21,7 @@ public:
 #pragma endregion
 public:
 
-	void Initialize();
+	void Initialize(); 
 
 	void Update();
 

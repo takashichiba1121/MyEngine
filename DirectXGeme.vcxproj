@@ -63,7 +63,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)engine\2d;$(ProjectDir)application;$(ProjectDir)engine\3d;$(ProjectDir)engine\audio;$(ProjectDir)engine\base;$(ProjectDir)engine\io;$(ProjectDir)engine\Math;$(ProjectDir)engine\postEffect;$(ProjectDir)engine\Collider;$(ProjectDir)engine\Scene;$(ProjectDir)engine\3d\Light;$(ProjectDir)application\Player;$(ProjectDir)application\Enemy;$(ProjectDir)application\Scene;$(ProjectDir)application\Collider</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)engine\2d;$(ProjectDir)application;$(ProjectDir)engine\3d;$(ProjectDir)engine\audio;$(ProjectDir)engine\base;$(ProjectDir)engine\io;$(ProjectDir)engine\Math;$(ProjectDir)engine\postEffect;$(ProjectDir)engine\Collider;$(ProjectDir)engine\Scene;$(ProjectDir)engine\3d\Light;$(ProjectDir)application\Player;$(ProjectDir)application\Enemy;$(ProjectDir)application\Scene;$(ProjectDir)application\Map</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -90,7 +90,7 @@ copy "$(SolutionDir)External\lib\pugixml.dll" "$(TargetDir)pugixml.dll"</Command
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)engine\2d;$(ProjectDir)application;$(ProjectDir)engine\3d;$(ProjectDir)engine\audio;$(ProjectDir)engine\base;$(ProjectDir)engine\io;$(ProjectDir)engine\Math;$(ProjectDir)engine\postEffect;$(ProjectDir)engine\Collider;$(ProjectDir)engine\Scene;$(ProjectDir)engine\3d\Light;$(ProjectDir)application\Player;$(ProjectDir)application\Enemy;$(ProjectDir)application\Scene;$(ProjectDir)application\Collider</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)engine\2d;$(ProjectDir)application;$(ProjectDir)engine\3d;$(ProjectDir)engine\audio;$(ProjectDir)engine\base;$(ProjectDir)engine\io;$(ProjectDir)engine\Math;$(ProjectDir)engine\postEffect;$(ProjectDir)engine\Collider;$(ProjectDir)engine\Scene;$(ProjectDir)engine\3d\Light;$(ProjectDir)application\Player;$(ProjectDir)application\Enemy;$(ProjectDir)application\Scene;$(ProjectDir)application\Map</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -113,11 +113,11 @@ copy "$(SolutionDir)External\lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="application\Collider\AppCollider.cpp" />
     <ClCompile Include="application\Enemy\GunEnemy.cpp" />
     <ClCompile Include="application\Enemy\jumpEnemy.cpp" />
     <ClCompile Include="application\Enemy\RunEnemy.cpp" />
     <ClCompile Include="application\Enemy\tutorialEnemy.cpp" />
+    <ClCompile Include="application\Map\Map.cpp" />
     <ClCompile Include="application\Player\BombPlayerBullet.cpp" />
     <ClCompile Include="application\Player\DivisionPlayerBullet.cpp" />
     <ClCompile Include="application\Player\PlayerBulletManager.cpp" />
@@ -167,11 +167,11 @@ copy "$(SolutionDir)External\lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-
     <ClCompile Include="application\Enemy\WallEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application\Collider\AppCollider.h" />
     <ClInclude Include="application\Enemy\GunEnemy.h" />
     <ClInclude Include="application\Enemy\jumpEnemy.h" />
     <ClInclude Include="application\Enemy\RunEnemy.h" />
     <ClInclude Include="application\Enemy\tutorialEnemy.h" />
+    <ClInclude Include="application\Map\Map.h" />
     <ClInclude Include="application\Player\BombPlayerBullet.h" />
     <ClInclude Include="application\Player\DivisionPlayerBullet.h" />
     <ClInclude Include="application\Player\PlayerBulletManager.h" />

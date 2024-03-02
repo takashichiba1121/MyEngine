@@ -51,6 +51,14 @@ public:
 	/// </summary>
 	void Attack();
 
+	void NormalShoot();
+
+	void ThreeWayShoot();
+
+	void DivisionShoot();
+
+	void BombShoot();
+
 	/// <summary>
 	/// 緊急回避
 	/// </summary>
@@ -104,9 +112,9 @@ public:
 
 	Object3d* GetObj() { return obj_.get(); }
 
-	uint32_t GetMoving() {return notMovingFrame_;}
+	uint32_t GetMoving() const {return notMovingFrame_;}
 
-	bool IsDaed() { return isDelete_; }
+	bool IsDaed() const { return isDelete_; }
 
 	void SetLight(LightGroup* light) {light_ = light;}
 
@@ -119,7 +127,7 @@ public:
 		cameraPos_=cameraPos;
 	}
 
-	Vector3 GetEndCameraPos() {return endCameraPos_;}
+	Vector3 GetEndCameraPos() const {return endCameraPos_;}
 
 	void CameraPosChange();
 

@@ -111,11 +111,11 @@
     <Filter Include="application\ソース ファイル\player">
       <UniqueIdentifier>{4066f2dd-b7aa-48e0-8fc9-b0e0ea1c09e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="application\ソース ファイル\appCollider">
-      <UniqueIdentifier>{a0bd15a2-c6e7-4e8e-82b3-ff8f3be66beb}</UniqueIdentifier>
+    <Filter Include="application\ソース ファイル\Map">
+      <UniqueIdentifier>{b955f289-2312-4fea-936c-47f04113a410}</UniqueIdentifier>
     </Filter>
-    <Filter Include="application\ヘッダーファイル\appCollider">
-      <UniqueIdentifier>{887b3cfb-eee1-4b9b-af65-4605dd7c74ca}</UniqueIdentifier>
+    <Filter Include="application\ヘッダーファイル\Map">
+      <UniqueIdentifier>{cc8c7729-8588-4a57-9a03-2d477468b758}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     <ClCompile Include="engine\postEffect\PostEffectMixeds.cpp">
       <Filter>engin\ソースファイル\PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="application\Collider\AppCollider.cpp">
-      <Filter>application\ソース ファイル\appCollider</Filter>
-    </ClCompile>
     <ClCompile Include="engine\main.cpp">
       <Filter>engin\ソースファイル</Filter>
     </ClCompile>
@@ -274,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="application\Enemy\WallEnemy.cpp">
       <Filter>application\ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Map\Map.cpp">
+      <Filter>application\ソース ファイル\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -418,9 +418,6 @@
     <ClInclude Include="engine\postEffect\PostEffectMixeds.h">
       <Filter>engin\ヘッダーファイル\PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="application\Collider\AppCollider.h">
-      <Filter>application\ヘッダーファイル\appCollider</Filter>
-    </ClInclude>
     <ClInclude Include="application\Enemy\jumpEnemy.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
     </ClInclude>
@@ -435,6 +432,9 @@
     </ClInclude>
     <ClInclude Include="application\Enemy\WallEnemy.h">
       <Filter>application\ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Map\Map.h">
+      <Filter>application\ヘッダーファイル\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
