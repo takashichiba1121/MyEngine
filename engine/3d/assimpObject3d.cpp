@@ -115,7 +115,7 @@ void assimpObject3d::InitializeGraphicsPipeline()
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/FbxVS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/FbxVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -138,7 +138,7 @@ void assimpObject3d::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/FbxGS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/FbxGS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -161,7 +161,7 @@ void assimpObject3d::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/FbxPS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/FbxPS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定

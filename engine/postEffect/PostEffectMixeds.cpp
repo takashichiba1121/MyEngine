@@ -90,7 +90,7 @@ void PostEffectMixeds::CreatGraphicsPipelineState()
 
 	//頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/PostEffectMixedVS.hlsl", //シェーダーファイル名
+		L"Resources/shaders/PostEffect/PostEffectMixedVS.hlsl", //シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルード可能にする
 		"main", "vs_5_0",//エントリーポイント名、シェーダーモデル指定
@@ -114,7 +114,7 @@ void PostEffectMixeds::CreatGraphicsPipelineState()
 	}
 	//ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/PostEffectMixedPS.hlsl",
+		L"Resources/shaders/PostEffect/PostEffectMixedPS.hlsl",
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main", "ps_5_0",

@@ -37,7 +37,7 @@ void SpriteCommon::InitializeGraphicsPipeline()
 
 	//頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/SpriteVS.hlsl", //シェーダーファイル名
+		L"Resources/shaders/2D/SpriteVS.hlsl", //シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルード可能にする
 		"main","vs_5_0",//エントリーポイント名、シェーダーモデル指定
@@ -62,7 +62,7 @@ void SpriteCommon::InitializeGraphicsPipeline()
 	}
 	//ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/SpritePS.hlsl",
+		L"Resources/shaders/2D/SpritePS.hlsl",
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main","ps_5_0",
@@ -210,7 +210,7 @@ void SpriteCommon::InitializeDissolveGraphicsPipeline()
 
 	//頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/DissolveSpriteVS.hlsl", //シェーダーファイル名
+		L"Resources/shaders/2D/DissolveSpriteVS.hlsl", //シェーダーファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,//インクルード可能にする
 		"main","vs_5_0",//エントリーポイント名、シェーダーモデル指定
@@ -235,7 +235,7 @@ void SpriteCommon::InitializeDissolveGraphicsPipeline()
 	}
 	//ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/DissolveSpritePS.hlsl",
+		L"Resources/shaders/2D/DissolveSpritePS.hlsl",
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main","ps_5_0",

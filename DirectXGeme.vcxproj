@@ -222,133 +222,133 @@ copy "$(SolutionDir)External\lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-
     <ClInclude Include="application\Enemy\WallEnemy.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\DissolveSpritePS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\DissolveSpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\DissolveSpriteVS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\DissolveSpriteVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FbxGS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\FbxGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FbxPS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\FbxPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FbxVS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\FbxVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjGS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjNotLightPS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjNotLightPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ParticleGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ParticlePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ParticleVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectBlurPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectBlurPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectBlurVS.hlsl" />
-    <FxCompile Include="Resources\shaders\PostEffectLuminancePS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectBlurVS.hlsl" />
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectLuminancePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectLuminanceVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectLuminanceVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMixedPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMixedPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMixedVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMixedVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMultiRenderTargetPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMultiRenderTargetVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\postEffectTestPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\postEffectTestPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectTestVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectTestVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\SpritePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\SpriteVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -356,16 +356,16 @@ copy "$(SolutionDir)External\lib\assimp-vc143-mt.dll" "$(TargetDir)assimp-vc143-
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\DissolveSprite.hlsli" />
-    <None Include="Resources\shaders\Fbx.hlsli" />
-    <None Include="Resources\shaders\Obj.hlsli" />
-    <None Include="Resources\shaders\Particle.hlsli" />
-    <None Include="Resources\shaders\PostEffectBlur.hlsli" />
-    <None Include="Resources\shaders\PostEffectLuminance.hlsli" />
-    <None Include="Resources\shaders\PostEffectMixed.hlsli" />
-    <None Include="Resources\shaders\PostEffectMultiRenderTarget.hlsli" />
-    <None Include="Resources\shaders\postEffectTest.hlsli" />
-    <None Include="Resources\shaders\Sprite.hlsli" />
+    <None Include="Resources\shaders\2D\DissolveSprite.hlsli" />
+    <None Include="Resources\shaders\3D\Fbx.hlsli" />
+    <None Include="Resources\shaders\3D\Obj.hlsli" />
+    <None Include="Resources\shaders\3D\Particle.hlsli" />
+    <None Include="Resources\shaders\PostEffect\PostEffectBlur.hlsli" />
+    <None Include="Resources\shaders\PostEffect\PostEffectLuminance.hlsli" />
+    <None Include="Resources\shaders\PostEffect\PostEffectMixed.hlsli" />
+    <None Include="Resources\shaders\PostEffect\PostEffectMultiRenderTarget.hlsli" />
+    <None Include="Resources\shaders\PostEffect\postEffectTest.hlsli" />
+    <None Include="Resources\shaders\2D\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

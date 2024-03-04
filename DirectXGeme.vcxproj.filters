@@ -438,108 +438,108 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\DissolveSpritePS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\DissolveSpritePS.hlsl">
       <Filter>シェーダーファイル\2D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\DissolveSpriteVS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\DissolveSpriteVS.hlsl">
       <Filter>シェーダーファイル\2D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\SpritePS.hlsl">
       <Filter>シェーダーファイル\2D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
+    <FxCompile Include="Resources\shaders\2D\SpriteVS.hlsl">
       <Filter>シェーダーファイル\2D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FbxGS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\FbxGS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FbxPS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\FbxPS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\FbxVS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\FbxVS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjGS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjGS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjVS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ParticleGS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticlePS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ParticlePS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ParticleVS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectBlurPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectBlurPS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectLuminancePS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectLuminancePS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectLuminanceVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectLuminanceVS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMixedPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMixedPS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMixedVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMixedVS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMultiRenderTargetPS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectMultiRenderTargetVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectMultiRenderTargetVS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\postEffectTestPS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\postEffectTestPS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectTestVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectTestVS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\PostEffectBlurVS.hlsl">
+    <FxCompile Include="Resources\shaders\PostEffect\PostEffectBlurVS.hlsl">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjPS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjNotLightPS.hlsl">
+    <FxCompile Include="Resources\shaders\3D\ObjNotLightPS.hlsl">
       <Filter>シェーダーファイル\3D</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\DissolveSprite.hlsli">
+    <None Include="Resources\shaders\2D\DissolveSprite.hlsli">
       <Filter>シェーダーファイル\2D</Filter>
     </None>
-    <None Include="Resources\shaders\Sprite.hlsli">
+    <None Include="Resources\shaders\2D\Sprite.hlsli">
       <Filter>シェーダーファイル\2D</Filter>
     </None>
-    <None Include="Resources\shaders\Fbx.hlsli">
+    <None Include="Resources\shaders\3D\Fbx.hlsli">
       <Filter>シェーダーファイル\3D</Filter>
     </None>
-    <None Include="Resources\shaders\Obj.hlsli">
+    <None Include="Resources\shaders\3D\Obj.hlsli">
       <Filter>シェーダーファイル\3D</Filter>
     </None>
-    <None Include="Resources\shaders\Particle.hlsli">
+    <None Include="Resources\shaders\3D\Particle.hlsli">
       <Filter>シェーダーファイル\3D</Filter>
     </None>
-    <None Include="Resources\shaders\PostEffectBlur.hlsli">
+    <None Include="Resources\shaders\PostEffect\PostEffectBlur.hlsli">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\PostEffectLuminance.hlsli">
+    <None Include="Resources\shaders\PostEffect\PostEffectLuminance.hlsli">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\PostEffectMixed.hlsli">
+    <None Include="Resources\shaders\PostEffect\PostEffectMixed.hlsli">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\PostEffectMultiRenderTarget.hlsli">
+    <None Include="Resources\shaders\PostEffect\PostEffectMultiRenderTarget.hlsli">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </None>
-    <None Include="Resources\shaders\postEffectTest.hlsli">
+    <None Include="Resources\shaders\PostEffect\postEffectTest.hlsli">
       <Filter>シェーダーファイル\PostEffect</Filter>
     </None>
   </ItemGroup>

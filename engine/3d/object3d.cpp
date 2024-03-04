@@ -144,7 +144,7 @@ void Object3d::InitializeGraphicsPipeline()
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/ObjVS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/ObjVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main","vs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -168,7 +168,7 @@ void Object3d::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/ObjGS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/ObjGS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main","gs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -192,7 +192,7 @@ void Object3d::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/ObjPS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/ObjPS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main","ps_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -216,7 +216,7 @@ void Object3d::InitializeGraphicsPipeline()
 
 		// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/ObjNotLightPS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/3D/ObjNotLightPS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main","ps_5_0",	// エントリーポイント名、シェーダーモデル指定
