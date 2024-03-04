@@ -131,6 +131,11 @@ void Map::ParticleDraw()
 	particleManager_->Draw();
 }
 
+void Map::MonsterHouseUpdate()
+{
+
+}
+
 void Map::ObjectUpdate()
 {
 	for ( std::unique_ptr<Object3d>& obj : objects_ )
@@ -718,7 +723,21 @@ void Map::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 			EnemyManager::Instance()->AddEnemy(std::move(enemy));
 		}
+		if ( tagName == "MonsterHouse" )
+		{
+			std::unique_ptr<MonsterHouse> monsterHouse=std::make_unique<MonsterHouse>();
+
+			monsterHouse->pos = objectData.trans;
+
+			monsterHouse->scale = objectData.scale;
+
+			monsterHouse->EnemyPopName = objectData.fileName;
+
+			monsterHouses_.push_back(std::move(monsterHouse));
+		}
 	}
+
+
 
 	std::sort(switchs_.rbegin(),switchs_.rend());
 

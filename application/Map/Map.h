@@ -84,6 +84,16 @@ public:
 
 		uint32_t Frame = 0;
 	};
+
+	struct MonsterHouse
+	{
+		Vector3 pos;
+		Vector3 scale;
+		std::string EnemyPopName;
+		std::unique_ptr<Switch> clearSwitch;
+		std::unique_ptr<Gimmick> clearGimmick;
+		std::unique_ptr<Gimmick> startGimmick;
+	};
 public:
 	//初期化
 	void Initialize(Player* player,LightGroup* light);
@@ -137,6 +147,8 @@ private:
 
 	void middleUpdate();
 
+	void MonsterHouseUpdate();
+
 	void ObjectUpdate();
 private:
 #pragma region モデル
@@ -166,6 +178,8 @@ private:
 	std::vector<std::unique_ptr<Camera>> cameras_;
 
 	std::vector<std::unique_ptr<Middle>> middles_;
+
+	std::vector<std::unique_ptr<MonsterHouse>> monsterHouses_;
 
 	std::unique_ptr<Object3d> goalObj_;
 	std::unique_ptr<Object3d> spawnObj_;
