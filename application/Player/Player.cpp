@@ -27,7 +27,7 @@ void Player::Initialize()
 
 	paMan_->Initialize();
 
-	paMan_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+	paMan_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/Texture/effect4.png"));
 
 	obj_->Update();
 
@@ -37,7 +37,7 @@ void Player::Initialize()
 
 	normalAttack_ = std::make_unique<Sprite>();
 
-	normalAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/normalAttack.png"));
+	normalAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/normalAttack.png"));
 
 	normalAttack_->SetPosition({ 148,158 });
 
@@ -51,7 +51,7 @@ void Player::Initialize()
 
 	threeWayAttack_ = std::make_unique<Sprite>();
 
-	threeWayAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/3WayAttack.png"));
+	threeWayAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/3WayAttack.png"));
 
 	threeWayAttack_->SetPosition({ 148,158 });
 
@@ -65,7 +65,7 @@ void Player::Initialize()
 
 	divisionAttack_ = std::make_unique<Sprite>();
 
-	divisionAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/divisionAttack.png"));
+	divisionAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/divisionAttack.png"));
 
 	divisionAttack_->SetPosition({ 148,158 });
 
@@ -77,7 +77,7 @@ void Player::Initialize()
 
 	bombAttack_ = std::make_unique<Sprite>();
 
-	bombAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/bombAttack.png"));
+	bombAttack_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/bombAttack.png"));
 
 	bombAttack_->SetPosition({ 148,158 });
 

@@ -15,7 +15,7 @@ void TitileScene::Initialize()
 
 	Object3d::SetTarget({ 0.0f,0.0f,1.0f });
 
-	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
+	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Texture/Abotton.png");
 
 	spaceSprite_ = std::make_unique<Sprite>();
 
@@ -29,7 +29,7 @@ void TitileScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene2.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve5.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/scene2.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 
@@ -39,7 +39,7 @@ void TitileScene::Initialize()
 
 	titleSprite_ = std::make_unique<Sprite>();
 
-	titleSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Titlerogo.png"));
+	titleSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/Titlerogo.png"));
 
 	titleSprite_->SetPosition({ 640,230 });
 
@@ -49,7 +49,7 @@ void TitileScene::Initialize()
 
 	startSprite_ = std::make_unique<Sprite>();
 
-	startSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Start.png"));
+	startSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/Start.png"));
 
 	startSprite_->SetPosition({ 640,600 });
 
@@ -81,7 +81,7 @@ void TitileScene::Initialize()
 
 	particles_->Initialize();
 
-	particles_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+	particles_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/Texture/effect4.png"));
 }
 
 void TitileScene::Finalize()
@@ -133,8 +133,6 @@ void TitileScene::Update()
 		if ( SceneChangeFrame_ <=0 )
 		{
 			sceneStart_ = false;
-
-			sceneSprite_->SetMaskTexture(TextureManager::Instance()->LoadTexture("Resources/Dissolve5.png"));
 		}
 	}
 	else

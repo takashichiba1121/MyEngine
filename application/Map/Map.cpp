@@ -27,9 +27,9 @@ void Map::Initialize(Player* player,LightGroup* light)
 
 	particleManager_->Initialize();
 
-	particleManager_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+	particleManager_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/Texture/effect4.png"));
 
-	spotLightTex_ = TextureManager::Instance()->LoadTexture("Resources/lightplane.png");
+	spotLightTex_ = TextureManager::Instance()->LoadTexture("Resources/Texture/lightplane.png");
 }
 void Map::Update()
 {
@@ -191,7 +191,7 @@ void Map::ModelLoad()
 	models_.insert(std::make_pair("stage",std::move(stageModel_)));
 
 	std::unique_ptr<Model> planeModel_;
-	planeModel_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/plane.png")));
+	planeModel_.reset(Model::CreatePlaneModel(TextureManager::Instance()->LoadTexture("Resources/Texture/plane.png")));
 	models_.insert(std::make_pair("plane",std::move(planeModel_)));
 
 	std::unique_ptr<Model> goalSwitchModel_;
@@ -358,7 +358,7 @@ void Map::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 				newObject->UVSiftSpeed = { 0.02f ,0 };
 
-				newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/plane.png");
+				newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/Texture/plane.png");
 			}
 			else
 			{
@@ -366,7 +366,7 @@ void Map::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 
 				newObject->UVSiftSpeed = { 0,0.02f };
 
-				newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/plane2.png");
+				newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/Texture/plane2.png");
 			}
 		// 配列に登録
 			planes_.push_back(std::move(newObject));
@@ -379,7 +379,7 @@ void Map::MapLoad(std::string mapFullpath,bool middleSwitchRLoad)
 			newObject->obj->Initialize();
 			newObject->obj->SetModel(models_[ "plane" ].get());
 
-			newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/" + objectData.fileName + ".png");
+			newObject->texHandle = TextureManager::Instance()->LoadTexture("Resources/Texture/" + objectData.fileName + ".png");
 
 			assert(newObject);
 

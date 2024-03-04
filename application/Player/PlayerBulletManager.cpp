@@ -15,7 +15,7 @@ void PlayerBulletManager::Initialize()
 
 	particle_->Initialize();
 
-	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect3.png"));
+	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/Texture/effect3.png"));
 }
 
 void PlayerBulletManager::Update()

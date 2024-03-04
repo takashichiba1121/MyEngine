@@ -24,7 +24,7 @@ void GameScene::Initialize()
 {
 	Object3d::SetEye({ 0.0f,20.0f,-20.0f });
 
-	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Abotton.png");
+	padTexHandle_ = TextureManager::Instance()->LoadTexture("Resources/Texture/Abotton.png");
 
 	spaceSprite_ = std::make_unique<Sprite>();
 
@@ -48,7 +48,7 @@ void GameScene::Initialize()
 
 	sceneSprite_ = std::make_unique<Sprite>();
 
-	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene2.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	sceneSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/scene2.png"));
 
 	sceneSprite_->SetAnchorPoint({ 0,0 });
 
@@ -58,7 +58,7 @@ void GameScene::Initialize()
 #pragma region リトライ用スプライトの設定
 	retrySprite_ = std::make_unique<Sprite>();
 
-	retrySprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/retry.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	retrySprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/retry.png"));
 
 	retrySprite_->SetAnchorPoint({ 0.5f,0.5f });
 
@@ -68,7 +68,7 @@ void GameScene::Initialize()
 
 	yesSprite_ = std::make_unique<Sprite>();
 
-	yesSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Yes.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	yesSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/Yes.png"));
 
 	yesSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	;
@@ -78,7 +78,7 @@ void GameScene::Initialize()
 
 	noSprite_ = std::make_unique<Sprite>();
 
-	noSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/No.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	noSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/No.png"));
 
 	noSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	;
@@ -88,7 +88,7 @@ void GameScene::Initialize()
 
 	yazirusiSprite_ = std::make_unique<Sprite>();
 
-	yazirusiSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/yazirusi.png"),TextureManager::Instance()->LoadTexture("Resources/Dissolve4.png"));
+	yazirusiSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/yazirusi.png"));
 
 	yazirusiSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	;
@@ -100,7 +100,7 @@ void GameScene::Initialize()
 #pragma region ポーズ中のチュートリアル用スプライトの設定
 
 	pauseSprite_ = std::make_unique<Sprite>();
-	pauseSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/scene2.png"));
+	pauseSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/scene2.png"));
 	pauseSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	pauseSprite_->SetScale({ 0,0 });
 	pauseSprite_->SetPosition({ 640,360 });
@@ -108,7 +108,7 @@ void GameScene::Initialize()
 	pauseSprite_->Update();
 
 	pauseTutorialSprite_ = std::make_unique<Sprite>();
-	pauseTutorialSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial.png"));
+	pauseTutorialSprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/Tutorial.png"));
 	pauseTutorialSprite_->SetAnchorPoint({ 0.5f,0.5f });
 	pauseTutorialSprite_->SetPosition({ 400,360 });
 	pauseTutorialSprite_->Update();
@@ -116,8 +116,8 @@ void GameScene::Initialize()
 	tutorial0Sprite_ = std::make_unique<Sprite>();
 	tutorial4Sprite_ = std::make_unique<Sprite>();
 
-	tutorial0Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial2.png"));
-	tutorial4Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Tutorial1.png"));
+	tutorial0Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/Tutorial2.png"));
+	tutorial4Sprite_->Initialize(TextureManager::Instance()->LoadTexture("Resources/Texture/Tutorial1.png"));
 
 	tutorial0Sprite_->SetPosition({ 860,636 });
 	tutorial0Sprite_->SetAnchorPoint({ 0.0f,0.0f });

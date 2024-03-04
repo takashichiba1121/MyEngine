@@ -17,7 +17,7 @@ void EnemyManager::Initialize()
 
 	particle_->Initialize();
 
-	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/effect4.png"));
+	particle_->SetTextureHandle(TextureManager::Instance()->LoadTexture("Resources/Texture/effect4.png"));
 }
 
 void EnemyManager::Update()

@@ -217,7 +217,7 @@ void Model::LoadFromOBJInternal(const std::string& modelname,bool smoothing)
 	/*file.open("Resources/triangle_tex/triangle_tex.obj");*/
 	//const string modelname = "cube";
 	const string filename = modelname + ".obj";//"triangle_mat.obj"
-	const string directoryPath = "Resources/" + modelname + "/";//"Resources/triangle_mat/triangle_mat.obj"
+	const string directoryPath = "Resources/Model/" + modelname + "/";//"Resources/triangle_mat/triangle_mat.obj"
 	file.open(directoryPath + filename);
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
